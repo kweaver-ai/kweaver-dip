@@ -1,0 +1,13 @@
+node_modules
+.pnpm-store
+.turbo
+dist
+.rsbuild
+coverage
+.DS_Store
+
+apps/*/node_modules
+apps/*/dist
+apps/*/.rsbuild
+packages/*/node_modules
+packages/*/dist

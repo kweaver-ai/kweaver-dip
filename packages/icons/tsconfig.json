@@ -1,0 +1,7 @@
+{
+  "extends": "../../tooling/tsconfig/library.json",
+  "compilerOptions": {
+    "outDir": "dist"
+  },
+  "include": ["src", "tsup.config.ts"]
+}
