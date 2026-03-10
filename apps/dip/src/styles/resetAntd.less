@@ -1,0 +1,31 @@
+/* Primary 按钮禁用状态颜色设置为主题色的 25% 透明度 */
+.dip-btn-primary[disabled],
+.dip-btn-color-primary[disabled] {
+  background: rgb(var(--dip-primary-color-rgb-space) / 25%) !important;
+  background-color: rgb(var(--dip-primary-color-rgb-space) / 25%) !important;
+  border-color: transparent !important;
+  color: white !important;
+  opacity: 1 !important;
+}
+
+.dip-btn-primary[disabled]:hover,
+.dip-btn-primary[disabled]:focus,
+.dip-btn-primary[disabled]:active,
+.dip-btn-color-primary[disabled]:hover,
+.dip-btn-color-primary[disabled]:focus,
+.dip-btn-color-primary[disabled]:active {
+  background: rgb(var(--dip-primary-color-rgb-space) / 25%) !important;
+  background-color: rgb(var(--dip-primary-color-rgb-space) / 25%) !important;
+  border-color: transparent !important;
+  color: white !important;
+}
+
+/* 设置表格滚动条样式 */
+.dip-table {
+  .dip-table-container {
+    .dip-table-body {
+      scrollbar-width: thin;
+      scrollbar-color: rgb(178 181 189 / 50%) transparent;
+    }
+  }
+}

@@ -1,0 +1,40 @@
+# Default values for dip-frontend.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+namespace: anyshare
+image:
+  registry: 'acr.aishu.cn'
+  repository: '/dip/dip-frontend'
+  tag: "1.0.0-develop"
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 80
+
+depServices:
+  class-443:
+    ingressClass: class-443
+
+resources:
+  requests:
+    cpu: 200m
+    memory: 512Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
+
+nodeSelector: []
+
+# Nginx 配置挂载选项（测试环境使用）
+nginx:
+  # 是否启用数据卷挂载
+  enabled: false
+  # 挂载方式：hostPath 或 configMap
+  mountType: hostPath # hostPath 或 configMap
+  # hostPath 方式：测试环境节点上的 nginx.conf 文件路径
+  hostPath: /data/dip-frontend/nginx.conf
+  # ConfigMap 方式：ConfigMap 名称（如果 mountType=configMap）
+  configMapName: dip-frontend-nginx-config

@@ -3,12 +3,12 @@
 Intended to manage apps, shared components, icons, request capabilities,
 and utility packages in a unified workspace.
 
-[中文](README.zh_CN.md) | [English](README.md)
+[中文](README.zh_CN.md) | English
 
 ## Goals
 
 - Establish a standard `apps/*` + `packages/*` monorepo layout
-- Use `apps/ai-store` as the current business app workspace
+- Use `apps/dip` as the current business app workspace
 - Prepare shared packages for `components`, `icons`, `request`, and `utils`
 - Build `components` with an `antd`-based adapter layer
 
@@ -17,7 +17,7 @@ and utility packages in a unified workspace.
 ```text
 .
 ├─ apps/
-│  └─ ai-store/              # Current business app workspace
+│  └─ dip/                   # Current business app workspace
 ├─ packages/
 │  ├─ components/            # Shared component package with antd adapters
 │  ├─ icons/                 # Shared icon exports

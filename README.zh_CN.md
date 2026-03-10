@@ -2,12 +2,12 @@
 
 用于统一管理应用、组件、图标、请求层与通用工具等 workspace 包。
 
-[中文](README.zh_CN.md) | [English](README.md)
+中文 | [English](README.md)
 
 ## 目标
 
 - 建立统一的 `apps/*` + `packages/*` monorepo 结构
-- 使用 `apps/ai-store` 作为当前业务应用目录
+- 使用 `apps/dip` 作为当前业务应用目录
 - 建立 `components`、`icons`、`request`、`utils` 四类公共包
 - 在 `components` 中采用 `antd` + adapter 的组件分层方式
 
@@ -16,7 +16,7 @@
 ```text
 .
 ├─ apps/
-│  └─ ai-store/              # 当前业务应用目录
+│  └─ dip/                   # 当前业务应用目录
 ├─ packages/
 │  ├─ components/            # 基于 antd adapter 的通用组件包
 │  ├─ icons/                 # 通用图标导出包

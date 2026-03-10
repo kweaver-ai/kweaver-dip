@@ -1,0 +1,17 @@
+node_modules
+.git
+.gitignore
+README.md
+.env*
+.DS_Store
+.vscode
+.cursor
+.idea
+*.log*
+coverage
+.nyc_output
+dist
+build
+.cache
+docs
+
