@@ -1,0 +1,265 @@
+openapi: 3.0.1
+
+servers:
+  - url: /api
+
+info:
+  title: 业务知识网络开放 API
+  version: 1.0.0
+
+components: 
+  securitySchemes: 
+    BearerAuth:
+      type: http
+      scheme: bearer
+
+security: 
+  - BearerAuth: []
+
+paths:
+  /ontology-query/v1/knowledge-networks/{kn_id}/object-types/{ot_id}:
+    summary: 检索指定对象类的对象的详细数据
+    post:
+      operationId: getObjectDetail
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+              - $ref: './ontology-query.schemas.yaml#/components/schemas/FirstQueryWithSearchAfter'
+              - $ref: './ontology-query.schemas.yaml#/components/schemas/PageTurnQueryWithSearchAfter'
+        required: true
+      parameters:
+      - name: kn_id
+        description: 业务知识网络ID
+        schema:
+          type: string
+        in: path
+        required: true
+      - name: ot_id
+        description: 对象类ID
+        schema:
+          type: string
+        in: path
+        required: true
+      - name: include_type_info
+        description: "是否包含对象类信息, 默认false，不包含"
+        schema:
+          type: boolean
+        in: query
+      - name: include_logic_params
+        description: 包含逻辑属性的计算参数，默认false，返回结果不包含逻辑属性的字段和值
+        schema:
+          type: boolean
+        in: query
+      - name: X-HTTP-Method-Override
+        description: 重载 post，实际上是 get 方法
+        schema:
+          enum:
+          - GET
+          type: string
+        in: header
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: './ontology-query.schemas.yaml#/components/schemas/ObjectDataResponse'
+          description: ok
+      summary: 检索指定对象类的对象的详细数据
+    parameters:
+    - name: kn_id
+      description: 业务知识网络ID
+      schema:
+        type: string
+      in: path
+      required: true
+    - name: ot_id
+      description: 对象类ID
+      schema:
+        type: string
+      in: path
+      required: true
+  /ontology-query/v1/knowledge-networks/{kn_id}/action-types/{at_id}/:
+    summary: 行动查询
+    description: 获取相关行动的具体行动详情，可支持获取多个对象的行动详情
+    post:
+      operationId: getActionDetail
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: './ontology-query.schemas.yaml#/components/schemas/UniqueIdentities'
+        required: true
+      parameters:
+      - name: kn_id
+        description: 业务知识网络id
+        schema:
+          type: string
+        in: path
+        required: true
+      - name: at_id
+        description: 行动类id
+        schema:
+          type: string
+        in: path
+        required: true
+      - name: include_type_info
+        description: "是否包含行动类信息, 默认false，不包含"
+        schema:
+          type: boolean
+        in: query
+      - name: x-http-method-override
+        description: 重载POST
+        schema:
+          enum:
+          - GET
+          type: string
+        in: header
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: './ontology-query.schemas.yaml#/components/schemas/Actions'
+          description: ok
+      summary: 行动查询
+    parameters:
+    - name: kn_id
+      description: 业务知识网络id
+      schema:
+        type: string
+      in: path
+      required: true
+    - name: at_id
+      description: 行动类id
+      schema:
+        type: string
+      in: path
+      required: true
+    - name: include_type_info
+      description: "是否包含行动类信息, 默认false，不包含"
+      schema:
+        type: boolean
+      in: query
+    - name: x-http-method-override
+      description: 重载POST
+      schema:
+        enum:
+        - GET
+        type: string
+      in: header
+      required: true
+  /ontology-query/v1/knowledge-networks/{kn_id}/subgraph:
+    summary: 获取对象子图
+    post:
+      operationId: getObjectSubGraph
+      requestBody:
+        description: 子图查询请求体
+        content:
+          application/json:
+            schema:
+              oneOf:
+              - $ref: './ontology-query.schemas.yaml#/components/schemas/SubGraphQueryBaseOnSource'
+              - $ref: './ontology-query.schemas.yaml#/components/schemas/SubGraphQueryBaseOnTypePath'
+        required: true
+      parameters:
+      - name: kn_id
+        in: path
+        schema:
+          type: string
+        required: true
+      - name: include_logic_params
+        description: 包含逻辑属性的计算参数，默认false，返回结果不包含逻辑属性的字段和值
+        schema:
+          type: boolean
+        in: query
+      - name: query_type
+        description: 查询类型，默认是子图探索，即基于起点、方向和路径长度获取对象子图；若是relation_path，则表示基于路径获取对象子图
+        schema:
+          enum:
+          - ""
+          - relation_path
+          type: string
+        in: query
+        required: false
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: './ontology-query.schemas.yaml#/components/schemas/ObjectSubGraphResponse'
+                - $ref: './ontology-query.schemas.yaml#/components/schemas/PathEntries'
+          description: 对象子图
+      summary: 子图查询
+      description: 子图查询，可以是基于起点、方向和路径长度获取对象子图，有可以是基于路径获取对象子图，查询请求方式和返回体不同
+    parameters:
+    - name: query_type
+      description: 查询类型，默认是子图探索，即基于起点、方向和路径长度获取对象子图；若是relation_path，则表示基于路径获取对象子图
+      schema:
+        enum:
+        - ""
+        - relation_path
+        type: string
+      in: query
+      required: false
+    - name: include_logic_params
+      description: 包含逻辑属性的计算参数，默认false，返回结果不包含逻辑属性的字段和值
+      schema:
+        type: boolean
+      in: query
+    - name: kn_id
+      in: path
+      schema:
+        type: string
+      required: true
+    - name: x-http-method-override
+      description: "\r\n重载请求头"
+      schema:
+        enum:
+        - GET
+        type: string
+      in: header
+      required: true
+  /ontology-query/v1/knowledge-networks/{kn_id}/object-types/{ot_id}/properties:
+    post:
+      operationId: getObjectProperties
+      requestBody:
+        description: 属性查询请求体
+        content:
+          application/json:
+            schema:
+              $ref: './ontology-query.schemas.yaml#/components/schemas/PropertyQueryBody'
+        required: true
+      parameters:
+      - name: kn_id
+        description: 业务知识网络ID
+        schema:
+          type: string
+        in: path
+        required: true
+      - name: ot_id
+        description: 对象类ID
+        schema:
+          type: string
+        in: path
+        required: true
+      - name: x-http-method-override
+        description: 重载 post，实际上是 get 方法
+        schema:
+          enum:
+          - GET
+          type: string
+        in: header
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: './ontology-query.schemas.yaml#/components/schemas/ObjectPropertiesValuesResponse'
+          description: ok
+      summary: 对象属性值查询

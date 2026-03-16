@@ -1,0 +1,280 @@
+openapi: 3.0.1
+
+servers:
+  - url: /api
+
+info:
+  title: 指标模型统一查询开放 API
+  version: 1.0.0
+  
+components: 
+  securitySchemes: 
+    BearerAuth:
+      type: http
+      scheme: bearer
+
+security: 
+  - BearerAuth: []
+  
+paths:
+  /mdl-uniquery/v1/metric-model:
+    summary: 基于指标模型的数据预览
+    post:
+      tags:
+        - 数据模型查询
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: ./mdl-uniquery.schemas.yaml#/components/schemas/ReqMetricModelSimulate
+        required: true
+      parameters:
+      - name: X-HTTP-Method-Override
+        description: 重载 post，实际上是 get 方法
+        schema:
+          enum:
+          - GET
+          type: string
+        in: header
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: ./mdl-uniquery.schemas.yaml#/components/schemas/MetricResultsSimulate
+          description: OK
+        '400':
+          $ref: ./mdl-uniquery.schemas.yaml#/components/responses/400BadRequest
+        '500':
+          $ref: ./mdl-uniquery.schemas.yaml#/components/responses/500InternalError
+      summary: metric-model
+      description: 基于指标模型的数据预览
+  /mdl-uniquery/v1/metric-models/{ids}:
+    post:
+      tags:
+        - 数据模型查询
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: ./mdl-uniquery.schemas.yaml#/components/schemas/ReqMetricModel
+        required: true
+      parameters:
+      - name: X-HTTP-Method-Override
+        description: 重载 post，实际上是 get 方法
+        schema:
+          enum:
+          - GET
+          type: string
+        in: header
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: ./mdl-uniquery.schemas.yaml#/components/schemas/MetricResults
+          description: OK
+        '207':
+          content:
+            application/json:
+        '404':
+          content:
+            application/json:
+      summary: metric-models/{ids}
+      description: 根据指标模型 id 查询指标数据。可支持单个指标查询和多个指标查询。若是需要查询大于1个的指标模型的数据，则需要提交一个查询请求参数的数组，请求参数的作用域与模型id顺序对应。返回的是多个模型的数据结果的数组，数据与模型id也是顺序对应的。
+    parameters:
+    - name: ids
+      description: 指标模型id
+      schema:
+        type: integer
+      in: path
+      required: true
+    - name: ignoring_store_cache
+      description: 是否查询持久化缓存下来的数据。默认为 false，不忽略
+      schema:
+        type: boolean
+      in: query
+      required: false
+    - name: include_model
+      description: 是否返回指标模型信息。默认为false。
+      schema:
+        type: boolean
+      in: query
+    - name: filter_mode
+      description: 过滤模式
+      schema:
+        enum:
+        - normal
+        - error
+        - ignore
+        type: string
+      in: query
+    - name: fill_null
+      description: 是否补空，默认为true，即补null
+      schema:
+        type: boolean
+      in: query
+    - name: ignoring_memory_cache
+      description: 是否忽略内存缓存数据，默认为false，不忽略
+      schema:
+        type: boolean
+      in: query
+    - name: ignoring_hcts
+      description: 是否忽略高基查询。默认为false，不忽略
+      schema:
+        type: boolean
+      in: query
+  /mdl-uniquery/v1/metric-model-groups/{group_name}/metric-models:
+    post:
+      tags:
+        - 数据模型查询
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: ./mdl-uniquery.schemas.yaml#/components/schemas/ReqMetricModelForGroup
+        required: true
+      parameters:
+      - name: X-HTTP-Method-Override
+        description: 重载 post，实际上是 get 方法
+        schema:
+          enum:
+          - GET
+          type: string
+        in: header
+        required: true
+      - name: filter_mode
+        description: 过滤模式
+        schema:
+          enum:
+          - normal
+          - error
+          - ignore
+          type: string
+        in: query
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: ./mdl-uniquery.schemas.yaml#/components/schemas/MetricResults
+          description: 查询成功
+        '207':
+          content:
+            application/json:
+        '404':
+          content:
+            application/json:
+      summary: metric-model-groups/{group_name}/metric-models
+      description: 根据分组名称和指标模型名称查询指标数据(以数组形式接受请求体参数)
+    parameters:
+    - name: group_name
+      description: 分组名称
+      schema:
+        type: string
+      in: path
+      required: true
+    - name: ignoring_store_cache
+      description: 是否查询持久化缓存下来的数据。默认为 false，不忽略
+      schema:
+        type: boolean
+      in: query
+    - name: include_model
+      description: 是否返回指标模型信息。默认为false
+      schema: {}
+      in: query
+    - name: ignoring_memory_cache
+      description: 是否忽略内存缓存数据，默认为false，不忽略
+      schema:
+        type: boolean
+      in: query
+    - name: ignoring_hcts
+      description: 是否忽略高基查询。默认为false，不忽略
+      schema:
+        type: boolean
+      in: query
+    - name: filter_mode
+      description: 过滤模式。默认为normal
+      schema:
+        enum:
+        - normal
+        - error
+        - ignore
+        type: string
+      in: query
+    - name: fill_null
+      description: 是否补空，默认为true，即补null
+      schema:
+        type: boolean
+      in: query
+  /mdl-uniquery/v1/metric-models/{id}/fields:
+    summary: 基于指标模型id获取字段列表
+    get:
+      tags:
+        - 数据模型查询
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+          description: ok
+      summary: 基于指标模型id获取字段列表
+    parameters:
+    - name: id
+      description: 指标模型id
+      schema:
+        type: string
+      in: path
+      required: true
+  /mdl-uniquery/v1/metric-models/{id}/field_values/{field_name}:
+    summary: 基于指标模型id获取字段的值列表
+    get:
+      tags:
+        - 数据模型查询
+      parameters:
+      - name: id
+        description: 指标模型id
+        schema:
+          type: string
+        in: path
+        required: true
+      - name: field_name
+        description: 字段名称
+        schema:
+          type: string
+        in: path
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: ./mdl-uniquery.schemas.yaml#/components/schemas/FieldValues
+          description: ok
+      summary: 基于指标模型id获取字段的值列表
+  /mdl-uniquery/v1/metric-models/{id}/labels:
+    summary: 基于指标模型id获取维度字段列表
+    get:
+      tags:
+        - 数据模型查询
+      parameters:
+      - name: id
+        in: path
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+          description: ok
+      summary: 基于指标模型id获取维度字段列表
