@@ -8,7 +8,6 @@ import { ModeEnum } from '@/components/AppList/types'
 import Empty from '@/components/Empty'
 import SearchInput from '@/components/SearchInput'
 import { useApplicationsService } from '@/hooks/useApplicationsService'
-import { WENSHU_APP_KEY } from '@/routes/types'
 import { useMicroAppStore, usePreferenceStore } from '@/stores'
 import { MyAppActionEnum } from './types'
 import { getMyAppMoreBtn } from './utils'
@@ -125,9 +124,10 @@ const MyApp = () => {
         mode={ModeEnum.MyApp}
         apps={apps}
         moreBtn={(app) =>
-          app.key === WENSHU_APP_KEY
-            ? undefined
-            : getMyAppMoreBtn(app, (key) => handleMenuClick(key, app))
+          // app.key === WENSHU_APP_KEY
+          //   ? undefined
+          //   :
+          getMyAppMoreBtn(app, (key) => handleMenuClick(key, app))
         }
         onMenuButtonClick={(app) => handleMenuClick(MyAppActionEnum.Use, app)}
       />

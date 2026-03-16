@@ -1,7 +1,7 @@
 import { usePreferenceStore } from '@/stores'
 import { BASE_PATH } from '@/utils/config'
 import { routeConfigs } from './routes'
-import type { RouteConfig } from './types'
+import type { RouteConfig, SiderType } from './types'
 
 /**
  * 将动态路由路径模式转换为正则表达式
@@ -128,18 +128,18 @@ export const getFirstVisibleSidebarRoute = (roleIds: Set<string>): RouteConfig |
  * @returns 第一个有权限的路由配置，如果没有则返回 undefined
  */
 export const getFirstVisibleRouteBySiderType = (
-  siderType: 'store' | 'studio' | 'home',
+  siderType: SiderType,
   roleIds: Set<string>,
 ): RouteConfig | undefined => {
-  // home 类型固定返回 /application/1
-  if (siderType === 'home') {
-    return {
-      path: 'application/1',
-      key: 'micro-app-1',
-      label: '问数',
-      showInSidebar: false,
-    }
-  }
+  // // home 类型固定返回 /application/1
+  // if (siderType === 'home') {
+  //   return {
+  //     path: 'application/1',
+  //     key: 'micro-app-1',
+  //     label: '问数',
+  //     showInSidebar: false,
+  //   }
+  // }
 
   return routeConfigs.find((route) => {
     // 必须在侧边栏显示

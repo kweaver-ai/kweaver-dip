@@ -67,7 +67,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, width, menuItems, on
         <div className="flex items-center justify-between">
           {/* 更新信息 */}
           <div className="flex items-center text-xs text-[var(--dip-text-color-45)]">
-            {/* <Avatar size={24} className="flex-shrink-0 mr-2">
+            {/* <Avatar size="small" className="flex-shrink-0 mr-2">
               {userName.charAt(0)}
             </Avatar>
             <span

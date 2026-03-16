@@ -19,7 +19,7 @@ interface AppListProps {
   moreBtn?: (app: ApplicationInfo) => React.ReactNode
   /** 卡片菜单右上角按钮点击回调 */
   onMenuButtonClick?: (app: ApplicationInfo) => void
-  /** 卡片菜单点击回调 */
+  /** 卡片点击回调 */
   onCardClick?: (app: ApplicationInfo) => void
 }
 

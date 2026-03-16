@@ -163,3 +163,21 @@ export interface FunctionDocument {
   edited_at: string
   blocks: DocumentBlock[]
 }
+
+// ==================== 数字员工 ====================
+
+/** 数字员工（Employee） */
+export interface Employee {
+  id: number
+  name: string
+  description?: string
+  icon?: string
+  creator: string
+  created_at: string
+  editor: string
+  edited_at: string
+  status: number
+  users: any[]
+  plan_count: number
+  task_success_rate: any[]
+}

@@ -77,7 +77,7 @@ const MetricSelector = ({ initialSelectedMetrics, onCancel, onConfirm }: MetricS
         open
         centered
         destroyOnHidden
-        maskClosable={false}
+        mask={{ closable: false }}
         width={800}
         onCancel={onCancel}
         onOk={() => onConfirm(metricSelectorStore.selectedMetrics)}

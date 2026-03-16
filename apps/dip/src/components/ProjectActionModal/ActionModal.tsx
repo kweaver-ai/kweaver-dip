@@ -175,7 +175,7 @@ const ActionModal = ({
         onOk={handleOk}
         confirmLoading={loading}
         closable
-        maskClosable={false}
+        mask={{ closable: false }}
         destroyOnHidden
         width={520}
         okText="确定"

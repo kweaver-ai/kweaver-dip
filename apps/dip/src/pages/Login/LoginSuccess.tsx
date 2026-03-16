@@ -2,7 +2,6 @@ import { Spin } from 'antd'
 import { useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import GradientContainer from '@/components/GradientContainer'
-import { resolveDefaultMicroAppPath } from '@/routes/utils'
 import { useUserInfoStore } from '@/stores'
 
 const LoginSuccess = () => {
@@ -39,14 +38,16 @@ const LoginSuccess = () => {
               // hasNavigatedRef.current = true
               // navigate(to, { replace: true })
 
+              // TODO: 暂时不使用默认微应用路由
               // 通过公共方法解析默认微应用路由（基于固定应用 key）
-              resolveDefaultMicroAppPath().then((targetPath) => {
-                if (hasNavigatedRef.current) {
-                  return
-                }
-                hasNavigatedRef.current = true
-                navigate(targetPath, { replace: true })
-              })
+              // resolveDefaultMicroAppPath().then((targetPath) => {
+              //   if (hasNavigatedRef.current) {
+              //     return
+              //   }
+              //   hasNavigatedRef.current = true
+              //   navigate(targetPath, { replace: true })
+              // })
+              navigate('/home', { replace: true })
             } else {
               // 请求完成但没有用户信息，说明获取失败
               hasNavigatedRef.current = true

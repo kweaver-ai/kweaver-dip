@@ -12,6 +12,7 @@ import type {
   Project,
   UpdateDictionaryEntryRequest,
   UpdateNameDescRequest,
+  Employee,
 } from './index.d'
 
 export type {
@@ -27,6 +28,7 @@ export type {
   Project,
   UpdateDictionaryEntryRequest,
   UpdateNameDescRequest,
+  Employee,
 }
 export type { NodeType, ObjectType } from './index.d'
 
@@ -37,7 +39,7 @@ function flattenNodeTree(tree: NodeTree | null): Node[] {
   const nodes: Node[] = []
   const visit = (t: NodeTree) => {
     const { children, ...node } = t
-    nodes.push(node as Node)
+    nodes.push(node as unknown as Node)
     children?.forEach(visit)
   }
   visit(tree)
@@ -133,3 +135,12 @@ export const putDocument = (
   documentId: number | string,
   patches: PatchDocumentBlocksRequest,
 ): Promise<void> => put(`${BASE}/documents/${documentId}`, { body: patches })
+
+
+// ==================== 数字员工 ====================
+
+/** 获取数字员工列表 */
+export const getDigitalEmployees = (): Promise<Employee[]> =>
+  get(`${BASE}/digital-employees`).then((result: unknown) =>
+    Array.isArray(result) ? (result as Employee[]) : [],
+  )

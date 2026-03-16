@@ -5,6 +5,8 @@ dist
 .rsbuild
 coverage
 .DS_Store
+.vscode
+.cursor
 
 apps/*/node_modules
 apps/*/.turbo

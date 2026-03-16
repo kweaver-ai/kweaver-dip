@@ -136,7 +136,13 @@ export const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
   useEffect(() => {
     const refresh = () => {
       if (!skipAuth && token && userInfo) {
-        fetchPinnedMicroApps()
+        const pathname = location.pathname
+        const inMicroAppModule = pathname.startsWith('/application/')
+        const inAiStoreModule = pathname.startsWith('/store/')
+
+        if (inMicroAppModule || inAiStoreModule) {
+          fetchPinnedMicroApps()
+        }
       }
     }
 
@@ -148,7 +154,7 @@ export const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
     return () => {
       window.removeEventListener('focus', refresh)
     }
-  }, [skipAuth, token, userInfo, fetchPinnedMicroApps])
+  }, [skipAuth, token, userInfo, fetchPinnedMicroApps, location.pathname])
 
   // 如果跳过认证，直接返回子组件
   if (skipAuth) {

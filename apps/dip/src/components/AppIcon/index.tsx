@@ -42,11 +42,11 @@ const AppIcon = ({
   // 如果没有图标或图片加载失败，使用 Avatar 显示首字母
   if (!icon || imageError) {
     return (
-      <div className={clsx('relative inline-flex', className)} style={style}>
+      <div className={clsx('relative inline-flex items-center h-full', className)} style={style}>
         <Avatar
           size={size}
           shape={shape}
-          className="shrink-0 border border-[var(--dip-border-color)]"
+          className={clsx('shrink-0', hasBorder && 'border border-[var(--dip-border-color)]')}
         >
           {name?.charAt(0) || ''}
         </Avatar>

@@ -4,7 +4,6 @@ import { useState } from 'react'
 import { useMatches, useParams } from 'react-router-dom'
 import bg from '@/assets/images/gradient-container-bg.png'
 import type { RouteHandle } from '@/routes/types'
-import { WENSHU_APP_KEY } from '@/routes/types'
 import { usePreferenceStore } from '@/stores'
 import { useMicroAppStore } from '@/stores/microAppStore'
 import Header from '../../components/Header'
@@ -22,9 +21,9 @@ const SIDER_COLLAPSED_WIDTH = 60
 const Container = ({ children }: ContainerProps) => {
   const [collapsed, setCollapsed] = useState(false)
   const matches = useMatches()
-  const params = useParams()
+  // const params = useParams()
   const { currentMicroApp } = useMicroAppStore()
-  const { wenshuAppInfo } = usePreferenceStore()
+  // const { wenshuAppInfo } = usePreferenceStore()
 
   // 当前是否处于微应用容器场景
   const isMicroApp = !!currentMicroApp
@@ -39,9 +38,10 @@ const Container = ({ children }: ContainerProps) => {
   // 特殊处理：问数应用没有导航头，有侧边栏
   // 1. 优先通过当前微应用的 key 判断（兼容直接刷新 /application/:appId 的场景）
   // 2. 兼容通过 store 中缓存的 wenshuAppInfo.id 判断（兼容从首页/登录跳转的场景）
-  const isWenshuByKey = currentMicroApp?.key === WENSHU_APP_KEY
-  const isWenshuById = wenshuAppInfo?.id === Number(params?.appId)
-  const isWenshuApp = isWenshuByKey || isWenshuById
+  // const isWenshuByKey = currentMicroApp?.key === WENSHU_APP_KEY
+  // const isWenshuById = wenshuAppInfo?.id === Number(params?.appId)
+  // const isWenshuApp = isWenshuByKey || isWenshuById
+  const isWenshuApp = false
 
   // 布局决策：
   // - headless 微应用：强制 { hasHeader: false, hasSider: false }
@@ -71,10 +71,6 @@ const Container = ({ children }: ContainerProps) => {
       <Layout
         style={{
           backgroundImage: `url(${bg})`,
-          // display: 'flex',
-          // flexDirection: 'row',
-          // flex: 1,
-          // minHeight: 0,
         }}
         className="bg-no-repeat bg-cover"
       >

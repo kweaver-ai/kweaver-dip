@@ -69,7 +69,7 @@ const DeleteProjectModal = ({ open, onCancel, project, onSuccess }: DeleteProjec
         onOk={handleOk}
         confirmLoading={loading}
         closable={false}
-        maskClosable={false}
+        mask={{ closable: false }}
         destroyOnHidden
         width={424}
         okText="删除"

@@ -43,7 +43,7 @@ export const AppConfigDrawer = ({ appData, open, onClose }: AppConfigDrawerProps
       open={open}
       onClose={onClose}
       closable={{ placement: 'end' }}
-      maskClosable
+      mask={{ closable: false }}
       destroyOnHidden
       styles={{
         wrapper: { width: '60%', minWidth: 640 },

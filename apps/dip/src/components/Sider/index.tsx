@@ -2,9 +2,10 @@ import { Layout } from 'antd'
 import clsx from 'classnames'
 import { useEffect, useState } from 'react'
 import type { SiderType } from '@/routes/types'
-import BaseSider from './BaseSider'
 import HomeSider from './HomeSider'
 import styles from './index.module.less'
+import StoreSider from './StoreSider'
+import StudioSider from './StudioSider'
 
 const { Sider: AntdSider } = Layout
 
@@ -54,8 +55,10 @@ const Sider = ({ collapsed, onCollapse, topOffset = 0, type = 'home' }: SiderPro
     >
       {type === 'home' ? (
         <HomeSider collapsed={collapsed} onCollapse={onCollapse} />
+      ) : type === 'store' ? (
+        <StoreSider collapsed={collapsed} onCollapse={onCollapse} />
       ) : (
-        <BaseSider collapsed={collapsed} onCollapse={onCollapse} type={type} />
+        <StudioSider collapsed={collapsed} onCollapse={onCollapse} />
       )}
     </AntdSider>
   )

@@ -35,6 +35,8 @@ export interface RouteConfig {
   disabled?: boolean
   /** 是否在侧边栏展示 */
   showInSidebar?: boolean
+  /** 侧边栏分组 */
+  group?: string
   handle?: RouteHandle
   children?: RouteConfig[]
 }

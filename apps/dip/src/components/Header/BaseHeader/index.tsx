@@ -1,10 +1,10 @@
 import { useCallback, useMemo, useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import logoImage from '@/assets/images/brand/logo.png'
 import InfoIcon from '@/assets/images/info.svg?react'
 import type { HeaderType, SiderType } from '@/routes/types'
 import { getFirstVisibleRouteBySiderType, getParentRoute, getRouteByPath } from '@/routes/utils'
-import { useLanguageStore, useOEMConfigStore, useProjectStore } from '@/stores'
+import { useLanguageStore, useOEMConfigStore, useUserWorkPlanStore } from '@/stores'
 import type { BreadcrumbItem } from '@/utils/micro-app/globalState'
 import { Breadcrumb } from '../components/Breadcrumb'
 import { ProjectInfoPopover } from '../components/ProjectInfoPopover'
@@ -50,20 +50,23 @@ const getSectionName = (type: HeaderType): string => {
  */
 const BaseHeader = ({ headerType }: { headerType: HeaderType }) => {
   const location = useLocation()
+  const params = useParams()
   const navigate = useNavigate()
   const { getOEMResourceConfig } = useOEMConfigStore()
   const { language } = useLanguageStore()
   const oemResourceConfig = getOEMResourceConfig(language)
   // 从 store 中获取项目信息
-  const projectInfo = useProjectStore((state) => state.currentProjectInfo)
-  const [projectInfoOpen, setProjectInfoOpen] = useState(false)
+  const workPlanId = params.workPlanId
+  const workPlanInfo = useUserWorkPlanStore((state) =>
+    state.plans.find((plan) => plan.id === Number(workPlanId)),
+  )
+  const [workPlanInfoOpen, setWorkPlanInfoOpen] = useState(false)
 
   // 不同平台（store/studio）各自的首路由，用于面包屑首页返回
   const roleIds = useMemo(() => new Set<string>([]), [])
   const homePath = useMemo(() => {
     const firstRoute = getFirstVisibleRouteBySiderType(headerType as SiderType, roleIds)
-    const path =
-      firstRoute?.path ?? (headerType === 'store' ? 'store/my-app' : 'studio/project-management')
+    const path = firstRoute?.path ?? (headerType === 'store' ? 'store/my-app' : 'studio/home')
     return `/${path}`
   }, [headerType, roleIds])
 
@@ -79,8 +82,8 @@ const BaseHeader = ({ headerType }: { headerType: HeaderType }) => {
   // 获取当前路由配置
   const currentRoute = useMemo(() => getRouteByPath(location.pathname), [location.pathname])
 
-  // 检查是否是项目详情路由
-  const isProjectDetailRoute = currentRoute?.path === 'studio/project-management/:projectId'
+  // 检查是否是工作计划详情路由
+  const isWorkPlanDetailRoute = currentRoute?.path === 'studio/work-plan/:workPlanId'
 
   // 构建面包屑数据：BaseHeaderType名称 / 父路由名称 / 当前路由名称
   const breadcrumbItems: BreadcrumbItem[] = useMemo(() => {
@@ -109,8 +112,8 @@ const BaseHeader = ({ headerType }: { headerType: HeaderType }) => {
       if (currentRoute.label) {
         // 如果是项目详情路由，使用项目真实名称
         let displayName = currentRoute.label
-        if (isProjectDetailRoute && projectInfo) {
-          displayName = projectInfo.name
+        if (isWorkPlanDetailRoute && workPlanInfo) {
+          displayName = workPlanInfo.name
         }
 
         // 如果当前路由路径包含动态参数（如 :projectId），使用实际路径
@@ -133,7 +136,7 @@ const BaseHeader = ({ headerType }: { headerType: HeaderType }) => {
     }
 
     return result
-  }, [headerType, currentRoute, location.pathname, isProjectDetailRoute, projectInfo])
+  }, [headerType, currentRoute, location.pathname, isWorkPlanDetailRoute, workPlanInfo])
 
   const getLogoUrl = () => {
     const base64Image = oemResourceConfig?.['logo.png']
@@ -159,31 +162,31 @@ const BaseHeader = ({ headerType }: { headerType: HeaderType }) => {
           items={breadcrumbItems}
           homePath={homePath}
           onNavigate={handleBreadcrumbNavigate}
-          lastItemSuffix={
-            isProjectDetailRoute && projectInfo ? (
-              <ProjectInfoPopover
-                projectInfo={projectInfo}
-                open={projectInfoOpen}
-                onOpenChange={(open) => {
-                  setProjectInfoOpen(open)
-                }}
-                onClose={() => {
-                  setProjectInfoOpen(false)
-                }}
-                styles={{
-                  container: { padding: '24px 0' },
-                }}
-              >
-                <button
-                  type="button"
-                  className="flex items-center justify-center w-6 h-6 text-[#505050]"
-                  title="查看项目信息"
-                >
-                  <InfoIcon />
-                </button>
-              </ProjectInfoPopover>
-            ) : null
-          }
+          // lastItemSuffix={
+          //   isWorkPlanDetailRoute && workPlanInfo ? (
+          //     <ProjectInfoPopover
+          //       projectInfo={workPlanInfo}
+          //       open={workPlanInfoOpen}
+          //       onOpenChange={(open) => {
+          //         setProjectInfoOpen(open)
+          //       }}
+          //       onClose={() => {
+          //         setProjectInfoOpen(false)
+          //       }}
+          //       styles={{
+          //         container: { padding: '24px 0' },
+          //       }}
+          //     >
+          //       <button
+          //         type="button"
+          //         className="flex items-center justify-center w-6 h-6 text-[#505050]"
+          //         title="查看项目信息"
+          //       >
+          //         <InfoIcon />
+          //       </button>
+          //     </ProjectInfoPopover>
+          //   ) : null
+          // }
         />
       </div>
 

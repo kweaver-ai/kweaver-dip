@@ -4,7 +4,6 @@ import { createBrowserRouter, useNavigate } from 'react-router-dom'
 import { BASE_PATH } from '@/utils/config'
 import { ProtectedRoute } from './ProtectedRoute'
 import { routeConfigs } from './routes'
-import { resolveDefaultMicroAppPath } from './utils'
 
 const Login = lazy(() => import('../pages/Login'))
 const LoginSuccess = lazy(() => import('../pages/Login/LoginSuccess'))
@@ -30,13 +29,16 @@ const DefaultIndexRedirect = () => {
       return
     }
 
-    resolveDefaultMicroAppPath().then((targetPath) => {
-      if (hasNavigatedRef.current) {
-        return
-      }
-      hasNavigatedRef.current = true
-      navigate(targetPath, { replace: true })
-    })
+    // TODO: 暂时不使用默认微应用路由
+    // resolveDefaultMicroAppPath().then((targetPath) => {
+    //   if (hasNavigatedRef.current) {
+    //     return
+    //   }
+    //   hasNavigatedRef.current = true
+    //   navigate(targetPath, { replace: true })
+    // })
+
+    navigate('/home', { replace: true })
   }, [navigate])
 
   // const { userInfo } = useUserInfoStore()

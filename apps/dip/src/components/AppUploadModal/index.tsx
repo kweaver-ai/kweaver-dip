@@ -177,9 +177,7 @@ const AppUploadModal = ({ open, onCancel, onSuccess }: AppUploadModalProps) => {
   }
 
   // 处理取消
-  const handleCancel = (
-    e?: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLDivElement>,
-  ) => {
+  const handleCancel = (e?: any) => {
     if (uploadStatus === UploadStatus.UPLOADING) {
       // 上传中需要二次确认
       modal.confirm({
@@ -345,7 +343,7 @@ const AppUploadModal = ({ open, onCancel, onSuccess }: AppUploadModalProps) => {
       open={open}
       onCancel={handleCancel}
       closable
-      maskClosable={false}
+      mask={{ closable: false }}
       destroyOnHidden
       width={620}
       styles={{

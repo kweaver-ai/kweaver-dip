@@ -65,49 +65,68 @@ const HomeSider = ({ collapsed, onCollapse }: HomeSiderProps) => {
     [unpinMicroApp],
   )
 
+  // const menuItems = useMemo<MenuProps['items']>(() => {
+  //   const items: MenuProps['items'] = []
+
+  //   // 问数应用始终排在第一位（若存在）
+  //   if (wenshuAppInfo) {
+  //     items.push({
+  //       key: `micro-app-${wenshuAppInfo.id}`,
+  //       label: wenshuAppInfo.name,
+  //       icon: (
+  //         <AppIcon icon={wenshuAppInfo.icon} name={wenshuAppInfo.name} size={16} shape="square" />
+  //       ),
+  //       onClick: () => handleOpenApp(wenshuAppInfo.id),
+  //     })
+  //   }
+
+  //   // 钉住的应用（排除问数，避免重复）
+  //   pinnedMicroApps
+  //     .filter((app) => app.id !== wenshuAppInfo?.id)
+  //     .forEach((app) => {
+  //       items.push({
+  //         key: `micro-app-${app.id}`,
+  //         label: (
+  //           <div className="w-full h-full flex justify-between items-center">
+  //             {app.name}
+  //             <Popover content="取消固定">
+  //               <PushpinOutlined
+  //                 className="w-6 h-6 text-base flex items-center justify-center rounded text-[var(--dip-warning-color)] pin-icon opacity-0 hover:bg-[rgba(0,0,0,0.04)]"
+  //                 onClick={(e) => {
+  //                   e.stopPropagation()
+  //                   handleUnpin(app.id)
+  //                 }}
+  //               />
+  //             </Popover>
+  //           </div>
+  //         ),
+  //         icon: <AppIcon icon={app.icon} name={app.name} size={16} shape="square" />,
+  //         onClick: () => handleOpenApp(app.id),
+  //       })
+  //     })
+
+  //   return items
+  // }, [pinnedMicroApps, handleOpenApp, handleUnpin, wenshuAppInfo])
 
   const menuItems = useMemo<MenuProps['items']>(() => {
     const items: MenuProps['items'] = []
 
-    // 问数应用始终排在第一位（若存在）
-    if (wenshuAppInfo) {
-      items.push({
-        key: `micro-app-${wenshuAppInfo.id}`,
-        label: wenshuAppInfo.name,
-        icon: (
-          <AppIcon icon={wenshuAppInfo.icon} name={wenshuAppInfo.name} size={16} shape="square" />
-        ),
-        onClick: () => handleOpenApp(wenshuAppInfo.id),
-      })
-    }
+    const firstStudioRoute = getFirstVisibleRouteBySiderType('studio', roleIds)
+    const studioPath = `/${firstStudioRoute?.path || 'home'}`
+    const studioHref = getFullPath(studioPath)
 
-    // 钉住的应用（排除问数，避免重复）
-    pinnedMicroApps
-      .filter((app) => app.id !== wenshuAppInfo?.id)
-      .forEach((app) => {
-        items.push({
-          key: `micro-app-${app.id}`,
-          label: (
-            <div className="w-full h-full flex justify-between items-center">
-              {app.name}
-              <Popover content="取消固定">
-                <PushpinOutlined
-                  className="w-6 h-6 text-base flex items-center justify-center rounded text-[var(--dip-warning-color)] pin-icon opacity-0 hover:bg-[rgba(0,0,0,0.04)]"
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    handleUnpin(app.id)
-                  }}
-                />
-              </Popover>
-            </div>
-          ),
-          icon: <AppIcon icon={app.icon} name={app.name} size={16} shape="square" />,
-          onClick: () => handleOpenApp(app.id),
-        })
-      })
+    items.push({
+      key: 'home',
+      label: (
+        <a href={studioHref} target="_blank" rel="noopener noreferrer">
+          DIP Studio
+        </a>
+      ),
+      icon: <SidebarDipStudioIcon />,
+    })
 
     return items
-  }, [pinnedMicroApps, handleOpenApp, handleUnpin, wenshuAppInfo])
+  }, [roleIds])
 
   const externalMenuItems = useMemo<MenuProps['items']>(() => {
     const firstStoreRoute = getFirstVisibleRouteBySiderType('store', roleIds)
@@ -131,6 +150,7 @@ const HomeSider = ({ collapsed, onCollapse }: HomeSiderProps) => {
     })
     if (token) {
       if (process.env.NODE_ENV === 'development') {
+        // TODO: 测试使用
         ssoSearchParams.set(
           'token',
           'ory_at_1Ol1cd_wZVPwYNCr50AiR9dctvUvM1_mI2C-f481n6Y.uikVUF3c1Rf5KFBivT8JbYDE6VDFLplv_1KRiihWqWU',
@@ -156,15 +176,15 @@ const HomeSider = ({ collapsed, onCollapse }: HomeSiderProps) => {
         ),
         icon: <SidebarAiStoreIcon />,
       },
-      {
-        key: 'dip-studio',
-        label: (
-          <a href={studioHref} target="_blank" rel="noopener noreferrer">
-            DIP Studio
-          </a>
-        ),
-        icon: <SidebarDipStudioIcon />,
-      },
+      // {
+      //   key: 'dip-studio',
+      //   label: (
+      //     <a href={studioHref} target="_blank" rel="noopener noreferrer">
+      //       DIP Studio
+      //     </a>
+      //   ),
+      //   icon: <SidebarDipStudioIcon />,
+      // },
       {
         key: 'data-platform',
         label: (
@@ -201,20 +221,21 @@ const HomeSider = ({ collapsed, onCollapse }: HomeSiderProps) => {
   }, [oemResourceConfig])
 
   const selectedKeys = useMemo(() => {
-    const path = location.pathname
-    const match = path.match(/^\/application\/(\d+)/)
-    if (!match) {
-      return []
-    }
+    // const path = location.pathname
+    // const match = path.match(/^\/application\/(\d+)/)
+    // if (!match) {
+    //   return []
+    // }
 
-    const appId = Number(match[1])
-    const key = `micro-app-${appId}`
+    // const appId = Number(match[1])
+    // const key = `micro-app-${appId}`
 
-    const exists =
-      (wenshuAppInfo && wenshuAppInfo.id === appId) ||
-      pinnedMicroApps.some((app) => app.id === appId)
+    // const exists =
+    //   (wenshuAppInfo && wenshuAppInfo.id === appId) ||
+    //   pinnedMicroApps.some((app) => app.id === appId)
 
-    return exists ? [key] : []
+    // return exists ? [key] : []
+    return ['home']
   }, [location.pathname, pinnedMicroApps, wenshuAppInfo])
 
   return (

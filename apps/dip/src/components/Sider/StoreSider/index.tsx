@@ -6,7 +6,7 @@ import { useCallback, useMemo } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import AppIcon from '@/components/AppIcon'
 import { routeConfigs } from '@/routes/routes'
-import type { RouteConfig, SiderType } from '@/routes/types'
+import type { RouteConfig } from '@/routes/types'
 import {
   getFirstVisibleRouteBySiderType,
   getRouteByPath,
@@ -15,20 +15,18 @@ import {
 import { useMicroAppStore, usePreferenceStore } from '@/stores'
 import { MaskIcon } from '../components/GradientMaskIcon'
 
-interface BaseSiderProps {
+interface StoreSiderProps {
   /** 是否折叠 */
   collapsed: boolean
   /** 折叠状态改变回调 */
   onCollapse: (collapsed: boolean) => void
-  /** 侧边栏类型（store 或 studio） */
-  type: SiderType
 }
 
 /**
- * 商店/工作室版块通用的侧边栏（BaseSider）
- * 用于 store 和 studio 类型的侧边栏
+ * 商店版块通用的侧边栏（StoreSider）
+ * 用于 store 类型的侧边栏
  */
-const BaseSider = ({ collapsed, onCollapse, type }: BaseSiderProps) => {
+const StoreSider = ({ collapsed, onCollapse }: StoreSiderProps) => {
   const navigate = useNavigate()
   const location = useLocation()
   const [messageApi, messageContextHolder] = message.useMessage()
@@ -37,19 +35,19 @@ const BaseSider = ({ collapsed, onCollapse, type }: BaseSiderProps) => {
   // TODO: 角色信息需要从其他地方获取，暂时使用空数组
   const roleIds = useMemo(() => new Set<string>([]), [])
   const firstVisibleRoute = useMemo(
-    () => getFirstVisibleRouteBySiderType(type, roleIds),
-    [type, roleIds],
+    () => getFirstVisibleRouteBySiderType('store', roleIds),
+    [roleIds],
   )
 
   const { setAppSource } = useMicroAppStore()
   const handleOpenApp = useCallback(
     (appId: number) => {
       // 记录来源类型，针对特定 appId 进行持久化
-      setAppSource(appId, type)
+      setAppSource(appId, 'store')
       // 移除 URL 中的 type 参数，完全依赖 Store 持久化
       navigate(`/application/${appId}`)
     },
-    [navigate, type, setAppSource],
+    [navigate, setAppSource],
   )
 
   const handleUnpin = useCallback(
@@ -95,7 +93,7 @@ const BaseSider = ({ collapsed, onCollapse, type }: BaseSiderProps) => {
       .filter((route) => isRouteVisibleForRoles(route, roleIds))
       .filter((route) => {
         const routeSiderType = route.handle?.layout?.siderType || 'store'
-        return routeSiderType === type
+        return routeSiderType === 'store'
       })
       .filter(hasKey)
 
@@ -103,67 +101,61 @@ const BaseSider = ({ collapsed, onCollapse, type }: BaseSiderProps) => {
 
     // 1. MyApp (Only for store)
     const myAppIndex = visibleSidebarRoutes.findIndex((r) => r.key === 'my-app')
-    if (type === 'store') {
-      if (myAppIndex !== -1) {
-        const myApp = visibleSidebarRoutes[myAppIndex]
-        items.push({
-          key: myApp.key,
-          label: myApp.label || myApp.key,
-          icon: myApp.iconUrl ? (
-            <MaskIcon
-              url={myApp.iconUrl}
-              className="w-4 h-4"
-              background={
-                selectedKey === myApp.key
-                  ? 'linear-gradient(210deg, #1C4DFA 0%, #3FA9F5 100%)'
-                  : '#333333'
-              }
-            />
-          ) : null,
-          onClick: () => {
-            // MyApp 点击时不再显式传递 type 参数，容器会从 Store 读取
-            navigate(`/${myApp.path}`)
-          },
-        })
-      }
-
-      // 2. 钉住的应用（显示在 MyApp 下面，排除问数，避免重复）
-      pinnedMicroApps
-        .filter((app) => app.id !== wenshuAppInfo?.id)
-        .forEach((app) => {
-          items.push({
-            key: `micro-app-${app.id}`,
-            label: (
-              <div className="w-full h-full flex justify-between items-center">
-                {app.name}
-                <Popover content="取消固定">
-                  <PushpinOutlined
-                    className="w-6 h-6 text-base flex items-center justify-center rounded text-[var(--dip-warning-color)] pin-icon opacity-0 hover:bg-[rgba(0,0,0,0.04)]"
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      handleUnpin(app.id)
-                    }}
-                  />
-                </Popover>
-              </div>
-            ),
-            icon: <AppIcon icon={app.icon} name={app.name} size={16} shape="square" />,
-            onClick: () => handleOpenApp(app.id),
-          })
-        })
-
-      if (visibleSidebarRoutes.length > 1) {
-        items.push({ type: 'divider' })
-      }
+    if (myAppIndex !== -1) {
+      const myApp = visibleSidebarRoutes[myAppIndex]
+      items.push({
+        key: myApp.key,
+        label: myApp.label || myApp.key,
+        icon: myApp.iconUrl ? (
+          <MaskIcon
+            url={myApp.iconUrl}
+            className="w-4 h-4"
+            background={
+              selectedKey === myApp.key
+                ? 'linear-gradient(210deg, #1C4DFA 0%, #3FA9F5 100%)'
+                : '#333333'
+            }
+          />
+        ) : null,
+        onClick: () => {
+          // MyApp 点击时不再显式传递 type 参数，容器会从 Store 读取
+          navigate(`/${myApp.path}`)
+        },
+      })
     }
 
-    if (type === 'studio') {
-      items.push({ type: 'group', label: '项目' })
+    // 2. 钉住的应用（显示在 MyApp 下面，排除问数，避免重复）
+    pinnedMicroApps
+      .filter((app) => app.id !== wenshuAppInfo?.id)
+      .forEach((app) => {
+        items.push({
+          key: `micro-app-${app.id}`,
+          label: (
+            <div className="w-full h-full flex justify-between items-center">
+              {app.name}
+              <Popover content="取消固定">
+                <PushpinOutlined
+                  className="w-6 h-6 text-base flex items-center justify-center rounded text-[var(--dip-warning-color)] pin-icon opacity-0 hover:bg-[rgba(0,0,0,0.04)]"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    handleUnpin(app.id)
+                  }}
+                />
+              </Popover>
+            </div>
+          ),
+          icon: <AppIcon icon={app.icon} name={app.name} size={16} shape="square" />,
+          onClick: () => handleOpenApp(app.id),
+        })
+      })
+
+    if (visibleSidebarRoutes.length > 1) {
+      items.push({ type: 'divider' })
     }
 
     // 3. Main Sidebar Items (excluding my-app)
     visibleSidebarRoutes.forEach((route) => {
-      if (route.key === 'my-app' && type === 'store') return
+      if (route.key === 'my-app') return
 
       items.push({
         key: route.key,
@@ -190,7 +182,6 @@ const BaseSider = ({ collapsed, onCollapse, type }: BaseSiderProps) => {
 
     return items
   }, [
-    type,
     roleIds,
     selectedKey,
     navigate,
@@ -239,4 +230,4 @@ const BaseSider = ({ collapsed, onCollapse, type }: BaseSiderProps) => {
   )
 }
 
-export default BaseSider
+export default StoreSider

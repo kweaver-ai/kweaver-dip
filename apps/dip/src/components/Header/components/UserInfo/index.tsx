@@ -27,7 +27,7 @@ export const UserInfo = () => {
       <div className="flex items-center gap-x-2 cursor-pointer h-full">
         <AvatarIcon className="w-6 h-6 shrink-0" />
         <span
-          className="text-sm font-normal text-black max-w-28 truncate"
+          className="text-sm font-normal text-black w-fit truncate"
           title={userInfo?.vision_name}
         >
           {userInfo?.vision_name}
