@@ -1,5 +1,6 @@
 import { lazy } from 'react';
 import { createRouteApp } from '@/utils/qiankun-entry-generator';
+import { initMonacoEditor } from '@/components/CodeEditor';
 
 const routeComponents = {
   OperatorDetailFlow: lazy(() => import('@/components/MyOperator/OperatorDetailFlow')),
@@ -36,5 +37,5 @@ const routes = [
   },
 ];
 
-const { bootstrap, mount, unmount } = createRouteApp(routes);
+const { bootstrap, mount, unmount } = createRouteApp(routes, { customConfig: initMonacoEditor });
 export { bootstrap, mount, unmount };
