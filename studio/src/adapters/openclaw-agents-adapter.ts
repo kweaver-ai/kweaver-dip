@@ -2,7 +2,7 @@ import type {
   OpenClawAgentsListResult,
   OpenClawGatewayPort,
   OpenClawRequestFrame
-} from "../types/openclaw";
+} from "../ports/openclaw";
 
 /**
  * Outbound adapter used to fetch OpenClaw agents through the gateway port.
@@ -50,9 +50,8 @@ export class OpenClawAgentsGatewayAdapter implements OpenClawAgentsAdapter {
    * @returns The OpenClaw `AgentsListResult` payload.
    */
   public async listAgents(): Promise<OpenClawAgentsListResult> {
-    return this.gatewayPort.invoke(
-      createAgentsListRequest,
-      (frame) => frame.payload as OpenClawAgentsListResult
+    return this.gatewayPort.invoke<OpenClawAgentsListResult>(
+      createAgentsListRequest("agents.list")
     );
   }
 }

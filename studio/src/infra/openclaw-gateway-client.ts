@@ -10,15 +10,9 @@ import {
 
 import { HttpError } from "../errors/http-error";
 import type {
-  OpenClawEventFrame,
-  OpenClawGatewayFrame,
   OpenClawGatewayPort,
   OpenClawRequestFrame,
-  OpenClawResponseHandler,
-  OpenClawResponseFrame,
-  OpenClawWebSocket,
-  OpenClawWebSocketFactory
-} from "../types/openclaw";
+} from "../ports/openclaw";
 
 const OPENCLAW_PROTOCOL_VERSION = 3;
 const DEFAULT_DEVICE_PUBLIC_KEY_PATH = "assets/public.pem";
@@ -33,6 +27,110 @@ const OPENCLAW_DEVICE_FAMILY = "";
 const DEFAULT_TIMEOUT_MS = 5_000;
 const DEFAULT_HEARTBEAT_INTERVAL_MS = 15_000;
 const DEFAULT_RECONNECT_DELAY_MS = 1_000;
+
+/**
+ * Minimal WebSocket shape used by the OpenClaw gateway client.
+ */
+export interface OpenClawWebSocket {
+  /**
+   * Registers an event listener.
+   *
+   * @param eventName The WebSocket event name.
+   * @param listener The callback invoked for each event.
+   * @returns The WebSocket instance for chaining.
+   */
+  on(eventName: string, listener: (...args: unknown[]) => void): this;
+
+  /**
+   * Sends a UTF-8 message through the socket.
+   *
+   * @param data The serialized payload.
+   */
+  send(data: string): void;
+
+  /**
+   * Sends an implementation-specific heartbeat ping when available.
+   */
+  ping?(): void;
+
+  /**
+   * Closes the socket.
+   */
+  close(): void;
+}
+
+/**
+ * Creates a WebSocket connection for the OpenClaw gateway client.
+ */
+export type OpenClawWebSocketFactory = (url: string) => OpenClawWebSocket;
+
+/**
+ * Represents a response frame received from the OpenClaw gateway.
+ */
+export interface OpenClawResponseFrame {
+  /**
+   * Frame type discriminator.
+   */
+  type: "res";
+
+  /**
+   * Correlation identifier.
+   */
+  id: string;
+
+  /**
+   * Indicates whether the request succeeded.
+   */
+  ok: boolean;
+
+  /**
+   * Successful payload.
+   */
+  payload?: unknown;
+
+  /**
+   * Error payload.
+   */
+  error?: {
+    /**
+     * Stable gateway error code.
+     */
+    code: string;
+
+    /**
+     * Human-readable message.
+     */
+    message: string;
+  };
+}
+
+/**
+ * Represents an event frame received from the OpenClaw gateway.
+ */
+export interface OpenClawEventFrame {
+  /**
+   * Frame type discriminator.
+   */
+  type: "event";
+
+  /**
+   * Event name.
+   */
+  event: string;
+
+  /**
+   * Event payload.
+   */
+  payload?: unknown;
+}
+
+/**
+ * Union of supported OpenClaw gateway frames.
+ */
+export type OpenClawGatewayFrame =
+  | OpenClawRequestFrame
+  | OpenClawResponseFrame
+  | OpenClawEventFrame;
 
 /**
  * Describes the OpenClaw device identity used during gateway connect.
@@ -128,14 +226,6 @@ interface OpenClawPendingRequest<T> {
   reject(error: Error): void;
 
   /**
-   * Maps the successful gateway response.
-   *
-   * @param frame The successful gateway response.
-   * @returns The mapped value.
-   */
-  handleResponse: OpenClawResponseHandler<T>;
-
-  /**
    * Timer used to fail the request when the gateway becomes unresponsive.
    */
   timeout: NodeJS.Timeout;
@@ -221,15 +311,15 @@ export class OpenClawGatewayClient implements OpenClawGatewayPort {
    * @param handleResponse Maps the successful gateway response to a domain value.
    * @returns The mapped RPC result.
    */
-  public async invoke<T>(
-    createRequest: (requestId: string) => OpenClawRequestFrame,
-    handleResponse: OpenClawResponseHandler<T>
-  ): Promise<T> {
+  public async invoke<T>(request: OpenClawRequestFrame): Promise<T> {
     await this.ensureConnected();
 
     return new Promise<T>((resolve, reject) => {
       const requestId = randomUUID();
-      const frame = createRequest(requestId);
+      const frame = {
+        ...request,
+        id: requestId
+      };
       const timeout = setTimeout(() => {
         this.pendingRequests.delete(requestId);
         reject(
@@ -243,7 +333,6 @@ export class OpenClawGatewayClient implements OpenClawGatewayPort {
       this.pendingRequests.set(requestId, {
         resolve,
         reject,
-        handleResponse,
         timeout
       });
 
@@ -437,7 +526,7 @@ export class OpenClawGatewayClient implements OpenClawGatewayPort {
       return;
     }
 
-    pending.resolve(pending.handleResponse(frame));
+    pending.resolve(frame.payload);
   }
 
   /**

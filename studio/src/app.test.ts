@@ -33,7 +33,10 @@ import {
   isGatewayResponse,
   loadDeviceIdentity,
   loadDeviceIdentityFromAssets,
+  OpenClawEventFrame,
   OpenClawGatewayClient,
+  OpenClawResponseFrame,
+  OpenClawWebSocket,
   parseGatewayFrame,
   readChallengeNonce,
   signDeviceSignature,
@@ -43,11 +46,8 @@ import {
   createAgentsListRequest
 } from "./adapters/openclaw-agents-adapter";
 import type {
-  OpenClawAgentsListResult,
-  OpenClawEventFrame,
-  OpenClawResponseFrame,
-  OpenClawWebSocket
-} from "./types/openclaw";
+  OpenClawAgentsListResult
+} from "./ports/openclaw";
 
 /**
  * Creates a minimal mock response object for handler tests.
