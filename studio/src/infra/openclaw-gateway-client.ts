@@ -12,8 +12,12 @@ import { HttpError } from "../errors/http-error";
 import type {
   OpenClawEventFrame,
   OpenClawGatewayFrame,
+  OpenClawGatewayPort,
   OpenClawRequestFrame,
-  OpenClawResponseFrame
+  OpenClawResponseHandler,
+  OpenClawResponseFrame,
+  OpenClawWebSocket,
+  OpenClawWebSocketFactory
 } from "../types/openclaw";
 
 const OPENCLAW_PROTOCOL_VERSION = 3;
@@ -106,50 +110,6 @@ export interface OpenClawGatewayClientOptions {
 }
 
 /**
- * Minimal WebSocket shape used by the gateway client.
- */
-export interface OpenClawWebSocket {
-  /**
-   * Registers an event listener.
-   *
-   * @param eventName The WebSocket event name.
-   * @param listener The callback invoked for each event.
-   * @returns The WebSocket instance for chaining.
-   */
-  on(eventName: string, listener: (...args: unknown[]) => void): this;
-
-  /**
-   * Sends a UTF-8 message through the socket.
-   *
-   * @param data The serialized payload.
-   */
-  send(data: string): void;
-
-  /**
-   * Sends an implementation-specific heartbeat ping when available.
-   */
-  ping?(): void;
-
-  /**
-   * Closes the socket.
-   */
-  close(): void;
-}
-
-/**
- * Creates a WebSocket connection for the OpenClaw gateway client.
- */
-export type OpenClawWebSocketFactory = (url: string) => OpenClawWebSocket;
-
-/**
- * Maps a successful gateway response to a domain result.
- *
- * @param frame The successful gateway response.
- * @returns The mapped domain value.
- */
-export type OpenClawResponseHandler<T> = (frame: OpenClawResponseFrame) => T;
-
-/**
  * Internal state used to coordinate a pending RPC call.
  */
 interface OpenClawPendingRequest<T> {
@@ -184,7 +144,7 @@ interface OpenClawPendingRequest<T> {
 /**
  * Queries OpenClaw over a shared gateway WebSocket connection.
  */
-export class OpenClawGatewayClient {
+export class OpenClawGatewayClient implements OpenClawGatewayPort {
   private static singleton?: OpenClawGatewayClient;
 
   private readonly timeoutMs: number;

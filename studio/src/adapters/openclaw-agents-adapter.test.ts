@@ -1,9 +1,9 @@
 import { describe, expect, it, vi } from "vitest";
 
 import {
-  DefaultOpenClawAgentsService,
+  OpenClawAgentsGatewayAdapter,
   createAgentsListRequest
-} from "./openclaw-agents-service";
+} from "./openclaw-agents-adapter";
 
 describe("createAgentsListRequest", () => {
   it("builds the agents.list JSON RPC frame", () => {
@@ -16,9 +16,9 @@ describe("createAgentsListRequest", () => {
   });
 });
 
-describe("DefaultOpenClawAgentsService", () => {
-  it("delegates agents.list to the shared gateway client", async () => {
-    const gatewayClient = {
+describe("OpenClawAgentsGatewayAdapter", () => {
+  it("delegates agents.list to the gateway port", async () => {
+    const gatewayPort = {
       invoke: vi.fn().mockResolvedValue({
         defaultId: "main",
         mainKey: "sender",
@@ -34,9 +34,9 @@ describe("DefaultOpenClawAgentsService", () => {
         ]
       })
     };
-    const service = new DefaultOpenClawAgentsService(gatewayClient as never);
+    const adapter = new OpenClawAgentsGatewayAdapter(gatewayPort);
 
-    await expect(service.listAgents()).resolves.toEqual({
+    await expect(adapter.listAgents()).resolves.toEqual({
       defaultId: "main",
       mainKey: "sender",
       scope: "per-sender",
@@ -50,6 +50,6 @@ describe("DefaultOpenClawAgentsService", () => {
         }
       ]
     });
-    expect(gatewayClient.invoke).toHaveBeenCalledOnce();
+    expect(gatewayPort.invoke).toHaveBeenCalledOnce();
   });
 });

@@ -1,15 +1,13 @@
-import {
-  OpenClawGatewayClient
-} from "../infra/openclaw-gateway-client";
 import type {
   OpenClawAgentsListResult,
+  OpenClawGatewayPort,
   OpenClawRequestFrame
 } from "../types/openclaw";
 
 /**
- * Defines the business capability used to read OpenClaw agents.
+ * Outbound adapter used to fetch OpenClaw agents through the gateway port.
  */
-export interface OpenClawAgentsService {
+export interface OpenClawAgentsAdapter {
   /**
    * Fetches the current OpenClaw agent list.
    *
@@ -36,23 +34,23 @@ export function createAgentsListRequest(
 }
 
 /**
- * Implements the OpenClaw agents use case on top of the shared gateway client.
+ * Adapter that translates `listAgents` calls to OpenClaw Gateway JSON RPC.
  */
-export class DefaultOpenClawAgentsService implements OpenClawAgentsService {
+export class OpenClawAgentsGatewayAdapter implements OpenClawAgentsAdapter {
   /**
-   * Creates the agents service.
+   * Creates the adapter.
    *
-   * @param gatewayClient The shared OpenClaw gateway client.
+   * @param gatewayPort The OpenClaw Gateway RPC port.
    */
-  public constructor(private readonly gatewayClient: OpenClawGatewayClient) {}
+  public constructor(private readonly gatewayPort: OpenClawGatewayPort) {}
 
   /**
-   * Queries `agents.list` over the shared OpenClaw gateway connection.
+   * Queries `agents.list` over the gateway RPC port.
    *
    * @returns The OpenClaw `AgentsListResult` payload.
    */
   public async listAgents(): Promise<OpenClawAgentsListResult> {
-    return this.gatewayClient.invoke(
+    return this.gatewayPort.invoke(
       createAgentsListRequest,
       (frame) => frame.payload as OpenClawAgentsListResult
     );

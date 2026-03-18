@@ -38,17 +38,16 @@ import {
   parseGatewayFrame,
   readChallengeNonce,
   signDeviceSignature,
-  toBase64Url,
-  type OpenClawWebSocket
+  toBase64Url
 } from "./infra/openclaw-gateway-client";
 import {
-  createAgentsListRequest,
-  type OpenClawAgentsService
-} from "./services/openclaw-agents-service";
+  createAgentsListRequest
+} from "./adapters/openclaw-agents-adapter";
 import type {
   OpenClawAgentsListResult,
   OpenClawEventFrame,
-  OpenClawResponseFrame
+  OpenClawResponseFrame,
+  OpenClawWebSocket
 } from "./types/openclaw";
 
 /**
@@ -151,11 +150,7 @@ describe("createApp", () => {
   });
 
   it("disables the x-powered-by header", () => {
-    const app = createApp({
-      openClawAgentsService: {
-        listAgents: vi.fn()
-      } satisfies OpenClawAgentsService
-    });
+    const app = createApp();
 
     expect(app.get("x-powered-by")).toBe(false);
   });
@@ -163,10 +158,7 @@ describe("createApp", () => {
   it("creates the app when diagnostics are enabled", () => {
     expect(
       createApp({
-        enableDiagnostics: true,
-        openClawAgentsService: {
-          listAgents: vi.fn()
-        } satisfies OpenClawAgentsService
+        enableDiagnostics: true
       })
     ).toBeDefined();
   });

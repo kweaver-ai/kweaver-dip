@@ -6,8 +6,8 @@
 - `src/server.ts`：读取环境变量并启动 HTTP 服务。
 - `src/config/`：运行时配置与环境变量解析。
 - `src/infra/`：基础设施适配层，例如 OpenClaw Gateway WebSocket 客户端。
+- `src/adapters/`：外部资源适配器，基于端口接口整合具体依赖调用。
 - `src/routes/`：HTTP 路由定义。
-- `src/services/`：业务服务层，编排具体用例并复用基础设施模块。
 - `src/middleware/`：通用中间件，例如 404 和错误处理。
 - `src/errors/`：领域内可复用的错误类型。
 - `src/*.test.ts`：单元测试与接口测试。

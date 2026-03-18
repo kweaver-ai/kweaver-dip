@@ -1,9 +1,23 @@
 import { Router, type NextFunction, type Request, type Response } from "express";
 
+import {
+  OpenClawAgentsGatewayAdapter,
+  type OpenClawAgentsAdapter
+} from "../adapters/openclaw-agents-adapter";
+import { getEnv } from "../config/env";
 import { HttpError } from "../errors/http-error";
+import { OpenClawGatewayClient } from "../infra/openclaw-gateway-client";
 import type { DigitalHumanList } from "../types/digital-human";
 import type { OpenClawAgentsListResult } from "../types/openclaw";
-import type { OpenClawAgentsService } from "../services/openclaw-agents-service";
+
+const env = getEnv();
+const openClawAgentsAdapter = new OpenClawAgentsGatewayAdapter(
+  OpenClawGatewayClient.getInstance({
+    url: env.openClawGatewayUrl,
+    token: env.openClawGatewayToken,
+    timeoutMs: env.openClawGatewayTimeoutMs
+  })
+);
 
 /**
  * Returns the OpenClaw agent list over HTTP.
@@ -15,13 +29,13 @@ import type { OpenClawAgentsService } from "../services/openclaw-agents-service"
  * @returns Nothing. The response is written directly.
  */
 export async function getDigitalHumans(
-  service: OpenClawAgentsService,
+  adapter: OpenClawAgentsAdapter,
   _request: Request,
   response: Response,
   next: NextFunction
 ): Promise<void> {
   try {
-    const result = await service.listAgents();
+    const result = await adapter.listAgents();
 
     response.status(200).json(mapAgentsToDigitalHumans(result));
   } catch (error) {
@@ -36,14 +50,13 @@ export async function getDigitalHumans(
 /**
  * Builds the OpenClaw router.
  *
- * @param service The service used by the route.
  * @returns The router exposing OpenClaw endpoints.
  */
-export function createOpenClawRouter(service: OpenClawAgentsService): Router {
+export function createOpenClawRouter(): Router {
   const router = Router();
 
   router.get("/api/dip-studio/v1/digital-human", (request, response, next) => {
-    return getDigitalHumans(service, request, response, next);
+    return getDigitalHumans(openClawAgentsAdapter, request, response, next);
   });
 
   return router;

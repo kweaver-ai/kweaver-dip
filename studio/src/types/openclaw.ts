@@ -144,6 +144,67 @@ export interface OpenClawResponseFrame {
 }
 
 /**
+ * Minimal WebSocket shape used by the OpenClaw gateway client.
+ */
+export interface OpenClawWebSocket {
+  /**
+   * Registers an event listener.
+   *
+   * @param eventName The WebSocket event name.
+   * @param listener The callback invoked for each event.
+   * @returns The WebSocket instance for chaining.
+   */
+  on(eventName: string, listener: (...args: unknown[]) => void): this;
+
+  /**
+   * Sends a UTF-8 message through the socket.
+   *
+   * @param data The serialized payload.
+   */
+  send(data: string): void;
+
+  /**
+   * Sends an implementation-specific heartbeat ping when available.
+   */
+  ping?(): void;
+
+  /**
+   * Closes the socket.
+   */
+  close(): void;
+}
+
+/**
+ * Creates a WebSocket connection for the OpenClaw gateway client.
+ */
+export type OpenClawWebSocketFactory = (url: string) => OpenClawWebSocket;
+
+/**
+ * Maps a successful gateway response to a domain result.
+ *
+ * @param frame The successful gateway response.
+ * @returns The mapped domain value.
+ */
+export type OpenClawResponseHandler<T> = (frame: OpenClawResponseFrame) => T;
+
+/**
+ * Port used by adapters to execute JSON RPC calls against OpenClaw Gateway.
+ */
+export interface OpenClawGatewayPort {
+  /**
+   * Executes a JSON RPC call over the shared OpenClaw WebSocket connection.
+   *
+   * @param createRequest Builds the outbound request from a generated request id.
+   * @param handleResponse Maps the successful gateway response to a domain value.
+   * @returns The mapped RPC result.
+   */
+  invoke<T>(
+    createRequest: (requestId: string) => OpenClawRequestFrame,
+    handleResponse: OpenClawResponseHandler<T>
+  ): Promise<T>;
+}
+
+/**
  * Represents an event frame received from the OpenClaw gateway.
  */
 export interface OpenClawEventFrame {
