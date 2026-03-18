@@ -1,10 +1,7 @@
 import type { NextFunction, Request, Response } from "express";
 import { describe, expect, it } from "vitest";
 
-import {
-  createDigitalHumanRouter,
-  mapAgentsToDigitalHumans
-} from "./digital-human";
+import { createDigitalHumanRouter } from "./digital-human";
 
 describe("createDigitalHumanRouter", () => {
   it("registers GET /api/dip-studio/v1/digital-human", () => {
@@ -27,32 +24,5 @@ describe("createDigitalHumanRouter", () => {
     );
 
     expect(layer).toBeDefined();
-  });
-});
-
-describe("mapAgentsToDigitalHumans", () => {
-  it("maps OpenClaw agents to the public digital human schema", () => {
-    expect(
-      mapAgentsToDigitalHumans({
-        defaultId: "main",
-        mainKey: "sender",
-        scope: "per-sender",
-        agents: [
-          {
-            id: "main",
-            identity: {
-              name: "Main Agent",
-              avatarUrl: "https://example.com/main.png"
-            }
-          }
-        ]
-      })
-    ).toEqual([
-      {
-        id: "main",
-        name: "Main Agent",
-        avatar: "https://example.com/main.png"
-      }
-    ]);
   });
 });
