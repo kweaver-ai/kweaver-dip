@@ -1,6 +1,6 @@
 import type { OpenClawAgentsAdapter } from "../adapters/openclaw-agents-adapter";
-import type { DigitalHumanList } from "../ports/digital-human";
-import type { OpenClawAgentsListResult } from "../ports/openclaw";
+import type { DigitalHumanList } from "../types/digital-human";
+import type { OpenClawAgentsListResult } from "../types/openclaw";
 
 /**
  * Application logic used to fetch digital humans.

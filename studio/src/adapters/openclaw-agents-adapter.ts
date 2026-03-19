@@ -2,7 +2,7 @@ import type {
   OpenClawAgentsListResult,
   OpenClawGatewayPort,
   OpenClawRequestFrame
-} from "../ports/openclaw";
+} from "../types/openclaw";
 
 /**
  * Outbound adapter used to fetch OpenClaw agents through the gateway port.

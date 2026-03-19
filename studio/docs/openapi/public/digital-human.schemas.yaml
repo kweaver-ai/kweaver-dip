@@ -22,3 +22,12 @@ components:
       required:
         - id
         - name
+
+    DigitalHumanResponseRequest:
+      summary: 数字员工响应请求
+      type: object
+      additionalProperties: true
+
+    DigitalHumanResponseStream:
+      summary: 数字员工响应事件流
+      type: string

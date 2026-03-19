@@ -47,7 +47,7 @@ import {
 } from "./adapters/openclaw-agents-adapter";
 import type {
   OpenClawAgentsListResult
-} from "./ports/openclaw";
+} from "./types/openclaw";
 
 /**
  * Creates a minimal mock response object for handler tests.

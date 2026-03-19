@@ -12,7 +12,7 @@ import { HttpError } from "../errors/http-error";
 import type {
   OpenClawGatewayPort,
   OpenClawRequestFrame,
-} from "../ports/openclaw";
+} from "../types/openclaw";
 
 const OPENCLAW_PROTOCOL_VERSION = 3;
 const DEFAULT_DEVICE_PUBLIC_KEY_PATH = "assets/public.pem";
