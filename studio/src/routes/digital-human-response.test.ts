@@ -81,6 +81,22 @@ describe("writeEventStreamHeaders", () => {
     expect(response.setHeader).toHaveBeenCalledWith("x-accel-buffering", "no");
     expect(response.flushHeaders).toHaveBeenCalledOnce();
   });
+
+  it("falls back to the default SSE headers when upstream headers are missing", () => {
+    const response = createResponseDouble();
+
+    writeEventStreamHeaders(response, 200, new Headers());
+
+    expect(response.setHeader).toHaveBeenCalledWith(
+      "content-type",
+      "text/event-stream; charset=utf-8"
+    );
+    expect(response.setHeader).toHaveBeenCalledWith(
+      "cache-control",
+      "no-cache, no-transform"
+    );
+    expect(response.setHeader).toHaveBeenCalledWith("connection", "keep-alive");
+  });
 });
 
 describe("attachDownstreamAbortHandlers", () => {
@@ -141,6 +157,20 @@ describe("pipeEventStream", () => {
     await pipeEventStream(stream, response);
 
     expect(response.write).toHaveBeenCalledTimes(2);
+    expect(response.end).toHaveBeenCalledOnce();
+  });
+
+  it("ends the response even when the stream closes without emitting chunks", async () => {
+    const response = createResponseDouble();
+    const stream = new ReadableStream<Uint8Array>({
+      start(controller) {
+        controller.close();
+      }
+    });
+
+    await pipeEventStream(stream, response);
+
+    expect(response.write).not.toHaveBeenCalled();
     expect(response.end).toHaveBeenCalledOnce();
   });
 });
@@ -340,6 +370,89 @@ describe("createDigitalHumanResponseRouter", () => {
 
     expect(response.flushHeaders).toHaveBeenCalledOnce();
     expect(response.end).toHaveBeenCalled();
+    expect(next).not.toHaveBeenCalled();
+  });
+
+  it("stops quietly when the downstream request has already been aborted", async () => {
+    const response = createResponseDouble();
+    const next = vi.fn<NextFunction>();
+    const router = createDigitalHumanResponseRouter({
+      createResponseStream: vi.fn().mockRejectedValue(new Error("socket closed"))
+    }) as {
+      stack: Array<{
+        route?: {
+          path: string;
+          stack: Array<{
+            handle: (
+              request: Request,
+              response: Response,
+              next: NextFunction
+            ) => Promise<void>;
+          }>;
+        };
+      }>;
+    };
+    const layer = router.stack.find(
+      (entry) => entry.route?.path === "/api/dip-studio/v1/digital-human/:id/chat/responses"
+    );
+    const handler = layer?.route?.stack[0]?.handle;
+    const request = {
+      params: {
+        id: "agent-1"
+      },
+      body: {
+        input: "hello"
+      },
+      on: vi.fn((eventName: string, listener: () => void) => {
+        if (eventName === "aborted") {
+          listener();
+        }
+      })
+    } as unknown as Request;
+
+    await handler?.(request, response, next);
+
+    expect(next).not.toHaveBeenCalled();
+    expect(response.end).not.toHaveBeenCalled();
+  });
+
+  it("ends the response when an error happens after headers were already marked as sent", async () => {
+    const response = createResponseDouble();
+    (response as Response & { headersSent: boolean }).headersSent = true;
+    const next = vi.fn<NextFunction>();
+    const router = createDigitalHumanResponseRouter({
+      createResponseStream: vi.fn().mockRejectedValue(new Error("boom"))
+    }) as {
+      stack: Array<{
+        route?: {
+          path: string;
+          stack: Array<{
+            handle: (
+              request: Request,
+              response: Response,
+              next: NextFunction
+            ) => Promise<void>;
+          }>;
+        };
+      }>;
+    };
+    const layer = router.stack.find(
+      (entry) => entry.route?.path === "/api/dip-studio/v1/digital-human/:id/chat/responses"
+    );
+    const handler = layer?.route?.stack[0]?.handle;
+    const request = {
+      params: {
+        id: "agent-1"
+      },
+      body: {
+        input: "hello"
+      },
+      on: vi.fn()
+    } as unknown as Request;
+
+    await handler?.(request, response, next);
+
+    expect(response.end).toHaveBeenCalledOnce();
     expect(next).not.toHaveBeenCalled();
   });
 });

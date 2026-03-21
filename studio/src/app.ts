@@ -6,8 +6,6 @@ import { notFoundHandler } from "./middleware/not-found";
 import { createDigitalHumanResponseRouter } from "./routes/digital-human-response";
 import { createDigitalHumanRouter } from "./routes/digital-human";
 import { createHealthRouter } from "./routes/health";
-import { createLlmRouter } from "./routes/llm-router";
-import { getEnv } from "./config/env";
 
 
 /**
@@ -42,19 +40,12 @@ export function raiseDiagnosticError(
  */
 export function createApp(options: AppOptions = {}): Express {
   const app = express();
-  const env = getEnv();
 
   app.disable("x-powered-by");
   app.use(express.json());
   app.use(createHealthRouter());
   app.use(createDigitalHumanRouter());
   app.use(createDigitalHumanResponseRouter());
-  app.use(
-    createLlmRouter({
-      gatewayUrl: env.openClawGatewayHttpUrl,
-      apiKey: env.openClawGatewayToken,
-    })
-  );
 
   if (options.enableDiagnostics === true) {
     app.get("/__diagnostics/error", raiseDiagnosticError);

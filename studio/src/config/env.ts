@@ -54,6 +54,7 @@ export function getEnv(): {
   openClawGatewayHttpUrl: string;
   openClawGatewayToken?: string;
   openClawGatewayTimeoutMs: number;
+  openClawWorkspaceDir: string;
 } {
   loadEnvFile();
 
@@ -71,7 +72,8 @@ export function getEnv(): {
     openClawGatewayUrl: gatewayUrl,
     openClawGatewayHttpUrl: resolveGatewayHttpUrl(gatewayUrl),
     openClawGatewayToken: readOptionalString(process.env.OPENCLAW_GATEWAY_TOKEN),
-    openClawGatewayTimeoutMs: resolveTimeoutMs(process.env.OPENCLAW_GATEWAY_TIMEOUT_MS)
+    openClawGatewayTimeoutMs: resolveTimeoutMs(process.env.OPENCLAW_GATEWAY_TIMEOUT_MS),
+    openClawWorkspaceDir: resolveWorkspaceDir(process.env.OPENCLAW_WORKSPACE_DIR)
   };
 }
 
@@ -199,6 +201,16 @@ export function resolveTimeoutMs(value: string | undefined): number {
   }
 
   return timeoutMs;
+}
+
+/**
+ * Resolves the OpenClaw workspace root directory.
+ *
+ * @param value The raw environment variable value.
+ * @returns The configured workspace root directory.
+ */
+export function resolveWorkspaceDir(value: string | undefined): string {
+  return readOptionalString(value) ?? "workspace";
 }
 
 /**

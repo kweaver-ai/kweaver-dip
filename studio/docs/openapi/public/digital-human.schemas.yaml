@@ -23,6 +23,44 @@ components:
         - id
         - name
 
+    CreateDigitalHumanRequest:
+      summary: 创建数字员工请求
+      type: object
+      properties:
+        id:
+          type: string
+          title: 数字员工 ID
+          description: 可选；如果不传则后端自动生成 UUID
+        name:
+          type: string
+          title: 数字员工名称
+        avatar:
+          type: string
+          title: 数字员工头像
+        identity:
+          type: string
+          title: IDENTITY.md 内容
+        soul:
+          type: string
+          title: SOUL.md 内容
+        skills:
+          type: array
+          title: 技能名称列表
+          items:
+            type: string
+      required:
+        - name
+
+    CreateDigitalHumanResponse:
+      summary: 创建数字员工响应
+      type: object
+      properties:
+        id:
+          type: string
+          title: 数字员工 ID
+      required:
+        - id
+
     DigitalHumanResponseRequest:
       summary: 数字员工响应请求
       type: object

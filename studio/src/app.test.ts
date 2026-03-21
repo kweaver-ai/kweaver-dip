@@ -16,7 +16,8 @@ import {
   resolveGatewayPort,
   resolveGatewayProtocol,
   resolvePort,
-  resolveTimeoutMs
+  resolveTimeoutMs,
+  resolveWorkspaceDir
 } from "./config/env";
 import { HttpError } from "./errors/http-error";
 import { errorHandler, resolveErrorCode } from "./middleware/error-handler";
@@ -690,7 +691,7 @@ describe("gateway helpers", () => {
     );
   });
 
-  it("creates the connect request with operator.read scope", () => {
+  it("creates the connect request with operator scope metadata", () => {
     const deviceIdentity = createDeviceIdentityFixture();
     const frame = createConnectRequest(
       "req-1",
@@ -711,7 +712,6 @@ describe("gateway helpers", () => {
       minProtocol: 3,
       maxProtocol: 3,
       role: "operator",
-      scopes: ["operator.read"],
       client: {
         id: "gateway-client",
         platform: "linux",
@@ -727,6 +727,7 @@ describe("gateway helpers", () => {
         nonce: "nonce-1"
       }
     });
+    expect(frame.params.scopes).toContain("operator.read");
   });
 
   it("creates the agents.list request", () => {
@@ -915,6 +916,8 @@ describe("gateway env helpers", () => {
     expect(() => resolveTimeoutMs("0")).toThrow(
       "Invalid OPENCLAW_GATEWAY_TIMEOUT_MS value: 0"
     );
+    expect(resolveWorkspaceDir(undefined)).toBe("workspace");
+    expect(resolveWorkspaceDir("./custom-workspace")).toBe("./custom-workspace");
   });
 });
 
@@ -932,7 +935,8 @@ describe("getEnv", () => {
       openClawGatewayUrl: "ws://127.0.0.1:19001/",
       openClawGatewayHttpUrl: "http://127.0.0.1:19001/",
       openClawGatewayToken: undefined,
-      openClawGatewayTimeoutMs: 6000
+      openClawGatewayTimeoutMs: 6000,
+      openClawWorkspaceDir: resolveWorkspaceDir(process.env.OPENCLAW_WORKSPACE_DIR)
     });
   });
 
@@ -943,10 +947,12 @@ describe("getEnv", () => {
       forceReload: true
     });
     process.env.OPENCLAW_GATEWAY_URL = "wss://gateway.example.com/ws";
+    process.env.OPENCLAW_WORKSPACE_DIR = "./openclaw-workspace";
 
     expect(getEnv()).toMatchObject({
       openClawGatewayUrl: "wss://gateway.example.com/ws",
-      openClawGatewayHttpUrl: "https://gateway.example.com/ws"
+      openClawGatewayHttpUrl: "https://gateway.example.com/ws",
+      openClawWorkspaceDir: "./openclaw-workspace"
     });
   });
 });

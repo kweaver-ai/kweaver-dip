@@ -100,3 +100,23 @@ export interface OpenClawGatewayPort {
    */
   invoke<T>(request: OpenClawRequestFrame): Promise<T>;
 }
+
+/**
+ * Parameters used to provision an OpenClaw isolated agent.
+ */
+export interface OpenClawAgentAddParams {
+  /**
+   * Human-readable agent name.
+   */
+  name: string;
+
+  /**
+   * Agent workspace path or identifier forwarded to `--workspace`.
+   */
+  workspace: string;
+
+  /**
+   * Optional binding specs in `channel[:accountId]` format.
+   */
+  bind?: string[];
+}

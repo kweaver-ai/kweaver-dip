@@ -33,6 +33,34 @@ paths:
           $ref: '../common.schemas.yaml#/errors/Conflict'
         "500":
           $ref: '../common.schemas.yaml#/errors/InternalServerError'
+    post:
+      operationId: createDigitalHuman
+      summary: 创建数字员工
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './digital-human.schemas.yaml#/components/schemas/CreateDigitalHumanRequest'
+      responses:
+        "201":
+          description: 创建成功
+          content:
+            application/json:
+              schema:
+                $ref: './digital-human.schemas.yaml#/components/schemas/CreateDigitalHumanResponse'
+        "400":
+          $ref: '../common.schemas.yaml#/errors/InvalidParameter'
+        "401":
+          $ref: '../common.schemas.yaml#/errors/Unauthorized'
+        "403":
+          $ref: '../common.schemas.yaml#/errors/Forbidden'
+        "404":
+          $ref: '../common.schemas.yaml#/errors/NotFound'
+        "409":
+          $ref: '../common.schemas.yaml#/errors/Conflict'
+        "500":
+          $ref: '../common.schemas.yaml#/errors/InternalServerError'
 
   /digital-human/{id}/chat/responses:
     post:

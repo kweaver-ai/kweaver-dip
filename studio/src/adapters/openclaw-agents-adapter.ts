@@ -1,4 +1,5 @@
 import type {
+  OpenClawAgentAddParams,
   OpenClawAgentsListResult,
   OpenClawGatewayPort,
   OpenClawRequestFrame
@@ -14,6 +15,14 @@ export interface OpenClawAgentsAdapter {
    * @returns The OpenClaw `AgentsListResult` payload.
    */
   listAgents(): Promise<OpenClawAgentsListResult>;
+
+  /**
+   * Provisions an OpenClaw isolated agent.
+   *
+   * @param params The normalized agent creation parameters.
+   * @returns Nothing when the agent has been created successfully.
+   */
+  addAgent(params: OpenClawAgentAddParams): Promise<void>;
 }
 
 /**
@@ -34,7 +43,26 @@ export function createAgentsListRequest(
 }
 
 /**
- * Adapter that translates `listAgents` calls to OpenClaw Gateway JSON RPC.
+ * Creates the OpenClaw `agents.create` request.
+ *
+ * @param requestId The frame correlation id.
+ * @param params The normalized agent creation parameters.
+ * @returns A serialized OpenClaw request frame.
+ */
+export function createAgentsAddRequest(
+  requestId: string,
+  params: OpenClawAgentAddParams
+): OpenClawRequestFrame {
+  return {
+    type: "req",
+    id: requestId,
+    method: "agents.create",
+    params
+  };
+}
+
+/**
+ * Adapter that translates digital human agent calls to OpenClaw Gateway JSON RPC.
  */
 export class OpenClawAgentsGatewayAdapter implements OpenClawAgentsAdapter {
   /**
@@ -52,6 +80,18 @@ export class OpenClawAgentsGatewayAdapter implements OpenClawAgentsAdapter {
   public async listAgents(): Promise<OpenClawAgentsListResult> {
     return this.gatewayPort.invoke<OpenClawAgentsListResult>(
       createAgentsListRequest("agents.list")
+    );
+  }
+
+  /**
+   * Sends `agents.create` over the gateway RPC port.
+   *
+   * @param params The normalized agent creation parameters.
+   * @returns Nothing when the request succeeds.
+   */
+  public async addAgent(params: OpenClawAgentAddParams): Promise<void> {
+    await this.gatewayPort.invoke(
+      createAgentsAddRequest("agents.create", params)
     );
   }
 }

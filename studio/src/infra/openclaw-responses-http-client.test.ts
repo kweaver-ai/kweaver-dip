@@ -33,6 +33,14 @@ describe("createOpenClawResponsesHeaders", () => {
     expect(headers.get("authorization")).toBe("Bearer secret-token");
     expect(headers.get("x-openclaw-session-key")).toBe("agent:demo:session-1");
   });
+
+  it("keeps the default headers when token and extra headers are omitted", () => {
+    const headers = createOpenClawResponsesHeaders();
+
+    expect(headers.get("content-type")).toBe("application/json");
+    expect(headers.get("accept")).toBe("text/event-stream");
+    expect(headers.get("authorization")).toBeNull();
+  });
 });
 
 describe("createOpenClawResponsesRequestBody", () => {
@@ -74,6 +82,19 @@ describe("createOpenClawResponsesStatusError", () => {
       message: "OpenClaw /v1/responses returned HTTP 503: upstream failed"
     });
   });
+
+  it("omits the response suffix when the upstream body is empty", async () => {
+    await expect(
+      createOpenClawResponsesStatusError(
+        new Response("   ", {
+          status: 504
+        })
+      )
+    ).resolves.toMatchObject({
+      statusCode: 502,
+      message: "OpenClaw /v1/responses returned HTTP 504"
+    });
+  });
 });
 
 describe("normalizeOpenClawResponsesError", () => {
@@ -82,6 +103,10 @@ describe("normalizeOpenClawResponsesError", () => {
 
     expect(normalizeOpenClawResponsesError(httpError)).toBe(httpError);
     expect(normalizeOpenClawResponsesError(new Error("offline"))).toMatchObject({
+      statusCode: 502,
+      message: "Failed to communicate with OpenClaw /v1/responses: offline"
+    });
+    expect(normalizeOpenClawResponsesError("offline")).toMatchObject({
       statusCode: 502,
       message: "Failed to communicate with OpenClaw /v1/responses: offline"
     });
@@ -164,6 +189,48 @@ describe("DefaultOpenClawResponsesHttpClient", () => {
     ).rejects.toMatchObject({
       statusCode: 502,
       message: "OpenClaw /v1/responses returned HTTP 403: denied"
+    });
+  });
+
+  it("throws when the upstream response stream is empty", async () => {
+    const client = new DefaultOpenClawResponsesHttpClient(
+      {
+        gatewayUrl: "ws://127.0.0.1:19001/ws",
+        timeoutMs: 1_000
+      },
+      vi.fn().mockResolvedValue(
+        new Response(null, {
+          status: 200
+        })
+      )
+    );
+
+    await expect(
+      client.createResponseStream("agent-1", {
+        input: "hello"
+      })
+    ).rejects.toMatchObject({
+      statusCode: 502,
+      message: "OpenClaw /v1/responses returned an empty stream"
+    });
+  });
+
+  it("normalizes transport failures thrown by fetch", async () => {
+    const client = new DefaultOpenClawResponsesHttpClient(
+      {
+        gatewayUrl: "ws://127.0.0.1:19001/ws",
+        timeoutMs: 1_000
+      },
+      vi.fn().mockRejectedValue(new Error("socket closed"))
+    );
+
+    await expect(
+      client.createResponseStream("agent-1", {
+        input: "hello"
+      })
+    ).rejects.toMatchObject({
+      statusCode: 502,
+      message: "Failed to communicate with OpenClaw /v1/responses: socket closed"
     });
   });
 });
