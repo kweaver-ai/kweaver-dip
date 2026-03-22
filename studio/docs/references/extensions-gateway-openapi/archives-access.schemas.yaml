@@ -1,0 +1,37 @@
+components:
+  schemas:
+    ArchivesDirectoryResponse:
+      summary: 归档目录查询结果
+      type: object
+      properties:
+        path:
+          type: string
+          description: 当前查询的归档相对路径，根目录时为 `/`
+        contents:
+          type: array
+          description: 当前路径下的目录项列表
+          items:
+            $ref: '#/components/schemas/ArchiveEntry'
+      required:
+        - path
+        - contents
+      additionalProperties: true
+
+    ArchiveEntry:
+      summary: 归档目录项
+      type: object
+      properties:
+        name:
+          type: string
+          description: 文件或目录名
+        type:
+          type: string
+          description: 条目类型
+          enum:
+            - file
+            - directory
+            - other
+      required:
+        - name
+        - type
+      additionalProperties: false

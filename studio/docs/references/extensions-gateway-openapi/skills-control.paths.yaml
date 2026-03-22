@@ -1,0 +1,141 @@
+openapi: 3.1.0
+
+info:
+  title: OpenClaw Extensions Gateway Reference - Skills Control
+  version: 0.1.0
+  description: |
+    `skills-control` 插件注册的 Gateway HTTP 接口。
+    所有请求均要求 Gateway 鉴权。
+
+servers:
+  - url: /
+
+security:
+  - bearerAuth: []
+
+paths:
+  /v1/config/agents/skills:
+    get:
+      operationId: getAgentSkillsConfig
+      summary: 查询可用技能列表或指定 agent 的技能配置
+      description: |
+        不传 `agentId` 时返回全量可发现技能。
+        传入 `agentId` 时返回该 agent 的 `skills` 配置。
+        当 agent 的 `skills` 为 `undefined` 时，插件返回“当前可用的全部技能”。
+      parameters:
+        - name: agentId
+          in: query
+          required: false
+          description: 目标 agent ID
+          schema:
+            type: string
+      responses:
+        "200":
+          description: 查询成功
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: './skills-control.schemas.yaml#/components/schemas/AvailableSkillsResponse'
+                  - $ref: './skills-control.schemas.yaml#/components/schemas/AgentSkillsResponse'
+        "404":
+          description: 指定 agent 不存在
+          content:
+            application/json:
+              schema:
+                $ref: './skills-control.schemas.yaml#/components/schemas/PluginErrorResponse'
+        "405":
+          description: 方法不允许
+          content:
+            application/json:
+              schema:
+                $ref: './skills-control.schemas.yaml#/components/schemas/PluginErrorResponse'
+        "500":
+          description: 插件内部错误
+          content:
+            application/json:
+              schema:
+                $ref: './skills-control.schemas.yaml#/components/schemas/PluginErrorResponse'
+
+    post:
+      operationId: updateAgentSkillsConfigPost
+      summary: 更新指定 agent 的技能配置
+      description: |
+        用请求体中的 `skills` 数组整组替换目标 agent 的技能列表。
+        `POST` 与 `PUT` 行为相同。
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './skills-control.schemas.yaml#/components/schemas/UpdateAgentSkillsRequest'
+      responses:
+        "200":
+          description: 更新成功
+          content:
+            application/json:
+              schema:
+                $ref: './skills-control.schemas.yaml#/components/schemas/UpdateAgentSkillsResponse'
+        "400":
+          description: 请求体缺少 `agentId` 或 `skills`
+          content:
+            application/json:
+              schema:
+                $ref: './skills-control.schemas.yaml#/components/schemas/PluginErrorResponse'
+        "404":
+          description: 指定 agent 不存在
+          content:
+            application/json:
+              schema:
+                $ref: './skills-control.schemas.yaml#/components/schemas/PluginErrorResponse'
+        "500":
+          description: 插件内部错误
+          content:
+            application/json:
+              schema:
+                $ref: './skills-control.schemas.yaml#/components/schemas/PluginErrorResponse'
+
+    put:
+      operationId: updateAgentSkillsConfigPut
+      summary: 更新指定 agent 的技能配置
+      description: |
+        用请求体中的 `skills` 数组整组替换目标 agent 的技能列表。
+        `PUT` 与 `POST` 行为相同。
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './skills-control.schemas.yaml#/components/schemas/UpdateAgentSkillsRequest'
+      responses:
+        "200":
+          description: 更新成功
+          content:
+            application/json:
+              schema:
+                $ref: './skills-control.schemas.yaml#/components/schemas/UpdateAgentSkillsResponse'
+        "400":
+          description: 请求体缺少 `agentId` 或 `skills`
+          content:
+            application/json:
+              schema:
+                $ref: './skills-control.schemas.yaml#/components/schemas/PluginErrorResponse'
+        "404":
+          description: 指定 agent 不存在
+          content:
+            application/json:
+              schema:
+                $ref: './skills-control.schemas.yaml#/components/schemas/PluginErrorResponse'
+        "500":
+          description: 插件内部错误
+          content:
+            application/json:
+              schema:
+                $ref: './skills-control.schemas.yaml#/components/schemas/PluginErrorResponse'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: Bearer

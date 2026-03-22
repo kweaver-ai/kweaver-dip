@@ -19,8 +19,9 @@ cd assets
 openssl genpkey -algorithm ED25519 -out private.pem
 openssl pkey -in private.pem -pubout -out public.pem
 ```
-4. 执行 `npm run build` 构建
-5. 执行 `npm run dev` 启动服务
+4. 执行 `npm run init:agents` 初始化openclaw默认配置、builtin agents以及extensions
+5. 执行 `npm run build` 构建
+6. 执行 `npm run dev` 启动服务
 
 ## API
 
