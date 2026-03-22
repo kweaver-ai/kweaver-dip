@@ -5,7 +5,13 @@ import {
 } from "../adapters/openclaw-agents-adapter";
 import { getEnv } from "../config/env";
 import { HttpError } from "../errors/http-error";
+import {
+  DefaultOpenClawAgentSkillsHttpClient
+} from "../infra/openclaw-agent-skills-http-client";
 import { OpenClawGatewayClient } from "../infra/openclaw-gateway-client";
+import {
+  DefaultAgentSkillsLogic,
+} from "../logic/agent-skills";
 import {
   DefaultDigitalHumanLogic,
 } from "../logic/digital-human";
@@ -18,15 +24,24 @@ import type {
 } from "../types/digital-human";
 
 const env = getEnv();
+const openClawAgentsAdapter = new OpenClawAgentsGatewayAdapter(
+  OpenClawGatewayClient.getInstance({
+    url: env.openClawGatewayUrl,
+    token: env.openClawGatewayToken,
+    timeoutMs: env.openClawGatewayTimeoutMs
+  })
+);
+const agentSkillsLogic = new DefaultAgentSkillsLogic(
+  new DefaultOpenClawAgentSkillsHttpClient({
+    gatewayUrl: env.openClawGatewayHttpUrl,
+    token: env.openClawGatewayToken,
+    timeoutMs: env.openClawGatewayTimeoutMs
+  }),
+  openClawAgentsAdapter
+);
 const digitalHumanLogic = new DefaultDigitalHumanLogic({
-  openClawAgentsAdapter: new OpenClawAgentsGatewayAdapter(
-    OpenClawGatewayClient.getInstance({
-      url: env.openClawGatewayUrl,
-      token: env.openClawGatewayToken,
-      timeoutMs: env.openClawGatewayTimeoutMs
-    })
-  ),
-  skillStorePath: env.openClawSkillStorePath
+  openClawAgentsAdapter,
+  agentSkillsLogic
 });
 
 /**

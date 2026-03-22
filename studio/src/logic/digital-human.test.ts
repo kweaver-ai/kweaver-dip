@@ -6,6 +6,8 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { HttpError } from "../errors/http-error";
 
+import type { AgentSkillsLogic } from "./agent-skills";
+
 /**
  * Mutable fake home for `node:os` `homedir` (see hoisted mock below).
  */
@@ -23,6 +25,21 @@ import {
   DefaultDigitalHumanLogic,
   resolveDefaultWorkspace
 } from "./digital-human";
+
+function stubAgentSkills(overrides?: Partial<AgentSkillsLogic>): AgentSkillsLogic {
+  return {
+    listEnabledSkills: vi.fn(),
+    listDigitalHumanSkills: vi.fn(),
+    listAvailableSkills: vi.fn(),
+    getAgentSkills: vi.fn().mockResolvedValue({ agentId: "", skills: [] }),
+    updateAgentSkills: vi.fn().mockResolvedValue({
+      success: true,
+      agentId: "",
+      skills: []
+    }),
+    ...overrides
+  } as AgentSkillsLogic;
+}
 
 describe("DefaultDigitalHumanLogic", () => {
   it("fetches agents and enriches list with IDENTITY.md creature", async () => {
@@ -49,7 +66,7 @@ describe("DefaultDigitalHumanLogic", () => {
     };
     const logic = new DefaultDigitalHumanLogic({
       openClawAgentsAdapter: openClawAgentsAdapter as never,
-      skillStorePath: "/tmp/skills"
+      agentSkillsLogic: stubAgentSkills()
     });
 
     await expect(logic.listDigitalHumans()).resolves.toEqual([
@@ -83,7 +100,7 @@ describe("DefaultDigitalHumanLogic", () => {
     };
     const logic = new DefaultDigitalHumanLogic({
       openClawAgentsAdapter: openClawAgentsAdapter as never,
-      skillStorePath: "/tmp/skills"
+      agentSkillsLogic: stubAgentSkills()
     });
 
     await expect(logic.listDigitalHumans()).resolves.toEqual([
@@ -125,7 +142,7 @@ describe("DefaultDigitalHumanLogic lifecycle (filesystem + adapter)", () => {
   it("getDigitalHuman reads template fields and skills", async () => {
     const id = "a1b2c3d4-e5f6-7890-abcd-ef1234567890";
     const ws = resolveDefaultWorkspace(id);
-    mkdirSync(join(ws, "skills", "s1"), { recursive: true });
+    mkdirSync(ws, { recursive: true });
     writeFileSync(
       join(ws, "IDENTITY.md"),
       "- Name: Alice\n- Creature: QA\n",
@@ -147,7 +164,9 @@ describe("DefaultDigitalHumanLogic lifecycle (filesystem + adapter)", () => {
 
     const logic = new DefaultDigitalHumanLogic({
       openClawAgentsAdapter: adapter as never,
-      skillStorePath: join(fakeHome, "skills-store")
+      agentSkillsLogic: stubAgentSkills({
+        getAgentSkills: vi.fn().mockResolvedValue({ agentId: id, skills: ["s1"] })
+      })
     });
 
     await expect(logic.getDigitalHuman(id)).resolves.toMatchObject({
@@ -203,7 +222,7 @@ describe("DefaultDigitalHumanLogic lifecycle (filesystem + adapter)", () => {
 
       const logic = new DefaultDigitalHumanLogic({
         openClawAgentsAdapter: adapter as never,
-        skillStorePath: join(fakeHome, "skills-store")
+        agentSkillsLogic: stubAgentSkills()
       });
 
       await expect(logic.getDigitalHuman(id)).resolves.toMatchObject({
@@ -245,7 +264,7 @@ describe("DefaultDigitalHumanLogic lifecycle (filesystem + adapter)", () => {
       };
       const logic = new DefaultDigitalHumanLogic({
         openClawAgentsAdapter: adapter as never,
-        skillStorePath: join(fakeHome, "skills-store")
+        agentSkillsLogic: stubAgentSkills()
       });
       const detail = await logic.getDigitalHuman(id);
       expect(detail.channel).toBeUndefined();
@@ -291,7 +310,7 @@ describe("DefaultDigitalHumanLogic lifecycle (filesystem + adapter)", () => {
       };
       const logic = new DefaultDigitalHumanLogic({
         openClawAgentsAdapter: adapter as never,
-        skillStorePath: join(fakeHome, "skills-store")
+        agentSkillsLogic: stubAgentSkills()
       });
       const detail = await logic.getDigitalHuman(id);
       expect(detail.channel).toBeUndefined();
@@ -337,7 +356,7 @@ describe("DefaultDigitalHumanLogic lifecycle (filesystem + adapter)", () => {
       };
       const logic = new DefaultDigitalHumanLogic({
         openClawAgentsAdapter: adapter as never,
-        skillStorePath: join(fakeHome, "skills-store")
+        agentSkillsLogic: stubAgentSkills()
       });
       const detail = await logic.getDigitalHuman(id);
       expect(detail.channel).toBeUndefined();
@@ -383,7 +402,7 @@ describe("DefaultDigitalHumanLogic lifecycle (filesystem + adapter)", () => {
       };
       const logic = new DefaultDigitalHumanLogic({
         openClawAgentsAdapter: adapter as never,
-        skillStorePath: join(fakeHome, "skills-store")
+        agentSkillsLogic: stubAgentSkills()
       });
       const detail = await logic.getDigitalHuman(id);
       expect(detail.channel).toBeUndefined();
@@ -408,7 +427,7 @@ describe("DefaultDigitalHumanLogic lifecycle (filesystem + adapter)", () => {
     };
     const logic = new DefaultDigitalHumanLogic({
       openClawAgentsAdapter: adapter as never,
-      skillStorePath: "/tmp/x"
+      agentSkillsLogic: stubAgentSkills()
     });
 
     await expect(logic.getDigitalHuman("missing")).rejects.toMatchObject({
@@ -429,7 +448,7 @@ describe("DefaultDigitalHumanLogic lifecycle (filesystem + adapter)", () => {
     };
     const logic = new DefaultDigitalHumanLogic({
       openClawAgentsAdapter: adapter as never,
-      skillStorePath: "/tmp/x"
+      agentSkillsLogic: stubAgentSkills()
     });
 
     await expect(logic.getDigitalHuman("x")).rejects.toBe(forbidden);
@@ -447,7 +466,7 @@ describe("DefaultDigitalHumanLogic lifecycle (filesystem + adapter)", () => {
         getConfig: vi.fn(),
         patchConfig: vi.fn()
       } as never,
-      skillStorePath: "/tmp/skills"
+      agentSkillsLogic: stubAgentSkills()
     });
 
     await logic.deleteDigitalHuman("agent-1", false);
@@ -458,11 +477,17 @@ describe("DefaultDigitalHumanLogic lifecycle (filesystem + adapter)", () => {
     });
   });
 
-  it("createDigitalHuman writes markdown and links skills", async () => {
-    const skillStore = join(fakeHome, "skill-store", "sk1");
-    mkdirSync(skillStore, { recursive: true });
-    writeFileSync(join(skillStore, ".keep"), "", "utf8");
-
+  it("createDigitalHuman writes markdown via gateway RPC and configures skills", async () => {
+    const listAgentFiles = vi.fn().mockResolvedValue({
+      agentId: "",
+      files: [] as { name: string }[]
+    });
+    const setAgentFile = vi.fn().mockResolvedValue({ ok: true });
+    const updateAgentSkills = vi.fn().mockResolvedValue({
+      success: true,
+      agentId: "",
+      skills: ["sk1"]
+    });
     const createAgent = vi.fn().mockResolvedValue({ ok: true });
     const logic = new DefaultDigitalHumanLogic({
       openClawAgentsAdapter: {
@@ -470,11 +495,12 @@ describe("DefaultDigitalHumanLogic lifecycle (filesystem + adapter)", () => {
         createAgent,
         deleteAgent: vi.fn(),
         getAgentFile: vi.fn(),
-        setAgentFile: vi.fn(),
+        setAgentFile,
+        listAgentFiles,
         getConfig: vi.fn(),
         patchConfig: vi.fn()
       } as never,
-      skillStorePath: join(fakeHome, "skill-store")
+      agentSkillsLogic: stubAgentSkills({ updateAgentSkills })
     });
 
     const result = await logic.createDigitalHuman({
@@ -485,15 +511,29 @@ describe("DefaultDigitalHumanLogic lifecycle (filesystem + adapter)", () => {
     });
 
     const ws = resolveDefaultWorkspace(result.id);
-    expect(readFileSync(join(ws, "IDENTITY.md"), "utf8")).toContain("Bob");
-    expect(readFileSync(join(ws, "SOUL.md"), "utf8")).toContain("Hi");
     expect(createAgent).toHaveBeenCalledWith({
       name: result.id,
       workspace: ws
     });
+    expect(listAgentFiles).toHaveBeenCalledWith({ agentId: result.id });
+    expect(setAgentFile).toHaveBeenCalledWith(
+      expect.objectContaining({
+        agentId: result.id,
+        name: "IDENTITY.md",
+        content: expect.stringContaining("Bob") as string
+      })
+    );
+    expect(setAgentFile).toHaveBeenCalledWith(
+      expect.objectContaining({
+        agentId: result.id,
+        name: "SOUL.md",
+        content: expect.stringContaining("Hi") as string
+      })
+    );
+    expect(updateAgentSkills).toHaveBeenCalledWith(result.id, ["sk1"]);
   });
 
-  it("updateDigitalHuman merges patch and writes files", async () => {
+  it("updateDigitalHuman merges patch and writes files via gateway RPC", async () => {
     const id = "f1e2d3c4-b5a6-7890-abcd-ef1234567890";
     const ws = resolveDefaultWorkspace(id);
     mkdirSync(ws, { recursive: true });
@@ -504,6 +544,8 @@ describe("DefaultDigitalHumanLogic lifecycle (filesystem + adapter)", () => {
     );
     writeFileSync(join(ws, "SOUL.md"), "Old soul\n", "utf8");
 
+    const listAgentFiles = vi.fn().mockResolvedValue({ agentId: id, files: [] });
+    const setAgentFile = vi.fn().mockResolvedValue({ ok: true });
     const adapter = {
       listAgents: vi.fn(),
       createAgent: vi.fn(),
@@ -511,20 +553,34 @@ describe("DefaultDigitalHumanLogic lifecycle (filesystem + adapter)", () => {
       getAgentFile: vi.fn().mockImplementation(async ({ name }: { name: string }) => ({
         file: { content: readFileSync(join(ws, name), "utf8") }
       })),
-      setAgentFile: vi.fn(),
+      setAgentFile,
+      listAgentFiles,
       getConfig: vi.fn(),
       patchConfig: vi.fn()
     };
 
     const logic = new DefaultDigitalHumanLogic({
       openClawAgentsAdapter: adapter as never,
-      skillStorePath: join(fakeHome, "skill-store")
+      agentSkillsLogic: stubAgentSkills()
     });
 
     await logic.updateDigitalHuman(id, { name: "New", soul: "New soul" });
 
-    expect(readFileSync(join(ws, "IDENTITY.md"), "utf8")).toContain("New");
-    expect(readFileSync(join(ws, "SOUL.md"), "utf8")).toContain("New soul");
+    expect(listAgentFiles).toHaveBeenCalledWith({ agentId: id });
+    expect(setAgentFile).toHaveBeenCalledWith(
+      expect.objectContaining({
+        agentId: id,
+        name: "IDENTITY.md",
+        content: expect.stringContaining("New") as string
+      })
+    );
+    expect(setAgentFile).toHaveBeenCalledWith(
+      expect.objectContaining({
+        agentId: id,
+        name: "SOUL.md",
+        content: expect.stringContaining("New soul") as string
+      })
+    );
   });
 
   it("createDigitalHuman binds channel when config path is writable", async () => {
@@ -542,11 +598,12 @@ describe("DefaultDigitalHumanLogic lifecycle (filesystem + adapter)", () => {
         createAgent,
         deleteAgent: vi.fn(),
         getAgentFile: vi.fn(),
-        setAgentFile: vi.fn(),
+        setAgentFile: vi.fn().mockResolvedValue({ ok: true }),
+        listAgentFiles: vi.fn().mockResolvedValue({ agentId: "", files: [] }),
         getConfig: vi.fn(),
         patchConfig: vi.fn()
       } as never,
-      skillStorePath: join(fakeHome, "skill-store")
+      agentSkillsLogic: stubAgentSkills()
     });
 
     await logic.createDigitalHuman({
@@ -578,11 +635,12 @@ describe("DefaultDigitalHumanLogic lifecycle (filesystem + adapter)", () => {
         createAgent,
         deleteAgent: vi.fn(),
         getAgentFile: vi.fn(),
-        setAgentFile: vi.fn(),
+        setAgentFile: vi.fn().mockResolvedValue({ ok: true }),
+        listAgentFiles: vi.fn().mockResolvedValue({ agentId: "", files: [] }),
         getConfig: vi.fn(),
         patchConfig: vi.fn()
       } as never,
-      skillStorePath: join(fakeHome, "skill-store")
+      agentSkillsLogic: stubAgentSkills()
     });
 
     await logic.createDigitalHuman({
@@ -644,7 +702,7 @@ describe("DefaultDigitalHumanLogic lifecycle (filesystem + adapter)", () => {
 
       const logic = new DefaultDigitalHumanLogic({
         openClawAgentsAdapter: adapter as never,
-        skillStorePath: join(fakeHome, "skills-store")
+        agentSkillsLogic: stubAgentSkills()
       });
 
       await expect(logic.getDigitalHuman(id)).resolves.toMatchObject({
@@ -675,11 +733,12 @@ describe("DefaultDigitalHumanLogic lifecycle (filesystem + adapter)", () => {
         createAgent,
         deleteAgent: vi.fn(),
         getAgentFile: vi.fn(),
-        setAgentFile: vi.fn(),
+        setAgentFile: vi.fn().mockResolvedValue({ ok: true }),
+        listAgentFiles: vi.fn().mockResolvedValue({ agentId: "", files: [] }),
         getConfig: vi.fn(),
         patchConfig: vi.fn()
       } as never,
-      skillStorePath: join(fakeHome, "skill-store")
+      agentSkillsLogic: stubAgentSkills()
     });
 
     const result = await logic.createDigitalHuman({

@@ -4,6 +4,7 @@ import {
   createAgentsCreateRequest,
   createAgentsDeleteRequest,
   createAgentsFilesGetRequest,
+  createAgentsFilesListRequest,
   createAgentsFilesSetRequest,
   createConfigGetRequest,
   createConfigPatchRequest,
@@ -122,6 +123,24 @@ describe("OpenClawAgentsGatewayAdapter", () => {
       createAgentsDeleteRequest({
         agentId: "x",
         deleteFiles: true
+      })
+    );
+  });
+
+  it("delegates agents.files.list to the gateway port", async () => {
+    const gatewayPort = {
+      invoke: vi.fn().mockResolvedValue({
+        agentId: "a",
+        files: [{ name: "IDENTITY.md" }]
+      })
+    };
+    const adapter = new OpenClawAgentsGatewayAdapter(gatewayPort);
+
+    await adapter.listAgentFiles({ agentId: "a" });
+
+    expect(gatewayPort.invoke).toHaveBeenCalledWith(
+      createAgentsFilesListRequest({
+        agentId: "a"
       })
     );
   });

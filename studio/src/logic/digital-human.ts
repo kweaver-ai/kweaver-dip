@@ -1,15 +1,11 @@
 import { randomUUID } from "node:crypto";
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { readFile, writeFile } from "node:fs/promises";
 import { homedir } from "node:os";
 import { join } from "node:path";
 
 import type { OpenClawAgentsAdapter } from "../adapters/openclaw-agents-adapter";
 import { HttpError } from "../errors/http-error";
-import {
-  linkSkillsToWorkspace,
-  listLinkedSkillNames,
-  syncSkillsToWorkspace
-} from "../infra/skill-linker";
+import type { AgentSkillsLogic } from "./agent-skills";
 import type {
   ChannelConfig,
   CreateDigitalHumanRequest,
@@ -53,7 +49,7 @@ export interface DigitalHumanLogic {
 
   /**
    * Creates a new digital human with the full setup flow:
-   * agent creation, template rendering, skill linking, and channel binding.
+   * agent creation, template files via OpenClaw file RPCs, skill bindings, and channel binding.
    *
    * @param request The creation request payload.
    * @returns The created digital human summary including the rendered template.
@@ -90,9 +86,9 @@ export interface DigitalHumanLogicOptions {
   openClawAgentsAdapter: OpenClawAgentsAdapter;
 
   /**
-   * Absolute path to the central skill store directory.
+   * Logic used to read and replace per-agent skill bindings (skills-control API).
    */
-  skillStorePath: string;
+  agentSkillsLogic: AgentSkillsLogic;
 
 }
 
@@ -101,7 +97,7 @@ export interface DigitalHumanLogicOptions {
  */
 export class DefaultDigitalHumanLogic implements DigitalHumanLogic {
   private readonly openClawAgentsAdapter: OpenClawAgentsAdapter;
-  private readonly skillStorePath: string;
+  private readonly agentSkillsLogic: AgentSkillsLogic;
 
   /**
    * Creates the digital human logic.
@@ -110,7 +106,7 @@ export class DefaultDigitalHumanLogic implements DigitalHumanLogic {
    */
   public constructor(options: DigitalHumanLogicOptions) {
     this.openClawAgentsAdapter = options.openClawAgentsAdapter;
-    this.skillStorePath = options.skillStorePath;
+    this.agentSkillsLogic = options.agentSkillsLogic;
   }
 
   /**
@@ -179,11 +175,11 @@ export class DefaultDigitalHumanLogic implements DigitalHumanLogic {
     }
 
     const template = mergeFilesToTemplate(identityContent, soulContent);
-    const workspace = resolveDefaultWorkspace(id);
     let skills: string[] | undefined;
     try {
-      const linked = await listLinkedSkillNames(workspace);
-      skills = linked.length > 0 ? linked : undefined;
+      const binding = await this.agentSkillsLogic.getAgentSkills(id);
+      skills =
+        binding.skills.length > 0 ? binding.skills : undefined;
     } catch {
       skills = undefined;
     }
@@ -206,10 +202,10 @@ export class DefaultDigitalHumanLogic implements DigitalHumanLogic {
    * as specified in the design document:
    *
    * 1. Resolve UUID (use provided id or generate one)
-   * 2. (optional) Bind channel via config.patch
-   * 3. Create the agent in OpenClaw
-   * 4. Write IDENTITY.md and SOUL.md to workspace
-   * 5. Create skill symlinks
+   * 2. Create the agent in OpenClaw (`agents.create`)
+   * 3. Update IDENTITY.md and SOUL.md via `agents.files.list` then `agents.files.set`
+   * 4. Configure skills via {@link AgentSkillsLogic.updateAgentSkills}
+   * 5. (optional) Bind channel on disk when requested
    *
    * @param request The creation request payload.
    * @returns The created digital human summary.
@@ -227,10 +223,10 @@ export class DefaultDigitalHumanLogic implements DigitalHumanLogic {
       workspace
     });
 
-    await this.writeTemplateFilesToDisk(workspace, template);
+    await this.writeTemplateViaOpenClawFilesRpc(uuid, template);
 
     if (request.skills && request.skills.length > 0) {
-      await linkSkillsToWorkspace(workspace, request.skills, this.skillStorePath);
+      await this.agentSkillsLogic.updateAgentSkills(uuid, request.skills);
     }
 
     if (request.channel) {
@@ -303,17 +299,21 @@ export class DefaultDigitalHumanLogic implements DigitalHumanLogic {
 
     const current = mergeFilesToTemplate(identityContent, soulContent);
     const merged = mergeTemplatePatch(current, patch);
-    const workspace = resolveDefaultWorkspace(id);
 
-    await this.writeTemplateFilesToDisk(workspace, merged);
+    await this.writeTemplateViaOpenClawFilesRpc(id, merged);
 
     let skillsOut: string[] | undefined;
     if (patch.skills !== undefined) {
-      await syncSkillsToWorkspace(workspace, patch.skills, this.skillStorePath);
+      await this.agentSkillsLogic.updateAgentSkills(id, patch.skills);
       skillsOut = patch.skills.length > 0 ? patch.skills : undefined;
     } else {
-      const linked = await listLinkedSkillNames(workspace);
-      skillsOut = linked.length > 0 ? linked : undefined;
+      try {
+        const binding = await this.agentSkillsLogic.getAgentSkills(id);
+        skillsOut =
+          binding.skills.length > 0 ? binding.skills : undefined;
+      } catch {
+        skillsOut = undefined;
+      }
     }
 
     if (patch.channel) {
@@ -339,27 +339,30 @@ export class DefaultDigitalHumanLogic implements DigitalHumanLogic {
   }
 
   /**
-   * Writes IDENTITY.md and SOUL.md directly to the workspace directory.
+   * Updates IDENTITY.md and SOUL.md through OpenClaw file RPCs: `agents.files.list`
+   * then parallel `agents.files.set` calls, per the digital human design.
    *
-   * We write to disk rather than using the gateway `agents.files.set` RPC
-   * because the gateway caches the config snapshot in memory. Right after
-   * `agents.create`, the snapshot has not yet been refreshed, so a
-   * subsequent `agents.files.set` call would fail with "unknown agent id".
-   *
-   * @param workspace The absolute path to the agent workspace.
-   * @param template The template to render.
+   * @param agentId The OpenClaw agent id.
+   * @param template The template to render into markdown files.
    */
-  private async writeTemplateFilesToDisk(
-    workspace: string,
+  private async writeTemplateViaOpenClawFilesRpc(
+    agentId: string,
     template: DigitalHumanTemplate
   ): Promise<void> {
+    await this.openClawAgentsAdapter.listAgentFiles({ agentId });
     const identityMd = renderIdentityMarkdown(template);
     const soulMd = renderSoulMarkdown(template);
-
-    await mkdir(workspace, { recursive: true });
     await Promise.all([
-      writeFile(join(workspace, "IDENTITY.md"), identityMd, "utf-8"),
-      writeFile(join(workspace, "SOUL.md"), soulMd, "utf-8")
+      this.openClawAgentsAdapter.setAgentFile({
+        agentId,
+        name: "IDENTITY.md",
+        content: identityMd
+      }),
+      this.openClawAgentsAdapter.setAgentFile({
+        agentId,
+        name: "SOUL.md",
+        content: soulMd
+      })
     ]);
   }
 
@@ -371,8 +374,8 @@ export class DefaultDigitalHumanLogic implements DigitalHumanLogic {
    * 1. The gateway validates the merged config against installed plugins.
    *    If the target channel plugin (e.g. feishu / dingtalk) is not installed, the
    *    patch is rejected with a validation error.
-   * 2. Writing directly is consistent with how we handle IDENTITY.md and
-   *    SOUL.md (to avoid the stale config snapshot issue).
+   * 2. Writing directly avoids gateway plugin validation when the channel
+   *    plugin is not installed.
    *
    * @param agentId The agent to bind.
    * @param channel The channel configuration.

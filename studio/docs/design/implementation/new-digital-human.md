@@ -27,8 +27,7 @@ BE ->> OC: 4. 为 Agent 配置 Skill
 通过 OpenClaw 的 WebSocket RPC 执行 `agents.files.list` method 更新 IDENTITY.md 和 SOUL.md。参考：@docs/references/openclaw-websocket-rpc.md。
 
 4、为 Agent 配置 Skill
-通过 OpenClaw 的 WebSocket RPC 执行 `skills.update` method， 通过 enable 参数为 Agent 配置白名单。参考：@docs/references/openclaw-websocket-rpc.md。
-
+通过 /Users/lucyjiang/dipworkspace/ai-store/studio/src/logic/agent-skills.ts中AgentSkillsLogic.updateAgentSkills method来实现skill的管理
 ### 通过接口创建数字员工
 提供 HTTP 接口来创建数字员工。
 - endpoint: POST  /dip-studio/v1/digital-human

@@ -5,6 +5,8 @@ import type {
   OpenClawAgentsDeleteResult,
   OpenClawAgentsFilesGetParams,
   OpenClawAgentsFilesGetResult,
+  OpenClawAgentsFilesListParams,
+  OpenClawAgentsFilesListResult,
   OpenClawAgentsFilesSetParams,
   OpenClawAgentsFilesSetResult,
   OpenClawAgentsListResult,
@@ -43,6 +45,14 @@ export interface OpenClawAgentsAdapter {
    * @returns The OpenClaw `AgentsDeleteResult` payload.
    */
   deleteAgent(params: OpenClawAgentsDeleteParams): Promise<OpenClawAgentsDeleteResult>;
+
+  /**
+   * Lists workspace files for an OpenClaw agent.
+   *
+   * @param params The file list parameters.
+   * @returns File metadata entries for the agent workspace.
+   */
+  listAgentFiles(params: OpenClawAgentsFilesListParams): Promise<OpenClawAgentsFilesListResult>;
 
   /**
    * Reads a workspace file from an OpenClaw agent.
@@ -125,6 +135,22 @@ export function createAgentsDeleteRequest(
   return {
     type: "req",
     method: "agents.delete",
+    params
+  };
+}
+
+/**
+ * Creates the OpenClaw `agents.files.list` request.
+ *
+ * @param params The file list parameters.
+ * @returns A serialized OpenClaw request frame.
+ */
+export function createAgentsFilesListRequest(
+  params: OpenClawAgentsFilesListParams
+): OpenClawRequestFrame {
+  return {
+    type: "req",
+    method: "agents.files.list",
     params
   };
 }
@@ -253,6 +279,20 @@ export class OpenClawAgentsGatewayAdapter implements OpenClawAgentsAdapter {
   ): Promise<OpenClawAgentsDeleteResult> {
     return this.gatewayPort.invoke<OpenClawAgentsDeleteResult>(
       createAgentsDeleteRequest(params)
+    );
+  }
+
+  /**
+   * Invokes `agents.files.list` over the gateway RPC port.
+   *
+   * @param params The file list parameters.
+   * @returns Listed workspace files for the agent.
+   */
+  public async listAgentFiles(
+    params: OpenClawAgentsFilesListParams
+  ): Promise<OpenClawAgentsFilesListResult> {
+    return this.gatewayPort.invoke<OpenClawAgentsFilesListResult>(
+      createAgentsFilesListRequest(params)
     );
   }
 

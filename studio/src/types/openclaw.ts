@@ -149,6 +149,61 @@ export interface OpenClawAgentsDeleteResult {
 }
 
 /**
+ * Parameters for the `agents.files.list` OpenClaw RPC method.
+ */
+export interface OpenClawAgentsFilesListParams {
+  /**
+   * Identifier of the agent whose workspace files to list.
+   */
+  agentId: string;
+}
+
+/**
+ * One file entry returned by `agents.files.list`.
+ */
+export interface OpenClawAgentFileListItem {
+  /**
+   * Workspace-relative filename.
+   */
+  name: string;
+
+  /**
+   * Absolute path on disk when provided by the gateway.
+   */
+  path?: string;
+
+  /**
+   * File size in bytes when present.
+   */
+  size?: number;
+
+  /**
+   * Last modification time in epoch milliseconds when present.
+   */
+  updatedAtMs?: number;
+}
+
+/**
+ * Matches the `agents.files.list` result schema from OpenClaw.
+ */
+export interface OpenClawAgentsFilesListResult {
+  /**
+   * Agent identifier.
+   */
+  agentId: string;
+
+  /**
+   * Workspace directory path when provided by the gateway.
+   */
+  workspace?: string;
+
+  /**
+   * Listed workspace files.
+   */
+  files: OpenClawAgentFileListItem[];
+}
+
+/**
  * Parameters for the `agents.files.get` OpenClaw RPC method.
  */
 export interface OpenClawAgentsFilesGetParams {
