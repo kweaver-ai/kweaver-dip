@@ -732,9 +732,8 @@ describe("gateway helpers", () => {
   });
 
   it("creates the agents.list request", () => {
-    expect(createAgentsListRequest("req-2")).toEqual({
+    expect(createAgentsListRequest()).toEqual({
       type: "req",
-      id: "req-2",
       method: "agents.list",
       params: {}
     });

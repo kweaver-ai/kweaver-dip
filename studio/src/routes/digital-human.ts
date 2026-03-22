@@ -230,27 +230,6 @@ export function createDigitalHumanRouter(): Router {
   );
 
   router.get(
-    "/api/dip-studio/v1/skills",
-    async (
-      _request: Request,
-      response: Response,
-      next: NextFunction
-    ): Promise<void> => {
-      try {
-        const result = await digitalHumanLogic.listEnabledSkills();
-
-        response.status(200).json(result);
-      } catch (error) {
-        next(
-          error instanceof HttpError
-            ? error
-            : new HttpError(502, "Failed to query enabled skills")
-        );
-      }
-    }
-  );
-
-  router.get(
     "/api/dip-studio/v1/digital-human/:id",
     async (
       request: Request,

@@ -8,6 +8,7 @@ import { createDigitalHumanResponseRouter } from "./routes/digital-human-respons
 import { createDigitalHumanRouter } from "./routes/digital-human";
 import { createHealthRouter } from "./routes/health";
 import { createSessionsRouter } from "./routes/sessions";
+import { createSkillsRouter } from "./routes/skills";
 
 
 /**
@@ -48,6 +49,7 @@ export function createApp(options: AppOptions = {}): Express {
   app.use(createHealthRouter());
   app.use(createCronRouter());
   app.use(createSessionsRouter());
+  app.use(createSkillsRouter());
   app.use(createDigitalHumanRouter());
   app.use(createDigitalHumanResponseRouter());
 
