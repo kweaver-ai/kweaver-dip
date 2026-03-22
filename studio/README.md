@@ -29,6 +29,36 @@ openssl pkey -in private.pem -pubout -out public.pem
 
 公开接口基础路径：`/api/dip-studio/v1`
 
+#### 获取会话列表
+
+`GET /api/dip-studio/v1/sessions`
+
+响应：`200 application/json`
+
+| 参数 | 类型 | 说明 |
+| -- | -- | -- |
+| ts | number | 服务端时间戳（毫秒） |
+| path | string | 会话来源路径 |
+| count | number | 会话总数 |
+| sessions | SessionSummary[] | 会话摘要列表 |
+
+#### 获取单个会话详情
+
+`GET /api/dip-studio/v1/sessions/{key}`
+
+路径参数：
+
+| 参数 | 类型 | 是否必填 | 说明 |
+| -- | -- | -- | -- |
+| key | string | 是 | 会话 key |
+
+响应：`200 application/json`
+
+| 参数 | 类型 | 说明 |
+| -- | -- | -- |
+| key | string | 会话 key |
+| messages | object[] | 会话消息列表 |
+
 #### 获取数字员工列表
 
 `GET /api/dip-studio/v1/digital-human`

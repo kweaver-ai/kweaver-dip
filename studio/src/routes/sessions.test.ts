@@ -182,6 +182,9 @@ describe("createSessionsRouter", () => {
     const listLayer = router.stack.find(
       (entry) => entry.route?.path === "/api/dip-studio/v1/sessions"
     );
+    const detailLayer = router.stack.find(
+      (entry) => entry.route?.path === "/api/dip-studio/v1/sessions/:key"
+    );
     const digitalHumanListLayer = router.stack.find(
       (entry) => entry.route?.path === "/api/dip-studio/v1/digital-human/:dh_id/sessions"
     );
@@ -202,6 +205,7 @@ describe("createSessionsRouter", () => {
     );
 
     expect(listLayer).toBeDefined();
+    expect(detailLayer).toBeDefined();
     expect(digitalHumanListLayer).toBeDefined();
     expect(digitalHumanMessagesLayer).toBeDefined();
     expect(digitalHumanArchivesLayer).toBeDefined();
@@ -249,6 +253,57 @@ describe("createSessionsRouter", () => {
       label: undefined,
       includeGlobal: undefined,
       includeUnknown: undefined
+    });
+    expect(response.status).toHaveBeenCalledWith(200);
+    expect(next).not.toHaveBeenCalled();
+  });
+
+  it("handles session detail request", async () => {
+    const getSession = vi.fn().mockResolvedValue({
+      key: "session_key_1",
+      messages: []
+    });
+    const router = createSessionsRouter({
+      listSessions: vi.fn(),
+      getSession,
+      previewSessions: vi.fn()
+    }) as {
+      stack: Array<{
+        route?: {
+          path: string;
+          stack: Array<{
+            handle: (
+              request: Request,
+              response: Response,
+              next: NextFunction
+            ) => Promise<void>;
+          }>;
+        };
+      }>;
+    };
+    const getLayer = router.stack.find(
+      (entry) => entry.route?.path === "/api/dip-studio/v1/sessions/:key"
+    );
+    const handler = getLayer?.route?.stack[0]?.handle;
+    const response = createResponseDouble();
+    const next = vi.fn<NextFunction>();
+
+    await handler?.(
+      {
+        params: {
+          key: " session_key_1 "
+        },
+        query: {
+          limit: "100"
+        }
+      } as unknown as Request,
+      response,
+      next
+    );
+
+    expect(getSession).toHaveBeenCalledWith({
+      key: "session_key_1",
+      limit: 100
     });
     expect(response.status).toHaveBeenCalledWith(200);
     expect(next).not.toHaveBeenCalled();
@@ -494,6 +549,90 @@ describe("createSessionsRouter", () => {
     expect(vi.mocked(next2).mock.calls[0]?.[0]).toMatchObject({
       statusCode: 502,
       message: "Failed to query sessions"
+    });
+  });
+
+  it("forwards session detail HttpError and wraps unknown errors", async () => {
+    const { HttpError } = await import("../errors/http-error");
+    const notFound = new HttpError(404, "Session not found");
+
+    const router1 = createSessionsRouter({
+      listSessions: vi.fn(),
+      getSession: vi.fn().mockRejectedValue(notFound),
+      previewSessions: vi.fn()
+    }) as {
+      stack: Array<{
+        route?: {
+          path: string;
+          stack: Array<{
+            handle: (
+              request: Request,
+              response: Response,
+              next: NextFunction
+            ) => Promise<void>;
+          }>;
+        };
+      }>;
+    };
+    const getLayer1 = router1.stack.find(
+      (entry) => entry.route?.path === "/api/dip-studio/v1/sessions/:key"
+    );
+    const handler1 = getLayer1?.route?.stack[0]?.handle;
+    const response1 = createResponseDouble();
+    const next1 = vi.fn<NextFunction>();
+
+    await handler1?.(
+      {
+        params: {
+          key: "session-key"
+        },
+        query: {}
+      } as unknown as Request,
+      response1,
+      next1
+    );
+    expect(next1).toHaveBeenCalledWith(notFound);
+
+    const router2 = createSessionsRouter({
+      listSessions: vi.fn(),
+      getSession: vi.fn().mockRejectedValue(new Error("boom")),
+      previewSessions: vi.fn()
+    }) as {
+      stack: Array<{
+        route?: {
+          path: string;
+          stack: Array<{
+            handle: (
+              request: Request,
+              response: Response,
+              next: NextFunction
+            ) => Promise<void>;
+          }>;
+        };
+      }>;
+    };
+    const getLayer2 = router2.stack.find(
+      (entry) => entry.route?.path === "/api/dip-studio/v1/sessions/:key"
+    );
+    const handler2 = getLayer2?.route?.stack[0]?.handle;
+    const response2 = createResponseDouble();
+    const next2 = vi.fn<NextFunction>();
+
+    await handler2?.(
+      {
+        params: {
+          key: "session-key"
+        },
+        query: {}
+      } as unknown as Request,
+      response2,
+      next2
+    );
+
+    expect(next2).toHaveBeenCalledOnce();
+    expect(vi.mocked(next2).mock.calls[0]?.[0]).toMatchObject({
+      statusCode: 502,
+      message: "Failed to query session detail"
     });
   });
 

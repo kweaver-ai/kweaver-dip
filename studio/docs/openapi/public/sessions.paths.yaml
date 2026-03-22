@@ -91,6 +91,44 @@ paths:
         "500":
           $ref: '../common.schemas.yaml#/errors/InternalServerError'
 
+  /sessions/{key}:
+    get:
+      operationId: getSessionDetail
+      summary: 获取指定会话详情
+      parameters:
+        - name: key
+          in: path
+          required: true
+          description: 会话 key
+          schema:
+            type: string
+        - name: limit
+          in: query
+          required: false
+          description: 返回消息数量上限
+          schema:
+            type: integer
+            minimum: 0
+      responses:
+        "200":
+          description: 指定会话详情
+          content:
+            application/json:
+              schema:
+                $ref: './sessions.schemas.yaml#/components/schemas/SessionGetResponse'
+        "400":
+          $ref: '../common.schemas.yaml#/errors/InvalidParameter'
+        "401":
+          $ref: '../common.schemas.yaml#/errors/Unauthorized'
+        "403":
+          $ref: '../common.schemas.yaml#/errors/Forbidden'
+        "404":
+          $ref: '../common.schemas.yaml#/errors/NotFound'
+        "409":
+          $ref: '../common.schemas.yaml#/errors/Conflict'
+        "500":
+          $ref: '../common.schemas.yaml#/errors/InternalServerError'
+
   /digital-human/{dh_id}/sessions:
     get:
       operationId: getDigitalHumanSessionsList

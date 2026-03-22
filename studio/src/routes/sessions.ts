@@ -37,6 +37,16 @@ export interface SessionMessagesQuery {
 }
 
 /**
+ * Path parameters for session detail endpoint.
+ */
+export interface SessionDetailParams {
+  /**
+   * Session key.
+   */
+  key: string;
+}
+
+/**
  * Path parameters for digital human sessions endpoints.
  */
 export interface DigitalHumanSessionsParams {
@@ -113,6 +123,28 @@ export function createSessionsRouter(
           error instanceof HttpError
             ? error
             : new HttpError(502, "Failed to query sessions")
+        );
+      }
+    }
+  );
+
+  router.get(
+    "/api/dip-studio/v1/sessions/:key",
+    async (
+      request: Request<SessionDetailParams, unknown, unknown, SessionMessagesQuery>,
+      response: Response,
+      next: NextFunction
+    ): Promise<void> => {
+      try {
+        const key = readRequiredPathParam(request.params.key, "key");
+        const result = await logic.getSession(readSessionGetParams(key, request.query));
+
+        response.status(200).json(result);
+      } catch (error) {
+        next(
+          error instanceof HttpError
+            ? error
+            : new HttpError(502, "Failed to query session detail")
         );
       }
     }
