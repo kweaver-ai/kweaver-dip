@@ -116,10 +116,20 @@
       padding: 0 0 8px;
       background: #fff;
       box-shadow: none!important;
+      max-height: 320px;
+      overflow-y: auto;
+      overflow-x: hidden;
     }
 
     .dip-dropdown-menu-item {
       padding: 10px 16px;
+      overflow: hidden;
+    }
+
+    .dip-dropdown-menu-title-content {
+      display: block;
+      min-width: 0;
+      overflow: hidden;
     }
   }
 }
@@ -136,6 +146,8 @@
   display: flex;
   align-items: center;
   gap: 10px;
+  width: 100%;
+  min-width: 0;
 }
 
 .mentionIcon {
@@ -144,6 +156,11 @@
 }
 
 .mentionMenuLabel {
+  flex: 1;
+  min-width: 0;
   font-size: 14px;
   color: #1f2937;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

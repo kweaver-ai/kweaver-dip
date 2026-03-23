@@ -30,6 +30,7 @@ const ChatContentArea: React.FC<ChatContentAreaProps> = ({
   const scrollRef = useRef<ScrollContainerRef | null>(null)
   const sessionKeyMapRef = useRef<Record<string, string>>({})
   const autoSentTurnIdsRef = useRef<Set<string>>(new Set())
+  const abortControllerMapRef = useRef<Record<string, AbortController>>({})
   const {
     dipChatKitStore: { messageTurns, scroll },
     appendQuestionTurn,
@@ -52,6 +53,12 @@ const ChatContentArea: React.FC<ChatContentAreaProps> = ({
       .map((turn) => `${turn.id}:${turn.answerMarkdown.length}:${turn.answerStreaming ? '1' : '0'}`)
       .join('|')
   }, [messageTurns])
+
+  const isAbortError = (error: unknown): boolean => {
+    if (error instanceof DOMException && error.name === 'AbortError') return true
+    if (error instanceof Error && error.name === 'AbortError') return true
+    return false
+  }
 
   const resolveEmployeeId = useCallback(
     (payload: AiPromptSubmitPayload): string => {
@@ -91,11 +98,14 @@ const ChatContentArea: React.FC<ChatContentAreaProps> = ({
   }, [])
 
   const runBuiltInSend = useCallback<DipChatKitSendHandler>(
-    async (payload) => {
+    async (payload, context) => {
       const employeeId = resolveEmployeeId(payload)
       const sessionKey = await ensureSessionKey(employeeId)
 
-      return createDigitalHumanResponseSSE({ input: payload.content }, { sessionKey })
+      return createDigitalHumanResponseSSE(
+        { input: payload.content },
+        { sessionKey, signal: context.signal },
+      )
     },
     [ensureSessionKey, resolveEmployeeId],
   )
@@ -129,12 +139,19 @@ const ChatContentArea: React.FC<ChatContentAreaProps> = ({
   const runSendFlow = useCallback(
     async (payload: AiPromptSubmitPayload, turnId: string, regenerate: boolean) => {
       const handler = regenerate ? onRegenerate || onSend || runBuiltInSend : onSend || runBuiltInSend
+      const abortController = new AbortController()
+      abortControllerMapRef.current[turnId] = abortController
       startAnswerStream(turnId, regenerate)
 
       try {
-        const result = await handler(payload, { turnId, regenerate })
+        const result = await handler(payload, { turnId, regenerate, signal: abortController.signal })
         await consumeSendResult(turnId, result)
       } catch (error) {
+        if (abortController.signal.aborted || isAbortError(error)) {
+          finishAnswerStream(turnId)
+          return
+        }
+
         const errorMessage =
           error instanceof Error
             ? error.message
@@ -143,9 +160,19 @@ const ChatContentArea: React.FC<ChatContentAreaProps> = ({
                 .d('回答生成失败，请稍后重试') as string)
         failAnswerStream(turnId, errorMessage)
         message.error(errorMessage)
+      } finally {
+        delete abortControllerMapRef.current[turnId]
       }
     },
-    [consumeSendResult, failAnswerStream, onRegenerate, onSend, runBuiltInSend, startAnswerStream],
+    [
+      consumeSendResult,
+      failAnswerStream,
+      finishAnswerStream,
+      onRegenerate,
+      onSend,
+      runBuiltInSend,
+      startAnswerStream,
+    ],
   )
 
   useEffect(() => {
@@ -169,6 +196,27 @@ const ChatContentArea: React.FC<ChatContentAreaProps> = ({
     setShowBackToBottom(false)
     void runSendFlow(pendingPayload, pendingTurn.id, false)
   }, [messageTurns, runSendFlow, setAutoScrollEnabled, setShowBackToBottom])
+
+  useEffect(() => {
+    return () => {
+      Object.values(abortControllerMapRef.current).forEach((controller) => {
+        controller.abort()
+      })
+      abortControllerMapRef.current = {}
+    }
+  }, [])
+
+  const handleStopGenerating = useCallback(() => {
+    const activeControllers = Object.values(abortControllerMapRef.current)
+    if (activeControllers.length === 0) return
+
+    activeControllers.forEach((controller) => {
+      controller.abort()
+    })
+
+    setAutoScrollEnabled(false)
+    setShowBackToBottom(true)
+  }, [setAutoScrollEnabled, setShowBackToBottom])
 
   const handleSubmit = useCallback(
     async (payload: AiPromptSubmitPayload) => {
@@ -210,7 +258,10 @@ const ChatContentArea: React.FC<ChatContentAreaProps> = ({
           setIsAtBottom(isAtBottom)
           if (isAtBottom) {
             setShowBackToBottom(false)
+            return
           }
+          setAutoScrollEnabled(false)
+          setShowBackToBottom(true)
         }}
       >
         <div className={styles.messageList}>
@@ -300,6 +351,7 @@ const ChatContentArea: React.FC<ChatContentAreaProps> = ({
               onSubmit={(payload) => {
                 void handleSubmit(payload)
               }}
+              onStop={handleStopGenerating}
               employeeOptions={employeeOptions}
               defaultEmployeeValue={defaultEmployeeValue}
               loading={streamLoading}

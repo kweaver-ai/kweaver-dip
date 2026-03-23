@@ -25,6 +25,7 @@
     "markdownFile": "Markdown file",
     "answerCard": "Answer card",
     "answerLoading": "Processing...",
+    "stopGenerate": "Stop generating",
     "copyAnswer": "Copy answer",
     "regenerateAnswer": "Regenerate",
     "editQuestion": "Edit question",

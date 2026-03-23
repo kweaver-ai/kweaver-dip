@@ -50,6 +50,7 @@ export interface DipChatKitState {
 export interface DipChatKitSendContext {
   turnId: string
   regenerate: boolean
+  signal?: AbortSignal
 }
 
 export type DipChatKitStreamResult = string | AsyncIterable<string> | void
@@ -62,6 +63,7 @@ export type DipChatKitSendHandler = (
 export interface DipChatKitProps {
   className?: string
   style?: React.CSSProperties
+  showHeader?: boolean
   defaultMessageTurns?: DipChatKitMessageTurn[]
   employeeOptions?: AiPromptMentionOption[]
   defaultEmployeeValue?: string

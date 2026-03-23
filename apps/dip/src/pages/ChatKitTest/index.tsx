@@ -53,7 +53,7 @@ const ChatKitTest = () => {
   return (
     <div className={clsx('ChatKitTest', styles.page)}>
       <div className={styles.chatKitWrap}>
-        <DipChatKit defaultMessageTurns={defaultMessageTurns} defaultEmployeeValue={defaultEmployeeValue} />
+        <DipChatKit showHeader={false} defaultMessageTurns={defaultMessageTurns} defaultEmployeeValue={defaultEmployeeValue} />
       </div>
     </div>
   )

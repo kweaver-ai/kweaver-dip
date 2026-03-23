@@ -61,6 +61,7 @@ const AiPromptInput: React.FC<AiPromptInputProps> = ({
   autoSize = { minRows: 2, maxRows: 4 },
   onChange,
   onSubmit,
+  onStop,
   onAttach,
   onEmployeeSelect,
   employeeOptions = [],
@@ -90,11 +91,13 @@ const AiPromptInput: React.FC<AiPromptInputProps> = ({
   const [fetchedEmployeeOptions, setFetchedEmployeeOptions] = useState<AiPromptMentionOption[]>([])
 
   const mergedValue = value ?? innerValue
-  const canInteract = !(disabled || loading)
+  const canEdit = !disabled
+  const canSubmit = !(disabled || loading)
   const resolvedEmployeePanelTitle = employeePanelTitle ?? intl.get('aiPromptInput.mentionPanelTitle')
   const resolvedEmployeeButtonLabel = employeeButtonLabel ?? intl.get('aiPromptInput.mentionButton')
   const resolvedAttachButtonTitle = attachButtonTitle ?? intl.get('aiPromptInput.attach')
   const resolvedSendButtonTitle = sendButtonTitle ?? intl.get('aiPromptInput.send')
+  const resolvedStopButtonTitle = intl.get('dipChatKit.stopGenerate').d('停止生成')
   const resolvedRemoveFileTitle = intl.get('aiPromptInput.removeFile')
   const resolvedEmployeeOptions = useMemo(() => {
     if (employeeOptions.length > 0) {
@@ -218,7 +221,9 @@ const AiPromptInput: React.FC<AiPromptInputProps> = ({
                 </Avatar>
               )}
             </span>
-            <span className={styles.mentionMenuLabel}>{item.label}</span>
+            <Tooltip title={item.label} placement="right">
+              <span className={styles.mentionMenuLabel}>{item.label}</span>
+            </Tooltip>
           </span>
         ),
       }
@@ -267,7 +272,7 @@ const AiPromptInput: React.FC<AiPromptInputProps> = ({
   }
 
   const openMentionPanel = (source: MentionTriggerSource, character?: string) => {
-    if (!canInteract) return
+    if (!canEdit) return
 
     if (source === 'keyboard') {
       if (!character) return
@@ -336,7 +341,7 @@ const AiPromptInput: React.FC<AiPromptInputProps> = ({
   const handleSubmit: NonNullable<SenderProps['onSubmit']> = (content) => {
     const nextContent = content.trim()
     const hasContentOrFiles = Boolean(nextContent || attachments.length)
-    if (!(hasContentOrFiles && canInteract)) {
+    if (!(hasContentOrFiles && canSubmit)) {
       return
     }
     if (!employees.length) {
@@ -364,7 +369,7 @@ const AiPromptInput: React.FC<AiPromptInputProps> = ({
   }
 
   const handleMentionSelect = (option: AiPromptMentionOption) => {
-    if (!canInteract) return
+    if (!canEdit) return
 
     onEmployeeSelect?.(option)
 
@@ -414,7 +419,7 @@ const AiPromptInput: React.FC<AiPromptInputProps> = ({
   }
 
   const handleButtonDropdownOpenChange = (nextOpen: boolean) => {
-    if (!(canInteract && buttonSuggestionItems.length)) {
+    if (!(canEdit && buttonSuggestionItems.length)) {
       closeMentionPanel()
       return
     }
@@ -600,7 +605,7 @@ const AiPromptInput: React.FC<AiPromptInputProps> = ({
           ref={senderRef}
           value={mergedValue}
           loading={loading}
-          disabled={!canInteract}
+          disabled={!canEdit}
           placeholder={placeholder}
           submitType="enter"
           header={senderHeader}
@@ -656,6 +661,9 @@ const AiPromptInput: React.FC<AiPromptInputProps> = ({
             }
           }}
           onSubmit={handleSubmit}
+          onCancel={() => {
+            onStop?.()
+          }}
           onBlur={() => {
             if (isMentionMenuMouseDownRef.current) return
             if (open) {
@@ -715,7 +723,7 @@ const AiPromptInput: React.FC<AiPromptInputProps> = ({
                         <Button
                           type="text"
                           aria-label={resolvedEmployeeButtonLabel}
-                          disabled={!(canInteract && buttonSuggestionItems.length)}
+                          disabled={!(canEdit && buttonSuggestionItems.length)}
                           onClick={() => openMentionPanel('button')}
                         >
                           @
@@ -729,7 +737,7 @@ const AiPromptInput: React.FC<AiPromptInputProps> = ({
                       multiple
                       showUploadList={false}
                       beforeUpload={() => false}
-                      disabled={!canInteract}
+                      disabled={!canEdit}
                       onChange={({ file }) => {
                         const rawFile = getRawUploadFile(file)
                         if (rawFile) {
@@ -741,7 +749,7 @@ const AiPromptInput: React.FC<AiPromptInputProps> = ({
                       <Button
                         type="text"
                         aria-label={resolvedAttachButtonTitle}
-                        disabled={!canInteract}
+                        disabled={!canEdit}
                         icon={<IconFont type="icon-dip-attachment" className={styles.actionIcon} />}
                       />
                     </Upload>
@@ -787,12 +795,12 @@ const AiPromptInput: React.FC<AiPromptInputProps> = ({
                 </Flex>
 
                 {loading ? (
-                  <Tooltip title={resolvedSendButtonTitle}>
+                  <Tooltip title={resolvedStopButtonTitle}>
                     <span>
                       <LoadingButton
                         type="primary"
                         shape="circle"
-                        aria-label={resolvedSendButtonTitle}
+                        aria-label={resolvedStopButtonTitle as string}
                       />
                     </span>
                   </Tooltip>
@@ -804,7 +812,7 @@ const AiPromptInput: React.FC<AiPromptInputProps> = ({
                         type="primary"
                         shape="circle"
                         aria-label={resolvedSendButtonTitle}
-                        disabled={!(canInteract && (mergedValue.trim() || attachments.length))}
+                        disabled={!(canSubmit && (mergedValue.trim() || attachments.length))}
                         icon={<SendOutlined />}
                       />
                     </span>

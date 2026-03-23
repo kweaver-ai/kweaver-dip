@@ -16,6 +16,16 @@
   height: 100%;
 }
 
+.bodySplitterPreviewHidden {
+  :global(.dip-splitter-bar) {
+    display: none;
+  }
+
+  :global(.dip-splitter-panel) {
+    padding-right: 0;
+  }
+}
+
 .splitterPanel {
   min-width: 0;
   transition: width 0.15s ease;

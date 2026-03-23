@@ -38,6 +38,7 @@ export interface AiPromptInputProps {
   autoSize?: SenderProps['autoSize']
   onChange?: (value: string) => void
   onSubmit?: (payload: AiPromptSubmitPayload) => void
+  onStop?: () => void
   onAttach?: (files: File[]) => void
   onEmployeeSelect?: (item: AiPromptMentionOption) => void
   employeeOptions?: AiPromptMentionOption[]

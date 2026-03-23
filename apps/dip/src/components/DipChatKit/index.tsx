@@ -13,6 +13,7 @@ import { getConversationTitle } from './utils'
 const DipChatKitInner: React.FC<Omit<DipChatKitProps, 'defaultMessageTurns'>> = ({
   className,
   style,
+  showHeader = true,
   employeeOptions,
   defaultEmployeeValue,
   inputPlaceholder,
@@ -33,10 +34,10 @@ const DipChatKitInner: React.FC<Omit<DipChatKitProps, 'defaultMessageTurns'>> = 
 
   return (
     <div className={clsx('DipChatKit', styles.root, className)} style={style}>
-      <DipChatHeader title={conversationTitle} />
+      {showHeader && <DipChatHeader title={conversationTitle} />}
       <div className={styles.body}>
         <Splitter
-          className={styles.bodySplitter}
+          className={clsx(styles.bodySplitter, !previewVisible && styles.bodySplitterPreviewHidden)}
           classNames={{ panel: styles.splitterPanel }}
           onResize={(sizes) => {
             if (!previewVisible) return
