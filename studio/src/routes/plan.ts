@@ -1,7 +1,7 @@
 import { Router, type NextFunction, type Request, type Response } from "express";
 
 import { OpenClawCronGatewayAdapter } from "../adapters/openclaw-cron-adapter";
-import { getEnv } from "../config/env";
+import { getEnv } from "../utils/env";
 import { HttpError } from "../errors/http-error";
 import { OpenClawGatewayClient } from "../infra/openclaw-gateway-client";
 import { DefaultCronLogic, type CronLogic } from "../logic/plan";
@@ -123,13 +123,13 @@ export interface DigitalHumanPlansParams {
 }
 
 /**
- * Path parameters for digital human plan runs endpoint.
+ * Path parameters for plan runs endpoint.
  */
-export interface DigitalHumanPlanRunsParams extends DigitalHumanPlansParams {
+export interface PlanRunsParams {
   /**
    * Plan identifier.
    */
-  plan_id: string;
+  id: string;
 }
 
 const MAX_LIMIT = 200;
@@ -207,9 +207,9 @@ export function createCronRouter(logic: CronLogic = cronLogic): Router {
   );
 
   router.get(
-    "/api/dip-studio/v1/digital-human/:id/plans/:plan_id/runs",
+    "/api/dip-studio/v1/plans/:id/runs",
     async (
-      request: Request<DigitalHumanPlanRunsParams, unknown, unknown, CronRunListQuery>,
+      request: Request<PlanRunsParams, unknown, unknown, CronRunListQuery>,
       response: Response,
       next: NextFunction
     ): Promise<void> => {
@@ -217,7 +217,7 @@ export function createCronRouter(logic: CronLogic = cronLogic): Router {
         const query = readCronRunListQuery({
           ...request.query,
           scope: "job",
-          jobId: request.params.plan_id
+          jobId: request.params.id
         });
         const result = await logic.listCronRuns(query);
 
@@ -226,7 +226,7 @@ export function createCronRouter(logic: CronLogic = cronLogic): Router {
         next(
           error instanceof HttpError
             ? error
-            : new HttpError(502, "Failed to query digital human plan runs")
+            : new HttpError(502, "Failed to query plan runs")
         );
       }
     }

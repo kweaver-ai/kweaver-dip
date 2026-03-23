@@ -18,7 +18,7 @@ import {
   resolvePort,
   resolveTimeoutMs,
   resolveWorkspaceDir
-} from "./config/env";
+} from "./utils/env";
 import { HttpError } from "./errors/http-error";
 import { errorHandler, resolveErrorCode } from "./middleware/error-handler";
 import { notFoundHandler } from "./middleware/not-found";

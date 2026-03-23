@@ -1,7 +1,7 @@
 import { Router, type NextFunction, type Request, type Response } from "express";
 import type { IncomingHttpHeaders } from "node:http";
 
-import { getEnv } from "../config/env";
+import { getEnv } from "../utils/env";
 import { HttpError } from "../errors/http-error";
 import {
   DefaultOpenClawResponsesHttpClient,

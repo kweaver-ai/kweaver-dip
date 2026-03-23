@@ -1,6 +1,6 @@
 import type { NextFunction, Request, Response } from "express";
 
-import { getEnv } from "../config/env";
+import { getEnv } from "../utils/env";
 import { HttpError } from "../errors/http-error";
 import {
   DefaultHydraHttpClient,

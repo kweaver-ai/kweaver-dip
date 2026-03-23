@@ -173,7 +173,7 @@ describe("createCronRouter", () => {
     );
     const planRunsLayer = router.stack.find(
       (entry) =>
-        entry.route?.path === "/api/dip-studio/v1/digital-human/:id/plans/:plan_id/runs"
+        entry.route?.path === "/api/dip-studio/v1/plans/:id/runs"
     );
 
     expect(jobsLayer).toBeDefined();
@@ -383,7 +383,7 @@ describe("createCronRouter", () => {
     expect(next).not.toHaveBeenCalled();
   });
 
-  it("handles digital human plan runs request with plan_id override", async () => {
+  it("handles plan runs request with id override", async () => {
     const listCronRuns = vi.fn().mockResolvedValue({
       entries: [],
       total: 0,
@@ -411,7 +411,7 @@ describe("createCronRouter", () => {
     };
     const layer = router.stack.find(
       (entry) =>
-        entry.route?.path === "/api/dip-studio/v1/digital-human/:id/plans/:plan_id/runs"
+        entry.route?.path === "/api/dip-studio/v1/plans/:id/runs"
     );
     const handler = layer?.route?.stack[0]?.handle;
     const response = createResponseDouble();
@@ -420,8 +420,7 @@ describe("createCronRouter", () => {
     await handler?.(
       {
         params: {
-          id: "dh-1",
-          plan_id: "plan-1"
+          id: "plan-1"
         },
         query: {}
       } as unknown as Request,

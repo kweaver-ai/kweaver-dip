@@ -1,5 +1,5 @@
 import { createApp } from "./app";
-import { getEnv } from "./config/env";
+import { getEnv } from "./utils/env";
 
 const env = getEnv();
 const app = createApp();

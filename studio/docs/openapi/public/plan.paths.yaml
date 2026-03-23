@@ -178,18 +178,12 @@ paths:
         "500":
           $ref: '../common.schemas.yaml#/errors/InternalServerError'
 
-  /digital-human/{id}/plans/{plan_id}/runs:
+  /plans/{id}/runs:
     get:
-      operationId: getDigitalHumanPlanRuns
-      summary: 获取指定数字员工计划任务的运行记录
+      operationId: getPlanRuns
+      summary: 获取指定计划任务的运行记录
       parameters:
         - name: id
-          in: path
-          required: true
-          description: 数字员工 ID
-          schema:
-            type: string
-        - name: plan_id
           in: path
           required: true
           description: 计划任务 ID

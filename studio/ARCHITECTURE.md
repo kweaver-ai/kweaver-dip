@@ -4,7 +4,7 @@
 
 - `src/app.ts`：组装 Express 应用、中间件和路由。
 - `src/server.ts`：读取环境变量并启动 HTTP 服务。
-- `src/config/`：运行时配置与环境变量解析。
+- `src/utils/`：通用工具与运行时配置解析。
 - `src/infra/`：基础设施适配层，例如 OpenClaw Gateway WebSocket 客户端。
 - `src/adapters/`：外部资源适配器，基于端口接口整合具体依赖调用。
 - `src/routes/`：HTTP 路由定义。
