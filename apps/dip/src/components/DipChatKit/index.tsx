@@ -8,17 +8,17 @@ import RightSideArea from './components/RightSideArea'
 import styles from './index.module.less'
 import DipChatKitStoreProvider, { useDipChatKitStore } from './store'
 import type { DipChatKitProps } from './types'
-import { getConversationTitle } from './utils'
+import { buildDefaultMessageTurnsFromSubmitPayload, getConversationTitle } from './utils'
 
-const DipChatKitInner: React.FC<Omit<DipChatKitProps, 'defaultMessageTurns'>> = ({
+const DipChatKitInner: React.FC<Omit<DipChatKitProps, 'initialSubmitPayload'>> = ({
   className,
   style,
   showHeader = true,
+  sessionId,
+  assignEmployeeValue,
   employeeOptions,
   defaultEmployeeValue,
   inputPlaceholder,
-  onSend,
-  onRegenerate,
 }) => {
   const {
     dipChatKitStore: { messageTurns, preview, chatPanelSize },
@@ -54,11 +54,11 @@ const DipChatKitInner: React.FC<Omit<DipChatKitProps, 'defaultMessageTurns'>> = 
           >
             <div className={clsx('ChatContentAreaPanel', styles.chatPanel)}>
               <ChatContentArea
+                sessionId={sessionId}
+                assignEmployeeValue={assignEmployeeValue}
                 employeeOptions={employeeOptions}
                 defaultEmployeeValue={defaultEmployeeValue}
                 inputPlaceholder={inputPlaceholder}
-                onSend={onSend}
-                onRegenerate={onRegenerate}
               />
             </div>
           </Splitter.Panel>
@@ -79,9 +79,13 @@ const DipChatKitInner: React.FC<Omit<DipChatKitProps, 'defaultMessageTurns'>> = 
   )
 }
 
-const DipChatKit: React.FC<DipChatKitProps> = ({ defaultMessageTurns = [], ...restProps }) => {
+const DipChatKit: React.FC<DipChatKitProps> = ({ initialSubmitPayload, ...restProps }) => {
+  const initialMessageTurns = useMemo(() => {
+    return buildDefaultMessageTurnsFromSubmitPayload(initialSubmitPayload)
+  }, [initialSubmitPayload])
+
   return (
-    <DipChatKitStoreProvider defaultMessageTurns={defaultMessageTurns}>
+    <DipChatKitStoreProvider initialMessageTurns={initialMessageTurns}>
       <DipChatKitInner {...restProps} />
     </DipChatKitStoreProvider>
   )

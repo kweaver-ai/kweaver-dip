@@ -1,4 +1,4 @@
-import { CloseCircleFilled, SendOutlined } from '@ant-design/icons'
+﻿import { CloseCircleFilled, SendOutlined } from '@ant-design/icons'
 import { FileCard, Sender, type SenderProps } from '@ant-design/x'
 import {
   Avatar,
@@ -57,6 +57,7 @@ const uploadValidateMessageKey = 'ai-prompt-upload-validate'
 const AiPromptInput: React.FC<AiPromptInputProps> = ({
   value,
   defaultValue = '',
+  assignEmployeeValue,
   defaultEmployeeValue,
   autoSize = { minRows: 2, maxRows: 4 },
   onChange,
@@ -93,11 +94,13 @@ const AiPromptInput: React.FC<AiPromptInputProps> = ({
   const mergedValue = value ?? innerValue
   const canEdit = !disabled
   const canSubmit = !(disabled || loading)
+  const normalizedAssignEmployeeValue = assignEmployeeValue?.trim() || ''
+  const showEmployeeSelector = !normalizedAssignEmployeeValue
   const resolvedEmployeePanelTitle = employeePanelTitle ?? intl.get('aiPromptInput.mentionPanelTitle')
   const resolvedEmployeeButtonLabel = employeeButtonLabel ?? intl.get('aiPromptInput.mentionButton')
   const resolvedAttachButtonTitle = attachButtonTitle ?? intl.get('aiPromptInput.attach')
   const resolvedSendButtonTitle = sendButtonTitle ?? intl.get('aiPromptInput.send')
-  const resolvedStopButtonTitle = intl.get('dipChatKit.stopGenerate').d('停止生成')
+  const resolvedStopButtonTitle = intl.get('dipChatKit.stopGenerate').d('鍋滄鐢熸垚')
   const resolvedRemoveFileTitle = intl.get('aiPromptInput.removeFile')
   const resolvedEmployeeOptions = useMemo(() => {
     if (employeeOptions.length > 0) {
@@ -137,7 +140,7 @@ const AiPromptInput: React.FC<AiPromptInputProps> = ({
       } catch {
         if (disposed) return
         setFetchedEmployeeOptions([])
-        message.error(intl.get('dipChatKit.fetchDigitalHumanListFailed').d('获取数字员工列表失败，请稍后重试'))
+        message.error(intl.get('dipChatKit.fetchDigitalHumanListFailed').d('鑾峰彇鏁板瓧鍛樺伐鍒楄〃澶辫触锛岃绋嶅悗閲嶈瘯'))
       }
     }
 
@@ -149,6 +152,16 @@ const AiPromptInput: React.FC<AiPromptInputProps> = ({
   }, [employeeOptions.length])
 
   useEffect(() => {
+    if (normalizedAssignEmployeeValue) {
+      const assignedEmployee =
+        resolvedEmployeeOptions.find((item) => item.value === normalizedAssignEmployeeValue) ?? {
+          value: normalizedAssignEmployeeValue,
+          label: normalizedAssignEmployeeValue,
+        }
+      setEmployees([assignedEmployee])
+      return
+    }
+
     if (!resolvedEmployeeOptions.length) return
     setEmployees((prevEmployees) => {
       if (prevEmployees.length > 0) return prevEmployees
@@ -158,16 +171,16 @@ const AiPromptInput: React.FC<AiPromptInputProps> = ({
       if (!defaultEmployee) return prevEmployees
       return [defaultEmployee]
     })
-  }, [defaultEmployeeValue, resolvedEmployeeOptions])
+  }, [defaultEmployeeValue, normalizedAssignEmployeeValue, resolvedEmployeeOptions])
 
   const buttonMentionOptionMap = useMemo(() => {
     return new Map(resolvedEmployeeOptions.map((item) => [item.value, item]))
   }, [resolvedEmployeeOptions])
 
   const keyboardTriggerItems = useMemo(() => {
-    if (!Array.isArray(triggerCharacter)) return []
+    if (!(showEmployeeSelector && Array.isArray(triggerCharacter))) return []
     return triggerCharacter.filter((item) => item.character)
-  }, [triggerCharacter])
+  }, [showEmployeeSelector, triggerCharacter])
 
   const keyboardTriggerCharacters = useMemo(() => {
     return keyboardTriggerItems.map((item) => item.character)
@@ -272,7 +285,7 @@ const AiPromptInput: React.FC<AiPromptInputProps> = ({
   }
 
   const openMentionPanel = (source: MentionTriggerSource, character?: string) => {
-    if (!canEdit) return
+    if (!(canEdit && showEmployeeSelector)) return
 
     if (source === 'keyboard') {
       if (!character) return
@@ -344,14 +357,22 @@ const AiPromptInput: React.FC<AiPromptInputProps> = ({
     if (!(hasContentOrFiles && canSubmit)) {
       return
     }
-    if (!employees.length) {
+
+    const submitEmployees =
+      employees.length > 0
+        ? employees
+        : normalizedAssignEmployeeValue
+          ? [{ value: normalizedAssignEmployeeValue, label: normalizedAssignEmployeeValue }]
+          : []
+
+    if (!submitEmployees.length) {
       message.warning(intl.get('dipChatKit.selectDigitalHumanFirst').d('请先选择一个数字员工'))
       return
     }
 
     const payload: AiPromptSubmitPayload = {
       content: nextContent,
-      employees,
+      employees: submitEmployees,
       files: attachments,
     }
 
@@ -419,7 +440,7 @@ const AiPromptInput: React.FC<AiPromptInputProps> = ({
   }
 
   const handleButtonDropdownOpenChange = (nextOpen: boolean) => {
-    if (!(canEdit && buttonSuggestionItems.length)) {
+    if (!(showEmployeeSelector && canEdit && buttonSuggestionItems.length)) {
       closeMentionPanel()
       return
     }
@@ -490,6 +511,11 @@ const AiPromptInput: React.FC<AiPromptInputProps> = ({
       closeMentionPanel()
     }
   }, [keyboardTriggerCharacters.length, triggerSource])
+
+  useEffect(() => {
+    if (!(open && !showEmployeeSelector)) return
+    closeMentionPanel()
+  }, [open, showEmployeeSelector])
 
   const markMentionMenuMouseDown = () => {
     isMentionMenuMouseDownRef.current = true
@@ -710,27 +736,29 @@ const AiPromptInput: React.FC<AiPromptInputProps> = ({
             return (
               <Flex align="center" justify="space-between" className={styles.footer}>
                 <Flex align="center" className={styles.leftActions}>
-                  <Dropdown
-                    trigger={['click']}
-                    placement="topLeft"
-                    open={isButtonMentionOpen}
-                    onOpenChange={handleButtonDropdownOpenChange}
-                    menu={buttonMentionMenu}
-                    popupRender={renderMentionPopup}
-                  >
-                    <Tooltip title={resolvedEmployeeButtonLabel}>
-                      <span>
-                        <Button
-                          type="text"
-                          aria-label={resolvedEmployeeButtonLabel}
-                          disabled={!(canEdit && buttonSuggestionItems.length)}
-                          onClick={() => openMentionPanel('button')}
-                        >
-                          @
-                        </Button>
-                      </span>
-                    </Tooltip>
-                  </Dropdown>
+                  {showEmployeeSelector && (
+                    <Dropdown
+                      trigger={['click']}
+                      placement="topLeft"
+                      open={isButtonMentionOpen}
+                      onOpenChange={handleButtonDropdownOpenChange}
+                      menu={buttonMentionMenu}
+                      popupRender={renderMentionPopup}
+                    >
+                      <Tooltip title={resolvedEmployeeButtonLabel}>
+                        <span>
+                          <Button
+                            type="text"
+                            aria-label={resolvedEmployeeButtonLabel}
+                            disabled={!(canEdit && buttonSuggestionItems.length)}
+                            onClick={() => openMentionPanel('button')}
+                          >
+                            @
+                          </Button>
+                        </span>
+                      </Tooltip>
+                    </Dropdown>
+                  )}
 
                   <Tooltip title={resolvedAttachButtonTitle}>
                     <Upload
@@ -755,7 +783,7 @@ const AiPromptInput: React.FC<AiPromptInputProps> = ({
                     </Upload>
                   </Tooltip>
 
-                  {!!employees.length && (
+                  {showEmployeeSelector && !!employees.length && (
                     <Flex align="center" gap={8} className={styles.mentionTags}>
                       {employees.map((item, index) => (
                         <Tag
@@ -828,3 +856,4 @@ const AiPromptInput: React.FC<AiPromptInputProps> = ({
 }
 
 export default AiPromptInput
+

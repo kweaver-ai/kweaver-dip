@@ -2,6 +2,7 @@
 import isString from 'lodash/isString'
 import truncate from 'lodash/truncate'
 import intl from 'react-intl-universal'
+import type { AiPromptSubmitPayload } from './components/AiPromptInput/types'
 import type { DipChatKitMessageTurn } from './types'
 
 export const getConversationTitle = (messageTurns: DipChatKitMessageTurn[]): string => {
@@ -40,4 +41,34 @@ export const wait = async (ms: number): Promise<void> => {
   await new Promise((resolve) => {
     window.setTimeout(resolve, ms)
   })
+}
+
+export const buildDefaultMessageTurnsFromSubmitPayload = (
+  payload?: AiPromptSubmitPayload,
+): DipChatKitMessageTurn[] => {
+  if (!payload?.content) {
+    return []
+  }
+
+  const questionAttachments = payload.files.map((file) => ({
+    uid: `${file.name}_${file.size}_${file.lastModified}`,
+    name: file.name,
+    size: file.size,
+    type: file.type,
+    file,
+  }))
+
+  return [
+    {
+      id: `turn_init_${Date.now()}`,
+      question: payload.content,
+      questionEmployees: payload.employees,
+      pendingSend: true,
+      questionAttachments,
+      answerMarkdown: '',
+      answerLoading: false,
+      answerStreaming: false,
+      createdAt: new Date().toISOString(),
+    },
+  ]
 }

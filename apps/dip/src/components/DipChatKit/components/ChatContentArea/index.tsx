@@ -6,9 +6,12 @@ import isString from 'lodash/isString'
 import type React from 'react'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import intl from 'react-intl-universal'
-import { createChatSessionKey, createDigitalHumanResponseSSE } from '../../apis'
+import {
+  createChatSessionKey,
+  createDigitalHumanResponseSSE,
+  getDigitalHumanSessionMessages,
+} from '../../apis'
 import { useDipChatKitStore } from '../../store'
-import type { DipChatKitSendHandler } from '../../types'
 import { isAsyncIterable, normalizeStreamChunk } from '../../utils'
 import AiPromptInput from '../AiPromptInput'
 import type { AiPromptSubmitPayload } from '../AiPromptInput/types'
@@ -17,14 +20,14 @@ import ScrollContainer from '../ScrollContainer'
 import type { ScrollContainerRef } from '../ScrollContainer/types'
 import styles from './index.module.less'
 import type { ChatContentAreaProps } from './types'
-import { buildRegeneratePayload } from './utils'
+import { buildRegeneratePayload, mapSessionMessagesToTurns } from './utils'
 
 const ChatContentArea: React.FC<ChatContentAreaProps> = ({
+  sessionId,
+  assignEmployeeValue,
   employeeOptions,
   defaultEmployeeValue,
   inputPlaceholder,
-  onSend,
-  onRegenerate,
 }) => {
   const [inputValue, setInputValue] = useState('')
   const scrollRef = useRef<ScrollContainerRef | null>(null)
@@ -33,6 +36,7 @@ const ChatContentArea: React.FC<ChatContentAreaProps> = ({
   const abortControllerMapRef = useRef<Record<string, AbortController>>({})
   const {
     dipChatKitStore: { messageTurns, scroll },
+    setDipChatKitStore,
     appendQuestionTurn,
     startAnswerStream,
     appendAnswerChunk,
@@ -60,11 +64,34 @@ const ChatContentArea: React.FC<ChatContentAreaProps> = ({
     return false
   }
 
+  const resetConversation = useCallback(
+    (turns: typeof messageTurns = []) => {
+      setDipChatKitStore({
+        messageTurns: turns,
+        preview: {
+          visible: false,
+          activeTurnId: '',
+          payload: null,
+        },
+        scroll: {
+          autoScrollEnabled: true,
+          showBackToBottom: false,
+          isAtBottom: true,
+        },
+      })
+    },
+    [setDipChatKitStore],
+  )
+
   const resolveEmployeeId = useCallback(
     (payload: AiPromptSubmitPayload): string => {
       const payloadEmployeeId = payload.employees[0]?.value
       if (payloadEmployeeId) {
         return payloadEmployeeId
+      }
+
+      if (assignEmployeeValue) {
+        return assignEmployeeValue
       }
 
       if (defaultEmployeeValue) {
@@ -77,7 +104,7 @@ const ChatContentArea: React.FC<ChatContentAreaProps> = ({
           .d('未获取到数字员工 ID，请先选择数字员工后再发送') as string,
       )
     },
-    [defaultEmployeeValue],
+    [assignEmployeeValue, defaultEmployeeValue],
   )
 
   const ensureSessionKey = useCallback(async (employeeId: string): Promise<string> => {
@@ -97,21 +124,21 @@ const ChatContentArea: React.FC<ChatContentAreaProps> = ({
     return sessionKey
   }, [])
 
-  const runBuiltInSend = useCallback<DipChatKitSendHandler>(
-    async (payload, context) => {
+  const runBuiltInSend = useCallback(
+    async (payload: AiPromptSubmitPayload, signal?: AbortSignal) => {
       const employeeId = resolveEmployeeId(payload)
       const sessionKey = await ensureSessionKey(employeeId)
 
       return createDigitalHumanResponseSSE(
         { input: payload.content },
-        { sessionKey, signal: context.signal },
+        { sessionKey, signal },
       )
     },
     [ensureSessionKey, resolveEmployeeId],
   )
 
   const consumeSendResult = useCallback(
-    async (turnId: string, result: Awaited<ReturnType<DipChatKitSendHandler>>) => {
+    async (turnId: string, result: unknown) => {
       if (isString(result)) {
         if (result) {
           appendAnswerChunk(turnId, result)
@@ -138,13 +165,12 @@ const ChatContentArea: React.FC<ChatContentAreaProps> = ({
 
   const runSendFlow = useCallback(
     async (payload: AiPromptSubmitPayload, turnId: string, regenerate: boolean) => {
-      const handler = regenerate ? onRegenerate || onSend || runBuiltInSend : onSend || runBuiltInSend
       const abortController = new AbortController()
       abortControllerMapRef.current[turnId] = abortController
       startAnswerStream(turnId, regenerate)
 
       try {
-        const result = await handler(payload, { turnId, regenerate, signal: abortController.signal })
+        const result = await runBuiltInSend(payload, abortController.signal)
         await consumeSendResult(turnId, result)
       } catch (error) {
         if (abortController.signal.aborted || isAbortError(error)) {
@@ -168,8 +194,6 @@ const ChatContentArea: React.FC<ChatContentAreaProps> = ({
       consumeSendResult,
       failAnswerStream,
       finishAnswerStream,
-      onRegenerate,
-      onSend,
       runBuiltInSend,
       startAnswerStream,
     ],
@@ -197,26 +221,64 @@ const ChatContentArea: React.FC<ChatContentAreaProps> = ({
     void runSendFlow(pendingPayload, pendingTurn.id, false)
   }, [messageTurns, runSendFlow, setAutoScrollEnabled, setShowBackToBottom])
 
+  const abortAllStreaming = useCallback(() => {
+    Object.values(abortControllerMapRef.current).forEach((controller) => {
+      controller.abort()
+    })
+    abortControllerMapRef.current = {}
+  }, [])
+
+  useEffect(() => {
+    if (sessionId === undefined) return
+
+    const trimmedSessionId = sessionId.trim()
+    abortAllStreaming()
+    setInputValue('')
+
+    if (!trimmedSessionId) {
+      resetConversation([])
+      return
+    }
+
+    resetConversation([])
+    let disposed = false
+    const request = getDigitalHumanSessionMessages(trimmedSessionId)
+
+    request
+      .then((response) => {
+        if (disposed) return
+        const turns = mapSessionMessagesToTurns(response.messages)
+        resetConversation(turns)
+      })
+      .catch(() => {
+        if (disposed) return
+        resetConversation([])
+        message.error(intl.get('dipChatKit.loadSessionMessagesFailed').d('加载会话消息失败'))
+      })
+
+    return () => {
+      disposed = true
+      if ('abort' in request && typeof request.abort === 'function') {
+        request.abort()
+      }
+    }
+  }, [abortAllStreaming, resetConversation, sessionId])
+
   useEffect(() => {
     return () => {
-      Object.values(abortControllerMapRef.current).forEach((controller) => {
-        controller.abort()
-      })
-      abortControllerMapRef.current = {}
+      abortAllStreaming()
     }
-  }, [])
+  }, [abortAllStreaming])
 
   const handleStopGenerating = useCallback(() => {
     const activeControllers = Object.values(abortControllerMapRef.current)
     if (activeControllers.length === 0) return
 
-    activeControllers.forEach((controller) => {
-      controller.abort()
-    })
+    abortAllStreaming()
 
     setAutoScrollEnabled(false)
     setShowBackToBottom(true)
-  }, [setAutoScrollEnabled, setShowBackToBottom])
+  }, [abortAllStreaming, setAutoScrollEnabled, setShowBackToBottom])
 
   const handleSubmit = useCallback(
     async (payload: AiPromptSubmitPayload) => {
@@ -352,6 +414,7 @@ const ChatContentArea: React.FC<ChatContentAreaProps> = ({
                 void handleSubmit(payload)
               }}
               onStop={handleStopGenerating}
+              assignEmployeeValue={assignEmployeeValue}
               employeeOptions={employeeOptions}
               defaultEmployeeValue={defaultEmployeeValue}
               loading={streamLoading}

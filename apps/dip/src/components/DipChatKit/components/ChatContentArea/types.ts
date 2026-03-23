@@ -1,10 +1,9 @@
 ﻿import type { AiPromptMentionOption } from '../AiPromptInput/types'
-import type { DipChatKitSendHandler } from '../../types'
 
 export interface ChatContentAreaProps {
+  sessionId?: string
+  assignEmployeeValue?: string
   employeeOptions?: AiPromptMentionOption[]
   defaultEmployeeValue?: string
   inputPlaceholder?: string
-  onSend?: DipChatKitSendHandler
-  onRegenerate?: DipChatKitSendHandler
 }

@@ -5,6 +5,7 @@
     "missingEmployeeId": "未获取到数字员工 ID，请先选择数字员工后再发送",
     "missingSessionKey": "创建会话失败，未返回有效 sessionKey",
     "answerGenerateFailed": "回答生成失败，请稍后重试",
+    "loadSessionMessagesFailed": "加载会话消息失败",
     "noCopyContent": "暂无可复制内容",
     "copyFailedCheckPermission": "复制失败，请检查浏览器权限设置",
     "emptyState": "请输入问题开始对话。",

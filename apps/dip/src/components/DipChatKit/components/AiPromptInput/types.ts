@@ -34,6 +34,7 @@ export interface MentionTriggerMatch {
 export interface AiPromptInputProps {
   value?: string
   defaultValue?: string
+  assignEmployeeValue?: string
   defaultEmployeeValue?: string
   autoSize?: SenderProps['autoSize']
   onChange?: (value: string) => void

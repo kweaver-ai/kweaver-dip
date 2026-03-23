@@ -47,27 +47,14 @@ export interface DipChatKitState {
   chatPanelSize: string | number
 }
 
-export interface DipChatKitSendContext {
-  turnId: string
-  regenerate: boolean
-  signal?: AbortSignal
-}
-
-export type DipChatKitStreamResult = string | AsyncIterable<string> | void
-
-export type DipChatKitSendHandler = (
-  payload: AiPromptSubmitPayload,
-  context: DipChatKitSendContext,
-) => Promise<DipChatKitStreamResult> | DipChatKitStreamResult
-
 export interface DipChatKitProps {
   className?: string
   style?: React.CSSProperties
   showHeader?: boolean
-  defaultMessageTurns?: DipChatKitMessageTurn[]
+  initialSubmitPayload?: AiPromptSubmitPayload
+  sessionId?: string
+  assignEmployeeValue?: string
   employeeOptions?: AiPromptMentionOption[]
   defaultEmployeeValue?: string
   inputPlaceholder?: string
-  onSend?: DipChatKitSendHandler
-  onRegenerate?: DipChatKitSendHandler
 }

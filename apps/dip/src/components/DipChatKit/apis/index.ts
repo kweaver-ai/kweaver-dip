@@ -4,12 +4,21 @@ import type {
   DipChatKitCreateSessionKeyRequest,
   DipChatKitCreateSessionKeyResponse,
   DipChatKitDigitalHumanList,
+  DipChatKitGetSessionMessagesParams,
   DipChatKitResponseRequestBody,
   DipChatKitResponseSSEOptions,
+  DipChatKitSessionGetResponse,
 } from './types'
 
 const BASE = '/api/dip-studio/v1'
 const DEFAULT_STREAM_TIMEOUT = 600_000
+
+function cleanParams<T extends Record<string, unknown>>(obj?: T): T | undefined {
+  if (!obj) return undefined
+  const entries = Object.entries(obj).filter(([, value]) => value !== undefined)
+  if (entries.length === 0) return undefined
+  return Object.fromEntries(entries) as T
+}
 
 export const createChatSessionKey = (
   agentId: string,
@@ -28,6 +37,14 @@ export const getDigitalHumanList = (): Promise<DipChatKitDigitalHumanList> => {
   p2.abort = p1.abort
   return p2
 }
+
+export const getDigitalHumanSessionMessages = (
+  sessionId: string,
+  params?: DipChatKitGetSessionMessagesParams,
+): Promise<DipChatKitSessionGetResponse> =>
+  get(`${BASE}/sessions/${sessionId}/messages`, {
+    params: cleanParams(params as Record<string, unknown> | undefined),
+  }) as Promise<DipChatKitSessionGetResponse>
 
 const buildFullRequestUrl = (path: string): string => {
   return `${window.location.protocol}//${window.location.host}${path}`

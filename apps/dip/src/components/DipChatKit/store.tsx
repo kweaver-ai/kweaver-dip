@@ -27,12 +27,12 @@ export interface DipChatKitStoreContextType {
 }
 
 interface DipChatKitStoreProviderProps {
-  defaultMessageTurns?: DipChatKitMessageTurn[]
+  initialMessageTurns?: DipChatKitMessageTurn[]
 }
 
-const createInitialState = (defaultMessageTurns: DipChatKitMessageTurn[] = []): DipChatKitState => {
+const createInitialState = (initialMessageTurns: DipChatKitMessageTurn[] = []): DipChatKitState => {
   return {
-    messageTurns: defaultMessageTurns,
+    messageTurns: initialMessageTurns,
     preview: {
       visible: false,
       activeTurnId: '',
@@ -80,10 +80,10 @@ export const useDipChatKitStore = (): DipChatKitStoreContextType => {
 
 const DipChatKitStoreProvider: React.FC<PropsWithChildren<DipChatKitStoreProviderProps>> = ({
   children,
-  defaultMessageTurns = [],
+  initialMessageTurns = [],
 }) => {
   const [store, setStore, getStore, resetStore] = useLatestState<DipChatKitState>(
-    createInitialState(defaultMessageTurns),
+    createInitialState(initialMessageTurns),
   )
 
   const setDipChatKitStore: DipChatKitStoreContextType['setDipChatKitStore'] = (data) => {

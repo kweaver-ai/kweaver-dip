@@ -5,6 +5,7 @@
     "missingEmployeeId": "No digital employee ID found. Select a digital employee before sending.",
     "missingSessionKey": "Failed to create session: no valid sessionKey returned.",
     "answerGenerateFailed": "Failed to generate answer. Please try again later.",
+    "loadSessionMessagesFailed": "Failed to load session messages.",
     "noCopyContent": "No content available to copy.",
     "copyFailedCheckPermission": "Copy failed. Please check browser permission settings.",
     "emptyState": "Enter a question to start the conversation.",
