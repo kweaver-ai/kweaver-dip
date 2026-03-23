@@ -19,6 +19,7 @@ export interface DipChatKitMessageTurn {
   id: string
   question: string
   questionEmployees?: AiPromptMentionOption[]
+  pendingSend?: boolean
   questionAttachments: DipChatKitAttachment[]
   answerMarkdown: string
   answerLoading: boolean

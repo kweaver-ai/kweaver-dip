@@ -5,6 +5,7 @@ import clsx from 'clsx'
 import isEmpty from 'lodash/isEmpty'
 import type React from 'react'
 import { useState } from 'react'
+import intl from 'react-intl-universal'
 import ResizeObserver from '@/components/ResizeObserver'
 import MessageActions from '../MessageActions'
 import styles from './index.module.less'
@@ -67,13 +68,13 @@ const UserQuestionBubble: React.FC<UserQuestionBubbleProps> = ({
               actions={[
                 {
                   key: 'edit-question',
-                  title: '编辑问题',
+                  title: intl.get('dipChatKit.editQuestion').d('编辑问题') as string,
                   icon: <EditOutlined />,
                   onClick: onEdit,
                 },
                 {
                   key: 'copy-question',
-                  title: '复制问题',
+                  title: intl.get('dipChatKit.copyQuestion').d('复制问题') as string,
                   icon: <CopyOutlined />,
                   onClick: onCopy,
                 },

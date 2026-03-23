@@ -1,12 +1,14 @@
 ﻿import isEmpty from 'lodash/isEmpty'
 import isString from 'lodash/isString'
 import truncate from 'lodash/truncate'
+import intl from 'react-intl-universal'
 import type { DipChatKitMessageTurn } from './types'
 
 export const getConversationTitle = (messageTurns: DipChatKitMessageTurn[]): string => {
-  if (isEmpty(messageTurns)) return '对话 AI 生成'
+  const defaultTitle = intl.get('dipChatKit.conversationTitle').d('对话 AI 生成') as string
+  if (isEmpty(messageTurns)) return defaultTitle
   const firstQuestion = messageTurns[0]?.question ?? ''
-  if (!firstQuestion) return '对话 AI 生成'
+  if (!firstQuestion) return defaultTitle
   return truncate(firstQuestion, { length: 50, omission: '' })
 }
 

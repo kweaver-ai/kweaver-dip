@@ -14,6 +14,9 @@ import global_en from './global/en-US.json'
 import global_zh from './global/zh-CN.json'
 import global_tw from './global/zh-TW.json'
 import digitalHuman_zh from './digital-human/zh-CN.json'
+import dipChatKit_en from './dip-chat-kit/en-US.json'
+import dipChatKit_zh from './dip-chat-kit/zh-CN.json'
+import dipChatKit_tw from './dip-chat-kit/zh-TW.json'
 
 const zh_CN = {
   ...error_zh,
@@ -22,6 +25,7 @@ const zh_CN = {
   ...aiPromptInput_zh,
   ...dataAgent_zh,
   ...digitalHuman_zh,
+  ...dipChatKit_zh,
 }
 
 const zh_TW = {
@@ -30,6 +34,7 @@ const zh_TW = {
   ...home_tw,
   ...aiPromptInput_tw,
   ...dataAgent_tw,
+  ...dipChatKit_tw,
 }
 
 const en_US = {
@@ -38,6 +43,7 @@ const en_US = {
   ...home_en,
   ...aiPromptInput_en,
   ...dataAgent_en,
+  ...dipChatKit_en,
 }
 
 const locales = {

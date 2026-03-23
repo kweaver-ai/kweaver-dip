@@ -127,6 +127,7 @@ const DipChatKitStoreProvider: React.FC<PropsWithChildren<DipChatKitStoreProvide
       ...prevState,
       messageTurns: updateTurnById(prevState.messageTurns, turnId, (turn) => ({
         ...turn,
+        pendingSend: false,
         answerMarkdown: clearPrevious ? '' : turn.answerMarkdown,
         answerLoading: true,
         answerStreaming: true,

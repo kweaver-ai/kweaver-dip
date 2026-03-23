@@ -5,6 +5,7 @@ import isEmpty from 'lodash/isEmpty'
 import isString from 'lodash/isString'
 import type React from 'react'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import intl from 'react-intl-universal'
 import { createChatSessionKey, createDigitalHumanResponseSSE } from '../../apis'
 import { useDipChatKitStore } from '../../store'
 import type { DipChatKitSendHandler } from '../../types'
@@ -28,6 +29,7 @@ const ChatContentArea: React.FC<ChatContentAreaProps> = ({
   const [inputValue, setInputValue] = useState('')
   const scrollRef = useRef<ScrollContainerRef | null>(null)
   const sessionKeyMapRef = useRef<Record<string, string>>({})
+  const autoSentTurnIdsRef = useRef<Set<string>>(new Set())
   const {
     dipChatKitStore: { messageTurns, scroll },
     appendQuestionTurn,
@@ -62,7 +64,11 @@ const ChatContentArea: React.FC<ChatContentAreaProps> = ({
         return defaultEmployeeValue
       }
 
-      throw new Error('未获取到数字员工 ID，请先选择数字员工后再发送')
+      throw new Error(
+        intl
+          .get('dipChatKit.missingEmployeeId')
+          .d('未获取到数字员工 ID，请先选择数字员工后再发送') as string,
+      )
     },
     [defaultEmployeeValue],
   )
@@ -75,7 +81,9 @@ const ChatContentArea: React.FC<ChatContentAreaProps> = ({
 
     const { sessionKey } = await createChatSessionKey()
     if (!sessionKey) {
-      throw new Error('创建会话失败，未返回有效 sessionKey')
+      throw new Error(
+        intl.get('dipChatKit.missingSessionKey').d('创建会话失败，未返回有效 sessionKey') as string,
+      )
     }
 
     sessionKeyMapRef.current[employeeId] = sessionKey
@@ -127,7 +135,12 @@ const ChatContentArea: React.FC<ChatContentAreaProps> = ({
         const result = await handler(payload, { turnId, regenerate })
         await consumeSendResult(turnId, result)
       } catch (error) {
-        const errorMessage = error instanceof Error ? error.message : '回答生成失败，请稍后重试'
+        const errorMessage =
+          error instanceof Error
+            ? error.message
+            : (intl
+                .get('dipChatKit.answerGenerateFailed')
+                .d('回答生成失败，请稍后重试') as string)
         failAnswerStream(turnId, errorMessage)
         message.error(errorMessage)
       }
@@ -139,6 +152,23 @@ const ChatContentArea: React.FC<ChatContentAreaProps> = ({
     if (!scroll.autoScrollEnabled) return
     scrollRef.current?.scrollToBottom('auto')
   }, [streamFingerprint, scroll.autoScrollEnabled])
+
+  useEffect(() => {
+    const pendingTurn = messageTurns.find(
+      (turn) =>
+        turn.pendingSend &&
+        !turn.answerLoading &&
+        !turn.answerStreaming &&
+        !autoSentTurnIdsRef.current.has(turn.id),
+    )
+    if (!pendingTurn) return
+
+    autoSentTurnIdsRef.current.add(pendingTurn.id)
+    const pendingPayload = buildRegeneratePayload(pendingTurn)
+    setAutoScrollEnabled(true)
+    setShowBackToBottom(false)
+    void runSendFlow(pendingPayload, pendingTurn.id, false)
+  }, [messageTurns, runSendFlow, setAutoScrollEnabled, setShowBackToBottom])
 
   const handleSubmit = useCallback(
     async (payload: AiPromptSubmitPayload) => {
@@ -153,7 +183,7 @@ const ChatContentArea: React.FC<ChatContentAreaProps> = ({
 
   const copyText = useCallback(async (text: string, successMessage: string) => {
     if (!text) {
-      message.warning('暂无可复制内容')
+      message.warning(intl.get('dipChatKit.noCopyContent').d('暂无可复制内容'))
       return
     }
 
@@ -161,7 +191,9 @@ const ChatContentArea: React.FC<ChatContentAreaProps> = ({
       await navigator.clipboard.writeText(text)
       message.success(successMessage)
     } catch {
-      message.error('复制失败，请检查浏览器权限设置')
+      message.error(
+        intl.get('dipChatKit.copyFailedCheckPermission').d('复制失败，请检查浏览器权限设置'),
+      )
     }
   }, [])
 
@@ -183,7 +215,11 @@ const ChatContentArea: React.FC<ChatContentAreaProps> = ({
       >
         <div className={styles.messageList}>
           <div className={styles.messageListContent}>
-            {isEmpty(messageTurns) && <div className={styles.emptyState}>请输入问题开始对话。</div>}
+            {isEmpty(messageTurns) && (
+              <div className={styles.emptyState}>
+                {intl.get('dipChatKit.emptyState').d('请输入问题开始对话。')}
+              </div>
+            )}
             {messageTurns.map((turn) => {
               return (
                 <ConversationTurn
@@ -191,18 +227,30 @@ const ChatContentArea: React.FC<ChatContentAreaProps> = ({
                   turn={turn}
                   onEditQuestion={(_, question) => {
                     setInputValue(question)
-                    message.success('问题内容已回填至输入框')
+                    message.success(
+                      intl.get('dipChatKit.questionFilledBack').d('问题内容已回填至输入框'),
+                    )
                   }}
                   onCopyQuestion={(question) => {
-                    void copyText(question, '问题复制成功')
+                    void copyText(
+                      question,
+                      intl.get('dipChatKit.questionCopied').d('问题复制成功') as string,
+                    )
                   }}
                   onCopyAnswer={(answer) => {
-                    void copyText(answer, '回答复制成功')
+                    void copyText(
+                      answer,
+                      intl.get('dipChatKit.answerCopied').d('回答复制成功') as string,
+                    )
                   }}
                   onRegenerateAnswer={(turnId) => {
                     const targetTurn = messageTurns.find((item) => item.id === turnId)
                     if (!targetTurn) {
-                      message.error('未找到可重新生成的问题')
+                      message.error(
+                        intl
+                          .get('dipChatKit.targetQuestionNotFound')
+                          .d('未找到可重新生成的问题'),
+                      )
                       return
                     }
 
@@ -224,11 +272,11 @@ const ChatContentArea: React.FC<ChatContentAreaProps> = ({
       {scroll.showBackToBottom && (
         <div className={styles.backToBottomWrap}>
           <div className={styles.backToBottomBtn}>
-            <Tooltip title="返回底部">
+            <Tooltip title={intl.get('dipChatKit.backToBottom').d('返回底部')}>
               <Button
                 type="primary"
                 shape="circle"
-                aria-label="返回底部"
+                aria-label={intl.get('dipChatKit.backToBottom').d('返回底部') as string}
                 icon={<VerticalAlignBottomOutlined />}
                 onClick={() => {
                   scrollRef.current?.scrollToBottom('smooth')
@@ -255,7 +303,9 @@ const ChatContentArea: React.FC<ChatContentAreaProps> = ({
               employeeOptions={employeeOptions}
               defaultEmployeeValue={defaultEmployeeValue}
               loading={streamLoading}
-              placeholder={inputPlaceholder || '发送消息...'}
+              placeholder={
+                inputPlaceholder || (intl.get('dipChatKit.inputPlaceholder').d('发送消息...') as string)
+              }
             />
           </div>
         </div>

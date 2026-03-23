@@ -19,10 +19,10 @@ import uniq from 'lodash/uniq'
 import type React from 'react'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import intl from 'react-intl-universal'
+import { getDigitalHumanList } from '../../apis'
 import IconFont from '@/components/IconFont'
 import ResizeObserver from '@/components/ResizeObserver'
 import useResizeObserver from '@/hooks/useResizeObserver'
-import { getDigitalHumanList } from '../../apis'
 import styles from './index.module.less'
 import type {
   AiPromptInputProps,
@@ -91,8 +91,7 @@ const AiPromptInput: React.FC<AiPromptInputProps> = ({
 
   const mergedValue = value ?? innerValue
   const canInteract = !(disabled || loading)
-  const resolvedEmployeePanelTitle =
-    employeePanelTitle ?? intl.get('aiPromptInput.mentionPanelTitle')
+  const resolvedEmployeePanelTitle = employeePanelTitle ?? intl.get('aiPromptInput.mentionPanelTitle')
   const resolvedEmployeeButtonLabel = employeeButtonLabel ?? intl.get('aiPromptInput.mentionButton')
   const resolvedAttachButtonTitle = attachButtonTitle ?? intl.get('aiPromptInput.attach')
   const resolvedSendButtonTitle = sendButtonTitle ?? intl.get('aiPromptInput.send')
@@ -135,6 +134,7 @@ const AiPromptInput: React.FC<AiPromptInputProps> = ({
       } catch {
         if (disposed) return
         setFetchedEmployeeOptions([])
+        message.error(intl.get('dipChatKit.fetchDigitalHumanListFailed').d('获取数字员工列表失败，请稍后重试'))
       }
     }
 
@@ -340,7 +340,7 @@ const AiPromptInput: React.FC<AiPromptInputProps> = ({
       return
     }
     if (!employees.length) {
-      message.warning('请先选择一个数字员工')
+      message.warning(intl.get('dipChatKit.selectDigitalHumanFirst').d('请先选择一个数字员工'))
       return
     }
 

@@ -1,4 +1,5 @@
 import uniqBy from 'lodash/uniqBy'
+import intl from 'react-intl-universal'
 import type { AiPromptMentionOption, CursorAnchorPosition, MentionTriggerMatch } from './types'
 
 const MB = 1024 * 1024
@@ -56,18 +57,26 @@ const resolveAttachmentCategory = (file: File): AttachmentCategory | null => {
 }
 
 const createUnsupportedTypeMessage = (fileName: string): string => {
-  return `文件“${fileName}”类型不支持，仅支持图片（jpeg/png/gif/webp/heic/heif）和文件（txt/markdown/html/csv/json/pdf）`
+  return intl
+    .get('dipChatKit.unsupportedFileType', { fileName })
+    .d(`文件“${fileName}”类型不支持，仅支持图片（jpeg/png/gif/webp/heic/heif）和文件（txt/markdown/html/csv/json/pdf）`) as string
 }
 
 const createSizeExceededMessage = (fileName: string, category: AttachmentCategory): string => {
   if (category === 'image') {
-    return `图片“${fileName}”超过 10MB 限制`
+    return intl
+      .get('dipChatKit.imageSizeExceeded', { fileName })
+      .d(`图片“${fileName}”超过 10MB 限制`) as string
   }
-  return `文件“${fileName}”超过 5MB 限制`
+  return intl
+    .get('dipChatKit.fileSizeExceeded', { fileName })
+    .d(`文件“${fileName}”超过 5MB 限制`) as string
 }
 
 const createDuplicateFileMessage = (fileName: string): string => {
-  return `文件“${fileName}”已上传，不允许重复上传`
+  return intl
+    .get('dipChatKit.duplicateFileUploaded', { fileName })
+    .d(`文件“${fileName}”已上传，不允许重复上传`) as string
 }
 
 export const validateAttachmentFiles = (

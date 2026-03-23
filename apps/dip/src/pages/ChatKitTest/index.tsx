@@ -24,6 +24,7 @@ const buildDefaultMessageTurns: BuildDefaultMessageTurns = (submitData) => {
       id: `turn_init_${Date.now()}`,
       question: submitData.content,
       questionEmployees: submitData.employees,
+      pendingSend: true,
       questionAttachments,
       answerMarkdown: '',
       answerLoading: false,

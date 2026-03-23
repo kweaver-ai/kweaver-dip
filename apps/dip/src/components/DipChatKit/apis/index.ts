@@ -1,4 +1,5 @@
 import { get, getCommonHttpHeaders, post } from '@/utils/http'
+import intl from 'react-intl-universal'
 import type {
   DipChatKitCreateSessionKeyResponse,
   DipChatKitDigitalHumanList,
@@ -181,7 +182,9 @@ const parseSSEFrame = (frame: string): { done: boolean; text: string } => {
 const formatHttpErrorMessage = async (response: Response): Promise<string> => {
   const responseText = (await response.text()).trim()
   if (!responseText) {
-    return `请求失败（HTTP ${response.status}）`
+    return intl
+      .get('dipChatKit.httpRequestFailed', { status: response.status })
+      .d(`请求失败（HTTP ${response.status}）`) as string
   }
 
   try {
@@ -191,7 +194,7 @@ const formatHttpErrorMessage = async (response: Response): Promise<string> => {
       return message
     }
   } catch {
-    // 保持原始文本作为错误信息
+    // Keep original text as fallback error message.
   }
 
   return responseText
@@ -238,7 +241,9 @@ export async function* createDigitalHumanResponseSSE(
     }
 
     if (!response.body) {
-      throw new Error('服务端未返回可读取的 SSE 数据流')
+      throw new Error(
+        intl.get('dipChatKit.sseNoReadableStream').d('服务端未返回可读取的 SSE 数据流') as string,
+      )
     }
 
     const reader = response.body.getReader()
