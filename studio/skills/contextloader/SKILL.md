@@ -1,6 +1,13 @@
 ---
 name: contextloader
 description: 基于 Context Loader API 加载业务知识网络上下文。适用于概念检索、对象类或行动类识别、对象实例查询、实例子图扩展、逻辑属性解析、动态动作工具召回，以及知识网络构建任务状态查询。
+metadata:
+  {
+    "openclaw":
+      {
+        "requires": { "env": ["APP_USER_ID", "CONTEXT_LOADER_BASE_URL"] },
+      }
+  }
 ---
 
 # Context Loader
