@@ -4,7 +4,7 @@ info:
   title: OpenClaw Extensions Gateway Reference - Skills Control
   version: 0.1.0
   description: |
-    `skills-control` 插件注册的 Gateway HTTP 接口。
+    `dip` 插件注册的 Gateway HTTP 接口（原 `skills-control` 能力）。
     所有请求均要求 Gateway 鉴权。
 
 servers:

@@ -5,12 +5,96 @@ import { fileURLToPath } from "node:url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
+/**
+ * Parses one `.env` line into `{ key, value }`, or `null` if skip (comment / empty / invalid).
+ * Supports optional `export ` prefix and single- or double-quoted values. No dependency on `dotenv`.
+ *
+ * @param line Raw line from file.
+ * @returns Parsed entry or null.
+ */
+function parseDotenvLine(line) {
+  const trimmed = line.trim();
+  if (trimmed === "" || trimmed.startsWith("#")) {
+    return null;
+  }
+  let body = trimmed.startsWith("export ") ? trimmed.slice(7).trim() : trimmed;
+  const eq = body.indexOf("=");
+  if (eq <= 0) {
+    return null;
+  }
+  const key = body.slice(0, eq).trim();
+  if (!/^[A-Za-z_][A-Za-z0-9_]*$/.test(key)) {
+    return null;
+  }
+  let value = body.slice(eq + 1).trim();
+  if (
+    (value.startsWith('"') && value.endsWith('"')) ||
+    (value.startsWith("'") && value.endsWith("'"))
+  ) {
+    value = value.slice(1, -1);
+  }
+  return { key, value };
+}
+
+/**
+ * Loads a dotenv-style file into `process.env` without overriding keys that already exist
+ * (same idea as the `dotenv` package). Uses only Node built-ins.
+ *
+ * @param filePath Absolute path to `.env`.
+ * @returns Number of variables applied.
+ */
+function loadDotenvFile(filePath) {
+  const text = fs.readFileSync(filePath, "utf8");
+  let applied = 0;
+  for (const line of text.split(/\r?\n/)) {
+    const parsed = parseDotenvLine(line);
+    if (!parsed) continue;
+    if (Object.prototype.hasOwnProperty.call(process.env, parsed.key)) {
+      continue;
+    }
+    process.env[parsed.key] = parsed.value;
+    applied += 1;
+  }
+  return applied;
+}
+
+const STUDIO_ROOT = path.join(__dirname, "..", "..");
+const dotenvFilePath =
+  process.env.INIT_AGENTS_DOTENV_PATH?.trim() || path.join(STUDIO_ROOT, ".env");
+
+if (fs.existsSync(dotenvFilePath)) {
+  loadDotenvFile(dotenvFilePath);
+  console.log(`[配置] 已从 .env 加载: ${dotenvFilePath}`);
+}
+
 const STATE_DIR = process.env.OPENCLAW_STATE_DIR || path.join(os.homedir(), ".openclaw");
 const BUILT_IN_DIR = process.env.OPENCLAW_BUILT_IN_DIR || path.join(__dirname, "../..", "built-in");
 const EXTENSIONS_DIR = process.env.OPENCLAW_EXTENSIONS_DIR || path.join(__dirname, "../..", "extensions");
 const WORKSPACE_ROOT = path.resolve(
   process.env.OPENCLAW_WORKSPACE_DIR || STATE_DIR
 );
+
+/** OpenClaw `skills.entries` key for the Context Loader skill bundled with `dip`. */
+const CONTEXTLOADER_SKILL_KEY = "contextloader";
+
+const CONTEXTLOADER_FALLBACK_APP_USER_ID = "<REPLACE_WITH_APP_USER_ID>";
+const CONTEXTLOADER_FALLBACK_BASE_URL = "<REPLACE_WITH_CONTEXT_LOADER_BASE_URL>";
+
+/**
+ * Default `skills.entries.contextloader.env` values: same names as the skill uses.
+ * Reads `APP_USER_ID` and `CONTEXT_LOADER_BASE_URL` from the process environment
+ * when the script runs; falls back to visible placeholders if unset or blank.
+ *
+ * @returns Env key/value map for openclaw.json.
+ */
+function resolveContextLoaderEnvFromProcess() {
+  const appUserId = process.env.APP_USER_ID?.trim();
+  const baseUrl = process.env.CONTEXT_LOADER_BASE_URL?.trim();
+  return {
+    APP_USER_ID: appUserId || CONTEXTLOADER_FALLBACK_APP_USER_ID,
+    CONTEXT_LOADER_BASE_URL: baseUrl || CONTEXTLOADER_FALLBACK_BASE_URL
+  };
+}
 
 function readJsonFile(filePath) {
   return JSON.parse(fs.readFileSync(filePath, "utf8"));
@@ -97,6 +181,64 @@ function upsertAgentConfig(agentConfigs, newAgent) {
   console.log(`[新增] 在配置文件中注册 ${newAgent.id}`);
 }
 
+/**
+ * Ensures `skills.entries.contextloader.env` exists for OpenClaw.
+ * New or missing keys use values from `resolveContextLoaderEnvFromProcess()` (env at script run, else `<REPLACE_WITH_…>`).
+ * Does not overwrite keys already present in openclaw.json.
+ *
+ * @param cfg Parsed openclaw.json root object (mutated).
+ */
+function ensureContextLoaderPlaceholderEnv(cfg) {
+  const envDefaults = resolveContextLoaderEnvFromProcess();
+  const fromEnv = [];
+  if (process.env.APP_USER_ID?.trim()) fromEnv.push("APP_USER_ID");
+  if (process.env.CONTEXT_LOADER_BASE_URL?.trim()) fromEnv.push("CONTEXT_LOADER_BASE_URL");
+  if (fromEnv.length > 0) {
+    console.log(`[配置] contextloader env 默认值来自环境变量: ${fromEnv.join(", ")}`);
+  }
+
+  cfg.skills = cfg.skills || {};
+  cfg.skills.entries = cfg.skills.entries || {};
+  const entries = cfg.skills.entries;
+  const existing = entries[CONTEXTLOADER_SKILL_KEY];
+
+  if (!existing || typeof existing !== "object") {
+    entries[CONTEXTLOADER_SKILL_KEY] = {
+      enabled: true,
+      env: { ...envDefaults }
+    };
+    console.log(
+      `[配置] 已新增 skills.entries.${CONTEXTLOADER_SKILL_KEY}（enabled + env 默认值）`
+    );
+    return;
+  }
+
+  if (existing.enabled === undefined) {
+    existing.enabled = true;
+  }
+
+  if (!existing.env || typeof existing.env !== "object") {
+    existing.env = { ...envDefaults };
+    console.log(
+      `[配置] 已为 skills.entries.${CONTEXTLOADER_SKILL_KEY} 写入 env 默认值`
+    );
+    return;
+  }
+
+  let added = false;
+  for (const [key, value] of Object.entries(envDefaults)) {
+    if (!Object.prototype.hasOwnProperty.call(existing.env, key)) {
+      existing.env[key] = value;
+      added = true;
+    }
+  }
+  if (added) {
+    console.log(
+      `[配置] 已补全 skills.entries.${CONTEXTLOADER_SKILL_KEY}.env 缺失键（来自当前环境或占位符）`
+    );
+  }
+}
+
 async function initOpenClawConfig(builtInAgents) {
   console.log("🛠️ 开始校准 openclaw.json 中的 Agent 配置...");
   const configPath = path.join(STATE_DIR, "openclaw.json");
@@ -140,6 +282,8 @@ async function initOpenClawConfig(builtInAgents) {
     cfg.plugins.entries[pluginName] = { enabled: true };
     console.log(`[配置] 开启插件 ${pluginName}`);
   }
+
+  ensureContextLoaderPlaceholderEnv(cfg);
 
   fs.writeFileSync(configPath, JSON.stringify(cfg, null, 2), "utf8");
   console.log(`✅ openclaw.json 成功写入 ${builtInAgents.length} 个内置 Agent 的配置保障！\n`);
@@ -235,7 +379,7 @@ async function syncPlugins() {
     for (const pluginDir of pluginDirs) {
       const pluginSrc = path.join(EXTENSIONS_DIR, pluginDir.name);
       const pluginDest = path.join(pluginsDestDir, pluginDir.name);
-      fs.cpSync(pluginSrc, pluginDest, { recursive: true });
+      fs.cpSync(pluginSrc, pluginDest, { recursive: true, dereference: true });
       console.log(`[复制] 成功将 ${pluginDir.name} 插件复制到 -> ${pluginDest}`);
     }
   } catch (err) {

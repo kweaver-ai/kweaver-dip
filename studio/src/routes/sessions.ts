@@ -372,13 +372,13 @@ export function readRequiredSubpathParam(
 }
 
 /**
- * Normalizes archives session identifier for downstream archives-access plugin.
+ * Normalizes archives session identifier for downstream dip `/v1/archives`.
  *
  * Accepts plain session ids and session keys like
  * `agent:de_finance:cron:9fb6b0da-c26e-4419-929e-6b8a1274f80c`.
  *
  * @param rawSessionId Raw session identifier from path.
- * @returns Normalized session id expected by archives-access.
+ * @returns Normalized session id expected by dip archives.
  */
 export function normalizeArchiveSessionId(rawSessionId: string): string {
   const trimmed = rawSessionId.trim();

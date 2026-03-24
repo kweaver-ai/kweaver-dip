@@ -364,7 +364,7 @@ export interface OpenClawSessionPreviewItem {
 }
 
 /**
- * One archive entry returned by OpenClaw `archives-access`.
+ * One archive entry returned by OpenClaw `dip` archives API.
  */
 export interface OpenClawSessionArchiveEntry {
   /**

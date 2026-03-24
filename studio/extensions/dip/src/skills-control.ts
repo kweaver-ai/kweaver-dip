@@ -1,12 +1,22 @@
-import fs from "node:fs";
 import path from "node:path";
 import type { IncomingMessage, ServerResponse } from "node:http";
-import { listSkillCommandsForAgents, type OpenClawPluginApi } from "openclaw/plugin-sdk";
+import type { OpenClawPluginApi } from "openclaw/plugin-sdk";
+import { discoverSkillNames } from "./skills-discovery";
 
-export default function register(api: OpenClawPluginApi) {
-  const repoRoot = path.resolve(__dirname, "../..");
-  const skillsDir = path.join(repoRoot, "skills");
-  // 1. Register a command for CLI/messaging sub-surfaces
+/**
+ * Registers skills CLI command and `/v1/config/agents/skills` HTTP routes.
+ *
+ * @param api OpenClaw plugin API.
+ * @param repoRoot Repository / studio root (parent of `skills/`).
+ * @param bundledSkillsDir Plugin-relative bundled skills directory.
+ */
+export function registerSkillsControl(
+  api: OpenClawPluginApi,
+  repoRoot: string,
+  bundledSkillsDir: string
+): void {
+  const repoSkillsDir = path.join(repoRoot, "skills");
+
   api.registerCommand({
     name: "skills-manage",
     description: "Manage agent skills (list, enable, disable)",
@@ -16,24 +26,10 @@ export default function register(api: OpenClawPluginApi) {
       const sub = args[0]?.toLowerCase();
 
       if (sub === "list") {
-        let allSkillNames: string[] = [];
-        try {
-          if (fs.existsSync(skillsDir)) {
-            allSkillNames = fs.readdirSync(skillsDir, { withFileTypes: true })
-              .filter(dirent => dirent.isDirectory() || dirent.name.endsWith(".skill"))
-              .map(dirent => dirent.name.replace(/\.skill$/, ""))
-              .filter(name => !name.startsWith("."))
-              .sort();
-          }
-        } catch (e) {
-          // Fallback to SDK discovery if FS listing fails
-          const specs = listSkillCommandsForAgents({ cfg: ctx.config });
-          allSkillNames = Array.from(new Set(specs.map(s => s.skillName))).sort();
-        }
-        
+        const allSkillNames = discoverSkillNames(repoSkillsDir, bundledSkillsDir, ctx.config);
         const configSkills = ctx.config.skills?.entries || {};
         if (allSkillNames.length === 0) return { text: "No skills discovered." };
-        
+
         const lines = allSkillNames.map(name => {
           const enabled = (configSkills as any)[name]?.enabled !== false;
           return `- ${name}: ${enabled ? "✅ enabled" : "❌ disabled"}`;
@@ -44,14 +40,14 @@ export default function register(api: OpenClawPluginApi) {
       if (sub === "enable" || sub === "disable") {
         const skillName = args[1];
         if (!skillName) return { text: `Usage: /skills-manage ${sub} <name>` };
-        
+
         const currentConfig = await api.runtime.config.loadConfig();
         const nextCfg = JSON.parse(JSON.stringify(currentConfig));
-        
+
         if (!nextCfg.skills) nextCfg.skills = {};
         if (!nextCfg.skills.entries) nextCfg.skills.entries = {};
         if (!nextCfg.skills.entries[skillName]) nextCfg.skills.entries[skillName] = {};
-        
+
         const enabled = sub === "enable";
         nextCfg.skills.entries[skillName].enabled = enabled;
 
@@ -63,14 +59,13 @@ export default function register(api: OpenClawPluginApi) {
     }
   });
 
-  // 2. Register HTTP route for Gateway control
   api.registerHttpRoute({
     path: "/v1/config/agents/skills",
     match: "prefix",
     auth: "gateway",
     handler: async (req: IncomingMessage, res: ServerResponse) => {
       const url = new URL(req.url || "", "http://localhost");
-      
+
       if (req.method === "GET") {
         const agentId = url.searchParams.get("agentId");
         const config = await api.runtime.config.loadConfig();
@@ -78,22 +73,7 @@ export default function register(api: OpenClawPluginApi) {
         if (!agentId) {
           res.statusCode = 200;
           res.setHeader("Content-Type", "application/json");
-          let responseSkills: string[] = [];
-          try {
-            if (fs.existsSync(skillsDir)) {
-              responseSkills = fs.readdirSync(skillsDir, { withFileTypes: true })
-                .filter(dirent => dirent.isDirectory() || dirent.name.endsWith(".skill"))
-                .map(dirent => dirent.name.replace(/\.skill$/, ""))
-                .filter(name => !name.startsWith("."))
-                .sort();
-            } else {
-              const specs = listSkillCommandsForAgents({ cfg: config as any });
-              responseSkills = Array.from(new Set(specs.map(s => s.skillName))).sort();
-            }
-          } catch (e) {
-            const specs = listSkillCommandsForAgents({ cfg: config as any });
-            responseSkills = Array.from(new Set(specs.map(s => s.skillName))).sort();
-          }
+          const responseSkills = discoverSkillNames(repoSkillsDir, bundledSkillsDir, config);
           res.end(JSON.stringify({ skills: responseSkills }));
           return true;
         }
@@ -111,21 +91,7 @@ export default function register(api: OpenClawPluginApi) {
         const agentSkills = agent.skills;
         let responseSkills = agentSkills;
         if (agentSkills === undefined) {
-          try {
-            if (fs.existsSync(skillsDir)) {
-              responseSkills = fs.readdirSync(skillsDir, { withFileTypes: true })
-                .filter(dirent => dirent.isDirectory() || dirent.name.endsWith(".skill"))
-                .map(dirent => dirent.name.replace(/\.skill$/, ""))
-                .filter(name => !name.startsWith("."))
-                .sort();
-            } else {
-              const specs = listSkillCommandsForAgents({ cfg: config as any, agentIds: [agentId] });
-              responseSkills = Array.from(new Set(specs.map(s => s.skillName)));
-            }
-          } catch (e) {
-            const specs = listSkillCommandsForAgents({ cfg: config as any, agentIds: [agentId] });
-            responseSkills = Array.from(new Set(specs.map(s => s.skillName)));
-          }
+          responseSkills = discoverSkillNames(repoSkillsDir, bundledSkillsDir, config, [agentId]);
         }
         res.end(JSON.stringify({ agentId, skills: responseSkills }));
         return true;
@@ -135,11 +101,11 @@ export default function register(api: OpenClawPluginApi) {
         try {
           const body = await new Promise<any>((resolve, reject) => {
             let data = "";
-            req.on("data", (chunk: any) => data += chunk);
+            req.on("data", (chunk: any) => (data += chunk));
             req.on("end", () => {
               try {
                 resolve(JSON.parse(data));
-              } catch (e) {
+              } catch {
                 reject(new Error("Invalid JSON body"));
               }
             });

@@ -78,7 +78,7 @@ export interface OpenClawArchivesHttpClient {
 }
 
 /**
- * HTTP client that proxies OpenClaw `archives-access` plugin endpoint.
+ * HTTP client that proxies OpenClaw `dip` plugin `/v1/archives` endpoint.
  */
 export class DefaultOpenClawArchivesHttpClient
 implements OpenClawArchivesHttpClient {
@@ -166,7 +166,7 @@ implements OpenClawArchivesHttpClient {
 }
 
 /**
- * Builds the OpenClaw `archives-access` endpoint URL.
+ * Builds the OpenClaw `dip` `/v1/archives` endpoint URL.
  *
  * @param gatewayUrl The configured OpenClaw gateway URL.
  * @param digitalHumanId The target digital human identifier.
@@ -192,7 +192,7 @@ export function buildOpenClawSessionArchivesUrl(
 }
 
 /**
- * Builds the OpenClaw `archives-access` endpoint URL for one subpath.
+ * Builds the OpenClaw dip `/v1/archives` URL for one subpath.
  *
  * @param gatewayUrl The configured OpenClaw gateway URL.
  * @param digitalHumanId The target digital human identifier.

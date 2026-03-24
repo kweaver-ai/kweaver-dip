@@ -6,7 +6,7 @@ import type {
 } from "../types/agent-skills";
 
 /**
- * Runtime configuration used to call OpenClaw `skills-control` plugin endpoints.
+ * Runtime configuration used to call OpenClaw `dip` plugin skills endpoints.
  */
 export interface OpenClawAgentSkillsHttpClientOptions {
   /**
@@ -59,7 +59,7 @@ export interface OpenClawAgentSkillsHttpClient {
 }
 
 /**
- * HTTP client that proxies the `skills-control` plugin endpoints.
+ * HTTP client that proxies the `dip` plugin skills endpoints.
  */
 export class DefaultOpenClawAgentSkillsHttpClient
 implements OpenClawAgentSkillsHttpClient {
@@ -152,7 +152,7 @@ implements OpenClawAgentSkillsHttpClient {
 }
 
 /**
- * Builds the OpenClaw `skills-control` plugin endpoint URL.
+ * Builds the OpenClaw `dip` plugin skills endpoint URL.
  *
  * @param gatewayUrl The configured OpenClaw gateway HTTP URL.
  * @param agentId Optional target agent id.
@@ -182,7 +182,7 @@ export function buildOpenClawAgentSkillsUrl(
 }
 
 /**
- * Builds request headers for the `skills-control` plugin.
+ * Builds request headers for the `dip` plugin skills API.
  *
  * @param token Optional bearer token.
  * @param includeJsonContentType Whether to include JSON content type header.

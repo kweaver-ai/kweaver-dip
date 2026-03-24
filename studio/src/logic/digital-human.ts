@@ -86,7 +86,7 @@ export interface DigitalHumanLogicOptions {
   openClawAgentsAdapter: OpenClawAgentsAdapter;
 
   /**
-   * Logic used to read and replace per-agent skill bindings (skills-control API).
+   * Logic used to read and replace per-agent skill bindings (dip skills API).
    */
   agentSkillsLogic: AgentSkillsLogic;
 

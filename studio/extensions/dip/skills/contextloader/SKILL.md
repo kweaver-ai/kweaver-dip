@@ -1,5 +1,6 @@
 ---
 name: contextloader
+version: "1.0.0"
 description: 基于 Context Loader API 加载业务知识网络上下文。适用于概念检索、对象类或行动类识别、对象实例查询、实例子图扩展、逻辑属性解析、动态动作工具召回，以及知识网络构建任务状态查询。
 metadata:
   {
@@ -95,6 +96,36 @@ metadata:
 - 过滤条件中的 `value_from` 与 `value` 必须同时出现
 - `value_from` 当前只支持 `const`
 - 路径子图查询中，`object_types` 与 `relation_types` 的顺序必须严格对应
+
+## 环境变量从哪里注入
+
+本技能依赖的变量已在 frontmatter 中通过 `openclaw.requires.env` 声明（`APP_USER_ID`、`CONTEXT_LOADER_BASE_URL`），便于网关或 IDE 做缺失检查。实际赋值可用下列方式（按部署选型择一或组合）：
+
+1. **`openclaw.json` 的 `skills` 配置（推荐持久化）**：在全局配置 `skills.entries.<技能名>` 下使用 `env` 对象。技能名与目录名一致，一般为 `contextloader`。OpenClaw 会在执行该技能相关能力时把 `env` 合并进运行环境（与网关实现一致，效果等价于进程环境变量）。
+
+   ```json
+   {
+     "skills": {
+       "entries": {
+         "contextloader": {
+           "enabled": true,
+           "env": {
+             "APP_USER_ID": "your-app-user-id",
+             "CONTEXT_LOADER_BASE_URL": "http://agent-retrieval:30779"
+           }
+         }
+       }
+     }
+   }
+   ```
+
+2. **进程环境**：在启动 OpenClaw Gateway（及 Agent 执行侧）的环境中导出变量，例如 shell、`systemd` 的 `Environment=`、Kubernetes `env`、`docker-compose` 的 `environment`。工具调用进程通常继承该环境。
+
+3. **OpenClaw `skills.update`**：通过网关 WebSocket RPC 调用 `skills.update`，传入 `skillKey`（与技能目录名一致，一般为 `contextloader`）以及 `env` 对象；写入后通常会反映到 `openclaw.json` 的 `skills.entries` 中。参见 `studio/docs/references/openclaw-websocket-rpc/skills.md` 中 `skills.update` 的参数说明。
+
+4. **Agent / 沙箱**：若你所用版本在 `agents.list[]`、`sandbox` 等位置支持额外环境变量，也可在同一键名下设置上述变量，使对应 Agent 执行时可见。
+
+`dip` 插件本身不解析或注入这些变量；由 OpenClaw 根据 `openclaw.json` / RPC 更新后的配置，在 **Agent 实际发起 HTTP 调用** 时提供有效环境。
 
 ## 如何调用
 

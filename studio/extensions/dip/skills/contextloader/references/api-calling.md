@@ -7,10 +7,11 @@
 - 从环境变量 `CONTEXT_LOADER_BASE_URL` 读取（完整根 URL，无末尾斜杠，例如 `http://agent-retrieval:30779`）
 - 各接口的完整 URL 为 `<CONTEXT_LOADER_BASE_URL>` + 下文给出的路径与查询参数
 - 若该变量未设置或为空，不要发起调用，先提示用户配置环境变量
+- 可在 OpenClaw 的 `openclaw.json` 中配置 `skills.entries.contextloader.env.CONTEXT_LOADER_BASE_URL`（及同级的 `APP_USER_ID`），由网关在执行时注入为环境变量
 
 鉴权来源：
 
-- 从环境变量 `APP_USER_ID` 读取账号 ID
+- 从环境变量 `APP_USER_ID` 读取账号 ID（同样可通过 `skills.entries.contextloader.env` 提供）
 
 默认请求头：
 
@@ -23,10 +24,10 @@
 
 不要传递 `Authorization` 请求头。
 
-如果环境变量 `CONTEXT_LOADER_BASE_URL` 或 `APP_USER_ID` 缺失（或未设置、为空）：
+如果环境变量 `CONTEXT_LOADER_BASE_URL` 或 `APP_USER_ID` 在执行环境中仍缺失（或未设置、为空），且未在 `openclaw.json` 的 `skills.entries.contextloader.env` 等处配置：
 
 - 不要发起 API 调用
-- 先提示用户补充运行环境配置
+- 先提示用户补充运行环境配置（含 `openclaw.json` 的 `skills` 配置）
 
 ## 调用前先解析 `kn_id`
 

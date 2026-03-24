@@ -342,7 +342,7 @@ export function isHiddenSessionArchiveEntry(
 }
 
 /**
- * Resolves the agent id and normalized session id used by archives-access.
+ * Resolves the agent id and normalized session id used by dip `/v1/archives`.
  *
  * @param key The raw session key or session id.
  * @returns The agent id and normalized session id.

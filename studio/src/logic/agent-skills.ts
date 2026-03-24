@@ -53,7 +53,7 @@ export interface AgentSkillsLogic {
 }
 
 /**
- * Logic implementation backed by the `skills-control` plugin HTTP API.
+ * Logic implementation backed by the `dip` plugin skills HTTP API.
  */
 export class DefaultAgentSkillsLogic implements AgentSkillsLogic {
   /**
@@ -190,7 +190,7 @@ export function mapAvailableSkillEntries(
  * Filters available skills to those configured on the target agent.
  *
  * @param availableEntries Available skills derived from global skill status.
- * @param agentSkillNames Agent skill ids returned by the skills-control plugin.
+ * @param agentSkillNames Agent skill ids returned by the dip plugin.
  * @returns The filtered skill list for the target agent.
  */
 export function filterAgentSkillEntries(

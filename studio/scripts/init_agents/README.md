@@ -2,6 +2,8 @@
 
 `studio/scripts/init_agents/index.mjs` 用于初始化 OpenClaw 内置智能体的运行环境。
 
+**运行依赖**：只使用 **Node.js 内置模块**（不依赖 `npm install`、不需要 `dotenv` 等任何 npm 包）。可直接 `node scripts/init_agents/index.mjs`（在 `studio` 目录下）或 `node <脚本的绝对路径>`。若把脚本拷到仓库外，默认的 `OPENCLAW_BUILT_IN_DIR`、`OPENCLAW_EXTENSIONS_DIR` 以及默认 `.env` 路径（相对脚本文件上溯两级目录下的 `.env`）将不再指向本仓库，请通过 **`OPENCLAW_*` / `INIT_AGENTS_DOTENV_PATH`** 显式指定。
+
 当前脚本负责四件事：
 
 1. 从 `studio/built-in` 读取内置智能体定义
@@ -64,7 +66,7 @@ studio/built-in/<agent-name>/
 <OPENCLAW_STATE_DIR>/<metadata.id>
 ```
 
-其中 `OPENCLAW_STATE_DIR` 默认是 `~/.openclaw`。
+路径默认值见下文 **「环境变量」** 中的 `OPENCLAW_*` 说明。
 
 ## openclaw.json 写入规则
 
@@ -88,7 +90,11 @@ studio/built-in/<agent-name>/
 
 - `gateway.http.endpoints.chatCompletions`
 - `gateway.http.endpoints.responses`
-- `plugins.entries` 中来自本地 `extensions` 目录的全部插件
+- `plugins.entries` 中来自本地 `extensions` 目录的全部插件（当前为合并插件 `dip`，含原 skills-control、archives-access 能力与插件内 `contextloader` 技能目录）
+
+插件同步使用 `fs.cpSync(..., { dereference: true })`，以便将 `dip/skills/contextloader` 等符号链接展开为实际文件复制到 OpenClaw 状态目录。
+
+此外会校准 **`skills.entries.contextloader`**：不存在则新建（`enabled: true` + `env`）；已存在则只**补全缺失的 `env` 键**，从不覆盖 `openclaw.json` 里已有键。`env` 默认值如何生成见 **「环境变量」→ contextloader**。
 
 ## 鉴权同步规则
 
@@ -120,72 +126,76 @@ npm run init:agents
 npm --prefix studio run init:agents
 ```
 
+方式 3：不经过 npm、也不要求本仓库已 `npm install`（仅需已安装 Node）：
+
+```bash
+node studio/scripts/init_agents/index.mjs
+```
+
+（在仓库根目录执行时路径按你的检出位置调整。）
+
 ## 环境变量
 
-脚本当前会读取以下环境变量：
+脚本在**本次进程**中读取的环境变量分两类：一类决定路径与要读写的文件；另一类仅在写入 `skills.entries.contextloader.env` 时使用（与 contextloader 技能在运行时使用同名变量，便于与 `studio/.env` 等对齐）。
 
-- `OPENCLAW_STATE_DIR`
-- `OPENCLAW_BUILT_IN_DIR`
-- `OPENCLAW_WORKSPACE_DIR`
-- `OPENCLAW_EXTENSIONS_DIR`
+### `.env` 文件
 
-说明：
+可以。把上表中的变量写进 **`studio/.env`**（与后端服务共用同一文件即可），然后在 `studio` 目录执行 `npm run init:agents`，或在任意目录执行 `npm --prefix studio run init:agents`；脚本会按**文件路径**定位 `studio/.env`（与当前工作目录无关），在读取 `OPENCLAW_*` / `APP_USER_ID` 等之前先加载。
 
-- `OPENCLAW_STATE_DIR`
-  - OpenClaw 状态目录
-  - 默认值：`~/.openclaw`
-  - 用于定位 `openclaw.json`、`agents/main/agent/auth-profiles.json`、`plugins/`
-- `OPENCLAW_BUILT_IN_DIR`
-  - 内置智能体定义目录
-  - 默认值：`studio/built-in`
-  - 当前用于读取 `metadata.json`、`SOUL.md`、`IDENTITY.md`
-- `OPENCLAW_WORKSPACE_DIR`
-  - 内置智能体 workspace 根目录
-  - 默认值：`<OPENCLAW_STATE_DIR>`
-  - 每个 agent 的实际 workspace 为 `<OPENCLAW_WORKSPACE_DIR>/<agent-id>`
-- `OPENCLAW_EXTENSIONS_DIR`
-  - 本地扩展目录
-  - 默认值：`studio/extensions`
-  - 当前用于复制并开启该目录下的全部插件
+- `.env` 由脚本**内置的简单解析**加载（`KEY=value`、`export KEY=value`、支持单行引号包裹）；仅当文件**存在**时才加载，并打印 `[配置] 已从 .env 加载: <路径>`。
+- **已在环境中的变量不被覆盖**（与在 shell 里先 `export` 再执行效果一致：shell 里的值优先）。
+- 若 `.env` 不在默认位置，可在执行前导出 **`INIT_AGENTS_DOTENV_PATH`**（绝对路径或相对**当前工作目录**的路径）指向要加载的文件。该变量必须在进程里已有，因此一般通过 shell 设置，而不是写进被加载的同一个 `.env` 的首行（除非你分两步执行）。
 
-## 带环境变量执行
+### OpenClaw 路径与目录（`OPENCLAW_*`）
 
-示例 1：指定状态目录
+| 变量 | 作用 | 未设置时的默认 |
+| --- | --- | --- |
+| `OPENCLAW_STATE_DIR` | 状态根目录：`openclaw.json`、`agents/main/agent/auth-profiles.json`、插件复制目标等 | `~/.openclaw` |
+| `OPENCLAW_BUILT_IN_DIR` | 内置智能体定义（`metadata.json`、`SOUL.md`、`IDENTITY.md`） | 脚本文件上两级目录下的 `built-in`（本仓库布局下即 `studio/built-in`） |
+| `OPENCLAW_WORKSPACE_DIR` | 各 agent workspace 根；实际目录为 `<该目录>/<agent-id>` | 与 `OPENCLAW_STATE_DIR` 相同 |
+| `OPENCLAW_EXTENSIONS_DIR` | 要复制并注册到 `plugins.entries` 的扩展源码目录 | 脚本文件上两级目录下的 `extensions`（本仓库布局下即 `studio/extensions`） |
+
+### contextloader（写入 `openclaw.json` 的 `skills.entries.contextloader.env`）
+
+仅在**补全缺失键**时使用（已有键不会被覆盖）：
+
+| 变量 | 写入的 JSON 键 | 未设置或仅空白时 |
+| --- | --- | --- |
+| `APP_USER_ID` | `APP_USER_ID` | `<REPLACE_WITH_APP_USER_ID>` |
+| `CONTEXT_LOADER_BASE_URL` | `CONTEXT_LOADER_BASE_URL` | `<REPLACE_WITH_CONTEXT_LOADER_BASE_URL>` |
+
+脚本若检测到上述变量之一非空，会打印一行日志标明「默认值来自环境变量」。
+
+### 执行示例
+
+仅改状态目录：
 
 ```bash
-OPENCLAW_STATE_DIR=/data/openclaw \
-npm --prefix studio run init:agents
+OPENCLAW_STATE_DIR=/data/openclaw npm --prefix studio run init:agents
 ```
 
-示例 2：同时指定状态目录、built-in 目录和 workspace 根目录
+路径类全开（典型自建部署）：
 
 ```bash
 OPENCLAW_STATE_DIR=/data/openclaw \
-OPENCLAW_BUILT_IN_DIR=/Users/yannan/docker-apps/dip-studio/studio/built-in \
+OPENCLAW_BUILT_IN_DIR=/path/to/dip-studio/studio/built-in \
 OPENCLAW_WORKSPACE_DIR=/data/openclaw/workspace \
+OPENCLAW_EXTENSIONS_DIR=/path/to/dip-studio/studio/extensions \
 npm --prefix studio run init:agents
 ```
 
-示例 3：同时指定扩展目录
+同时为 contextloader 写入真实 `env`（可与上一段组合）：
 
 ```bash
+APP_USER_ID=my-app \
+CONTEXT_LOADER_BASE_URL=http://agent-retrieval:30779 \
 OPENCLAW_STATE_DIR=/data/openclaw \
-OPENCLAW_BUILT_IN_DIR=/Users/yannan/docker-apps/dip-studio/studio/built-in \
-OPENCLAW_WORKSPACE_DIR=/data/openclaw/workspace \
-OPENCLAW_EXTENSIONS_DIR=/Users/yannan/docker-apps/dip-studio/studio/extensions \
 npm --prefix studio run init:agents
 ```
 
-如果你使用 `package.json` script 或 CI，也可以先导出变量再执行：
+CI 或 shell 中可先 `export` 再执行 `npm --prefix studio run init:agents`，变量与上表相同。
 
-```bash
-export OPENCLAW_STATE_DIR=/data/openclaw
-export OPENCLAW_BUILT_IN_DIR=/Users/yannan/docker-apps/dip-studio/studio/built-in
-export OPENCLAW_WORKSPACE_DIR=/data/openclaw/workspace
-export OPENCLAW_EXTENSIONS_DIR=/Users/yannan/docker-apps/dip-studio/studio/extensions
-
-npm --prefix studio run init:agents
-```
+等价地，也可把相同键写入 **`studio/.env`** 后直接执行上述 `npm` 命令（无需再手写一长串前缀）。
 
 ## 当前限制
 
