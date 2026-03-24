@@ -4,7 +4,9 @@
 
 基础地址：
 
-- `http://agent-retrieval:30779`
+- 从环境变量 `CONTEXT_LOADER_BASE_URL` 读取（完整根 URL，无末尾斜杠，例如 `http://agent-retrieval:30779`）
+- 各接口的完整 URL 为 `<CONTEXT_LOADER_BASE_URL>` + 下文给出的路径与查询参数
+- 若该变量未设置或为空，不要发起调用，先提示用户配置环境变量
 
 鉴权来源：
 
@@ -21,7 +23,7 @@
 
 不要传递 `Authorization` 请求头。
 
-如果环境变量 `APP_USER_ID` 缺失：
+如果环境变量 `CONTEXT_LOADER_BASE_URL` 或 `APP_USER_ID` 缺失（或未设置、为空）：
 
 - 不要发起 API 调用
 - 先提示用户补充运行环境配置
@@ -223,6 +225,7 @@
 ## 黄金规则
 
 - 用户未提供 `kn_id` 时，优先从 `SOUL.md` 读取
+- 服务根地址固定从环境变量 `CONTEXT_LOADER_BASE_URL` 读取
 - `x-account-id` 固定从环境变量 `APP_USER_ID` 读取
 - `x-account-type` 固定使用 `app`
 - 不传递 `Authorization` 请求头
