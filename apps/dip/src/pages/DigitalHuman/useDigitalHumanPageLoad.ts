@@ -1,6 +1,6 @@
 import { message } from 'antd'
 import { useEffect, useState } from 'react'
-import { getDigitalHumanDetail, getDigitalHumanSkills } from '@/apis/dip-studio/digital-human'
+import { getDigitalHumanDetail, getDigitalHumanSkills } from '@/apis'
 import {
   type DigitalHumanUiMode,
   useDigitalHumanStore,

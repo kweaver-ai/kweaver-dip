@@ -6,14 +6,11 @@ export type ConversationProps = {
   sessionId: string
 }
 
-/** 对话 Tab（接入会话 API 后替换） */
+/** 对话 Tab */
 const Conversation = ({ planId: _planId, dhId, sessionId }: ConversationProps) => {
   return (
     <div className="flex h-full min-h-0 w-full flex-1 flex-col overflow-hidden">
-      <DipChatKit
-        defaultEmployeeValue={dhId}
-        sessionId={sessionId}
-      />
+      <DipChatKit showHeader={false} sessionId={sessionId} assignEmployeeValue={dhId} />
     </div>
   )
 }

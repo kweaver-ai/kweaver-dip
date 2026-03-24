@@ -1,10 +1,13 @@
 import { del, get, put } from '@/utils/http'
 import type {
+  CronJob,
   CronJobListResponse,
   CronRunListResponse,
   GetCronJobListParams,
   GetDigitalHumanPlanListParams,
-  GetDigitalHumanPlanRunsParams,
+  GetPlanRunsParams,
+  PlanContentResponse,
+  UpdatePlanRequest,
 } from './index.d'
 
 export type {
@@ -13,15 +16,14 @@ export type {
   CronJobListResponse,
   CronJobListSortBy,
   CronJobState,
-  CronRunDeliveryStatusFilter,
   CronRunEntry,
   CronRunListResponse,
-  CronRunStatusFilter,
-  CronSchedule,
   GetCronJobListParams,
   GetDigitalHumanPlanListParams,
-  GetDigitalHumanPlanRunsParams,
+  GetPlanRunsParams,
+  PlanContentResponse,
   SortDir,
+  UpdatePlanRequest,
 } from './index.d'
 
 const BASE = '/api/dip-studio/v1'
@@ -40,6 +42,10 @@ export const getCronJobList = (params?: GetCronJobListParams): Promise<CronJobLi
     params: cleanParams(params as Record<string, unknown> | undefined),
   }) as Promise<CronJobListResponse>
 
+/** 获取单个计划任务（getCronJob） */
+export const getCronJob = (planId: string): Promise<CronJob> =>
+  get(`${BASE}/plans/${planId}`) as Promise<CronJob>
+
 /** 获取指定数字员工的计划任务列表（getDigitalHumanPlanList） */
 export const getDigitalHumanPlanList = (
   dhId: string,
@@ -49,18 +55,22 @@ export const getDigitalHumanPlanList = (
     params: cleanParams(params as Record<string, unknown> | undefined),
   }) as Promise<CronJobListResponse>
 
-/** 获取指定数字员工计划任务的运行记录（getDigitalHumanPlanRuns） */
-export const getDigitalHumanPlanRuns = (
+/** 获取指定计划任务的运行记录（getPlanRuns） */
+export const getPlanRuns = (
   planId: string,
-  params?: GetDigitalHumanPlanRunsParams,
+  params?: GetPlanRunsParams,
 ): Promise<CronRunListResponse> =>
   get(`${BASE}/plans/${planId}/runs`, {
     params: cleanParams(params as Record<string, unknown> | undefined),
   }) as Promise<CronRunListResponse>
 
-/** 删除计划任务 */
-export const deleteCronJob = (planId: string): Promise<void> => del(`${BASE}/plans/${planId}`)
+/** 获取指定计划任务的 PLAN.md 内容（getPlanContent） */
+export const getPlanContent = (planId: string): Promise<PlanContentResponse> =>
+  get(`${BASE}/plans/${planId}/content`) as Promise<PlanContentResponse>
 
-/** 更新计划启用状态 */
-export const updateCronJobEnabled = (planId: string, enabled: boolean): Promise<void> =>
-  put(`${BASE}/plans/${planId}`, { body: { enabled } })
+/** 编辑计划任务（updateCronJob） */
+export const updateCronJob = (planId: string, body: UpdatePlanRequest): Promise<CronJob> =>
+  put(`${BASE}/plans/${planId}`, { body }) as Promise<CronJob>
+
+/** 删除计划任务（deleteCronJob） */
+export const deleteCronJob = (planId: string): Promise<void> => del(`${BASE}/plans/${planId}`)

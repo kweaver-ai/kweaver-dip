@@ -69,6 +69,44 @@
       font-size: 12px;
       color: var(--dip-text-color-65);
     }
+
+    /* 底部用户区：与上方 .dip-menu-item 同一套尺寸与 hover */
+    .dip-sider-footer-row {
+      display: flex;
+      align-items: center;
+      height: 40px;
+      line-height: 40px;
+      margin-inline: 6px !important;
+      width: calc(100% - 12px);
+      padding-inline: 10px !important;
+      border-radius: 4px;
+      position: relative;
+      overflow: visible;
+      box-sizing: border-box;
+      flex-shrink: 0;
+
+      &:hover {
+        background-color: var(--dip-hover-bg-color);
+      }
+    }
+
+    .dip-sider-footer-row-horizontal {
+      flex-direction: row;
+      gap: 8px;
+    }
+
+    .dip-sider-footer-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      width: 100%;
+
+      // /* 每行仅一个交互子节点时，强制拉满行宽（否则 Tooltip/rc 包裹层会保持内容宽） */
+      // .dip-sider-footer-row > * {
+      //   flex: 1 1 0%;
+      //   min-width: 0;
+      // }
+    }
   }
 }
 
@@ -81,6 +119,19 @@
 
     .dip-menu-item-group {
       display: none;
+    }
+
+    .dip-sider-footer-row {
+      padding-inline: calc(50% - 14px) !important;
+      margin-inline: 6px !important;
+    }
+
+    /*
+     * 收起时底部两行不要左右 padding：calc 会压窄可点区；与菜单不同，这里是自定义整行交互，
+     * 用 0 + 子元素铺满 + flex 居中即可。外边距仍靠 margin-inline + width 与菜单项对齐。
+     */
+    .dip-sider-footer-stack .dip-sider-footer-row {
+      padding-inline: 0 !important;
     }
   }
 }

@@ -7,12 +7,18 @@
  * 计划任务调度定义（`CronSchedule`，见 `plan.schemas.yaml`）。
  */
 export interface CronSchedule {
-  /** 调度类型（可选，由服务端约定，如 every 周期执行 / at 指定时间执行） */
-  kind?: 'every' | 'at'
-  /** Cron 表达式（必填） */
-  expr: string
-  /** 时区（必填，如 `Asia/Shanghai`） */
-  tz: string
+  /** 调度类型（由服务端约定） */
+  kind?: string
+  /** 指定执行时间（可选） */
+  at?: string
+  /** 间隔毫秒（可选） */
+  everyMs?: number
+  /** 锚点时间戳（可选） */
+  anchorMs?: number
+  /** Cron 表达式（可选） */
+  expr?: string
+  /** 时区（可选） */
+  tz?: string
 }
 
 /**
@@ -88,7 +94,7 @@ type CronPagedMeta = {
 
 /**
  * 计划任务列表响应（`CronJobListResponse`，见 `plan.schemas.yaml`）。
- * 对应接口：`GET /plans`、`GET /digital-human/{dh_id}/plans`。
+ * 对应接口：`GET /plans`、`GET /digital-human/{id}/plans`。
  */
 export type CronJobListResponse = CronPagedMeta & {
   jobs: CronJob[]
@@ -124,10 +130,19 @@ export interface CronRunEntry {
 
 /**
  * 计划任务运行记录列表响应（`CronRunListResponse`，见 `plan.schemas.yaml`）。
- * 对应接口：`GET /digital-human/{dh_id}/plans/{plan_id}/runs`。
+ * 对应接口：`GET /plans/{id}/runs`。
  */
 export type CronRunListResponse = CronPagedMeta & {
   entries: CronRunEntry[]
+}
+
+/**
+ * 计划文件内容响应（`PlanContentResponse`，见 `plan.schemas.yaml`）。
+ * 对应接口：`GET /plans/{id}/content`。
+ */
+export interface PlanContentResponse {
+  /** PLAN.md 原始文本内容 */
+  content: string
 }
 
 // --- Query：`getCronJobList` / `getDigitalHumanPlanList`（见 `plan.paths.yaml`）---
@@ -160,42 +175,28 @@ export interface GetCronJobListParams {
 }
 
 /**
- * `getDigitalHumanPlanList`（`GET /digital-human/{dh_id}/plans`，见 `plan.paths.yaml`）的 query 参数，与 {@link GetCronJobListParams} 一致。
- * 路径参数 `dh_id`：数字员工 ID。
+ * `getDigitalHumanPlanList`（`GET /digital-human/{id}/plans`，见 `plan.paths.yaml`）的 query 参数，与 {@link GetCronJobListParams} 一致。
+ * 路径参数 `id`：数字员工 ID。
  */
 export type GetDigitalHumanPlanListParams = GetCronJobListParams
 
-// --- Query：`getDigitalHumanPlanRuns`（见 `plan.paths.yaml`）---
-
-/** `status` / `statuses` 筛选枚举，默认 `all` */
-export type CronRunStatusFilter = 'all' | 'ok' | 'error' | 'skipped'
-
-/** `deliveryStatus` / `deliveryStatuses` 筛选枚举 */
-export type CronRunDeliveryStatusFilter =
-  | 'delivered'
-  | 'not-delivered'
-  | 'unknown'
-  | 'not-requested'
+// --- Query：`getPlanRuns`（见 `plan.paths.yaml`）---
 
 /**
- * `getDigitalHumanPlanRuns`（`GET /digital-human/{dh_id}/plans/{plan_id}/runs`，见 `plan.paths.yaml`）的 query 参数。
- * 路径参数：`dh_id` 数字员工 ID，`plan_id` 计划任务 ID。
+ * `getPlanRuns`（`GET /plans/{id}/runs`，见 `plan.paths.yaml`）的 query 参数。
+ * 路径参数：`id` 计划任务 ID。
  */
-export interface GetDigitalHumanPlanRunsParams {
+export interface GetPlanRunsParams {
   /** 分页大小，默认 `50`，最大 `200` */
   limit?: number
   /** 分页偏移量，默认 `0` */
   offset?: number
-  /** 单状态筛选，默认 `all` */
-  status?: CronRunStatusFilter
-  /** 多状态筛选；支持逗号分隔或重复 query 参数 */
-  statuses?: CronRunStatusFilter[]
-  /** 单投递状态筛选 */
-  deliveryStatus?: CronRunDeliveryStatusFilter
-  /** 多投递状态筛选；支持逗号分隔或重复 query 参数 */
-  deliveryStatuses?: CronRunDeliveryStatusFilter[]
-  /** 关键词匹配（`summary` / `error` / `jobName`） */
-  query?: string
   /** 排序方向，默认 `desc` */
   sortDir?: SortDir
 }
+
+/**
+ * 编辑计划任务请求体（`UpdatePlanRequest`，见 `plan.schemas.yaml`）。
+ * 对应接口：`PUT /plans/{id}`。
+ */
+export type UpdatePlanRequest = Partial<Pick<CronJob, 'name' | 'enabled'>>

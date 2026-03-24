@@ -10,37 +10,23 @@ export type SessionDefaults = {
   contextTokens?: number
 } & Record<string, unknown>
 
-/** 会话来源信息（SessionOrigin） */
-export type SessionOrigin = {
-  provider?: string
-  surface?: string
-  chatType?: string
-} & Record<string, unknown>
-
-/** 会话投递上下文（SessionDeliveryContext） */
-export type SessionDeliveryContext = {
-  channel?: string
-} & Record<string, unknown>
+/** 会话类型（SessionSummary.kind） */
+export type SessionKind = 'direct' | 'group' | 'global' | 'unknown'
 
 /** 会话摘要（SessionSummary） */
-export type SessionSummary = {
+export interface SessionSummary {
   key: string
-  kind: string
+  kind: SessionKind
   updatedAt: number
   sessionId: string
-  label?: string
-  displayName?: string
-  chatType?: string
-  origin?: SessionOrigin
-  deliveryContext?: SessionDeliveryContext
-  lastChannel?: string
-  systemSent?: boolean
-  abortedLastRun?: boolean
-  totalTokensFresh?: boolean
-  modelProvider?: string
-  model?: string
-  contextTokens?: number
-} & Record<string, unknown>
+  abortedLastRun: boolean
+  totalTokensFresh: boolean
+  modelProvider: string
+  model: string
+  contextTokens: number
+  /** includeDerivedTitles=true 时返回 */
+  derivedTitle?: string
+}
 
 /** 会话列表响应（SessionsListResponse） */
 export type SessionsListResponse = {
@@ -121,7 +107,7 @@ export type GetSessionsListParams = SessionsListQueryBase & {
 /** getDigitalHumanSessionsList（路径已含数字员工，无 agentId） */
 export type GetDigitalHumanSessionsListParams = SessionsListQueryBase
 
-/** getDigitalHumanSessionMessages */
-export interface GetDigitalHumanSessionMessagesParams {
+/** getSessionDetail / getSessionMessages */
+export interface GetSessionMessagesParams {
   limit?: number
 }

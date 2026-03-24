@@ -1,13 +1,14 @@
 import DipChatKit from '@/components/DipChatKit'
+import useSyncHistorySessions from '@/hooks/useSyncHistorySessions'
 
 /** 新会话页面 */
 const Conversation = ({ digitalHumanId }: { digitalHumanId: string }) => {
+  useSyncHistorySessions()
   return (
-    <div className="flex flex-1 flex-col items-center justify-center">
-      <DipChatKit
-        // defaultMessageTurns={defaultMessageTurns}
-        defaultEmployeeValue={digitalHumanId}
-      />
+    <div className="h-full w-full box-border">
+      <div className="h-full min-h-0">
+        <DipChatKit assignEmployeeValue={digitalHumanId} />
+      </div>
     </div>
   )
 }

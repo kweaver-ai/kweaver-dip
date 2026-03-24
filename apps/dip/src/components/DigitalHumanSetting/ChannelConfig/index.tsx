@@ -1,18 +1,25 @@
-import { Button, Tooltip } from 'antd'
-import { memo, useState } from 'react'
+import { Button, Flex, Table, Tooltip } from 'antd'
+import { memo, useMemo, useState } from 'react'
 import type { ChannelConfig as DhChannelConfig } from '@/apis/dip-studio/digital-human'
+import DingDingIcon from '@/assets/icons/dingding.svg'
+import FeiShuIcon from '@/assets/icons/feishu.svg'
 import Empty from '@/components/Empty'
 import IconFont from '@/components/IconFont'
 import ScrollBarContainer from '@/components/ScrollBarContainer'
 import { useDigitalHumanStore } from '../digitalHumanStore'
 import AddChannelModal from './AddChannelModal'
+import styles from './index.module.less'
 
 const CHANNEL_TYPE_LABEL: Record<NonNullable<DhChannelConfig['type']>, string> = {
   feishu: '飞书',
   dingtalk: '钉钉',
 }
 
-const ChannelConfig = ({ readonly }: { readonly?: boolean }) => {
+interface ChannelConfigProps {
+  readonly?: boolean
+}
+
+const ChannelConfig = ({ readonly }: ChannelConfigProps) => {
   const { channel, updateChannel, deleteChannel } = useDigitalHumanStore()
   const [addChannelModalOpen, setAddChannelModalOpen] = useState(false)
 
@@ -26,89 +33,108 @@ const ChannelConfig = ({ readonly }: { readonly?: boolean }) => {
     updateChannel(result)
   }
 
-  /** 渲染通道列表 */
-  const renderChannelList = () => {
-    if (!channel) return null
-    const label = CHANNEL_TYPE_LABEL[channel.type ?? 'feishu']
-    return (
-      <ScrollBarContainer className="mt-4 w-full flex flex-col gap-y-1 px-6">
-        <div className="w-full flex items-center gap-x-2 border border-[--dip-border-color] rounded p-2 pl-3">
-          <IconFont type="icon-dip-KG1" />
-          <span className="truncate flex-1" title={label}>
-            {label}
-          </span>
-          <Tooltip title="删除">
-            <IconFont
-              type="icon-dip-trash"
-              className="w-8 h-8 flex-shrink-0 flex items-center justify-center hover:bg-[--dip-hover-bg-color-4] rounded"
-              onClick={() => deleteChannel()}
-            />
-          </Tooltip>
-        </div>
-      </ScrollBarContainer>
-    )
-  }
+  const channelDataSource = useMemo(() => {
+    if (!channel) return []
+    return [channel]
+  }, [channel])
 
-  /** 渲染状态内容 */
-  const renderStateContent = () => {
-    if (!channel) {
-      return (
-        <Empty title="暂无通道">
-          {readonly ? undefined : (
-            <Button
-              className="mt-2"
-              type="primary"
-              icon={<IconFont type="icon-dip-add" />}
-              onClick={() => {
-                handleAddChannel()
-              }}
-            >
-              添加通道
-            </Button>
-          )}
-        </Empty>
-      )
-    }
-
-    return null
-  }
-
-  const renderContent = () => {
-    const stateContent = renderStateContent()
-
-    if (stateContent) {
-      return (
-        <div className="absolute inset-0 flex items-center justify-center min-h-[340px]">
-          {stateContent}
-        </div>
-      )
-    }
-
-    return renderChannelList()
-  }
+  const channelColumns = useMemo(() => {
+    const columns = [
+      {
+        title: '名称',
+        dataIndex: 'type',
+        key: 'type',
+        width: '40%',
+        render: (type: DhChannelConfig['type']) => {
+          const label = CHANNEL_TYPE_LABEL[type ?? 'feishu']
+          return (
+            <div className="flex items-center gap-2 truncate">
+              <img
+                src={type === 'dingtalk' ? DingDingIcon : FeiShuIcon}
+                alt={label}
+                className="h-4 w-4 object-contain"
+              />
+              <span title={label} className="truncate">
+                {label}
+              </span>
+            </div>
+          )
+        },
+      },
+      {
+        title: '通道描述',
+        dataIndex: 'description',
+        key: 'description',
+        ellipsis: true,
+        render: (text: string, record: DhChannelConfig) =>
+          `用于在${record.type === 'dingtalk' ? '钉钉' : '飞书'}客户端接收消息，处理事务`,
+      },
+      {
+        title: '操作',
+        key: 'action',
+        width: 80,
+        render: () => (
+          <Flex align="center">
+            <Tooltip title="删除">
+              <Button
+                type="text"
+                onClick={() => deleteChannel()}
+                icon={<IconFont type="icon-dip-trash" />}
+              />
+            </Tooltip>
+          </Flex>
+        ),
+      },
+    ]
+    return readonly ? columns.slice(0, 2) : columns
+  }, [deleteChannel, readonly])
 
   return (
-    <ScrollBarContainer className="h-full flex flex-col py-6 relative flex-1">
-      <div className="flex justify-between px-6">
+    <ScrollBarContainer className="h-full flex flex-col p-6 relative flex-1">
+      <div className="flex justify-between mb-4">
         <div className="flex flex-col gap-y-1">
           <div className="font-medium text-[--dip-text-color]">通道接入</div>
           <div className="text-[--dip-text-color-45]">
-            配置数字员工可接入的通信通道，如企业微信、钉钉、飞书等。
+            配置数字员工可接入的通信通道，如钉钉、飞书等。
           </div>
         </div>
-        {channel && (
+        {channel && !readonly && (
           <div className="flex items-end gap-x-3">
             <Button
               type="primary"
               icon={<IconFont type="icon-dip-add" />}
               onClick={handleAddChannel}
             >
-              添加通道
+              通道
             </Button>
           </div>
         )}
       </div>
-      {renderContent()}
+      <Table<DhChannelConfig>
+        dataSource={channelDataSource}
+        columns={channelColumns}
+        pagination={false}
+        className={styles['channel-table']}
+        rowKey={(record) => `${record.type ?? 'feishu'}-${record.appId}`}
+        bordered={false}
+        size="small"
+        scroll={{ y: 'max(246px, calc(100vh - 326px))' }}
+        locale={{
+          emptyText: (
+            <Empty type="empty" title="暂无通道">
+              {readonly ? undefined : (
+                <Button
+                  icon={<IconFont type="icon-dip-add" />}
+                  type="primary"
+                  onClick={handleAddChannel}
+                >
+                  通道
+                </Button>
+              )}
+            </Empty>
+          ),
+        }}
+      />
 
       {/* 添加通道弹窗 */}
       <AddChannelModal

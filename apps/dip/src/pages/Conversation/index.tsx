@@ -1,12 +1,13 @@
-import clsx from 'clsx'
 import { memo, useMemo } from 'react'
 import { useLocation, useSearchParams } from 'react-router-dom'
 import DipChatKit from '@/components/DipChatKit'
-import styles from './index.module.less'
-import type { ChatKitTestLocationState } from './types'
+import useSyncHistorySessions from '@/hooks/useSyncHistorySessions'
+import type { ConversationLocationState } from './types'
 
-const ChatKitTest = () => {
-  const location = useLocation() as ChatKitTestLocationState
+const Conversation = () => {
+  useSyncHistorySessions()
+
+  const location = useLocation() as ConversationLocationState
   const [searchParams] = useSearchParams()
   const employeeFromQuery = searchParams.get('employee')
 
@@ -18,16 +19,15 @@ const ChatKitTest = () => {
   }, [employeeFromQuery, location.state])
 
   return (
-    <div className={clsx('ChatKitTest', styles.page)}>
-      <div className={styles.chatKitWrap}>
+    <div className="h-full w-full box-border">
+      <div className="h-full min-h-0">
         <DipChatKit
-          showHeader={false}
           initialSubmitPayload={location.state?.submitData}
-          defaultEmployeeValue={defaultEmployeeValue}
+          assignEmployeeValue={defaultEmployeeValue}
         />
       </div>
     </div>
   )
 }
 
-export default memo(ChatKitTest)
+export default memo(Conversation)

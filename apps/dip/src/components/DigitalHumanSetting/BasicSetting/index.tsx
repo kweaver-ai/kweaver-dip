@@ -117,7 +117,7 @@ const BasicSetting = ({ readonly }: { readonly?: boolean }) => {
 
         <Form.Item label="角色设定" name="soul" style={{ marginBottom: 0 }}>
           <AdPromptInput
-            style={{ minHeight: '200px', maxHeight: 'calc(100vh - 476px)' }}
+            style={{ minHeight: '240px', maxHeight: 'calc(100vh - 476px)' }}
             placeholder={ROLE_INSTRUCTION_PLACEHOLDER[language]}
             trigger={[
               {

@@ -4,7 +4,6 @@ import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import {
   type CreateDigitalHumanRequest,
   createDigitalHuman,
-  getDigitalHumanDetail,
   type UpdateDigitalHumanRequest,
   updateDigitalHuman,
 } from '@/apis/dip-studio/digital-human'
@@ -36,18 +35,15 @@ const DHSetting = () => {
     bkn,
     skills,
     channel,
-    bindDigitalHuman,
-    resetDirtyState,
     resetAllToDetail,
   } = useDigitalHumanStore()
   const [, messageContextHolder] = message.useMessage()
   const [publishing, setPublishing] = useState(false)
   const [deleteModalOpen, setDeleteModalOpen] = useState(false)
 
-  console.log('basic', basic)
-
   const routeId = params.digitalHumanId
   const modeFromQuery = searchParams.get('mode')
+  const isEditFromUrl = Boolean(routeId && modeFromQuery === 'edit')
 
   useLayoutEffect(() => {
     if (isAdmin) return
@@ -62,6 +58,15 @@ const DHSetting = () => {
 
   const handleBack = () => {
     navigate('/digital-human/management')
+  }
+
+  const handleCancelEdit = () => {
+    if (isEditFromUrl) {
+      navigate('/digital-human/management')
+      return
+    }
+    resetAllToDetail()
+    setUiMode('view')
   }
 
   const handlePublish = async () => {
@@ -118,7 +123,10 @@ const DHSetting = () => {
   }
 
   return (
-    <div className="h-full flex flex-col bg-[--dip-white] relative">
+    <div
+      className="h-full flex flex-col bg-[--dip-white] relative"
+      id="digital-human-setting-container"
+    >
       {messageContextHolder}
       <DeleteModal
         open={deleteModalOpen}
@@ -176,13 +184,7 @@ const DHSetting = () => {
           ) : (
             <>
               {uiMode === 'edit' && (
-                <Button
-                  onClick={() => {
-                    // setUiMode('view')
-                    // resetAllToDetail()
-                    handleBack()
-                  }}
-                >
+                <Button onClick={handleCancelEdit}>
                   取消
                 </Button>
               )}

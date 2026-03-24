@@ -167,8 +167,7 @@ const Details = () => {
                 {
                   pathname: `/work-plan/${job.id}`,
                   search: `?${createSearchParams({
-                    dhId: job.agentId,
-                    sessionId: job.sessionKey,
+                    sessionKey: job.sessionKey,
                   })}`,
                 },
                 { state: { from } },

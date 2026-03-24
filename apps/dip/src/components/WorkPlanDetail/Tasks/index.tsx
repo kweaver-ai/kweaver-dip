@@ -1,24 +1,32 @@
 import { CheckCircleFilled } from '@ant-design/icons'
 import { Spin } from 'antd'
-import { memo, useCallback, useMemo, useState } from 'react'
+import { memo, useEffect, useState } from 'react'
+import { getPlanContent } from '@/apis/dip-studio/plan'
 import Empty from '@/components/Empty'
-import IconFont from '@/components/IconFont'
 import ScrollBarContainer from '@/components/ScrollBarContainer'
+import type { ArchivePreviewState } from '@/components/WorkPlanDetail/Outcome/Preview'
 import { ArchivePreviewPanel } from '@/components/WorkPlanDetail/Outcome/Preview'
 import TaskRunRow from './components/TaskRunRow'
-import { getPlanPreviewState } from './planMarkdownMock'
 import type { TasksPanelProps } from './types'
 import { useTaskRuns } from './useTaskRuns'
 
 const BANNER_DISMISS_KEY = 'dip-work-plan-tasks-plan-banner-dismissed'
+const PLAN_PREVIEW_SUBPATH = 'plan.md'
+const PLAN_PREVIEW_TITLE = '计划对齐.md'
 
 function TasksPanelInner({ planId, dhId, sessionId: _sessionId }: TasksPanelProps) {
-  const planPreview = useMemo(() => getPlanPreviewState(), [])
+  const [planPreview, setPlanPreview] = useState<ArchivePreviewState>({
+    title: PLAN_PREVIEW_TITLE,
+    subpath: PLAN_PREVIEW_SUBPATH,
+    body: '',
+    loading: true,
+    viewer: 'markdown',
+  })
   const { scrollMountRef, entries, total, initialLoading, loadingMore, loadError } =
     useTaskRuns(planId)
   const [expandedKey, setExpandedKey] = useState<string | null>(null)
 
-  const [bannerDismissed, setBannerDismissed] = useState(() => {
+  const [bannerDismissed] = useState(() => {
     try {
       return sessionStorage.getItem(BANNER_DISMISS_KEY) === '1'
     } catch {
@@ -26,14 +34,61 @@ function TasksPanelInner({ planId, dhId, sessionId: _sessionId }: TasksPanelProp
     }
   })
 
-  const dismissBanner = useCallback(() => {
-    try {
-      sessionStorage.setItem(BANNER_DISMISS_KEY, '1')
-    } catch {
-      /* ignore */
+  useEffect(() => {
+    let cancelled = false
+    const planIdTrimmed = planId?.trim()
+
+    const basePreview: ArchivePreviewState = {
+      title: PLAN_PREVIEW_TITLE,
+      subpath: PLAN_PREVIEW_SUBPATH,
+      body: '',
+      loading: false,
+      viewer: 'markdown',
     }
-    setBannerDismissed(true)
-  }, [])
+
+    if (!planIdTrimmed) {
+      setPlanPreview({
+        ...basePreview,
+        body: '暂无计划文档',
+      })
+      return
+    }
+
+    setPlanPreview({ ...basePreview, loading: true })
+
+    const loadPlanPreview = async () => {
+      try {
+        const res = await getPlanContent(planIdTrimmed)
+        const body = res.content ?? ''
+        if (!cancelled) {
+          setPlanPreview({
+            ...basePreview,
+            body,
+          })
+        }
+      } catch (error: any) {
+        console.log('error', error)
+        if (!cancelled) {
+          if (error.code === 'NOT_FOUND') {
+            setPlanPreview({
+              ...basePreview,
+              body: '',
+            })
+          } else {
+            setPlanPreview({
+              ...basePreview,
+              body: '计划文档加载失败',
+            })
+          }
+        }
+      }
+    }
+
+    void loadPlanPreview()
+    return () => {
+      cancelled = true
+    }
+  }, [planId])
 
   if (!planId?.trim()) {
     return (

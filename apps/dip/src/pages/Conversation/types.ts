@@ -1,9 +1,9 @@
 ﻿import type { AiPromptSubmitPayload } from '@/components/DipChatKit/components/AiPromptInput/types'
 
-export interface ChatKitTestRouteState {
+export interface ConversationRouteState {
   submitData?: AiPromptSubmitPayload
 }
 
-export interface ChatKitTestLocationState {
-  state: ChatKitTestRouteState
+export interface ConversationLocationState {
+  state: ConversationRouteState
 }

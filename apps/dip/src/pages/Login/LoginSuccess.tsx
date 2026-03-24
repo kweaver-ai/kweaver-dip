@@ -47,7 +47,8 @@ const LoginSuccess = () => {
               //   hasNavigatedRef.current = true
               //   navigate(targetPath, { replace: true })
               // })
-              navigate('/home', { replace: true })
+              const isAdmin = currentUserInfo.vision_name === 'admin'
+              navigate(isAdmin ? '/digital-human/management' : '/home', { replace: true })
             } else {
               // 请求完成但没有用户信息，说明获取失败
               hasNavigatedRef.current = true

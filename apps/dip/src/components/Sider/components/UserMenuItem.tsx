@@ -1,5 +1,6 @@
 import type { MenuProps } from 'antd'
-import { Dropdown, Menu } from 'antd'
+import { Dropdown } from 'antd'
+import clsx from 'classnames'
 import AvatarIcon from '@/assets/images/sider/avatar.svg?react'
 import { useUserInfoStore } from '@/stores'
 
@@ -14,6 +15,8 @@ export const UserMenuItem = ({ collapsed }: UserMenuItemProps) => {
     logout()
   }
 
+  const displayName = userInfo?.email || userInfo?.vision_name || userInfo?.account || '用户'
+
   const menuItems: MenuProps['items'] = [
     {
       key: 'logout',
@@ -23,45 +26,27 @@ export const UserMenuItem = ({ collapsed }: UserMenuItemProps) => {
     },
   ]
 
-  const content = (
-    // <div
-    //   className={clsx(
-    //     'w-full flex items-center h-10 rounded   cursor-pointer hover:bg-[--dip-hover-bg-color]',
-    //     collapsed ? 'justify-center px-0' : 'gap-2 px-2.5',
-    //   )}
-    // >
-    //   <AvatarIcon className="w-4 h-4 shrink-0" />
-    //   {!collapsed && (
-    //     <span
-    //       className="w-full text-sm font-normal text-[#000] truncate"
-    //       title={userInfo?.vision_name}
-    //     >
-    //       {userInfo?.vision_name || '用户'}
-    //     </span>
-    //   )}
-    // </div>
-    <div>
-      <Menu
-        mode="inline"
-        selectedKeys={[]}
-        items={[
-          { type: 'divider' },
-          {
-            key: 'user-menu',
-            icon: <AvatarIcon className="w-4 h-4 shrink-0" />,
-            label: userInfo?.vision_name || '用户',
-            title: userInfo?.vision_name || '用户',
-            onClick: () => {},
-          },
-        ]}
-        inlineCollapsed={collapsed}
-        selectable={false}
-      />
+  const trigger = (
+    <div
+      className={clsx(
+        'flex items-center gap-2 min-w-0 w-full cursor-pointer',
+        collapsed ? 'h-10 min-h-10 justify-center' : 'justify-start',
+      )}
+    >
+      <AvatarIcon className="w-4 h-4 shrink-0" />
+      {!collapsed && (
+        <span
+          className="flex-1 min-w-0 truncate text-sm text-[var(--dip-text-color)]"
+          title={displayName}
+        >
+          {displayName}
+        </span>
+      )}
     </div>
   )
 
   return (
-    <div className="w-full">
+    <div className={clsx(collapsed && 'flex min-w-0 w-full flex-1')}>
       <Dropdown
         menu={{
           items: menuItems,
@@ -70,7 +55,7 @@ export const UserMenuItem = ({ collapsed }: UserMenuItemProps) => {
         placement="topLeft"
         trigger={['click']}
       >
-        {content}
+        {trigger}
       </Dropdown>
     </div>
   )

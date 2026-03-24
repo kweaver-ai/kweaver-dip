@@ -4,14 +4,14 @@ import type {
   ChannelConfig,
   DigitalHumanDetail,
   DigitalHumanSkill,
-} from '@/apis/dip-studio/digital-human'
+} from '@/apis'
 
 export type DigitalHumanUiMode = 'create' | 'edit' | 'view'
 
 /** 编辑态基础信息（对齐 DigitalHumanDetail 中的 name / description / creature / soul） */
 export type DigitalHumanBasic = Pick<DigitalHumanDetail, 'name' | 'creature' | 'soul'>
 
-export type { BknEntry, ChannelConfig } from '@/apis/dip-studio/digital-human'
+export type { BknEntry, ChannelConfig } from '@/apis'
 
 export interface DigitalHumanState {
   /** 当前页面编辑状态：新建/编辑/详情 */

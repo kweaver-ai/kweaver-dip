@@ -92,12 +92,12 @@ type PlanJobDisplayEntry = { pill: PlanStatusPill; leftIcon: PlanJobLeftIconStyl
 const PLAN_JOB_DISPLAY: Record<PlanJobDisplayStatus, PlanJobDisplayEntry> = {
   disabled: {
     pill: {
-      text: '已停用',
-      className: 'bg-[rgba(0,0,0,0.06)] text-[rgba(0,0,0,0.45)]',
+      text: '已暂停',
+      className: 'bg-[#FFFBE6] text-[#D48806]',
     },
     leftIcon: {
-      boxClassName: 'bg-[rgba(0,0,0,0.06)]',
-      iconClassName: 'text-lg text-[rgba(0,0,0,0.45)]',
+      boxClassName: 'bg-[#FFFBE6]',
+      iconClassName: 'text-lg text-[#D48806]',
     },
   },
   running: {

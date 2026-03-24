@@ -2,9 +2,10 @@ import XMarkdown from '@ant-design/x-markdown'
 import { Spin } from 'antd'
 import classNames from 'classnames'
 import '@ant-design/x-markdown/dist/x-markdown.css'
+import Empty from '@/components/Empty'
 import ScrollBarContainer from '@/components/ScrollBarContainer'
-import type { ArchivePreviewState } from './useArchivePreview'
 import styles from './ArchivePreviewPanel.module.less'
+import type { ArchivePreviewState } from './useArchivePreview'
 
 export type ArchivePreviewPanelProps = {
   preview: ArchivePreviewState
@@ -24,6 +25,10 @@ const ArchivePreviewPanel = ({ preview, className }: ArchivePreviewPanelProps) =
         {preview.loading ? (
           <div className="flex min-h-[200px] flex-1 items-center justify-center py-10">
             <Spin />
+          </div>
+        ) : preview.body === '' ? (
+          <div className="flex min-h-[200px] flex-1 items-center justify-center py-10">
+            <Empty title="暂无预览内容" />
           </div>
         ) : preview.viewer === 'pdf' && preview.blobUrl ? (
           <iframe

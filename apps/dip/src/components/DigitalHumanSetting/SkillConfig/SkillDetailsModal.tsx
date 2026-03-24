@@ -1,6 +1,6 @@
 // import type { ModalProps } from 'antd'
 // import { Modal } from 'antd'
-// import type { DigitalHumanSkill } from '@/apis/dip-studio/digital-human'
+// import type { DigitalHumanSkill } from '@/apis'
 // import AiPromptInput from '@/components/DipChatKit/components/AiPromptInput'
 // import ScrollBarContainer from '@/components/ScrollBarContainer'
 

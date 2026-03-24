@@ -27,7 +27,11 @@ let currentToken: string | null = null
 let requestId = 0 // 用于跟踪当前请求 ID
 
 export const useUserInfoStore = create<UserInfoState>((set) => ({
-  userInfo: null,
+  userInfo: {
+    vision_name: 'user',
+    id: '1',
+    account: 'user',
+  },
   isLoading: false,
   isAdmin: import.meta.env.PUBLIC_IS_ADMIN === 'true',
 

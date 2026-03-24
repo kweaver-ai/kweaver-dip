@@ -1,12 +1,9 @@
 import { FolderOpenOutlined } from '@ant-design/icons'
-import { Collapse, message, Spin } from 'antd'
+import { Collapse, Spin } from 'antd'
 import classNames from 'classnames'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import type { SessionArchiveEntry, SessionArchivesResponse } from '@/apis/dip-studio/sessions'
-import {
-  getDigitalHumanSessionArchiveSubpath,
-  getDigitalHumanSessionArchives,
-} from '@/apis/dip-studio/sessions'
+import { getSessionArchiveSubpath, getSessionArchives } from '@/apis/dip-studio/sessions'
 import Empty from '@/components/Empty'
 import IconFont from '@/components/IconFont'
 import ScrollBarContainer from '@/components/ScrollBarContainer'
@@ -56,7 +53,7 @@ const ResultsPanel = ({ planId: _planId, dhId, sessionId }: ResultsPanelProps) =
     try {
       const res = RESULTS_PANEL_USE_MOCK
         ? await mockGetDigitalHumanSessionArchives()
-        : await getDigitalHumanSessionArchives(sessionId)
+        : await getSessionArchives(sessionId)
       setRoot(res)
     } catch {
       setRootError(true)
@@ -77,7 +74,7 @@ const ResultsPanel = ({ planId: _planId, dhId, sessionId }: ResultsPanelProps) =
       try {
         const res = RESULTS_PANEL_USE_MOCK
           ? await mockGetDigitalHumanSessionArchiveSubpath(folderName, { responseType: 'json' })
-          : await getDigitalHumanSessionArchiveSubpath(sessionId, folderName, {
+          : await getSessionArchiveSubpath(sessionId, folderName, {
               responseType: 'json',
             })
         if (isSessionArchivesResponse(res)) {

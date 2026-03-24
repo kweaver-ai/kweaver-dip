@@ -112,3 +112,13 @@ export function mockPausePlan(planId: string): void {
     job.id === planId ? { ...job, enabled: false, updatedAtMs: Date.now() } : job,
   )
 }
+
+/** mock: 启用计划 */
+export function mockResumePlan(planId: string): void {
+  if (!mockJobsCache) {
+    mockJobsCache = Array.from({ length: MOCK_TOTAL }, (_, index) => buildMockJob(index))
+  }
+  mockJobsCache = (mockJobsCache || []).map((job) =>
+    job.id === planId ? { ...job, enabled: true, updatedAtMs: Date.now() } : job,
+  )
+}

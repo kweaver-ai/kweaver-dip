@@ -1,6 +1,7 @@
 import { lazy, useEffect, useRef } from 'react'
 import type { RouteObject } from 'react-router-dom'
 import { createBrowserRouter, useNavigate } from 'react-router-dom'
+import { useUserInfoStore } from '@/stores'
 import { BASE_PATH } from '@/utils/config'
 import { ProtectedRoute } from './ProtectedRoute'
 import { routeConfigs } from './routes'
@@ -22,6 +23,7 @@ const LoginFailed = lazy(() => import('../pages/Login/LoginFailed'))
  */
 const DefaultIndexRedirect = () => {
   const navigate = useNavigate()
+  const userInfo = useUserInfoStore((s) => s.userInfo)
   const hasNavigatedRef = useRef(false)
 
   useEffect(() => {
@@ -38,8 +40,9 @@ const DefaultIndexRedirect = () => {
     //   navigate(targetPath, { replace: true })
     // })
 
-    navigate('/home', { replace: true })
-  }, [navigate])
+    const isAdmin = userInfo?.vision_name === 'admin'
+    navigate(isAdmin ? '/digital-human/management' : '/home', { replace: true })
+  }, [navigate, userInfo])
 
   // const { userInfo } = useUserInfoStore()
 
@@ -59,7 +62,7 @@ const DefaultIndexRedirect = () => {
 const generateRoutesFromConfig = (): RouteObject[] => {
   return routeConfigs
     .filter((route) => route.element !== null && route.element !== undefined)
-    .map(({ key, label, iconUrl, showInSidebar, disabled, ...route }) => {
+    .map(({ key, label, iconUrl, sidebarMode, disabled, ...route }) => {
       const { element, path, handle, children } = route
       return {
         path,

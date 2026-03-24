@@ -3,6 +3,8 @@
  * 与 digital-human.paths.yaml / digital-human.schemas.yaml 保持一致
  */
 
+import type { DigitalHumanSkill } from '../skills'
+
 /** 知识源条目（BknEntry） */
 export interface BknEntry {
   /** 知识源名称 */
@@ -25,12 +27,6 @@ export interface ChannelConfig {
   appId: string
   /** 应用密钥 */
   appSecret: string
-}
-
-/** 技能名称 + 描述（DigitalHumanSkill / DigitalHumanAgentSkill 在 schema 中结构相同） */
-export interface DigitalHumanSkill {
-  name: string
-  description?: string
 }
 
 /** 数字员工列表项（DigitalHuman） */

@@ -1,4 +1,4 @@
-import { Button } from 'antd'
+import clsx from 'clsx'
 import type { ReactNode } from 'react'
 import { useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -43,7 +43,13 @@ const renderIcon = (icon: string | ReactNode | undefined, name: string) => {
  * - 外部传入 items 数组，组件负责渲染
  * - 如果传入 onNavigate，使用回调函数；否则使用内部的 navigate
  */
-export const Breadcrumb = ({ type, items = [], homePath = '/', onNavigate, lastItemSuffix }: BreadcrumbProps) => {
+export const Breadcrumb = ({
+  type,
+  items = [],
+  homePath = '/',
+  onNavigate,
+  lastItemSuffix,
+}: BreadcrumbProps) => {
   const navigate = useNavigate()
 
   // 统一的跳转处理函数
@@ -91,30 +97,31 @@ export const Breadcrumb = ({ type, items = [], homePath = '/', onNavigate, lastI
                 {index > 0 && <span className="text-sm font-medium text-black/25 mx-1.5">/</span>}
                 {/* 面包屑项 */}
                 {isNotClickable ? (
-                  <Button
-                    size="small"
-                    type="text"
-                    className={`max-w-[200px] font-medium hover:!bg-transparent hover:!cursor-default ${type === 'micro-app' ? '' : 'px-1'}`}
-                    disabled={isDisabled}
+                  <button
+                    type="button"
+                    className={clsx(
+                      'max-w-[200px] font-medium cursor-default',
+                      type === 'micro-app' ? '' : 'px-1',
+                      isDisabled && 'text-black/45',
+                      isLast && 'font-medium',
+                    )}
                   >
                     {hasIcon && renderIcon(item.icon, item.name)}
                     <span className="truncate" title={item.name}>
                       {item.name}
                     </span>
-                  </Button>
+                  </button>
                 ) : (
-                  <Button
-                    size="small"
-                    type="text"
+                  <button
+                    type="button"
                     className={`max-w-[200px] ${type === 'micro-app' ? '' : 'px-1'}`}
                     onClick={(e) => !isDisabled && handleNavigate(item, e)}
-                    disabled={isDisabled}
                   >
                     {hasIcon && renderIcon(item.icon, item.name)}
                     <span className="truncate" title={item.name}>
                       {item.name}
                     </span>
-                  </Button>
+                  </button>
                 )}
                 {/* 最后一项后面的自定义内容 */}
                 {isLast && lastItemSuffix && (

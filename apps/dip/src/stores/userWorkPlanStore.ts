@@ -1,15 +1,11 @@
 import { message } from 'antd'
 import { create } from 'zustand'
-import {
-  deleteCronJob,
-  getCronJobList,
-  type CronJob,
-  updateCronJobEnabled,
-} from '@/apis/dip-studio/plan'
+import { type CronJob, deleteCronJob, getCronJobList, updateCronJob } from '@/apis/dip-studio/plan'
 import {
   mockDeletePlan,
   mockFetchPlanListPage,
   mockPausePlan,
+  mockResumePlan,
   PLAN_LIST_USE_MOCK,
 } from '@/components/WorkPlanList/mockPlanList'
 
@@ -31,6 +27,8 @@ interface UserWorkPlanState {
   refreshPlansOnFocus: () => Promise<void>
   /** 暂停计划 */
   pausePlan: (id: string) => Promise<boolean>
+  /** 启用计划 */
+  resumePlan: (id: string) => Promise<boolean>
   /** 删除工作计划 */
   deletePlan: (id: string) => Promise<boolean>
   /** 设置当前选中的计划 */
@@ -64,7 +62,7 @@ export const useUserWorkPlanStore = create<UserWorkPlanState>()((set, get) => ({
           : await getCronJobList({
               includeDisabled: true,
               offset: 0,
-              limit: 200,
+              // limit: 200,
               sortBy: 'updatedAtMs',
               sortDir: 'desc',
             })
@@ -98,7 +96,7 @@ export const useUserWorkPlanStore = create<UserWorkPlanState>()((set, get) => ({
       if (PLAN_LIST_USE_MOCK) {
         mockPausePlan(id)
       } else {
-        await updateCronJobEnabled(id, false)
+        await updateCronJob(id, { enabled: false })
       }
       set((state) => ({
         plans: state.plans.map((p) => (p.id === id ? { ...p, enabled: false } : p)),
@@ -111,6 +109,29 @@ export const useUserWorkPlanStore = create<UserWorkPlanState>()((set, get) => ({
         message.error(error.description)
       } else {
         message.error('暂停计划失败，请稍后重试')
+      }
+      return false
+    }
+  },
+
+  resumePlan: async (id) => {
+    try {
+      if (PLAN_LIST_USE_MOCK) {
+        mockResumePlan(id)
+      } else {
+        await updateCronJob(id, { enabled: true })
+      }
+      set((state) => ({
+        plans: state.plans.map((p) => (p.id === id ? { ...p, enabled: true } : p)),
+      }))
+      message.success('已启用计划')
+      return true
+    } catch (error: any) {
+      console.error('Failed to resume work plan:', error)
+      if (error?.description) {
+        message.error(error.description)
+      } else {
+        message.error('启用计划失败，请稍后重试')
       }
       return false
     }

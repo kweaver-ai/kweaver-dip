@@ -2,8 +2,15 @@ import { useCallback, useMemo } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import logoImage from '@/assets/images/brand/logo.png'
 import type { HeaderType, SiderType } from '@/routes/types'
-import { getFirstVisibleRouteBySiderType, getParentRoute, getRouteByPath } from '@/routes/utils'
+import {
+  getBreadcrumbAncestorRoutes,
+  getBreadcrumbLinkPathForRoute,
+  getFirstVisibleRouteBySiderType,
+  getRouteByPath,
+  shouldShowCurrentRouteInBreadcrumb,
+} from '@/routes/utils'
 import { useLanguageStore, useOEMConfigStore } from '@/stores'
+import { useUserInfoStore } from '@/stores/userInfoStore'
 import type { BreadcrumbItem } from '@/utils/micro-app/globalState'
 import { Breadcrumb } from '../components/Breadcrumb'
 import { UserInfo } from '../components/UserInfo'
@@ -47,17 +54,23 @@ const getSectionName = (type: HeaderType): string => {
  * 通过路由路径和配置自动判断分类，无需传递 type prop
  */
 const BaseHeader = ({ headerType }: { headerType: HeaderType }) => {
+  const isStudioHeader = headerType === 'studio'
   const location = useLocation()
   const navigate = useNavigate()
   const { getOEMResourceConfig } = useOEMConfigStore()
   const { language } = useLanguageStore()
+  const { isAdmin } = useUserInfoStore()
   const oemResourceConfig = getOEMResourceConfig(language)
 
   // 不同平台（store）各自的首路由，用于面包屑首页返回
   const roleIds = useMemo(() => new Set<string>([]), [])
   const homePath = useMemo(() => {
     const firstRoute = getFirstVisibleRouteBySiderType(headerType as SiderType, roleIds)
-    const path = firstRoute?.path ?? (headerType === 'store' ? 'store/my-app' : 'studio/home')
+    if (!isAdmin && headerType === 'studio') {
+      return '/home'
+    }
+    const path =
+      firstRoute?.path ?? (headerType === 'store' ? 'store/my-app' : 'digital-human/management')
     return `/${path}`
   }, [headerType, roleIds])
 
@@ -85,28 +98,21 @@ const BaseHeader = ({ headerType }: { headerType: HeaderType }) => {
       disabled: true,
     })
 
-    // 查找父路由（如果存在）
     if (currentRoute) {
-      const parentRoute = getParentRoute(currentRoute)
-      if (parentRoute?.label) {
+      const ancestorRoutes = getBreadcrumbAncestorRoutes(currentRoute)
+      for (const ancestor of ancestorRoutes) {
+        if (!ancestor.label) continue
         result.push({
-          key: parentRoute.key || `route-${parentRoute.path}`,
-          name: parentRoute.label,
-          path: parentRoute.path ? `/${parentRoute.path}` : undefined,
+          key: ancestor.key || `route-${ancestor.path}`,
+          name: ancestor.label,
+          path: getBreadcrumbLinkPathForRoute(ancestor),
         })
       }
 
-      // 当前路由名称（如果存在）
-      if (currentRoute.label) {
-        // 如果是项目详情路由，使用项目真实名称
+      if (shouldShowCurrentRouteInBreadcrumb(currentRoute) && currentRoute.label) {
         const displayName = currentRoute.label
-
-        // 如果当前路由路径包含动态参数（如 :projectId），使用实际路径
-        // 否则使用路由配置中的路径
         let routePath: string | undefined
         if (currentRoute.path?.includes(':')) {
-          // 动态路由，使用实际路径
-          // location.pathname 已经是相对于 basename 的路径，React Router 会自动处理
           routePath = location.pathname
         } else if (currentRoute.path) {
           routePath = `/${currentRoute.path}`
@@ -176,9 +182,7 @@ const BaseHeader = ({ headerType }: { headerType: HeaderType }) => {
       </div>
 
       {/* 右侧：用户信息 */}
-      <div className="flex items-center gap-x-4 h-full">
-        <UserInfo />
-      </div>
+      <div className="flex items-center gap-x-4 h-full">{isStudioHeader ? null : <UserInfo />}</div>
     </>
   )
 }

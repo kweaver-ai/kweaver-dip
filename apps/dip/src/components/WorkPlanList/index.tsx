@@ -5,6 +5,7 @@ import { List } from 'react-window'
 import { type CronJob, getDigitalHumanPlanList } from '@/apis/dip-studio/plan'
 import Empty from '@/components/Empty'
 import ScrollBarContainer from '@/components/ScrollBarContainer'
+import ActionModal from '@/components/WorkPlanDetail/ActionModal/ActionModal'
 import { useUserWorkPlanStore } from '@/stores/userWorkPlanStore'
 import { mockFetchPlanListPage, PLAN_LIST_USE_MOCK } from './mockPlanList'
 import PlanListItem from './PlanListItem'
@@ -21,33 +22,45 @@ function PlanListInner({
   className,
   onPlanClick,
 }: PlanListProps) {
-  const {
-    plans: globalPlans,
-    loading: globalLoading,
-    fetchPlans: fetchGlobalPlans,
-  } = useUserWorkPlanStore()
+  const pausePlan = useUserWorkPlanStore((state) => state.pausePlan)
+  const resumePlan = useUserWorkPlanStore((state) => state.resumePlan)
+  const deletePlan = useUserWorkPlanStore((state) => state.deletePlan)
+  const globalPlans = useUserWorkPlanStore((state) => state.plans)
+  const globalLoading = useUserWorkPlanStore((state) => state.loading)
+  const fetchGlobalPlans = useUserWorkPlanStore((state) => state.fetchPlans)
   const offsetRef = useRef(0)
   const hasMoreRef = useRef(true)
   const isLoadingMoreRef = useRef(false)
   const requestIdRef = useRef(0)
 
-  const [jobs, setJobs] = useState<CronJob[]>([])
-  const [initialLoading, setInitialLoading] = useState(true)
+  const [digitalHumanJobs, setDigitalHumanJobs] = useState<CronJob[]>([])
+  const [digitalHumanLoading, setDigitalHumanLoading] = useState(false)
   const [loadingMore, setLoadingMore] = useState(false)
+  const [editingPlan, setEditingPlan] = useState<CronJob | undefined>(undefined)
+  const [editModalOpen, setEditModalOpen] = useState(false)
   const isGlobalMode = source.mode === 'global'
+
+  const handleEditPlan = useCallback((job: CronJob) => {
+    setEditingPlan(job)
+    setEditModalOpen(true)
+  }, [])
+
+  const handleEditSuccess = useCallback(async (updatedPlan: CronJob) => {
+    setEditModalOpen(false)
+    setEditingPlan(undefined)
+    if (!isGlobalMode) {
+      setDigitalHumanJobs((prev) => prev.map((item) => (item.id === updatedPlan.id ? updatedPlan : item)))
+    }
+    if (isGlobalMode) {
+      await fetchGlobalPlans({ silent: true })
+    }
+  }, [fetchGlobalPlans, isGlobalMode])
 
   const fetchPage = useCallback(
     async (isLoadMore: boolean) => {
-      if (isGlobalMode) {
-        if (!isLoadMore) {
-          await fetchGlobalPlans()
-        }
-        return
-      }
-
       if (source.mode === 'digitalHuman' && !source.digitalHumanId.trim()) {
-        setJobs([])
-        setInitialLoading(false)
+        setDigitalHumanJobs([])
+        setDigitalHumanLoading(false)
         return
       }
 
@@ -59,17 +72,18 @@ function PlanListInner({
         hasMoreRef.current = true
         offsetRef.current = 0
         isLoadingMoreRef.current = false
-        setInitialLoading(true)
+        setDigitalHumanLoading(true)
       }
 
       const currentOffset = isLoadMore ? offsetRef.current : 0
       const reqId = ++requestIdRef.current
 
       try {
-        const params = { offset: currentOffset, limit: pageSize }
+        // const params = { offset: currentOffset, limit: pageSize }
+        const digitalHumanId = source.mode === 'digitalHuman' ? source.digitalHumanId : ''
         const res = PLAN_LIST_USE_MOCK
           ? await mockFetchPlanListPage(currentOffset, pageSize)
-          : await getDigitalHumanPlanList(source.digitalHumanId, params)
+          : await getDigitalHumanPlanList(digitalHumanId)
 
         if (reqId !== requestIdRef.current) return
 
@@ -77,28 +91,34 @@ function PlanListInner({
         offsetRef.current = res.nextOffset ?? currentOffset + res.jobs.length
 
         if (isLoadMore) {
-          setJobs((prev) => [...prev, ...res.jobs])
+          setDigitalHumanJobs((prev) => [...prev, ...res.jobs])
         } else {
-          setJobs(res.jobs)
+          setDigitalHumanJobs(res.jobs)
         }
       } catch {
         if (reqId !== requestIdRef.current) return
         // message.error(err?.description)
-        if (!isLoadMore) setJobs([])
+        if (!isLoadMore) setDigitalHumanJobs([])
       } finally {
         if (reqId === requestIdRef.current) {
           isLoadingMoreRef.current = false
           setLoadingMore(false)
-          setInitialLoading(false)
+          setDigitalHumanLoading(false)
         }
       }
     },
-    [fetchGlobalPlans, isGlobalMode, pageSize, source],
+    [pageSize, source],
   )
 
   useEffect(() => {
+    if (!isGlobalMode) return
+    void fetchGlobalPlans()
+  }, [fetchGlobalPlans, isGlobalMode])
+
+  useEffect(() => {
+    if (isGlobalMode) return
     fetchPage(false)
-  }, [fetchPage])
+  }, [fetchPage, isGlobalMode])
 
   const handleScroll = useMemo(
     () =>
@@ -114,17 +134,67 @@ function PlanListInner({
 
   useEffect(() => () => handleScroll.cancel(), [handleScroll])
 
+  const handlePause = useCallback(
+    async (id: string): Promise<boolean> => {
+      const ok = await pausePlan(id)
+      if (ok) {
+        if (!isGlobalMode) {
+          setDigitalHumanJobs((prev) =>
+            prev.map((item) => (item.id === id ? { ...item, enabled: false } : item)),
+          )
+        }
+      }
+      return ok
+    },
+    [isGlobalMode, pausePlan],
+  )
+
+  const handleResume = useCallback(
+    async (id: string): Promise<boolean> => {
+      const ok = await resumePlan(id)
+      if (ok) {
+        if (!isGlobalMode) {
+          setDigitalHumanJobs((prev) =>
+            prev.map((item) => (item.id === id ? { ...item, enabled: true } : item)),
+          )
+        }
+      }
+      return ok
+    },
+    [isGlobalMode, resumePlan],
+  )
+
+  const handleDelete = useCallback(
+    async (id: string): Promise<boolean> => {
+      const ok = await deletePlan(id)
+      if (ok) {
+        if (!isGlobalMode) {
+          setDigitalHumanJobs((prev) => prev.filter((item) => item.id !== id))
+        }
+      }
+      return ok
+    },
+    [deletePlan, isGlobalMode],
+  )
+
   const getRow = useCallback(
     ({ index, style, data }: any) => {
       const job = data[index] as CronJob | undefined
       if (!job) return null
       return (
         <div style={style} className="box-border px-6 pb-3 mx-auto">
-          <PlanListItem job={job} onClick={onPlanClick} />
+          <PlanListItem
+            job={job}
+            onClick={onPlanClick}
+            onPause={handlePause}
+            onResume={handleResume}
+            onDelete={handleDelete}
+            onEdit={handleEditPlan}
+          />
         </div>
       )
     },
-    [onPlanClick],
+    [handleDelete, handleEditPlan, handlePause, handleResume, onPlanClick],
   )
 
   if (source.mode === 'digitalHuman' && !source.digitalHumanId.trim()) {
@@ -135,7 +205,9 @@ function PlanListInner({
     )
   }
 
-  if ((isGlobalMode && globalLoading) || (!isGlobalMode && initialLoading)) {
+  const initialLoading = isGlobalMode ? globalLoading : digitalHumanLoading
+
+  if (initialLoading) {
     return (
       <div className={`flex flex-1 min-h-0 items-center justify-center ${className ?? ''}`}>
         <Spin />
@@ -143,7 +215,7 @@ function PlanListInner({
     )
   }
 
-  const listData = isGlobalMode ? globalPlans : jobs
+  const listData = isGlobalMode ? globalPlans : digitalHumanJobs
 
   if (listData.length === 0) {
     return (
@@ -168,9 +240,7 @@ function PlanListInner({
             }}
             style={{ height: '100%', width: '100%' }}
             onScroll={(e) => {
-              if (!isGlobalMode) {
-                handleScroll({ target: e.currentTarget })
-              }
+              handleScroll({ target: e.currentTarget })
             }}
           />
         </div>
@@ -180,6 +250,17 @@ function PlanListInner({
           </div>
         ) : null}
       </div>
+      <ActionModal
+        open={editModalOpen}
+        plan={editingPlan}
+        onCancel={() => {
+          setEditModalOpen(false)
+          setEditingPlan(undefined)
+        }}
+        onSuccess={(updatedPlan) => {
+          void handleEditSuccess(updatedPlan)
+        }}
+      />
     </div>
   )
 }

@@ -1,6 +1,6 @@
 import { Button, Flex, Table, Tooltip } from 'antd'
 import { memo, useMemo, useState } from 'react'
-import type { DigitalHumanSkill } from '@/apis/dip-studio/digital-human'
+import type { DigitalHumanSkill } from '@/apis'
 import type { AiPromptSubmitPayload } from '@/components/DipChatKit/components/AiPromptInput/types.ts'
 import Empty from '@/components/Empty'
 import IconFont from '@/components/IconFont'
@@ -18,6 +18,7 @@ const SkillConfig = ({ readonly }: SkillConfigProps) => {
   const { skills, deleteSkill, updateSkills, digitalHumanId } = useDigitalHumanStore()
   const [selectSkillModalOpen, setSelectSkillModalOpen] = useState(false)
   const [addSkillDrawerOpen, setAddSkillDrawerOpen] = useState(false)
+  const [skillListRefreshToken, setSkillListRefreshToken] = useState(0)
   const [addSkillDrawerPayload, setAddSkillDrawerPayload] = useState<AiPromptSubmitPayload | null>(
     null,
   )
@@ -149,9 +150,12 @@ const SkillConfig = ({ readonly }: SkillConfigProps) => {
       />
       <SelectSkillModal
         open={selectSkillModalOpen}
+        showMask={!addSkillDrawerOpen}
         digitalHumanId={digitalHumanId}
+        refreshToken={skillListRefreshToken}
         onOk={(result) => {
           updateSkills(result || [])
+          setSelectSkillModalOpen(false)
         }}
         onSubmit={(payload) => {
           console.log('payload', payload)
@@ -163,10 +167,11 @@ const SkillConfig = ({ readonly }: SkillConfigProps) => {
       />
       <AddSkillDrawer
         open={addSkillDrawerOpen}
-        payload={addSkillDrawerPayload}
+        payload={addSkillDrawerPayload ?? undefined}
         onClose={() => {
           setAddSkillDrawerOpen(false)
           setAddSkillDrawerPayload(null)
+          setSkillListRefreshToken((prev) => prev + 1)
         }}
       />
     </ScrollBarContainer>

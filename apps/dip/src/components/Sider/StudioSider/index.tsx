@@ -72,7 +72,7 @@
 //     }
 
 //     const visibleSidebarRoutes = routeConfigs
-//       .filter((route) => route.showInSidebar && route.key)
+//       .filter((route) => getRouteSidebarMode(route) === 'menu' && route.key)
 //       .filter((route) => isRouteVisibleForRoles(route, roleIds))
 //       .filter((route) => {
 //         const routeSiderType = route.handle?.layout?.siderType || ''

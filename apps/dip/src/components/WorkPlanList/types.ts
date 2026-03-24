@@ -28,6 +28,10 @@ export interface PlanListProps {
 export interface PlanListItemProps {
   job: CronJob
   onClick?: (job: CronJob) => void
+  onPause?: (id: string) => Promise<boolean>
+  onResume?: (id: string) => Promise<boolean>
+  onDelete?: (id: string) => Promise<boolean>
+  onEdit?: (job: CronJob) => void
 }
 
 /** 计划列表项右侧状态胶囊（文案 + Tailwind class） */

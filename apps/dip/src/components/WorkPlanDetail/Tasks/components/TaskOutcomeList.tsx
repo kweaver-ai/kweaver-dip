@@ -13,8 +13,8 @@ import {
 import { Drawer, Spin } from 'antd'
 import { memo, useEffect, useState } from 'react'
 import {
-  getDigitalHumanSessionArchiveSubpath,
-  getDigitalHumanSessionArchives,
+  getSessionArchiveSubpath,
+  getSessionArchives,
   type SessionArchiveEntry,
   type SessionArchivesResponse,
 } from '@/apis/dip-studio/sessions'
@@ -109,7 +109,7 @@ async function resolveFilesInDirectory(
   const res = (
     RESULTS_PANEL_USE_MOCK
       ? await mockGetDigitalHumanSessionArchiveSubpath(currentPath, { responseType: 'json' })
-      : await getDigitalHumanSessionArchiveSubpath(sessionId, currentPath, { responseType: 'json' })
+      : await getSessionArchiveSubpath(sessionId, currentPath, { responseType: 'json' })
   ) as SessionArchivesResponse
 
   const items = res.contents ?? []
@@ -155,7 +155,7 @@ function TaskOutcomeListInner({ digitalHumanId, sessionId }: TaskOutcomeListProp
         // 1) 先拉目录级（root）产物
         const root = RESULTS_PANEL_USE_MOCK
           ? await mockGetDigitalHumanSessionArchives()
-          : await getDigitalHumanSessionArchives(sessionIdTrimmed)
+          : await getSessionArchives(sessionIdTrimmed)
         const rootItems = root.contents ?? []
 
         // 2) 再通过 subpath 拉文件级产物，并汇总为文件列表

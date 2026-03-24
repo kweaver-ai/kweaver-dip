@@ -1,8 +1,7 @@
-import { message } from 'antd'
 import { throttle } from 'lodash'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import type { CronRunListResponse } from '@/apis/dip-studio/plan'
-import { getDigitalHumanPlanRuns } from '@/apis/dip-studio/plan'
+import { getPlanRuns } from '@/apis/dip-studio/plan'
 import { mockFetchPlanRunsPage, TASKS_USE_MOCK } from './tasksMock'
 import { TASKS_PAGE_SIZE, TASKS_SCROLL_THRESHOLD_PX, type TaskRunDisplayEntry } from './types'
 
@@ -52,7 +51,7 @@ export function useTaskRuns(planId?: string): UseTaskRunsResult {
       try {
         const res: CronRunListResponse = TASKS_USE_MOCK
           ? await mockFetchPlanRunsPage(offset, TASKS_PAGE_SIZE)
-          : await getDigitalHumanPlanRuns(planId, { offset, limit: TASKS_PAGE_SIZE })
+          : await getPlanRuns(planId, { offset, limit: TASKS_PAGE_SIZE })
 
         if (reqId !== requestIdRef.current) return
 

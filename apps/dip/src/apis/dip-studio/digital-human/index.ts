@@ -7,7 +7,6 @@ import type {
   DigitalHumanList,
   DigitalHumanResponseRequest,
   DigitalHumanResponseStream,
-  DigitalHumanSkill,
   UpdateDigitalHumanRequest,
   UpdateDigitalHumanResponse,
 } from './index.d'
@@ -24,7 +23,6 @@ export type {
   DigitalHumanList,
   DigitalHumanResponseRequest,
   DigitalHumanResponseStream,
-  DigitalHumanSkill,
   UpdateDigitalHumanRequest,
   UpdateDigitalHumanResponse,
 } from './index.d'
@@ -65,26 +63,6 @@ export const deleteDigitalHuman = (
   del(`${BASE}/digital-human/${id}`, {
     ...(params?.deleteFiles !== undefined ? { params: { deleteFiles: params.deleteFiles } } : {}),
   })
-
-/** 获取全局启用技能列表（getEnabledSkills） */
-export const getEnabledSkills = (): Promise<DigitalHumanSkill[]> => {
-  const p1 = get(`${BASE}/skills`)
-  const p2 = p1.then((result: unknown) =>
-    Array.isArray(result) ? (result as DigitalHumanSkill[]) : [],
-  )
-  p2.abort = p1.abort
-  return p2
-}
-
-/** 获取指定数字员工已配置技能列表（getDigitalHumanSkills） */
-export const getDigitalHumanSkills = (id: string): Promise<DigitalHumanSkill[]> => {
-  const p1 = get(`${BASE}/digital-human/${id}/skills`)
-  const p2 = p1.then((result: unknown) =>
-    Array.isArray(result) ? (result as DigitalHumanSkill[]) : [],
-  )
-  p2.abort = p1.abort
-  return p2
-}
 
 /**
  * 创建数字员工响应流（createDigitalHumanResponse）

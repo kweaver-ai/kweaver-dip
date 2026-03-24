@@ -2,7 +2,7 @@ import type { ModalProps } from 'antd'
 import { Checkbox, Modal, Spin } from 'antd'
 import clsx from 'clsx'
 import { useEffect, useState } from 'react'
-import { type DigitalHumanSkill, getEnabledSkills } from '@/apis/dip-studio/digital-human'
+import { type DigitalHumanSkill, getEnabledSkills } from '@/apis'
 import AiPromptInput from '@/components/DipChatKit/components/AiPromptInput'
 import type { AiPromptSubmitPayload } from '@/components/DipChatKit/components/AiPromptInput/types'
 import Empty from '@/components/Empty'
@@ -18,6 +18,10 @@ export interface SelectSkillModalProps extends Omit<ModalProps, 'onCancel' | 'on
   defaultSelectedSkills?: DigitalHumanSkill[]
   /** 当前数字员工 ID；有值时「我的技能」拉取该员工已配置技能 */
   digitalHumanId?: string
+  /** 外部触发刷新列表的信号 */
+  refreshToken?: number
+  /** 是否展示弹窗遮罩 */
+  showMask?: boolean
 }
 
 /** 新建技能：自然语言输入 + 全部/我的 Tab + 卡片多选（对齐设计稿） */
@@ -28,8 +32,9 @@ const SelectSkillModal = ({
   onSubmit,
   defaultSelectedSkills = [],
   digitalHumanId,
+  refreshToken = 0,
+  showMask = true,
 }: SelectSkillModalProps) => {
-  // const [tab, setTab] = useState<'all' | 'mine'>('all')
   const [selectedSkills, setSelectedSkills] = useState<DigitalHumanSkill[]>([])
 
   const {
@@ -42,54 +47,15 @@ const SelectSkillModal = ({
     autoLoad: false,
   })
 
-  // const allSkills = [
-  //   { name: '技能1', description: '技能1描述' },
-  //   { name: '技能2', description: '技能2描述' },
-  //   { name: '技能3', description: '技能3描述' },
-  //   { name: '技能4', description: '技能4描述' },
-  //   { name: '技能5', description: '技能5描述' },
-  //   { name: '技能6', description: '技能6描述' },
-  //   { name: '技能7', description: '技能7描述' },
-  //   { name: '技能8', description: '技能8描述' },
-  //   { name: '技能9', description: '技能9描述' },
-  //   { name: '技能10', description: '技能10描述' },
-  // ]
-
-  // const fetchMineSkills = useCallback(async (id: string) => {
-  //   if (!id) return []
-  //   return getDigitalHumanSkills(id)
-  // }, [])
-
-  // const mineSkillList = useListService<DigitalHumanSkill, [string]>({
-  //   fetchFn: fetchMineSkills,
-  //   autoLoad: false,
-  // })
-
   useEffect(() => {
     if (!open) return
-    // setTab('all')
     setSelectedSkills([...defaultSelectedSkills])
   }, [open, defaultSelectedSkills])
 
   useEffect(() => {
     if (!open) return
     void fetchAllSkills()
-    // void mineSkillList.fetchList(digitalHumanId ?? '')
-  }, [open, digitalHumanId, fetchAllSkills])
-
-  // const filteredList = useMemo(() => {
-  //   if (tab === 'mine') {
-  //     return mineSkillList.items
-  //   }
-  //   return allSkillList.items
-
-  //   mock data
-  //   return [
-  //     { name: '技能1', description: '技能1描述' },
-  //     { name: '技能2', description: '技能2描述' },
-  //     { name: '技能3', description: '技能3描述' },
-  //   ]
-  // }, [tab, allSkillList.items, mineSkillList.items])
+  }, [open, digitalHumanId, refreshToken, fetchAllSkills])
 
   const toggleSelect = (skill: DigitalHumanSkill) => {
     setSelectedSkills((prev) =>
@@ -110,7 +76,6 @@ const SelectSkillModal = ({
 
   const handleSubmit = (payload: AiPromptSubmitPayload) => {
     onSubmit(payload)
-    onCancel()
   }
 
   /** 渲染状态内容 */
@@ -124,9 +89,6 @@ const SelectSkillModal = ({
     }
 
     if (allSkills.length === 0) {
-      // if (searchValue) {
-      //   return <Empty type="search" desc="抱歉，没有找到相关内容" />
-      // }
       return <Empty title="暂无技能" />
     }
 
@@ -196,7 +158,8 @@ const SelectSkillModal = ({
       onOk={handleOk}
       onCancel={onCancel}
       width={744}
-      mask={{ closable: false }}
+      mask={showMask}
+      maskClosable={false}
       destroyOnHidden
       styles={{
         body: { paddingTop: 8 },
@@ -212,7 +175,7 @@ const SelectSkillModal = ({
     >
       <div className="flex flex-col gap-y-6">
         <AiPromptInput
-          defaultEmployeeValue="__internal_skill_agent__"
+          assignEmployeeValue="__internal_skill_agent__"
           placeholder={'可以直接输入你想要创建的Skills，也可以直接选择下方的技能'}
           onSubmit={handleSubmit}
           autoSize={{ minRows: 2, maxRows: 2 }}

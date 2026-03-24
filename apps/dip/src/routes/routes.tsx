@@ -1,6 +1,7 @@
 import { lazy } from 'react'
 import applicationsUrl from '@/assets/images/sider/applications.svg'
 import appStoreUrl from '@/assets/images/sider/appStore.svg'
+import digitalHumanUrl from '@/assets/images/sider/digitalHuman.svg'
 import dipStudioUrl from '@/assets/images/sider/dipStudio.svg'
 import type { RouteConfig } from './types'
 
@@ -9,12 +10,12 @@ const AppStore = lazy(() => import('../pages/AppStore'))
 const Home = lazy(() => import('../pages/Home'))
 const WorkPlan = lazy(() => import('../pages/WorkPlan'))
 const WorkPlanDetail = lazy(() => import('../pages/WorkPlan/Details'))
-const ChatKitTest = lazy(() => import('../pages/ChatKitTest'))
 const History = lazy(() => import('../pages/History'))
-const HistoryItem = lazy(() => import('../pages/History/HistoryItem'))
+const HistoryConversation = lazy(() => import('../pages/History/HistoryConversation'))
 const DigitalHumanManagement = lazy(() => import('../pages/DigitalHuman/Management'))
 const DigitalHumanDetail = lazy(() => import('../pages/DigitalHuman/Details'))
 const DHSetting = lazy(() => import('../pages/DigitalHuman/DHSetting'))
+const Conversation = lazy(() => import('../pages/Conversation'))
 
 /**
  * 路由配置数组
@@ -29,29 +30,13 @@ export const routeConfigs: RouteConfig[] = [
     iconUrl: dipStudioUrl,
     requiredRoleIds: [],
     element: <Home />,
-    showInSidebar: true,
+    sidebarMode: 'menu',
     handle: {
       layout: {
         hasSider: true,
         hasHeader: false,
         siderType: 'home',
-        headerType: 'micro-app',
-      },
-    },
-  },
-  {
-    path: 'chat-kit-test',
-    key: 'chat-kit-test',
-    label: 'ChatKitTest',
-    requiredRoleIds: [],
-    element: <ChatKitTest />,
-    showInSidebar: false,
-    handle: {
-      layout: {
-        hasSider: true,
-        hasHeader: false,
-        siderType: 'home',
-        headerType: 'micro-app',
+        headerType: 'home',
       },
     },
   },
@@ -64,8 +49,7 @@ export const routeConfigs: RouteConfig[] = [
     iconUrl: applicationsUrl,
     requiredRoleIds: [],
     element: <MyApp />,
-    showInSidebar: true,
-    showInHeader: true,
+    sidebarMode: 'menu',
     handle: {
       layout: {
         hasSider: true,
@@ -82,8 +66,7 @@ export const routeConfigs: RouteConfig[] = [
     iconUrl: appStoreUrl,
     requiredRoleIds: [],
     element: <AppStore />,
-    showInSidebar: true,
-    showInHeader: true,
+    sidebarMode: 'menu',
     handle: {
       layout: {
         hasSider: true,
@@ -94,21 +77,37 @@ export const routeConfigs: RouteConfig[] = [
     },
   },
 
-  // --- Digital Human Section ---
+  // --- DIP Studio Section ---
   {
     path: 'digital-human/management',
     key: 'digital-human-management',
     label: '我的数字员工',
-    iconUrl: dipStudioUrl,
+    iconUrl: digitalHumanUrl,
     element: <DigitalHumanManagement />,
-    showInSidebar: true,
-    showInHeader: true,
+    sidebarMode: 'menu',
     handle: {
       layout: {
         hasSider: true,
-        hasHeader: false,
-        siderType: 'digital-human',
-        headerType: 'home',
+        hasHeader: true,
+        siderType: 'studio',
+        headerType: 'studio',
+      },
+    },
+  },
+  {
+    path: 'studio/conversation',
+    key: 'studio-conversation',
+    label: '会话',
+    iconUrl: dipStudioUrl,
+    requiredRoleIds: [],
+    element: <Conversation />,
+    sidebarMode: 'entry-only',
+    handle: {
+      layout: {
+        hasSider: true,
+        hasHeader: true,
+        siderType: 'studio',
+        headerType: 'studio',
       },
     },
   },
@@ -118,13 +117,13 @@ export const routeConfigs: RouteConfig[] = [
     label: '工作计划',
     iconUrl: dipStudioUrl,
     element: <WorkPlan />,
-    showInHeader: true,
+    sidebarMode: 'hidden',
     handle: {
       layout: {
         hasSider: true,
-        hasHeader: false,
-        siderType: 'digital-human',
-        headerType: 'home',
+        hasHeader: true,
+        siderType: 'studio',
+        headerType: 'studio',
       },
     },
   },
@@ -133,44 +132,46 @@ export const routeConfigs: RouteConfig[] = [
     key: 'work-plan-item',
     label: '工作计划',
     element: <WorkPlanDetail />,
-    showInSidebar: false,
+    sidebarMode: 'hidden',
+    showInBreadcrumb: false,
     handle: {
       layout: {
         hasSider: true,
-        hasHeader: false,
-        siderType: 'digital-human',
-        headerType: 'home',
+        hasHeader: true,
+        siderType: 'studio',
+        headerType: 'studio',
       },
     },
   },
   {
-    path: 'digital-human/history',
+    path: 'history',
     key: 'history',
     label: '历史记录',
     iconUrl: dipStudioUrl,
     element: <History />,
-    showInHeader: true,
+    sidebarMode: 'hidden',
     handle: {
       layout: {
         hasSider: true,
-        hasHeader: false,
-        siderType: 'digital-human',
-        headerType: 'home',
+        hasHeader: true,
+        siderType: 'studio',
+        headerType: 'studio',
       },
     },
   },
   {
-    path: 'digital-human/history/:historyId',
+    path: 'history/:sessionKey',
     key: 'history-item',
     label: '历史记录',
-    element: <HistoryItem />,
-    showInSidebar: false,
+    element: <HistoryConversation />,
+    sidebarMode: 'hidden',
+    showInBreadcrumb: false,
     handle: {
       layout: {
         hasSider: true,
-        hasHeader: false,
-        siderType: 'digital-human',
-        headerType: 'home',
+        hasHeader: true,
+        siderType: 'studio',
+        headerType: 'studio',
       },
     },
   },
@@ -179,13 +180,14 @@ export const routeConfigs: RouteConfig[] = [
     key: 'digital-human-setting-new',
     label: '数字员工新建配置',
     element: <DHSetting />,
-    showInSidebar: false,
+    sidebarMode: 'hidden',
+    showInBreadcrumb: false,
     handle: {
       layout: {
         hasSider: true,
-        hasHeader: false,
-        siderType: 'digital-human',
-        headerType: 'home',
+        hasHeader: true,
+        siderType: 'studio',
+        headerType: 'studio',
       },
     },
   },
@@ -195,12 +197,12 @@ export const routeConfigs: RouteConfig[] = [
   //   key: 'digital-human-detail-plan',
   //   label: '数字员工详情',
   //   element: <DigitalHumanDetail />,
-  //   showInSidebar: false,
+  //   sidebarMode: 'hidden',
   //   handle: {
   //     layout: {
   //       hasSider: true,
   //       hasHeader: false,
-  //       siderType: 'digital-human',
+  //       siderType: 'studio',
   //       headerType: 'home',
   //     },
   //   },
@@ -210,12 +212,12 @@ export const routeConfigs: RouteConfig[] = [
   //   key: 'digital-human-detail-session',
   //   label: '数字员工详情',
   //   element: <DigitalHumanDetail />,
-  //   showInSidebar: false,
+  //   sidebarMode: 'hidden',
   //   handle: {
   //     layout: {
   //       hasSider: true,
   //       hasHeader: false,
-  //       siderType: 'digital-human',
+  //       siderType: 'studio',
   //       headerType: 'home',
   //     },
   //   },
@@ -225,12 +227,12 @@ export const routeConfigs: RouteConfig[] = [
   //   key: 'digital-human-detail-config',
   //   label: '数字员工详情',
   //   element: <DigitalHumanDetail />,
-  //   showInSidebar: false,
+  //   sidebarMode: 'hidden',
   //   handle: {
   //     layout: {
   //       hasSider: true,
   //       hasHeader: false,
-  //       siderType: 'digital-human',
+  //       siderType: 'studio',
   //       headerType: 'home',
   //     },
   //   },
@@ -240,13 +242,14 @@ export const routeConfigs: RouteConfig[] = [
     key: 'digital-human-setting-item',
     label: '数字员工配置',
     element: <DHSetting />,
-    showInSidebar: false,
+    sidebarMode: 'hidden',
+    showInBreadcrumb: false,
     handle: {
       layout: {
         hasSider: true,
-        hasHeader: false,
-        siderType: 'digital-human',
-        headerType: 'home',
+        hasHeader: true,
+        siderType: 'studio',
+        headerType: 'studio',
       },
     },
   },
@@ -255,13 +258,14 @@ export const routeConfigs: RouteConfig[] = [
     key: 'digital-human-detail',
     label: '数字员工详情',
     element: <DigitalHumanDetail />,
-    showInSidebar: false,
+    sidebarMode: 'hidden',
+    showInBreadcrumb: false,
     handle: {
       layout: {
         hasSider: true,
-        hasHeader: false,
-        siderType: 'digital-human',
-        headerType: 'home',
+        hasHeader: true,
+        siderType: 'studio',
+        headerType: 'studio',
       },
     },
   },

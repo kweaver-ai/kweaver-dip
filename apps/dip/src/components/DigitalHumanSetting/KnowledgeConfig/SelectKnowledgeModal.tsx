@@ -1,20 +1,17 @@
 import type { ModalProps } from 'antd'
-import { Button, Checkbox, Modal, message, Spin, Tabs } from 'antd'
+import { Checkbox, Modal, message, Spin, Tabs } from 'antd'
 import clsx from 'clsx'
-import { useEffect, useMemo, useState } from 'react'
-import { getKnowledgeNetworks, type KnowledgeNetworkInfo } from '@/apis'
+import { useEffect, useState } from 'react'
+import { getBknKnowledgeNetworks, type BknKnowledgeNetworkInfo } from '@/apis'
 import AppIcon from '@/components/AppIcon'
-import AiPromptInput from '@/components/DipChatKit/components/AiPromptInput'
-import type { AiPromptSubmitPayload } from '@/components/DipChatKit/components/AiPromptInput/types'
 import Empty from '@/components/Empty'
-import IconFont from '@/components/IconFont'
 import ScrollBarContainer from '@/components/ScrollBarContainer'
 import { LoadStatus } from '@/types/enums'
 import { formatTimeSlash } from '@/utils/handle-function/FormatTime'
 
 export interface SelectKnowledgeModalProps extends Omit<ModalProps, 'onCancel' | 'onOk'> {
   /** 确定成功的回调，传递信息 */
-  onOk: (result: KnowledgeNetworkInfo[]) => void
+  onOk: (result: BknKnowledgeNetworkInfo[]) => void
   /** 取消回调 */
   onCancel: () => void
   /** 默认选中的知识网络IDs */
@@ -29,8 +26,8 @@ const SelectKnowledgeModal = ({
   defaultSelectedIds = [],
 }: SelectKnowledgeModalProps) => {
   const [status, setStatus] = useState<LoadStatus>(LoadStatus.Empty)
-  const [knowledgeList, setKnowledgeList] = useState<KnowledgeNetworkInfo[]>([])
-  const [selectedList, setSelectedList] = useState<KnowledgeNetworkInfo[]>([])
+  const [knowledgeList, setKnowledgeList] = useState<BknKnowledgeNetworkInfo[]>([])
+  const [selectedList, setSelectedList] = useState<BknKnowledgeNetworkInfo[]>([])
   const [messageApi, messageContextHolder] = message.useMessage()
 
   useEffect(() => {
@@ -42,7 +39,7 @@ const SelectKnowledgeModal = ({
     if (status === LoadStatus.Loading) return // 防止重复请求
     setStatus(LoadStatus.Loading)
     try {
-      const result = await getKnowledgeNetworks({ limit: -1 })
+      const result = await getBknKnowledgeNetworks({ limit: -1 })
       setKnowledgeList(result.entries)
       setStatus(result.total_count > 0 ? LoadStatus.Normal : LoadStatus.Empty)
     } catch (error: any) {
@@ -59,7 +56,7 @@ const SelectKnowledgeModal = ({
   }, [open])
 
   // 选择知识网络
-  const handleSelect = (item: KnowledgeNetworkInfo) => {
+  const handleSelect = (item: BknKnowledgeNetworkInfo) => {
     if (selectedList.some((selected) => selected.id === item.id)) {
       setSelectedList(selectedList.filter((selected) => selected.id !== item.id))
     } else {

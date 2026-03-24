@@ -6,11 +6,10 @@ export type TaskConversationProps = {
 }
 
 const TaskConversation = ({ digitalHumanId, sessionId }: TaskConversationProps) => {
+  console.log('sessionId', sessionId)
   return (
     <div className="flex h-full min-h-0 w-full flex-1 flex-col overflow-hidden">
-      <DipChatKit
-        defaultEmployeeValue={digitalHumanId}
-      />
+      <DipChatKit showHeader={false} sessionId={sessionId} assignEmployeeValue={digitalHumanId} />
     </div>
   )
 }

@@ -1,7 +1,11 @@
 import { usePreferenceStore } from '@/stores'
 import { BASE_PATH } from '@/utils/config'
 import { routeConfigs } from './routes'
-import type { RouteConfig, SiderType } from './types'
+import type { RouteConfig, RouteSidebarMode, SiderType } from './types'
+
+/** 缺省为 hidden，与未配置时的侧栏行为一致 */
+export const getRouteSidebarMode = (route: RouteConfig): RouteSidebarMode =>
+  route.sidebarMode ?? 'hidden'
 
 /**
  * 将动态路由路径模式转换为正则表达式
@@ -53,7 +57,7 @@ export const getRouteByPath = (path: string): RouteConfig | undefined => {
       path: normalizedPath,
       key: `micro-app-${appRouteMatch[1]}`,
       label: appRouteMatch[1],
-      showInSidebar: false,
+      sidebarMode: 'hidden',
     }
   }
 
@@ -102,6 +106,34 @@ export const getRouteByKey = (key: string): RouteConfig | undefined => {
 }
 
 /**
+ * 面包屑中「分类」之后的祖先路由列表（不含当前页）。
+ * - 配置了 breadcrumbParentKeys（含 []）：仅按 key 解析，不再用路径前缀推导。
+ * - 未配置：回退到 getParentRoute 单层父级。
+ */
+export const getBreadcrumbAncestorRoutes = (route: RouteConfig): RouteConfig[] => {
+  if (route.breadcrumbParentKeys !== undefined) {
+    return route.breadcrumbParentKeys
+      .map((key) => getRouteByKey(key))
+      .filter((r): r is RouteConfig => r !== undefined)
+  }
+  const parent = getParentRoute(route)
+  return parent ? [parent] : []
+}
+
+/** 是否在面包屑末项展示当前路由；默认展示 */
+export const shouldShowCurrentRouteInBreadcrumb = (route: RouteConfig): boolean => {
+  return route.showInBreadcrumb !== false
+}
+
+/**
+ * 面包屑可点击路径；带动态段的路径不生成链接（约定动态段不出现在面包屑祖先中）
+ */
+export const getBreadcrumbLinkPathForRoute = (route: RouteConfig): string | undefined => {
+  if (!route.path || route.path.includes(':')) return undefined
+  return `/${route.path}`
+}
+
+/**
  * 判断路由是否对用户可见
  * TODO: 当前没有角色系统，所有路由都允许访问，直接返回 true
  */
@@ -116,7 +148,10 @@ export const isRouteVisibleForRoles = (route: RouteConfig, roleIds: Set<string>)
 }
 
 export const getFirstVisibleSidebarRoute = (roleIds: Set<string>): RouteConfig | undefined => {
-  return routeConfigs.find((r) => r.showInSidebar && r.key && isRouteVisibleForRoles(r, roleIds))
+  return routeConfigs.find(
+    (r) =>
+      getRouteSidebarMode(r) === 'menu' && r.key && isRouteVisibleForRoles(r, roleIds),
+  )
 }
 
 /**
@@ -125,7 +160,7 @@ export const getFirstVisibleSidebarRoute = (roleIds: Set<string>): RouteConfig |
  *
  * @param siderType 侧边栏类型：'store' | 'studio' | 'home'
  * @param roleIds 用户角色ID集合
- * @returns 第一个有权限的路由配置，如果没有则返回 undefined
+ * @returns 配置数组中第一个满足：`sidebarMode` 为 menu 或 entry-only，且 siderType、权限匹配的路由
  */
 export const getFirstVisibleRouteBySiderType = (
   siderType: SiderType,
@@ -137,14 +172,16 @@ export const getFirstVisibleRouteBySiderType = (
   //     path: 'application/1',
   //     key: 'micro-app-1',
   //     label: '问数',
-  //     showInSidebar: false,
+  //     sidebarMode: 'hidden',
   //   }
   // }
 
   return routeConfigs.find((route) => {
-    // 必须在侧边栏显示
-    const hasSidebar = route.showInSidebar && route.key
-    if (!hasSidebar) {
+    if (!route.key) {
+      return false
+    }
+    const mode = getRouteSidebarMode(route)
+    if (mode !== 'menu' && mode !== 'entry-only') {
       return false
     }
 

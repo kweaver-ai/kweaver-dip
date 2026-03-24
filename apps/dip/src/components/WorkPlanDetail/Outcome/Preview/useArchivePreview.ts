@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { getDigitalHumanSessionArchiveSubpath } from '@/apis/dip-studio/sessions'
+import { getSessionArchiveSubpath } from '@/apis/dip-studio/sessions'
 import {
   mockGetDigitalHumanSessionArchiveSubpath,
   RESULTS_PANEL_USE_MOCK,
@@ -48,7 +48,7 @@ export function useArchivePreview(dhId: string, sessionId: string) {
             ? await mockGetDigitalHumanSessionArchiveSubpath(subpath, {
                 responseType: 'arraybuffer',
               })
-            : await getDigitalHumanSessionArchiveSubpath(sessionId, subpath, {
+            : await getSessionArchiveSubpath(sessionId, subpath, {
                 responseType: 'arraybuffer',
               })
           if (!(res instanceof ArrayBuffer)) {
@@ -67,7 +67,7 @@ export function useArchivePreview(dhId: string, sessionId: string) {
 
         const res = RESULTS_PANEL_USE_MOCK
           ? await mockGetDigitalHumanSessionArchiveSubpath(subpath, { responseType: rt })
-          : await getDigitalHumanSessionArchiveSubpath(sessionId, subpath, {
+          : await getSessionArchiveSubpath(sessionId, subpath, {
               responseType: rt,
             })
         const body = formatPreviewContent(res, title)

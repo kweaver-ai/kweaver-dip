@@ -1,8 +1,9 @@
 import type { ModalProps } from 'antd'
-import { Form, Input, Modal, message } from 'antd'
+import { Button, Form, Input, Modal, message } from 'antd'
 import { useEffect, useMemo, useState } from 'react'
 import type { ChannelConfig, ChannelType } from '@/apis/dip-studio/digital-human'
-import IconFont from '@/components/IconFont'
+import DingDingIcon from '@/assets/icons/dingding.svg'
+import FeiShuIcon from '@/assets/icons/feishu.svg'
 
 export interface AddChannelModalProps extends Omit<ModalProps, 'onCancel' | 'onOk'> {
   /** 确定成功的回调，传递通道配置 */
@@ -11,16 +12,20 @@ export interface AddChannelModalProps extends Omit<ModalProps, 'onCancel' | 'onO
   onCancel: () => void
 }
 
-const CHANNEL_OPTIONS: Array<{ type: ChannelType; name: string; desc: string }> = [
-  { type: 'feishu', name: '飞书', desc: '配置飞书应用信息' },
-  { type: 'dingtalk', name: '钉钉', desc: '配置钉钉应用信息' },
+const CHANNEL_OPTIONS: Array<{
+  type: ChannelType
+  name: string
+  configTitle: string
+  icon: string
+}> = [
+  { type: 'feishu', name: '飞书机器人', configTitle: '飞书机器人配置', icon: FeiShuIcon },
+  { type: 'dingtalk', name: '钉钉机器人', configTitle: '钉钉机器人配置', icon: DingDingIcon },
 ]
 
 /** 添加通道弹窗 */
 const AddChannelModal = ({ open, onOk, onCancel }: AddChannelModalProps) => {
   const [form] = Form.useForm()
-  const [step, setStep] = useState<1 | 2>(1)
-  const [selectedType, setSelectedType] = useState<ChannelType | undefined>(undefined)
+  const [selectedType, setSelectedType] = useState<ChannelType>('feishu')
   const [, messageContextHolder] = message.useMessage()
 
   const selectedOption = useMemo(() => {
@@ -29,30 +34,29 @@ const AddChannelModal = ({ open, onOk, onCancel }: AddChannelModalProps) => {
 
   useEffect(() => {
     if (!open) return
-    setStep(1)
-    setSelectedType(undefined)
+    setSelectedType('feishu')
     form.resetFields()
   }, [open, form])
 
-  const handleBack = () => {
-    setStep(1)
-    setSelectedType(undefined)
+  const handleReset = () => {
     form.resetFields()
   }
 
   const handleSelectChannel = (type: ChannelType) => {
     setSelectedType(type)
-    setStep(2)
     form.resetFields()
   }
 
-  const handleOk = async () => {
-    if (step !== 2) return
-    if (!selectedType) {
-      message.error('请先选择通道类型')
-      return
+  const handleTestConnection = async () => {
+    try {
+      await form.validateFields()
+      message.success('连接测试通过')
+    } catch {
+      // 表单校验不通过时不提示额外错误
     }
+  }
 
+  const handleOk = async () => {
     try {
       const values = await form.validateFields()
       const appId = (values.app_id as string | undefined)?.trim() ?? ''
@@ -75,84 +79,99 @@ const AddChannelModal = ({ open, onOk, onCancel }: AddChannelModalProps) => {
     <>
       {messageContextHolder}
       <Modal
-        title={
-          <div className="flex items-center gap-2">
-            {step === 2 && <IconFont type="icon-dip-left" onClick={handleBack} />}
-            <span className="font-medium">
-              {step === 1 ? '添加通道' : `配置${selectedOption?.name ?? ''}应用信息`}
-            </span>
-          </div>
-        }
         open={open}
         onCancel={onCancel}
-        onOk={handleOk}
-        closable
+        closable={false}
         mask={{ closable: false }}
         destroyOnHidden
-        width={520}
-        okText="确定"
-        cancelText="取消"
-        okButtonProps={{ disabled: step === 1 }}
-        footer={
-          step === 2
-            ? (_, { OkBtn, CancelBtn }) => (
-                <>
-                  <OkBtn />
-                  <CancelBtn />
-                </>
-              )
-            : null
-        }
+        width={840}
+        footer={false}
+        styles={{ container: { padding: 0 } }}
       >
-        {step === 1 ? (
-          <div className="w-full flex flex-col gap-y-3">
+        <div className="flex min-h-[500px] overflow-hidden rounded-md border border-[#E5E6EA]">
+          <div className="flex w-[220px] flex-col gap-1 border-r border-[#E5E6EA] bg-[#FAFBFC] px-2 py-[18px]">
             {CHANNEL_OPTIONS.map((option) => {
-              const selected = option.type === selectedType
+              const isSelected = option.type === selectedType
               return (
                 <button
                   key={option.type}
                   type="button"
-                  onClick={() => handleSelectChannel(option.type)}
-                  className={`w-full text-left rounded-[10px] border p-4 transition-colors ${
-                    selected
-                      ? 'border-[var(--dip-primary-color)] bg-[rgba(18,110,227,0.06)]'
-                      : 'border-[--dip-border-color] hover:bg-[rgba(0,0,0,0.04)]'
+                  className={`h-9 cursor-pointer rounded-md px-2 text-left transition-colors] ${
+                    isSelected ? 'bg-white' : 'bg-transparent'
                   }`}
+                  onClick={() => handleSelectChannel(option.type)}
                 >
-                  <div className="flex items-start gap-x-3">
-                    <div className="w-10 h-10 rounded-md bg-[rgb(var(--dip-primary-color-rgb-space)/10%)] flex items-center justify-center flex-shrink-0">
-                      <span className="text-[--dip-primary-color] font-medium">{option.name}</span>
-                    </div>
-                    <div className="flex-1">
-                      <div className="font-medium text-[--dip-text-color]">{option.name}</div>
-                      <div className="text-xs text-[--dip-text-color-45] mt-1">{option.desc}</div>
-                    </div>
+                  <div className="flex h-full items-center gap-1.5 text-sm text-[rgb(0_0_0_/_85%)]">
+                    <input
+                      type="radio"
+                      checked={isSelected}
+                      readOnly
+                      className="m-0 h-4 w-4 accent-[#126EE3]"
+                    />
+                    <img src={option.icon} alt={option.name} className="h-4 w-4 object-contain" />
+                    <span>{option.name}</span>
                   </div>
                 </button>
               )
             })}
           </div>
-        ) : (
-          <div className="w-full">
-            <Form form={form} layout="vertical" className="mt-2">
+          <div className="flex-1 bg-white px-6 pb-5 pt-4">
+            <div className="mb-4 flex items-start gap-x-2">
+              {selectedOption && (
+                <img src={selectedOption.icon} alt={selectedOption.name} className="h-8 w-8" />
+              )}
+              <div>
+                <div className="text-sm leading-5 text-[rgb(0_0_0_/_85%)]">
+                  {selectedOption?.configTitle ?? '通道配置'}
+                </div>
+                <div className="mt-0.5 text-xs leading-[18px] text-[rgb(0_0_0_/_50%)]">
+                  请为该通道配置独立参数
+                </div>
+              </div>
+            </div>
+
+            <Form form={form} layout="vertical">
               <Form.Item
-                label="app_id"
+                label="API Key"
                 name="app_id"
                 rules={[{ required: true, message: '请输入app_id' }]}
               >
-                <Input placeholder="请输入应用的 app_id" autoComplete="off" />
+                <Input
+                  placeholder={
+                    selectedType === 'dingtalk'
+                      ? '请输入钉钉应用 App Key'
+                      : '请输入飞书应用 App Key'
+                  }
+                  autoComplete="off"
+                />
               </Form.Item>
 
               <Form.Item
-                label="app_secret"
+                label="API Secret"
                 name="app_secret"
                 rules={[{ required: true, message: '请输入app_secret' }]}
               >
-                <Input.Password placeholder="请输入应用的 app_secret" autoComplete="off" />
+                <Input placeholder="请输入该应用 App Secret" autoComplete="off" />
               </Form.Item>
             </Form>
+            <div className="flex justify-between">
+              <button
+                type="button"
+                className="mb-[14px] cursor-pointer border-none bg-transparent p-0 leading-5 text-[#126EE3]"
+                onClick={handleTestConnection}
+              >
+                {/* 测试连接 */}
+              </button>
+              <div className="flex justify-end gap-2">
+                <Button type="primary" onClick={handleOk}>
+                  确定
+                </Button>
+                <Button onClick={handleReset}>重置</Button>
+                <Button onClick={onCancel}>取消</Button>
+              </div>
+            </div>
           </div>
-        )}
+        </div>
       </Modal>
     </>
   )

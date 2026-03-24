@@ -1,25 +1,25 @@
-import { get } from '@/utils/http'
+import { del, get } from '@/utils/http'
 import type {
-  GetDigitalHumanSessionMessagesParams,
   GetDigitalHumanSessionsListParams,
+  GetSessionMessagesParams,
   GetSessionsListParams,
   SessionArchivesResponse,
   SessionGetResponse,
+  SessionSummary,
   SessionsListResponse,
 } from './index.d'
 
 export type {
-  GetDigitalHumanSessionMessagesParams,
   GetDigitalHumanSessionsListParams,
+  GetSessionMessagesParams,
   GetSessionsListParams,
   SessionArchiveEntry,
   SessionArchiveEntryType,
   SessionArchivesResponse,
   SessionDefaults,
-  SessionDeliveryContext,
   SessionGetResponse,
+  SessionKind,
   SessionMessage,
-  SessionOrigin,
   SessionPreviewItem,
   SessionSummary,
   SessionsListResponse,
@@ -57,26 +57,37 @@ export const getDigitalHumanSessionsList = (
     params: cleanParams(params as Record<string, unknown> | undefined),
   }) as Promise<SessionsListResponse>
 
-/** 获取指定数字员工会话消息详情（getDigitalHumanSessionMessages） */
-export const getDigitalHumanSessionMessages = (
+/** 获取会话摘要详情（getSessionDetail） */
+export const getSessionDetail = (
   sessionId: string,
-  params?: GetDigitalHumanSessionMessagesParams,
+  params?: GetSessionMessagesParams,
+): Promise<SessionSummary> =>
+  get(`${BASE}/sessions/${sessionId}`, {
+    params: cleanParams(params as Record<string, unknown> | undefined),
+  }) as Promise<SessionSummary>
+
+/**删除会话（deleteSession） */
+export const deleteSession = (sessionId: string): Promise<void> =>
+  del(`${BASE}/sessions/${sessionId}`) as Promise<void>
+
+/** 获取会话消息详情（getSessionMessages） */
+export const getSessionMessages = (
+  sessionId: string,
+  params?: GetSessionMessagesParams,
 ): Promise<SessionGetResponse> =>
   get(`${BASE}/sessions/${sessionId}/messages`, {
     params: cleanParams(params as Record<string, unknown> | undefined),
   }) as Promise<SessionGetResponse>
 
-/** 获取指定数字员工会话下的归档物（getDigitalHumanSessionArchives） */
-export const getDigitalHumanSessionArchives = (
-  sessionId: string,
-): Promise<SessionArchivesResponse> =>
+/** 获取会话归档物（getSessionArchives） */
+export const getSessionArchives = (sessionId: string): Promise<SessionArchivesResponse> =>
   get(`${BASE}/sessions/${sessionId}/archives`) as Promise<SessionArchivesResponse>
 
 /**
- * 获取指定数字员工会话归档子路径内容（getDigitalHumanSessionArchiveSubpath）
+ * 获取会话归档子路径内容（getSessionArchiveSubpath）
  * 目录多为 JSON（SessionArchivesResponse）；文件可能为 octet-stream / text，需传 `responseType`。
  */
-export const getDigitalHumanSessionArchiveSubpath = (
+export const getSessionArchiveSubpath = (
   sessionId: string,
   subpath: string,
   options?: { responseType?: 'json' | 'text' | 'arraybuffer'; timeout?: number },

@@ -35,10 +35,7 @@ const DigitalHumanSetting = ({ readonly }: { readonly?: boolean }) => {
   }
 
   return (
-    <div
-      className="h-full min-h-0 flex flex-col bg-[--dip-white] relative flex-1"
-      id="digital-human-setting-container"
-    >
+    <div className="h-full min-h-0 flex flex-col bg-[--dip-white] relative flex-1">
       {messageContextHolder}
       <div className="flex flex-1 min-h-0 overflow-hidden">
         <div className="w-60 pl-2 pr-1.5 py-4 bg-[#FFFFFFD9] border-r border-[--dip-border-color] shrink-0">

@@ -1,14 +1,14 @@
 import { Button, Flex, Table, Tooltip } from 'antd'
 import { memo, useMemo, useState } from 'react'
-import type { KnowledgeNetworkInfo } from '@/apis'
+import type { BknKnowledgeNetworkInfo } from '@/apis'
 import type { BknEntry } from '@/apis/dip-studio/digital-human'
+import AppIcon from '@/components/AppIcon'
 import Empty from '@/components/Empty'
 import IconFont from '@/components/IconFont'
 import ScrollBarContainer from '@/components/ScrollBarContainer'
 import { useDigitalHumanStore } from '../digitalHumanStore'
 import styles from './index.module.less'
 import SelectKnowledgeModal from './SelectKnowledgeModal'
-import AppIcon from '@/components/AppIcon'
 
 interface KnowledgeConfigProps {
   readonly?: boolean
@@ -24,7 +24,7 @@ const KnowledgeConfig = ({ readonly }: KnowledgeConfigProps) => {
   }
 
   /** 选择知识网络结果 */
-  const handleSelectKnowledgeResult = (result: KnowledgeNetworkInfo[]) => {
+  const handleSelectKnowledgeResult = (result: BknKnowledgeNetworkInfo[]) => {
     const next: BknEntry[] = result.map((k) => ({
       name: k.name,
       url: k.id,
@@ -55,8 +55,8 @@ const KnowledgeConfig = ({ readonly }: KnowledgeConfigProps) => {
       },
       {
         title: '功能描述',
-        dataIndex: 'comment',
-        key: 'comment',
+        dataIndex: 'url',
+        key: 'url',
         ellipsis: true,
         render: (text: string) => text || '--',
       },
