@@ -1,6 +1,7 @@
 import type { NextFunction, Request, Response } from "express";
 import { describe, expect, it, vi } from "vitest";
 import { readSessionArchiveLookup } from "../logic/sessions";
+import { injectAuthenticatedUserId } from "../middleware/hydra-auth";
 
 import {
   createSessionsRouter,
@@ -35,22 +36,12 @@ describe("readSessionsListQuery", () => {
       readSessionsListQuery({
         limit: "20",
         search: "hello",
-        agentId: "agent-1",
-        includeLastMessage: "false",
-        activeMinutes: "60",
-        label: "inbox",
-        includeGlobal: "true",
-        includeUnknown: "true"
+        agentId: "agent-1"
       })
     ).toEqual({
       limit: 20,
       search: "hello",
-      agentId: "agent-1",
-      includeLastMessage: false,
-      activeMinutes: 60,
-      label: "inbox",
-      includeGlobal: true,
-      includeUnknown: true
+      agentId: "agent-1"
     });
   });
 
@@ -225,18 +216,20 @@ describe("createSessionsRouter", () => {
     const handler = listLayer?.route?.stack[0]?.handle;
     const response = createResponseDouble();
     const next = vi.fn<NextFunction>();
+    const request = {
+      query: {},
+      headers: {}
+    } as unknown as Request;
 
-    await handler?.({ query: {} } as Request, response, next);
+    injectAuthenticatedUserId(request, "user-1");
+
+    await handler?.(request, response, next);
 
     expect(listSessions).toHaveBeenCalledWith({
       limit: undefined,
       search: undefined,
       agentId: undefined,
-      includeLastMessage: undefined,
-      activeMinutes: undefined,
-      label: undefined,
-      includeGlobal: undefined,
-      includeUnknown: undefined
+      userId: "user-1"
     });
     expect(response.status).toHaveBeenCalledWith(200);
     expect(next).not.toHaveBeenCalled();
@@ -334,29 +327,25 @@ describe("createSessionsRouter", () => {
     const handler = listLayer?.route?.stack[0]?.handle;
     const response = createResponseDouble();
     const next = vi.fn<NextFunction>();
+    const request = {
+      params: {
+        id: "agent-1"
+      },
+      query: {
+        limit: "10"
+      },
+      headers: {}
+    } as unknown as Request;
 
-    await handler?.(
-      {
-        params: {
-          id: "agent-1"
-        },
-        query: {
-          limit: "10"
-        }
-      } as unknown as Request,
-      response,
-      next
-    );
+    injectAuthenticatedUserId(request, "user-1");
+
+    await handler?.(request, response, next);
 
     expect(listSessions).toHaveBeenCalledWith({
       limit: 10,
       search: undefined,
       agentId: "agent-1",
-      includeLastMessage: undefined,
-      activeMinutes: undefined,
-      label: undefined,
-      includeGlobal: undefined,
-      includeUnknown: undefined
+      userId: "user-1"
     });
     expect(response.status).toHaveBeenCalledWith(200);
     expect(next).not.toHaveBeenCalled();
@@ -501,7 +490,7 @@ describe("createSessionsRouter", () => {
     const response1 = createResponseDouble();
     const next1 = vi.fn<NextFunction>();
 
-    await handler1?.({ query: {} } as Request, response1, next1);
+    await handler1?.({ query: {}, headers: {} } as Request, response1, next1);
     expect(next1).toHaveBeenCalledWith(badRequest);
 
     const router2 = createSessionsRouter({
@@ -532,7 +521,7 @@ describe("createSessionsRouter", () => {
     const response2 = createResponseDouble();
     const next2 = vi.fn<NextFunction>();
 
-    await handler2?.({ query: {} } as Request, response2, next2);
+    await handler2?.({ query: {}, headers: {} } as Request, response2, next2);
 
     expect(next2).toHaveBeenCalledOnce();
     expect(vi.mocked(next2).mock.calls[0]?.[0]).toMatchObject({

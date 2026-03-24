@@ -1,9 +1,11 @@
 import { describe, expect, it, vi } from "vitest";
 
 import {
+  buildFilteredSessionsListResult,
   buildSessionLookupParams,
   DefaultSessionsLogic,
   findSessionByKey,
+  hasMatchingSessionUserId,
   isHiddenSessionArchiveEntry,
   readSessionArchiveLookup,
   withDerivedTitles
@@ -23,16 +25,55 @@ describe("DefaultSessionsLogic", () => {
     await expect(
       logic.listSessions({
         limit: 20,
-        includeDerivedTitles: true,
-        includeLastMessage: true
+        userId: "user-1"
       })
     ).resolves.toEqual({
-      sessions: []
+      sessions: [],
+      count: 0
     });
     expect(listSessions).toHaveBeenCalledWith({
       limit: 20,
-      includeLastMessage: true,
       includeDerivedTitles: true
+    });
+  });
+
+  it("filters sessions list by session user id", async () => {
+    const listSessions = vi.fn().mockResolvedValue({
+      ts: 1,
+      path: "/sessions",
+      count: 2,
+      sessions: [
+        {
+          key: "agent:de_finance:user:user-1:direct:chat-1",
+          kind: "user-direct",
+          updatedAt: 1,
+          sessionId: "runtime-1"
+        },
+        {
+          key: "agent:de_finance:user:user-2:direct:chat-2",
+          kind: "user-direct",
+          updatedAt: 2,
+          sessionId: "runtime-2"
+        }
+      ]
+    });
+    const logic = new DefaultSessionsLogic({
+      listSessions,
+      getSession: vi.fn(),
+      previewSessions: vi.fn(),
+    });
+
+    await expect(
+      logic.listSessions({
+        userId: "user-1"
+      })
+    ).resolves.toMatchObject({
+      count: 1,
+      sessions: [
+        {
+          key: "agent:de_finance:user:user-1:direct:chat-1"
+        }
+      ]
     });
   });
 
@@ -175,6 +216,59 @@ describe("sessions logic helpers", () => {
     });
 
     expect(() => findSessionByKey([], "missing")).toThrow("Session not found");
+  });
+
+  it("matches session ownership by parsed session key", () => {
+    expect(
+      hasMatchingSessionUserId(
+        {
+          key: "agent:de_finance:user:user-1:direct:session-1",
+          kind: "user-direct",
+          updatedAt: 1,
+          sessionId: "runtime-1"
+        },
+        "user-1"
+      )
+    ).toBe(true);
+    expect(
+      hasMatchingSessionUserId(
+        {
+          key: "invalid",
+          kind: "direct",
+          updatedAt: 1,
+          sessionId: "runtime-2"
+        },
+        "user-1"
+      )
+    ).toBe(false);
+  });
+
+  it("rebuilds sessions list result after filtering", () => {
+    expect(
+      buildFilteredSessionsListResult(
+        {
+          ts: 1,
+          path: "/sessions",
+          count: 2,
+          sessions: []
+        },
+        [
+          {
+            key: "session-1",
+            kind: "direct",
+            updatedAt: 1,
+            sessionId: "runtime-1"
+          }
+        ]
+      )
+    ).toMatchObject({
+      count: 1,
+      sessions: [
+        {
+          key: "session-1"
+        }
+      ]
+    });
   });
 
   it("identifies internal plan files in archives list", () => {

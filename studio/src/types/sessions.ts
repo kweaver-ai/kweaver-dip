@@ -18,34 +18,14 @@ export interface OpenClawSessionsListParams {
   agentId?: string;
 
   /**
+   * Authenticated user identifier used by Studio-side filtering.
+   */
+  userId?: string;
+
+  /**
    * Derives title from the first message when enabled.
    */
   includeDerivedTitles?: boolean;
-
-  /**
-   * Includes last message preview when enabled.
-   */
-  includeLastMessage?: boolean;
-
-  /**
-   * Returns sessions active in the last N minutes.
-   */
-  activeMinutes?: number;
-
-  /**
-   * Optional label filter.
-   */
-  label?: string;
-
-  /**
-   * Includes global sessions when enabled.
-   */
-  includeGlobal?: boolean;
-
-  /**
-   * Includes unknown sessions when enabled.
-   */
-  includeUnknown?: boolean;
 }
 
 /**

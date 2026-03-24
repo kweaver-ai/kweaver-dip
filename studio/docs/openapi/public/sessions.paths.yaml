@@ -34,37 +34,6 @@ paths:
           description: 过滤特定 Agent 的会话
           schema:
             type: string
-        - name: includeLastMessage
-          in: query
-          required: false
-          description: 是否包含最后一条消息预览
-          schema:
-            type: boolean
-        - name: activeMinutes
-          in: query
-          required: false
-          description: 仅返回过去 N 分钟内活跃的会话
-          schema:
-            type: integer
-            minimum: 0
-        - name: label
-          in: query
-          required: false
-          description: 按会话标签过滤
-          schema:
-            type: string
-        - name: includeGlobal
-          in: query
-          required: false
-          description: 是否包含全局会话
-          schema:
-            type: boolean
-        - name: includeUnknown
-          in: query
-          required: false
-          description: 是否包含未知来源会话
-          schema:
-            type: boolean
       responses:
         "200":
           description: 会话列表
@@ -147,37 +116,6 @@ paths:
           description: 关键词搜索，用于过滤会话
           schema:
             type: string
-        - name: includeLastMessage
-          in: query
-          required: false
-          description: 是否包含最后一条消息预览
-          schema:
-            type: boolean
-        - name: activeMinutes
-          in: query
-          required: false
-          description: 仅返回过去 N 分钟内活跃的会话
-          schema:
-            type: integer
-            minimum: 0
-        - name: label
-          in: query
-          required: false
-          description: 按会话标签过滤
-          schema:
-            type: string
-        - name: includeGlobal
-          in: query
-          required: false
-          description: 是否包含全局会话
-          schema:
-            type: boolean
-        - name: includeUnknown
-          in: query
-          required: false
-          description: 是否包含未知来源会话
-          schema:
-            type: boolean
       responses:
         "200":
           description: 指定数字员工会话列表

@@ -99,9 +99,18 @@ export class DefaultSessionsLogic implements SessionsLogic {
   public async listSessions(
     params: OpenClawSessionsListParams
   ): Promise<OpenClawSessionsListResult> {
-    return this.openClawSessionsAdapter.listSessions(
-      withDerivedTitles(params)
+    const { userId, ...adapterParams } = withDerivedTitles(params);
+    const result = await this.openClawSessionsAdapter.listSessions(adapterParams);
+
+    if (userId === undefined) {
+      return result;
+    }
+
+    const sessions = result.sessions.filter((session) =>
+      hasMatchingSessionUserId(session, userId)
     );
+
+    return buildFilteredSessionsListResult(result, sessions);
   }
 
   /**
@@ -242,6 +251,42 @@ export function findSessionByKey(
   }
 
   return matchedSession;
+}
+
+/**
+ * Returns whether one session belongs to the requested user.
+ *
+ * @param session The session to inspect.
+ * @param userId The authenticated user identifier.
+ * @returns True when the session user id matches.
+ */
+export function hasMatchingSessionUserId(
+  session: OpenClawSessionSummary,
+  userId: string
+): boolean {
+  try {
+    return parseSession(session.key).userId === userId;
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Rebuilds one sessions list response after Studio-side filtering.
+ *
+ * @param result The original sessions list result.
+ * @param sessions The filtered sessions.
+ * @returns The normalized list result containing only filtered sessions.
+ */
+export function buildFilteredSessionsListResult(
+  result: OpenClawSessionsListResult,
+  sessions: OpenClawSessionSummary[]
+): OpenClawSessionsListResult {
+  return {
+    ...result,
+    count: sessions.length,
+    sessions
+  };
 }
 
 /**

@@ -55,6 +55,14 @@ openssl pkey -in private.pem -pubout -out public.pem
 }
 ```
 
+## Studio Web
+
+DIP 数字员工 Web 界面
+
+GitHub：https://github.com/kweaver-ai/web
+
+请参考 [`apps/dip`](https://github.com/kweaver-ai/web/tree/main/apps/dip) 下的 README.md 安装 Web 界面
+
 ## API
 
 除白名单接口外，所有接口都需要在请求头中携带 `Authorization: Bearer <access-token>`。服务端会通过 Hydra `/admin/oauth2/introspect` 做令牌内省；在 `NODE_ENV=development` 时，会跳过 Hydra，改为使用 `.env` 中的 `OAUTH_MOCK_USER_ID` 作为鉴权用户。
@@ -67,6 +75,8 @@ openssl pkey -in private.pem -pubout -out public.pem
 
 `GET /api/dip-studio/v1/sessions`
 
+支持查询参数：`search`、`agentId`、`limit`
+
 响应：`200 application/json`
 
 | 参数 | 类型 | 说明 |
@@ -75,6 +85,8 @@ openssl pkey -in private.pem -pubout -out public.pem
 | path | string | 会话来源路径 |
 | count | number | 会话总数 |
 | sessions | SessionSummary[] | 会话摘要列表 |
+
+服务端会根据 `sessionKey` 中的用户信息，仅返回当前登录用户可见的会话。
 
 #### 获取单个会话详情
 

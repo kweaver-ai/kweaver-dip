@@ -1,4 +1,5 @@
 import { Router, type NextFunction, type Request, type Response } from "express";
+import { readAuthenticatedUserId } from "../middleware/hydra-auth";
 
 import { OpenClawSessionsGatewayAdapter } from "../adapters/openclaw-sessions-adapter";
 import { getEnv } from "../utils/env";
@@ -21,11 +22,6 @@ export interface SessionsListQuery {
   limit?: string;
   search?: string;
   agentId?: string;
-  includeLastMessage?: string;
-  activeMinutes?: string;
-  label?: string;
-  includeGlobal?: string;
-  includeUnknown?: string;
 }
 
 /**
@@ -112,7 +108,10 @@ export function createSessionsRouter(
     ): Promise<void> => {
       try {
         const query = readSessionsListQuery(request.query);
-        const result = await logic.listSessions(query);
+        const result = await logic.listSessions({
+          ...query,
+          userId: readAuthenticatedUserId(request)
+        });
 
         response.status(200).json(result);
       } catch (error) {
@@ -159,7 +158,8 @@ export function createSessionsRouter(
         const dhId = readRequiredPathParam(request.params.id, "id");
         const result = await logic.listSessions({
           ...query,
-          agentId: dhId
+          agentId: dhId,
+          userId: readAuthenticatedUserId(request)
         });
 
         response.status(200).json(result);
@@ -276,21 +276,7 @@ export function readSessionsListQuery(
   return {
     limit: parseOptionalNonNegativeIntegerString(query.limit, "limit"),
     search: parseOptionalString(query.search),
-    agentId: parseOptionalString(query.agentId),
-    includeLastMessage: parseOptionalBooleanString(
-      query.includeLastMessage,
-      "includeLastMessage"
-    ),
-    activeMinutes: parseOptionalNonNegativeIntegerString(
-      query.activeMinutes,
-      "activeMinutes"
-    ),
-    label: parseOptionalString(query.label),
-    includeGlobal: parseOptionalBooleanString(query.includeGlobal, "includeGlobal"),
-    includeUnknown: parseOptionalBooleanString(
-      query.includeUnknown,
-      "includeUnknown"
-    )
+    agentId: parseOptionalString(query.agentId)
   };
 }
 
