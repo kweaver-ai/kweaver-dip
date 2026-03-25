@@ -223,12 +223,12 @@ export function registerArchivesAccess(api: OpenClawPluginApi): void {
 
       if (sourcePath !== finalTargetInWorkspace) {
         try {
-          await fs.promises.rename(sourcePath, finalTargetInWorkspace);
+          await fs.promises.copyFile(sourcePath, finalTargetInWorkspace);
           api.logger.info(
-            `Moved non-compliant file from ${relToWorkspace} to compliant path ${path.relative(workspaceDir, finalTargetInWorkspace)}`
+            `Copied non-compliant file from ${relToWorkspace} to compliant path ${path.relative(workspaceDir, finalTargetInWorkspace)}`
           );
         } catch (err: any) {
-          api.logger.warn(`Failed to move file to compliant workspace path: ${err.message}`);
+          api.logger.warn(`Failed to copy file to compliant workspace path: ${err.message}`);
         }
       }
 

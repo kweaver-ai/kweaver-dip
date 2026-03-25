@@ -112,7 +112,7 @@ export function renderIdentityMarkdown(
  * slot substitution avoids Pug treating `#` as an ID.)
  *
  * @param template The digital human template.
- * @returns The full SOUL.md markdown string (persona + BKN + unified protocol body).
+ * @returns The full SOUL.md markdown string (persona + BKN + pointers to archive/schedule skills).
  */
 export function renderSoulMarkdown(template: DigitalHumanTemplate): string {
   const raw = readFileSync(resolveSoulTemplatePath(), "utf8");
@@ -313,7 +313,7 @@ function extractBknSectionForParse(content: string): string {
   }
   let rest = content.slice(idx);
   const dashed = rest.search(/\n---\s*\n/);
-  const archive = rest.indexOf("\n[UNIFIED_ARCHIVE");
+  const archive = rest.indexOf("\n## 归档与计划技能");
   let cut = rest.length;
   if (dashed !== -1) {
     cut = Math.min(cut, dashed);

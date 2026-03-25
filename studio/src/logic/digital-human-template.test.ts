@@ -117,7 +117,9 @@ describe("renderIdentityMarkdown / renderSoulMarkdown", () => {
     expect(md).toContain("> body");
     expect(md).toContain("## 业务知识网络");
     expect(md).toContain("> | a | b |");
-    expect(md).toContain("[UNIFIED_ARCHIVE_AND_SCHEDULE_PROTOCOL]");
+    expect(md).toContain("## 归档与计划技能");
+    expect(md).toContain("archive-protocol");
+    expect(md).toContain("schedule-plan");
     expect(md).not.toContain("{{de_setting}}");
     expect(md).not.toContain("{{bkn_content}}");
   });
