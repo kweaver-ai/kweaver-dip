@@ -1,5 +1,5 @@
 ﻿import { VerticalAlignBottomOutlined } from '@ant-design/icons'
-import { Button, message, Tooltip } from 'antd'
+import { Button, Skeleton, message, Tooltip } from 'antd'
 import clsx from 'clsx'
 import isEmpty from 'lodash/isEmpty'
 import isString from 'lodash/isString'
@@ -30,10 +30,12 @@ const ChatContentArea: React.FC<ChatContentAreaProps> = ({
   inputPlaceholder,
 }) => {
   const [inputValue, setInputValue] = useState('')
+  const [sessionMessagesLoading, setSessionMessagesLoading] = useState(false)
   const scrollRef = useRef<ScrollContainerRef | null>(null)
   const sessionKeyMapRef = useRef<Record<string, string>>({})
   const autoSentTurnIdsRef = useRef<Set<string>>(new Set())
   const abortControllerMapRef = useRef<Record<string, AbortController>>({})
+  const scheduledScrollTimerIdsRef = useRef<number[]>([])
   const {
     dipChatKitStore: { messageTurns, scroll },
     setDipChatKitStore,
@@ -47,6 +49,8 @@ const ChatContentArea: React.FC<ChatContentAreaProps> = ({
     setShowBackToBottom,
     setIsAtBottom,
   } = useDipChatKitStore()
+  const setAutoScrollEnabledRef = useRef(setAutoScrollEnabled)
+  const setShowBackToBottomRef = useRef(setShowBackToBottom)
 
   const streamLoading = useMemo(() => {
     return messageTurns.some((turn) => turn.answerStreaming)
@@ -57,6 +61,36 @@ const ChatContentArea: React.FC<ChatContentAreaProps> = ({
       .map((turn) => `${turn.id}:${turn.answerMarkdown.length}:${turn.answerStreaming ? '1' : '0'}`)
       .join('|')
   }, [messageTurns])
+  const fixedSessionKey = useMemo(() => {
+    if (sessionId === undefined) return ''
+    return sessionId.trim()
+  }, [sessionId])
+
+  const clearScheduledScroll = useCallback(() => {
+    if (scheduledScrollTimerIdsRef.current.length === 0) return
+    scheduledScrollTimerIdsRef.current.forEach((timerId) => {
+      window.clearTimeout(timerId)
+    })
+    scheduledScrollTimerIdsRef.current = []
+  }, [])
+
+  const scheduleScrollToBottom = useCallback(
+    (behavior: ScrollBehavior = 'auto') => {
+      clearScheduledScroll()
+      scrollRef.current?.scrollToBottom('auto')
+      const firstTimer = window.setTimeout(() => {
+        scrollRef.current?.scrollToBottom(behavior)
+      }, 16)
+      const secondTimer = window.setTimeout(() => {
+        scrollRef.current?.scrollToBottom(behavior)
+      }, 80)
+      const thirdTimer = window.setTimeout(() => {
+        scrollRef.current?.scrollToBottom(behavior)
+      }, 180)
+      scheduledScrollTimerIdsRef.current = [firstTimer, secondTimer, thirdTimer]
+    },
+    [clearScheduledScroll],
+  )
 
   const isAbortError = (error: unknown): boolean => {
     if (error instanceof DOMException && error.name === 'AbortError') return true
@@ -87,6 +121,14 @@ const ChatContentArea: React.FC<ChatContentAreaProps> = ({
   useEffect(() => {
     resetConversationRef.current = resetConversation
   }, [resetConversation])
+
+  useEffect(() => {
+    setAutoScrollEnabledRef.current = setAutoScrollEnabled
+  }, [setAutoScrollEnabled])
+
+  useEffect(() => {
+    setShowBackToBottomRef.current = setShowBackToBottom
+  }, [setShowBackToBottom])
 
   const resolveEmployeeId = useCallback(
     (payload: AiPromptSubmitPayload): string => {
@@ -131,15 +173,18 @@ const ChatContentArea: React.FC<ChatContentAreaProps> = ({
 
   const runBuiltInSend = useCallback(
     async (payload: AiPromptSubmitPayload, signal?: AbortSignal) => {
-      const employeeId = resolveEmployeeId(payload)
-      const sessionKey = await ensureSessionKey(employeeId)
+      let sessionKey = fixedSessionKey
+      if (!sessionKey) {
+        const employeeId = resolveEmployeeId(payload)
+        sessionKey = await ensureSessionKey(employeeId)
+      }
 
       return createDigitalHumanResponseSSE(
         { input: payload.content },
         { sessionKey, signal },
       )
     },
-    [ensureSessionKey, resolveEmployeeId],
+    [ensureSessionKey, fixedSessionKey, resolveEmployeeId],
   )
 
   const consumeSendResult = useCallback(
@@ -210,6 +255,12 @@ const ChatContentArea: React.FC<ChatContentAreaProps> = ({
   }, [streamFingerprint, scroll.autoScrollEnabled])
 
   useEffect(() => {
+    return () => {
+      clearScheduledScroll()
+    }
+  }, [clearScheduledScroll])
+
+  useEffect(() => {
     const pendingTurn = messageTurns.find(
       (turn) =>
         turn.pendingSend &&
@@ -234,17 +285,23 @@ const ChatContentArea: React.FC<ChatContentAreaProps> = ({
   }, [])
 
   useEffect(() => {
-    if (sessionId === undefined) return
+    if (sessionId === undefined) {
+      setSessionMessagesLoading(false)
+      return
+    }
 
     const trimmedSessionId = sessionId.trim()
     abortAllStreaming()
+    clearScheduledScroll()
     setInputValue('')
+    setSessionMessagesLoading(false)
 
     if (!trimmedSessionId) {
       resetConversationRef.current([])
       return
     }
 
+    setSessionMessagesLoading(true)
     resetConversationRef.current([])
     let disposed = false
     const request = getDigitalHumanSessionMessages(trimmedSessionId)
@@ -254,20 +311,31 @@ const ChatContentArea: React.FC<ChatContentAreaProps> = ({
         if (disposed) return
         const turns = mapSessionMessagesToTurns(response.messages)
         resetConversationRef.current(turns)
+        setAutoScrollEnabledRef.current(true)
+        setShowBackToBottomRef.current(false)
+        scheduleScrollToBottom('auto')
+        setSessionMessagesLoading(false)
       })
       .catch(() => {
         if (disposed) return
         resetConversationRef.current([])
+        setSessionMessagesLoading(false)
         message.error(intl.get('dipChatKit.loadSessionMessagesFailed').d('加载会话消息失败'))
       })
 
     return () => {
       disposed = true
+      setSessionMessagesLoading(false)
       if ('abort' in request && typeof request.abort === 'function') {
         request.abort()
       }
     }
-  }, [abortAllStreaming, sessionId])
+  }, [
+    abortAllStreaming,
+    clearScheduledScroll,
+    scheduleScrollToBottom,
+    sessionId,
+  ])
 
   useEffect(() => {
     return () => {
@@ -333,7 +401,26 @@ const ChatContentArea: React.FC<ChatContentAreaProps> = ({
       >
         <div className={styles.messageList}>
           <div className={styles.messageListContent}>
-            {isEmpty(messageTurns) && (
+            {sessionMessagesLoading && (
+              <div className={styles.sessionLoadingSkeleton}>
+                <Skeleton
+                  active
+                  title={false}
+                  paragraph={{ rows: 4, width: ['46%', '92%', '82%', '70%'] }}
+                />
+                <Skeleton
+                  active
+                  title={false}
+                  paragraph={{ rows: 5, width: ['38%', '88%', '83%', '72%', '48%'] }}
+                />
+                <Skeleton
+                  active
+                  title={false}
+                  paragraph={{ rows: 3, width: ['42%', '96%', '66%'] }}
+                />
+              </div>
+            )}
+            {isEmpty(messageTurns) && !sessionMessagesLoading && (
               <div className={styles.emptyState}>
                 {intl.get('dipChatKit.emptyState').d('请输入问题开始对话。')}
               </div>

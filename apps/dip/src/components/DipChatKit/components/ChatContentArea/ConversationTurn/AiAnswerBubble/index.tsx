@@ -1,11 +1,10 @@
 import {
-  CheckOutlined,
   CopyOutlined,
   RedoOutlined,
   RightOutlined,
   ToolOutlined,
 } from '@ant-design/icons'
-import { Bubble, CodeHighlighter, Mermaid } from '@ant-design/x'
+import { Bubble, CodeHighlighter, Mermaid, ThoughtChain } from '@ant-design/x'
 import XMarkdown, { type ComponentProps as MarkdownComponentProps } from '@ant-design/x-markdown'
 import '@ant-design/x-markdown/dist/x-markdown.css'
 import clsx from 'clsx'
@@ -247,67 +246,67 @@ const AiAnswerBubble: React.FC<AiAnswerBubbleProps> = ({ turn, onCopy, onRegener
     return actions
   }, [hasToolRoleEvents, onCopy, onRegenerate, turn.answerMarkdown, turn.question])
 
-  const renderToolCard = (toolCard: DipChatKitToolCardItem) => {
-    const canOpenPreview = Boolean(toolCard.text)
+  const toolThoughtChainItems = useMemo(() => {
+    return toolCards.map((toolCard: DipChatKitToolCardItem) => {
+      const canOpenPreview = Boolean(toolCard.text)
+      const hasPreviewContent = Boolean(toolCard.inlineText || toolCard.previewText)
+      const status: 'error' | 'success' | undefined = toolCard.isError
+        ? 'error'
+        : toolCard.kind === 'result'
+          ? 'success'
+          : undefined
 
-    return (
-      <div
-        key={toolCard.id}
-        className={clsx(styles.chatToolCard, {
-          [styles.chatToolCardClickable]: canOpenPreview,
-          [styles.chatToolCardError]: toolCard.isError,
-        })}
-        role={canOpenPreview ? 'button' : undefined}
-        tabIndex={canOpenPreview ? 0 : undefined}
-        onClick={() => {
-          if (!canOpenPreview) return
-          onOpenPreview(buildCardPreviewPayload(toolCard.title, toolCard.text))
-        }}
-        onKeyDown={(event) => {
-          if (!canOpenPreview) return
-          if (event.key !== 'Enter' && event.key !== ' ') return
-          event.preventDefault()
-          onOpenPreview(buildCardPreviewPayload(toolCard.title, toolCard.text))
-        }}
-      >
-        <div className={styles.chatToolCardHeader}>
-          <div className={styles.chatToolCardTitle}>
-            <span className={styles.chatToolCardIcon}>
-              <ToolOutlined />
-            </span>
-            <span>{toolCard.title}</span>
+      return {
+        key: toolCard.id,
+        icon: status ? undefined : <ToolOutlined />,
+        status,
+        title: <span className={styles.toolThoughtChainTitle}>{toolCard.title}</span>,
+        description: (
+          <div className={styles.toolThoughtChainDescription}>
+            {toolCard.detail && <span className={styles.toolThoughtChainMeta}>{toolCard.detail}</span>}
+            {toolCard.toolCallId && (
+              <span className={styles.toolThoughtChainMeta}>
+                {intl.get('dipChatKit.eventCallId').d('Call ID')}: {toolCard.toolCallId}
+              </span>
+            )}
+            {!canOpenPreview && toolCard.kind === 'result' && (
+              <span className={styles.toolThoughtChainMeta}>
+                {intl.get('dipChatKit.toolCompleted').d('Completed')}
+              </span>
+            )}
           </div>
-
-          {canOpenPreview ? (
-            <span className={styles.chatToolCardAction}>
-              {intl.get('dipChatKit.eventActionView').d('View')} <RightOutlined />
-            </span>
-          ) : (
-            <span className={styles.chatToolCardStatus}>
-              <CheckOutlined />
-            </span>
-          )}
-        </div>
-
-        {toolCard.detail && <div className={styles.chatToolCardDetail}>{toolCard.detail}</div>}
-
-        {toolCard.toolCallId && (
-          <div className={styles.chatToolCardDetail}>
-            {intl.get('dipChatKit.eventCallId').d('Call ID')}: {toolCard.toolCallId}
+        ),
+        collapsible: hasPreviewContent,
+        content: hasPreviewContent ? (
+          <div className={styles.toolThoughtChainContent}>
+            {toolCard.inlineText && (
+              <div className={styles.toolThoughtChainInline}>{toolCard.inlineText}</div>
+            )}
+            {toolCard.previewText && (
+              <pre className={styles.toolThoughtChainPreview}>{toolCard.previewText}</pre>
+            )}
           </div>
-        )}
-
-        {!canOpenPreview && toolCard.kind === 'result' && (
-          <div className={styles.chatToolCardStatusText}>
-            {intl.get('dipChatKit.toolCompleted').d('Completed')}
-          </div>
-        )}
-
-        {toolCard.inlineText && <div className={styles.chatToolCardInline}>{toolCard.inlineText}</div>}
-        {toolCard.previewText && <div className={styles.chatToolCardPreview}>{toolCard.previewText}</div>}
-      </div>
-    )
-  }
+        ) : undefined,
+        footer: canOpenPreview ? (
+          <span
+            className={styles.toolThoughtChainView}
+            role="button"
+            tabIndex={0}
+            onClick={() => {
+              onOpenPreview(buildCardPreviewPayload(toolCard.title, toolCard.text))
+            }}
+            onKeyDown={(event) => {
+              if (event.key !== 'Enter' && event.key !== ' ') return
+              event.preventDefault()
+              onOpenPreview(buildCardPreviewPayload(toolCard.title, toolCard.text))
+            }}
+          >
+            {intl.get('dipChatKit.eventActionView').d('View')} <RightOutlined />
+          </span>
+        ) : null,
+      }
+    })
+  }, [onOpenPreview, toolCards])
 
   const renderToolCardsCollapse = () => {
     return (
@@ -323,7 +322,18 @@ const AiAnswerBubble: React.FC<AiAnswerBubbleProps> = ({ turn, onCopy, onRegener
           </span>
           <span className={styles.chatToolsSummaryNames}>{toolCardsSummary}</span>
         </summary>
-        <div className={styles.chatToolsCollapseBody}>{toolCards.map(renderToolCard)}</div>
+        <div className={styles.chatToolsCollapseBody}>
+          <ThoughtChain
+            className={styles.toolThoughtChain}
+            line="dashed"
+            items={toolThoughtChainItems}
+            classNames={{
+              item: styles.toolThoughtChainItem,
+              itemContent: styles.toolThoughtChainItemContent,
+              itemFooter: styles.toolThoughtChainItemFooter,
+            }}
+          />
+        </div>
       </details>
     )
   }
