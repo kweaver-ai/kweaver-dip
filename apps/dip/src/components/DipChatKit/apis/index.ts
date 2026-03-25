@@ -6,7 +6,10 @@ import type {
   DipChatKitDigitalHumanList,
   DipChatKitGetSessionMessagesParams,
   DipChatKitResponseRequestBody,
+  DipChatKitResponseStreamChunk,
   DipChatKitResponseSSEOptions,
+  DipChatKitResponseStreamToolCallChunk,
+  DipChatKitResponseStreamToolCallPayload,
   DipChatKitSessionGetResponse,
 } from './types'
 
@@ -68,7 +71,98 @@ const readPathString = (source: unknown, path: Array<string | number>): string =
   return typeof current === 'string' ? current : ''
 }
 
+const normalizeEventType = (value: unknown): string => {
+  if (typeof value !== 'string') return ''
+  return value.trim().toLowerCase()
+}
+
+const toTextFromUnknown = (value: unknown): string => {
+  if (value === null || value === undefined) return ''
+  if (typeof value === 'string') return value
+  if (typeof value === 'number' || typeof value === 'boolean') return String(value)
+  try {
+    return JSON.stringify(value, null, 2)
+  } catch {
+    return String(value)
+  }
+}
+
+const toOptionalFiniteNumber = (value: unknown): number | undefined => {
+  if (typeof value !== 'number' || !Number.isFinite(value)) return undefined
+  return value
+}
+
+const toOptionalString = (value: unknown): string | undefined => {
+  if (typeof value !== 'string') return undefined
+  const normalized = value.trim()
+  if (!normalized) return undefined
+  return normalized
+}
+
+const buildToolCallEventId = (
+  toolCallId: string,
+  itemId: string,
+  outputIndex: number | undefined,
+  toolName: string,
+): string => {
+  if (toolCallId) return `sse_tool_call_${toolCallId}`
+  if (itemId) return `sse_tool_call_${itemId}`
+  if (outputIndex !== undefined) return `sse_tool_call_${outputIndex}_${toolName || 'tool'}`
+  return `sse_tool_call_${toolName || 'tool'}`
+}
+
+const extractToolCallChunkFromPayload = (
+  payload: Record<string, unknown>,
+): DipChatKitResponseStreamToolCallChunk | null => {
+  const eventType = normalizeEventType(payload.type)
+  if (eventType !== 'response.output_item.added' && eventType !== 'response.output_item.done') {
+    return null
+  }
+
+  const item = payload.item
+  if (!item || typeof item !== 'object' || Array.isArray(item)) {
+    return null
+  }
+
+  const itemPayload = item as Record<string, unknown>
+  const itemType = normalizeEventType(itemPayload.type)
+  if (itemType !== 'function_call') {
+    return null
+  }
+
+  const toolName = toOptionalString(itemPayload.name) || ''
+  const toolCallId = toOptionalString(itemPayload.call_id ?? itemPayload.callId) || ''
+  const itemId = toOptionalString(itemPayload.id) || ''
+  const outputIndex = toOptionalFiniteNumber(payload.output_index)
+  const text = toTextFromUnknown(itemPayload.arguments)
+  const status: DipChatKitResponseStreamToolCallPayload['status'] =
+    eventType === 'response.output_item.done' ? 'completed' : 'in_progress'
+
+  return {
+    kind: 'toolCall',
+    payload: {
+      id: buildToolCallEventId(toolCallId, itemId, outputIndex, toolName),
+      toolName,
+      toolCallId,
+      text,
+      status,
+      itemId,
+      outputIndex,
+    },
+  }
+}
+
 const extractTextFromPayload = (payload: Record<string, unknown>): string => {
+  const eventType = normalizeEventType(payload.type)
+  if (eventType === 'response.output_text.delta') {
+    const delta = payload.delta
+    return typeof delta === 'string' ? delta : ''
+  }
+
+  if (eventType === 'response.output_text.done') {
+    return ''
+  }
+
   const directTextKeys = ['delta', 'content', 'text', 'output_text']
   for (const key of directTextKeys) {
     const value = payload[key]
@@ -132,36 +226,45 @@ const extractErrorMessage = (payload: Record<string, unknown>): string => {
   return ''
 }
 
-const parseSSEData = (rawData: string): { done: boolean; text: string } => {
+const parseSSEData = (rawData: string): { done: boolean; chunks: DipChatKitResponseStreamChunk[] } => {
   const normalizedData = rawData.trim()
   if (!normalizedData) {
-    return { done: false, text: '' }
+    return { done: false, chunks: [] }
   }
 
   if (normalizedData === '[DONE]') {
-    return { done: true, text: '' }
+    return { done: true, chunks: [] }
   }
 
   let payload: unknown = normalizedData
   try {
     payload = JSON.parse(normalizedData)
   } catch {
-    return { done: false, text: normalizedData }
+    return {
+      done: false,
+      chunks: [{ kind: 'text', text: normalizedData }],
+    }
   }
 
   if (typeof payload === 'string') {
     if (payload === '[DONE]') {
-      return { done: true, text: '' }
+      return { done: true, chunks: [] }
     }
-    return { done: false, text: payload }
+    return {
+      done: false,
+      chunks: [{ kind: 'text', text: payload }],
+    }
   }
 
   if (typeof payload === 'number' || typeof payload === 'boolean') {
-    return { done: false, text: String(payload) }
+    return {
+      done: false,
+      chunks: [{ kind: 'text', text: String(payload) }],
+    }
   }
 
   if (!payload || typeof payload !== 'object') {
-    return { done: false, text: '' }
+    return { done: false, chunks: [] }
   }
 
   const payloadObject = payload as Record<string, unknown>
@@ -172,16 +275,30 @@ const parseSSEData = (rawData: string): { done: boolean; text: string } => {
 
   const eventType = payloadObject.type
   if (eventType === 'response.completed' || payloadObject.done === true) {
-    return { done: true, text: '' }
+    return { done: true, chunks: [] }
+  }
+
+  const chunks: DipChatKitResponseStreamChunk[] = []
+  const toolCallChunk = extractToolCallChunkFromPayload(payloadObject)
+  if (toolCallChunk) {
+    chunks.push(toolCallChunk)
+  }
+
+  const text = extractTextFromPayload(payloadObject)
+  if (text) {
+    chunks.push({
+      kind: 'text',
+      text,
+    })
   }
 
   return {
     done: false,
-    text: extractTextFromPayload(payloadObject),
+    chunks,
   }
 }
 
-const parseSSEFrame = (frame: string): { done: boolean; text: string } => {
+const parseSSEFrame = (frame: string): { done: boolean; chunks: DipChatKitResponseStreamChunk[] } => {
   const lines = frame.split('\n')
   const dataLines: string[] = []
 
@@ -197,7 +314,7 @@ const parseSSEFrame = (frame: string): { done: boolean; text: string } => {
   }
 
   if (dataLines.length === 0) {
-    return { done: false, text: '' }
+    return { done: false, chunks: [] }
   }
 
   return parseSSEData(dataLines.join('\n'))
@@ -227,7 +344,7 @@ const formatHttpErrorMessage = async (response: Response): Promise<string> => {
 export async function* createDigitalHumanResponseSSE(
   body: DipChatKitResponseRequestBody,
   options: DipChatKitResponseSSEOptions,
-): AsyncGenerator<string, void, unknown> {
+): AsyncGenerator<DipChatKitResponseStreamChunk, void, unknown> {
   const { sessionKey, signal, timeout = DEFAULT_STREAM_TIMEOUT } = options
   const abortController = new AbortController()
   const timeoutId = window.setTimeout(() => {
@@ -287,9 +404,11 @@ export async function* createDigitalHumanResponseSSE(
 
           const frame = buffer.slice(0, separatorIndex)
           buffer = buffer.slice(separatorIndex + 2)
-          const { done: frameDone, text } = parseSSEFrame(frame)
-          if (text) {
-            yield text
+          const { done: frameDone, chunks } = parseSSEFrame(frame)
+          if (chunks.length > 0) {
+            for (const chunk of chunks) {
+              yield chunk
+            }
           }
           if (frameDone) {
             return
@@ -299,9 +418,11 @@ export async function* createDigitalHumanResponseSSE(
 
       const lastFrame = buffer.trim()
       if (lastFrame) {
-        const { text } = parseSSEFrame(lastFrame)
-        if (text) {
-          yield text
+        const { chunks } = parseSSEFrame(lastFrame)
+        if (chunks.length > 0) {
+          for (const chunk of chunks) {
+            yield chunk
+          }
         }
       }
     } finally {

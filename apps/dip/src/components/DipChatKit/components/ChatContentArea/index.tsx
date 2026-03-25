@@ -11,8 +11,10 @@ import {
   createDigitalHumanResponseSSE,
   getDigitalHumanSessionMessages,
 } from '../../apis'
+import type { DipChatKitResponseStreamChunk } from '../../apis/types'
 import { useDipChatKitStore } from '../../store'
 import { isAsyncIterable, normalizeStreamChunk } from '../../utils'
+import type { DipChatKitAnswerEvent } from '../../types'
 import AiPromptInput from '../AiPromptInput'
 import type { AiPromptSubmitPayload } from '../AiPromptInput/types'
 import ConversationTurn from './ConversationTurn'
@@ -42,6 +44,7 @@ const ChatContentArea: React.FC<ChatContentAreaProps> = ({
     appendQuestionTurn,
     startAnswerStream,
     appendAnswerChunk,
+    appendAnswerEvent,
     finishAnswerStream,
     failAnswerStream,
     openPreview,
@@ -58,7 +61,10 @@ const ChatContentArea: React.FC<ChatContentAreaProps> = ({
 
   const streamFingerprint = useMemo(() => {
     return messageTurns
-      .map((turn) => `${turn.id}:${turn.answerMarkdown.length}:${turn.answerStreaming ? '1' : '0'}`)
+      .map(
+        (turn) =>
+          `${turn.id}:${turn.answerMarkdown.length}:${turn.answerEvents.length}:${turn.answerStreaming ? '1' : '0'}`,
+      )
       .join('|')
   }, [messageTurns])
   const fixedSessionKey = useMemo(() => {
@@ -96,6 +102,52 @@ const ChatContentArea: React.FC<ChatContentAreaProps> = ({
     if (error instanceof DOMException && error.name === 'AbortError') return true
     if (error instanceof Error && error.name === 'AbortError') return true
     return false
+  }
+
+  const isSSETextChunk = (
+    chunk: unknown,
+  ): chunk is Extract<DipChatKitResponseStreamChunk, { kind: 'text' }> => {
+    if (!chunk || typeof chunk !== 'object') return false
+    const payload = chunk as Record<string, unknown>
+    return payload.kind === 'text' && typeof payload.text === 'string'
+  }
+
+  const isSSEToolCallChunk = (
+    chunk: unknown,
+  ): chunk is Extract<DipChatKitResponseStreamChunk, { kind: 'toolCall' }> => {
+    if (!chunk || typeof chunk !== 'object') return false
+    const payload = chunk as Record<string, unknown>
+    if (payload.kind !== 'toolCall') return false
+    const toolPayload = payload.payload
+    if (!toolPayload || typeof toolPayload !== 'object') return false
+
+    const candidate = toolPayload as Record<string, unknown>
+    return (
+      typeof candidate.id === 'string' &&
+      typeof candidate.toolName === 'string' &&
+      typeof candidate.toolCallId === 'string' &&
+      typeof candidate.text === 'string'
+    )
+  }
+
+  const mapToolCallChunkToAnswerEvent = (
+    chunk: Extract<DipChatKitResponseStreamChunk, { kind: 'toolCall' }>,
+  ): DipChatKitAnswerEvent => {
+    const payload = chunk.payload
+    return {
+      id: payload.id,
+      type: 'toolCall',
+      role: 'assistant',
+      text: payload.text,
+      toolName: payload.toolName,
+      toolCallId: payload.toolCallId,
+      timestamp: Date.now(),
+      details: {
+        status: payload.status,
+        itemId: payload.itemId,
+        outputIndex: payload.outputIndex,
+      },
+    }
   }
 
   const resetConversation = useCallback(
@@ -199,6 +251,18 @@ const ChatContentArea: React.FC<ChatContentAreaProps> = ({
 
       if (isAsyncIterable(result)) {
         for await (const chunk of result) {
+          if (isSSEToolCallChunk(chunk)) {
+            appendAnswerEvent(turnId, mapToolCallChunkToAnswerEvent(chunk))
+            continue
+          }
+
+          if (isSSETextChunk(chunk)) {
+            if (chunk.text) {
+              appendAnswerChunk(turnId, chunk.text)
+            }
+            continue
+          }
+
           const textChunk = normalizeStreamChunk(chunk)
           if (textChunk) {
             appendAnswerChunk(turnId, textChunk)
@@ -210,7 +274,14 @@ const ChatContentArea: React.FC<ChatContentAreaProps> = ({
 
       finishAnswerStream(turnId)
     },
-    [appendAnswerChunk, finishAnswerStream],
+    [
+      appendAnswerChunk,
+      appendAnswerEvent,
+      finishAnswerStream,
+      isSSETextChunk,
+      isSSEToolCallChunk,
+      mapToolCallChunkToAnswerEvent,
+    ],
   )
 
   const runSendFlow = useCallback(

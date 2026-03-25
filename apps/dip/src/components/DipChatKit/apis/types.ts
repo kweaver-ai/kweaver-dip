@@ -41,3 +41,29 @@ export interface DipChatKitResponseSSEOptions {
 }
 
 export type DipChatKitResponseRequestBody = Record<string, unknown>
+
+export type DipChatKitResponseStreamStatus = 'in_progress' | 'completed'
+
+export interface DipChatKitResponseStreamToolCallPayload {
+  id: string
+  toolName: string
+  toolCallId: string
+  text: string
+  status: DipChatKitResponseStreamStatus
+  itemId?: string
+  outputIndex?: number
+}
+
+export interface DipChatKitResponseStreamTextChunk {
+  kind: 'text'
+  text: string
+}
+
+export interface DipChatKitResponseStreamToolCallChunk {
+  kind: 'toolCall'
+  payload: DipChatKitResponseStreamToolCallPayload
+}
+
+export type DipChatKitResponseStreamChunk =
+  | DipChatKitResponseStreamTextChunk
+  | DipChatKitResponseStreamToolCallChunk

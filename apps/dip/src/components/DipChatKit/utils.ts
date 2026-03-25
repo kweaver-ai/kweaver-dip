@@ -13,7 +13,7 @@ export const getConversationTitle = (messageTurns: DipChatKitMessageTurn[]): str
   return truncate(firstQuestion, { length: 50, omission: '' })
 }
 
-export const isAsyncIterable = (value: unknown): value is AsyncIterable<string> => {
+export const isAsyncIterable = <T = unknown>(value: unknown): value is AsyncIterable<T> => {
   if (!value || typeof value !== 'object') {
     return false
   }

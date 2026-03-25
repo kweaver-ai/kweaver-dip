@@ -2,6 +2,7 @@ import React, { createContext, type PropsWithChildren, useContext } from 'react'
 import useLatestState from '@/hooks/useLatestState'
 import type {
   DipChatKitAttachment,
+  DipChatKitAnswerEvent,
   DipChatKitMessageTurn,
   DipChatKitPreviewPayload,
   DipChatKitState,
@@ -16,6 +17,7 @@ export interface DipChatKitStoreContextType {
   appendQuestionTurn: (payload: AiPromptSubmitPayload) => string
   startAnswerStream: (turnId: string, clearPrevious?: boolean) => void
   appendAnswerChunk: (turnId: string, chunk: string) => void
+  appendAnswerEvent: (turnId: string, event: DipChatKitAnswerEvent) => void
   finishAnswerStream: (turnId: string) => void
   failAnswerStream: (turnId: string, errorMessage: string) => void
   openPreview: (turnId: string, payload: DipChatKitPreviewPayload) => void
@@ -150,6 +152,36 @@ const DipChatKitStoreProvider: React.FC<PropsWithChildren<DipChatKitStoreProvide
     }))
   }
 
+  const appendAnswerEvent: DipChatKitStoreContextType['appendAnswerEvent'] = (turnId, event) => {
+    setStore((prevState) => ({
+      ...prevState,
+      messageTurns: updateTurnById(prevState.messageTurns, turnId, (turn) => {
+        const normalizedId = event.id?.trim()
+        const normalizedEvent: DipChatKitAnswerEvent = normalizedId
+          ? { ...event, id: normalizedId }
+          : {
+              ...event,
+              id: `stream_event_${Date.now()}_${turn.answerEvents.length + 1}`,
+            }
+
+        const existedEventIndex = turn.answerEvents.findIndex((item) => item.id === normalizedEvent.id)
+        const nextAnswerEvents =
+          existedEventIndex >= 0
+            ? turn.answerEvents.map((item, index) =>
+                index === existedEventIndex ? { ...item, ...normalizedEvent } : item,
+              )
+            : [...turn.answerEvents, normalizedEvent]
+
+        return {
+          ...turn,
+          answerEvents: nextAnswerEvents,
+          answerLoading: false,
+          answerStreaming: true,
+        }
+      }),
+    }))
+  }
+
   const finishAnswerStream: DipChatKitStoreContextType['finishAnswerStream'] = (turnId) => {
     setStore((prevState) => ({
       ...prevState,
@@ -243,6 +275,7 @@ const DipChatKitStoreProvider: React.FC<PropsWithChildren<DipChatKitStoreProvide
         appendQuestionTurn,
         startAnswerStream,
         appendAnswerChunk,
+        appendAnswerEvent,
         finishAnswerStream,
         failAnswerStream,
         openPreview,
