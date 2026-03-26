@@ -1,7 +1,7 @@
 ---
 name: archive-protocol
-version: "1.0.0"
-description: 全局归档协议。只要任务需要写入任何文件（含 PLAN.md、报告、JSON 等归档物），必须按本技能执行 sessionKey→ARCHIVE_ID、TIMESTAMP、双轨路径、回读校验与状态回执。
+version: "1.0.1"
+description: 全局归档协议。只要任务需要写入任何文件（含 PLAN.md、报告、JSON 等归档物），必须按本技能执行 sessionKey→ARCHIVE_ID、TIMESTAMP、双轨路径、回读校验与状态回执，并输出 WebUI 渲染卡片。
 metadata:
   {
     "openclaw": {}
@@ -61,15 +61,23 @@ metadata:
 
 校验内容：文件存在、路径正确、内容非空、关键字段存在、内容与当前任务一致。
 
-## 【状态回执】
+## 【状态回执与 WebUI 卡片渲染】
 
-- 失败：`ARCHIVE_STATUS: BLOCKED` | `ARCHIVE_REASON: <原因>`
-- 成功：`ARCHIVE_STATUS: OK` | `ARCHIVE_ROOT: archives/{ARCHIVE_ID}/`
+归档结束后，必须按以下格式返回状态，并提供 JSON 块用于 WebUI 渲染。
 
-## 【执行顺序】
+- **失败**：`ARCHIVE_STATUS: BLOCKED` | `ARCHIVE_REASON: <原因>`
+- **成功**：
+  1. 输出文本行：`ARCHIVE_STATUS: OK` | `ARCHIVE_ROOT: archives/{ARCHIVE_ID}/`
+  2. 输出 JSON 块（`type: archive_grid`），每一个归档的文件对应一个独立的卡片：
 
-1. 调用 `session_status` 提取 `ARCHIVE_ID`。
-2. 生成 `TIMESTAMP`。
-3. 判定路径：`PLAN.md` 去根目录，其他去 `TIMESTAMP` 目录。
-4. 写入并回读校验。
-5. 返回状态。
+```json
+{
+  "type": "archive_grid",
+  "data": {
+    "type": "file",
+    "archive_root": "archives/{ARCHIVE_ID}",
+    "subpath": "{TIMESTAMP}/{ORIGIN_NAME}",
+    "name": "{ORIGIN_NAME}"
+  }
+}
+```
