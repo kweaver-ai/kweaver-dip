@@ -1,0 +1,254 @@
+.iconBox {
+  width: 124px;
+  height: 124px;
+  border-radius: 12px;
+  background-color: #fff;
+  box-shadow:
+    0 2px 50px 0 #3d42480f,
+    0 12px 18px 0 #3d42480f;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.flowSegment {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 24px;
+  background-image: linear-gradient(90deg, #0071ff 0%, #cc3434 100%);
+  border-radius: 9999px;
+  opacity: 0;
+  animation: dip-flow-progress 1.2s linear infinite;
+}
+
+.fireworksBurstWrap {
+  padding-left: 8px;
+  position: relative;
+  width: 220px;
+  height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+}
+
+.fireworksCanvas {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.fireworksCenter {
+  width: 128px;
+  height: 128px;
+  object-fit: contain;
+  position: relative;
+  z-index: 2;
+  transform-origin: 50% 72%;
+  animation: dip-fireworks-core-jitter 900ms ease-out 1 both;
+}
+
+.openclawIconWrap {
+  width: 64px; /* 对齐 w-16 h-16 的图标容器视觉效果 */
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* SVG 依赖的变量（官网内联时通常会有对应定义） */
+  --coral-bright: #ff5b7a;
+  --logo-gradient-start: #ff4d6d;
+  --logo-gradient-end: #cc3434;
+}
+
+.openclawSvg {
+  width: 64px;
+  height: 64px;
+}
+
+.openclawIconWrap :global(.antenna) {
+  transform-box: fill-box;
+  animation: dip-openclaw-antenna 2.4s ease-in-out infinite;
+}
+
+.openclawIconWrap :global(.antenna-left) {
+  transform-origin: 82% 100%;
+}
+
+.openclawIconWrap :global(.antenna-right) {
+  transform-origin: 18% 100%;
+}
+
+.openclawIconWrap :global(.eye-glow) {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+  animation: dip-openclaw-eye-blink 2s linear infinite;
+}
+
+.openclawIconWrap :global(.claw-left) {
+  transform-box: fill-box;
+  transform-origin: 65% 50%;
+  animation: dip-openclaw-claw-left 3s ease-in-out infinite;
+}
+
+.openclawIconWrap :global(.claw-right) {
+  transform-box: fill-box;
+  transform-origin: 35% 50%;
+  animation: dip-openclaw-claw-right 3s ease-in-out infinite;
+}
+
+@keyframes dip-openclaw-claw-left {
+  0% {
+    transform: translateY(0);
+  }
+
+  20% {
+    transform: translateY(0);
+  }
+
+  26% {
+    transform: translateY(-5px);
+  }
+
+  32% {
+    transform: translateY(0);
+  }
+
+  38% {
+    transform: translateY(4px);
+  }
+
+  44% {
+    transform: translateY(0);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes dip-openclaw-claw-right {
+  0% {
+    transform: translateY(0);
+  }
+
+  20% {
+    transform: translateY(0);
+  }
+
+  26% {
+    transform: translateY(4px);
+  }
+
+  32% {
+    transform: translateY(0);
+  }
+
+  38% {
+    transform: translateY(-5px);
+  }
+
+  44% {
+    transform: translateY(0);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes dip-openclaw-antenna {
+  0% {
+    transform: rotate(0deg) translateY(0);
+  }
+
+  35% {
+    transform: rotate(-9deg) translateY(0.5px);
+  }
+
+  70% {
+    transform: rotate(8deg) translateY(0.5px);
+  }
+
+  100% {
+    transform: rotate(0deg) translateY(0);
+  }
+}
+
+@keyframes dip-openclaw-eye-blink {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  90% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  94% {
+    opacity: 0.2;
+    transform: scale(0.98);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes dip-fireworks-core-jitter {
+  0% {
+    transform: rotate(0deg) translateY(0);
+  }
+
+  14% {
+    transform: rotate(-4deg) translateY(0.5px);
+  }
+
+  28% {
+    transform: rotate(3.2deg) translateY(-0.5px);
+  }
+
+  42% {
+    transform: rotate(-2.4deg) translateY(0.4px);
+  }
+
+  56% {
+    transform: rotate(1.8deg) translateY(-0.4px);
+  }
+
+  72% {
+    transform: rotate(-1deg) translateY(0.2px);
+  }
+
+  100% {
+    transform: rotate(0deg) translateY(0);
+  }
+}
+
+@keyframes dip-flow-progress {
+  0% {
+    opacity: 0;
+    transform: translateX(-24px);
+  }
+
+  10% {
+    opacity: 1;
+  }
+
+  80% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+
+    /* 容器宽度 140px - 段宽度 24px = 116px */
+    transform: translateX(116px);
+  }
+}

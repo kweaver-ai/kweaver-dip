@@ -139,6 +139,8 @@ export const getBreadcrumbLinkPathForRoute = (route: RouteConfig): string | unde
  */
 export const isRouteVisibleForRoles = (route: RouteConfig, roleIds: Set<string>): boolean => {
   // 当前没有角色系统，所有路由都允许访问
+  void route
+  void roleIds
   return true
   // 以下代码为角色系统的实现（暂时禁用）
   // const required = route.requiredRoleIds

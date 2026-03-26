@@ -16,6 +16,7 @@ const DigitalHumanManagement = lazy(() => import('../pages/DigitalHuman/Manageme
 const DigitalHumanDetail = lazy(() => import('../pages/DigitalHuman/Details'))
 const DHSetting = lazy(() => import('../pages/DigitalHuman/DHSetting'))
 const Conversation = lazy(() => import('../pages/Conversation'))
+const InitialConfiguration = lazy(() => import('../pages/InitialConfiguration'))
 
 /**
  * 路由配置数组
@@ -258,6 +259,21 @@ export const routeConfigs: RouteConfig[] = [
     handle: {
       layout: {
         hasSider: true,
+        hasHeader: true,
+        siderType: 'studio',
+        headerType: 'studio',
+      },
+    },
+  },
+  {
+    path: 'initial-configuration',
+    key: 'initial-configuration',
+    label: '系统初始化配置',
+    element: <InitialConfiguration />,
+    sidebarMode: 'hidden',
+    handle: {
+      layout: {
+        hasSider: false,
         hasHeader: true,
         siderType: 'studio',
         headerType: 'studio',

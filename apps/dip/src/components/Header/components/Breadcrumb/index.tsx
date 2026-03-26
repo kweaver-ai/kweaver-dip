@@ -14,6 +14,8 @@ interface BreadcrumbProps {
   items?: BreadcrumbItem[]
   /** 首页（返回按钮）跳转路径，不同平台可指定各自首路由，默认 / */
   homePath?: string
+  /** 是否展示首页返回图标（通常为返回按钮） */
+  showHomeIcon?: boolean
   /** 导航回调函数，如果不传则使用内部的 navigate */
   onNavigate?: (item: BreadcrumbItem) => void
   /** 最后一项后面的自定义内容 */
@@ -47,6 +49,7 @@ export const Breadcrumb = ({
   type,
   items = [],
   homePath = '/',
+  showHomeIcon = true,
   onNavigate,
   lastItemSuffix,
 }: BreadcrumbProps) => {
@@ -66,13 +69,15 @@ export const Breadcrumb = ({
   )
 
   // 所有面包屑项（包含首页，homePath 由调用方按平台传入各自首路由）
-  const allItems: Array<BreadcrumbItem> = [{ key: 'main-home', name: '', path: homePath }, ...items]
+  const allItems: Array<BreadcrumbItem> = showHomeIcon
+    ? [{ key: 'main-home', name: '', path: homePath }, ...items]
+    : [...items]
 
   return (
     <div className="h-6 flex items-center">
       {allItems.map((item, index) => {
         const isLast = index === allItems.length - 1
-        const isHome = index === 0
+        const isHome = showHomeIcon && index === 0
         const hasIcon = !isHome && 'icon' in item && item.icon
         // 没有 path 的项不可点击（如 section 段）
         const isNotClickable = !item.path || isLast

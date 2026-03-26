@@ -2,6 +2,7 @@ import { lazy, useEffect, useRef } from 'react'
 import type { RouteObject } from 'react-router-dom'
 import { createBrowserRouter, useNavigate } from 'react-router-dom'
 import { useUserInfoStore } from '@/stores'
+import { getGuideStatus } from '@/apis/dip-studio/guide'
 import { BASE_PATH } from '@/utils/config'
 import { ProtectedRoute } from './ProtectedRoute'
 import { routeConfigs } from './routes'
@@ -40,7 +41,31 @@ const DefaultIndexRedirect = () => {
     //   navigate(targetPath, { replace: true })
     // })
 
-    navigate(isAdmin ? '/digital-human/management' : '/home', { replace: true })
+    void (async () => {
+      try {
+        if (isAdmin) {
+          const guideStatus = await getGuideStatus()
+          hasNavigatedRef.current = true
+          if (guideStatus.ready) {
+            navigate('/digital-human/management', { replace: true })
+            return
+          }
+
+          navigate('/initial-configuration', {
+            replace: true,
+            state: { guideStatus, breadcrumbMode: 'init-only' },
+          })
+          return
+        }
+
+        hasNavigatedRef.current = true
+        navigate('/home', { replace: true })
+      } catch {
+        // 若初始化状态接口失败，避免阻塞管理员进入系统
+        hasNavigatedRef.current = true
+        navigate(isAdmin ? '/digital-human/management' : '/home', { replace: true })
+      }
+    })()
   }, [navigate, isAdmin])
 
   // const { userInfo } = useUserInfoStore()

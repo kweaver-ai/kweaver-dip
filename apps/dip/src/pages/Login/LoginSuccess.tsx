@@ -1,6 +1,7 @@
 import { Spin } from 'antd'
 import { useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { getGuideStatus } from '@/apis/dip-studio/guide'
 import GradientContainer from '@/components/GradientContainer'
 import { useUserInfoStore } from '@/stores'
 
@@ -47,7 +48,30 @@ const LoginSuccess = () => {
               //   hasNavigatedRef.current = true
               //   navigate(targetPath, { replace: true })
               // })
-              navigate(isAdmin ? '/digital-human/management' : '/home', { replace: true })
+              if (!isAdmin) {
+                navigate('/home', { replace: true })
+                return
+              }
+
+              void (async () => {
+                try {
+                  const guideStatus = await getGuideStatus()
+                  if (hasNavigatedRef.current) return
+                  if (guideStatus.ready) {
+                    navigate('/digital-human/management', { replace: true })
+                    return
+                  }
+
+                  navigate('/initial-configuration', {
+                    replace: true,
+                    state: { guideStatus, breadcrumbMode: 'init-only' },
+                  })
+                } catch {
+                  // 初始化状态接口失败时，避免阻塞管理员进入系统
+                  if (hasNavigatedRef.current) return
+                  navigate('/digital-human/management', { replace: true })
+                }
+              })()
             } else {
               // 请求完成但没有用户信息，说明获取失败
               hasNavigatedRef.current = true

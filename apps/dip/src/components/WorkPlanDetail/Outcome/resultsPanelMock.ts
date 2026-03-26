@@ -15,15 +15,15 @@ const MOCK_ARCHIVES_ROOT: SessionArchivesResponse = {
   path: '/',
   contents: [
     {
-      name: '5346e9bf-a493-4722-a1fc-93d857e96d94_2026-03-20-16-11-32',
+      name: '2026-03-20-16-11-32',
       type: 'directory',
     },
     {
-      name: '5346e9bf-a493-4722-a1fc-93d857e96d94_2026-03-21-14-27-30',
+      name: '2026-03-21-14-27-30',
       type: 'directory',
     },
     {
-      name: '5346e9bf-a493-4722-a1fc-93d857e96d94_2026-03-21-14-34-17',
+      name: '2026-03-21-14-34-17',
       type: 'directory',
     },
   ],

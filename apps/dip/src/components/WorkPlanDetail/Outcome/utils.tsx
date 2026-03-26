@@ -1,8 +1,11 @@
 import type { SessionArchiveEntry, SessionArchivesResponse } from '@/apis/dip-studio/sessions'
 
-/** 目录名形如 `{uuid}_{YYYY-MM-DD-HH-mm-ss}`，提取 `YYYY-MM-DD` 用于分组 */
+/** 目录名形如 `{uuid}_{YYYY-MM-DD-HH-mm-ss}` 或 `{YYYY-MM-DD-HH-mm-ss}`，提取 `YYYY-MM-DD` 用于分组 */
 const DIR_NAME_RE =
-  /^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})_(.+)$/
+  // 兼容两种目录名：
+  // 1) 旧格式：`{uuid}_{YYYY-MM-DD-HH-mm-ss}`
+  // 2) 新格式：`{YYYY-MM-DD-HH-mm-ss}`
+  /^(?:([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})_)?(.+)$/
 
 const DIR_TAIL_TIME_RE = /^(\d{4}-\d{2}-\d{2})-(\d{2})-(\d{2})-(\d{2})$/
 

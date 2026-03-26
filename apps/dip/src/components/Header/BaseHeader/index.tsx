@@ -87,17 +87,23 @@ const BaseHeader = ({ headerType }: { headerType: HeaderType }) => {
   // 获取当前路由配置
   const currentRoute = useMemo(() => getRouteByPath(location.pathname), [location.pathname])
 
+  const breadcrumbMode = (location.state as { breadcrumbMode?: string } | null)?.breadcrumbMode
+  const isInitialConfigOnlyMode =
+    currentRoute?.key === 'initial-configuration' && breadcrumbMode === 'init-only'
+
   // 构建面包屑数据：BaseHeaderType名称 / 父路由名称 / 当前路由名称
   const breadcrumbItems: BreadcrumbItem[] = useMemo(() => {
     const result: BreadcrumbItem[] = []
 
-    // BaseHeaderType 名称（只显示，不可点击）
-    const sectionName = getSectionName(headerType)
-    result.push({
-      key: `section-${headerType}`,
-      name: sectionName,
-      disabled: true,
-    })
+    if (!isInitialConfigOnlyMode) {
+      // BaseHeaderType 名称（只显示，不可点击）
+      const sectionName = getSectionName(headerType)
+      result.push({
+        key: `section-${headerType}`,
+        name: sectionName,
+        disabled: true,
+      })
+    }
 
     if (currentRoute) {
       const customAncestors =
@@ -105,23 +111,25 @@ const BaseHeader = ({ headerType }: { headerType: HeaderType }) => {
           ? detailBreadcrumb.replaceAncestorRoutes
           : undefined
 
-      if (customAncestors?.length) {
-        for (const item of customAncestors) {
-          result.push({
-            key: item.key,
-            name: item.name,
-            path: item.path,
-          })
-        }
-      } else {
-        const ancestorRoutes = getBreadcrumbAncestorRoutes(currentRoute)
-        for (const ancestor of ancestorRoutes) {
-          if (!ancestor.label) continue
-          result.push({
-            key: ancestor.key || `route-${ancestor.path}`,
-            name: ancestor.label,
-            path: getBreadcrumbLinkPathForRoute(ancestor),
-          })
+      if (!isInitialConfigOnlyMode) {
+        if (customAncestors?.length) {
+          for (const item of customAncestors) {
+            result.push({
+              key: item.key,
+              name: item.name,
+              path: item.path,
+            })
+          }
+        } else {
+          const ancestorRoutes = getBreadcrumbAncestorRoutes(currentRoute)
+          for (const ancestor of ancestorRoutes) {
+            if (!ancestor.label) continue
+            result.push({
+              key: ancestor.key || `route-${ancestor.path}`,
+              name: ancestor.label,
+              path: getBreadcrumbLinkPathForRoute(ancestor),
+            })
+          }
         }
       }
 
@@ -147,7 +155,7 @@ const BaseHeader = ({ headerType }: { headerType: HeaderType }) => {
     }
 
     return result
-  }, [headerType, currentRoute, detailBreadcrumb, location.pathname])
+  }, [headerType, currentRoute, detailBreadcrumb, location.pathname, isInitialConfigOnlyMode])
 
   const getLogoUrl = () => {
     const base64Image = oemResourceConfig?.['logo.png']
@@ -173,6 +181,7 @@ const BaseHeader = ({ headerType }: { headerType: HeaderType }) => {
           items={breadcrumbItems}
           homePath={homePath}
           onNavigate={handleBreadcrumbNavigate}
+          showHomeIcon={!isInitialConfigOnlyMode}
           // lastItemSuffix={
           //   isWorkPlanDetailRoute && workPlanInfo ? (
           //     <ProjectInfoPopover

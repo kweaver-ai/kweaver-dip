@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 
-export type HeaderType = 'store' | 'studio' | 'micro-app' | 'home'
+export type HeaderType = 'store' | 'studio' | 'micro-app' | 'home' | 'initial-configuration'
 export type SiderType = 'store' | 'home' | 'studio'
 
 /**
