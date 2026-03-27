@@ -557,7 +557,7 @@ export function buildGuideEnvEntries(
 ): ReadonlyArray<readonly [string, string]> {
   return [
     ["OPENCLAW_CONFIG_PATH", request.configPath],
-    ["OPENCLAW_STATE_DIR", request.stateDir],
+    ["OPENCLAW_ROOT_DIR", request.stateDir],
     ["OPENCLAW_GATEWAY_PROTOCOL", request.protocol],
     ["OPENCLAW_GATEWAY_HOST", request.host],
     ["OPENCLAW_GATEWAY_PORT", String(request.port)],

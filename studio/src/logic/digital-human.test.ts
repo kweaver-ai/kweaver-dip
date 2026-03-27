@@ -838,8 +838,8 @@ describe("DefaultDigitalHumanLogic lifecycle (filesystem + adapter)", () => {
     const cfg = join(fakeHome, "openclaw.json");
     writeFileSync(cfg, "{}\n", "utf8");
     const prev = process.env.OPENCLAW_CONFIG_PATH;
-    const prevState = process.env.OPENCLAW_STATE_DIR;
-    delete process.env.OPENCLAW_STATE_DIR;
+    const prevState = process.env.OPENCLAW_ROOT_DIR;
+    delete process.env.OPENCLAW_ROOT_DIR;
     process.env.OPENCLAW_CONFIG_PATH = cfg;
 
     const createAgent = vi.fn().mockResolvedValue({ ok: true });
@@ -897,10 +897,10 @@ describe("DefaultDigitalHumanLogic lifecycle (filesystem + adapter)", () => {
     ).toBe(accId);
 
     process.env.OPENCLAW_CONFIG_PATH = prev;
-    process.env.OPENCLAW_STATE_DIR = prevState;
+    process.env.OPENCLAW_ROOT_DIR = prevState;
   });
 
-  it("createDigitalHuman uses config.patch when OPENCLAW_STATE_DIR resolves config path", async () => {
+  it("createDigitalHuman uses config.patch when OPENCLAW_ROOT_DIR resolves config path", async () => {
     vi.spyOn(globalThis.crypto, "randomUUID").mockReturnValue(
       "cccccccc-cccc-cccc-cccc-cccccccccccc"
     );
@@ -910,9 +910,9 @@ describe("DefaultDigitalHumanLogic lifecycle (filesystem + adapter)", () => {
     const cfgPath = join(stateDir, "openclaw.json");
     writeFileSync(cfgPath, "{}\n", "utf8");
     const prevCfg = process.env.OPENCLAW_CONFIG_PATH;
-    const prevState = process.env.OPENCLAW_STATE_DIR;
+    const prevState = process.env.OPENCLAW_ROOT_DIR;
     delete process.env.OPENCLAW_CONFIG_PATH;
-    process.env.OPENCLAW_STATE_DIR = stateDir;
+    process.env.OPENCLAW_ROOT_DIR = stateDir;
 
     const createAgent = vi.fn().mockResolvedValue({ ok: true });
     const getConfig = vi.fn().mockResolvedValue({ raw: "{}", hash: "base-hash-2" });
@@ -954,7 +954,7 @@ describe("DefaultDigitalHumanLogic lifecycle (filesystem + adapter)", () => {
     expect(raw).toContain(result.id);
 
     process.env.OPENCLAW_CONFIG_PATH = prevCfg;
-    process.env.OPENCLAW_STATE_DIR = prevState;
+    process.env.OPENCLAW_ROOT_DIR = prevState;
   });
 
   it("getDigitalHuman includes channel when OpenClaw config binds dingtalk via accounts", async () => {
@@ -1089,8 +1089,8 @@ describe("DefaultDigitalHumanLogic lifecycle (filesystem + adapter)", () => {
     const cfg = join(fakeHome, "openclaw-ding.json");
     writeFileSync(cfg, "{}\n", "utf8");
     const prev = process.env.OPENCLAW_CONFIG_PATH;
-    const prevState = process.env.OPENCLAW_STATE_DIR;
-    delete process.env.OPENCLAW_STATE_DIR;
+    const prevState = process.env.OPENCLAW_ROOT_DIR;
+    delete process.env.OPENCLAW_ROOT_DIR;
     process.env.OPENCLAW_CONFIG_PATH = cfg;
 
     const createAgent = vi.fn().mockResolvedValue({ ok: true });
@@ -1139,15 +1139,15 @@ describe("DefaultDigitalHumanLogic lifecycle (filesystem + adapter)", () => {
     });
 
     process.env.OPENCLAW_CONFIG_PATH = prev;
-    process.env.OPENCLAW_STATE_DIR = prevState;
+    process.env.OPENCLAW_ROOT_DIR = prevState;
   });
 
   it("createDigitalHuman replaces prior agent binding when two digital humans use the same Feishu app id", async () => {
     const cfg = join(fakeHome, "openclaw-dup-feishu.json");
     writeFileSync(cfg, "{}\n", "utf8");
     const prev = process.env.OPENCLAW_CONFIG_PATH;
-    const prevState = process.env.OPENCLAW_STATE_DIR;
-    delete process.env.OPENCLAW_STATE_DIR;
+    const prevState = process.env.OPENCLAW_ROOT_DIR;
+    delete process.env.OPENCLAW_ROOT_DIR;
     process.env.OPENCLAW_CONFIG_PATH = cfg;
 
     const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
@@ -1188,15 +1188,15 @@ describe("DefaultDigitalHumanLogic lifecycle (filesystem + adapter)", () => {
 
     warnSpy.mockRestore();
     process.env.OPENCLAW_CONFIG_PATH = prev;
-    process.env.OPENCLAW_STATE_DIR = prevState;
+    process.env.OPENCLAW_ROOT_DIR = prevState;
   });
 
   it("createDigitalHuman replaces prior agent binding when two digital humans use the same DingTalk app id", async () => {
     const cfg = join(fakeHome, "openclaw-dup-ding.json");
     writeFileSync(cfg, "{}\n", "utf8");
     const prev = process.env.OPENCLAW_CONFIG_PATH;
-    const prevState = process.env.OPENCLAW_STATE_DIR;
-    delete process.env.OPENCLAW_STATE_DIR;
+    const prevState = process.env.OPENCLAW_ROOT_DIR;
+    delete process.env.OPENCLAW_ROOT_DIR;
     process.env.OPENCLAW_CONFIG_PATH = cfg;
 
     const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
@@ -1237,7 +1237,7 @@ describe("DefaultDigitalHumanLogic lifecycle (filesystem + adapter)", () => {
 
     warnSpy.mockRestore();
     process.env.OPENCLAW_CONFIG_PATH = prev;
-    process.env.OPENCLAW_STATE_DIR = prevState;
+    process.env.OPENCLAW_ROOT_DIR = prevState;
   });
 
   it("createDigitalHuman writes openclaw.json when config.patch fails", async () => {
@@ -1245,8 +1245,8 @@ describe("DefaultDigitalHumanLogic lifecycle (filesystem + adapter)", () => {
     const cfg = join(fakeHome, "openclaw-fallback.json");
     writeFileSync(cfg, "{}\n", "utf8");
     const prev = process.env.OPENCLAW_CONFIG_PATH;
-    const prevState = process.env.OPENCLAW_STATE_DIR;
-    delete process.env.OPENCLAW_STATE_DIR;
+    const prevState = process.env.OPENCLAW_ROOT_DIR;
+    delete process.env.OPENCLAW_ROOT_DIR;
     process.env.OPENCLAW_CONFIG_PATH = cfg;
 
     const createAgent = vi.fn().mockResolvedValue({ ok: true });
@@ -1285,6 +1285,6 @@ describe("DefaultDigitalHumanLogic lifecycle (filesystem + adapter)", () => {
 
     warnSpy.mockRestore();
     process.env.OPENCLAW_CONFIG_PATH = prev;
-    process.env.OPENCLAW_STATE_DIR = prevState;
+    process.env.OPENCLAW_ROOT_DIR = prevState;
   });
 });

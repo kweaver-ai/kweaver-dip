@@ -63,7 +63,7 @@ studio/built-in/<agent-name>/
 如果未设置 `OPENCLAW_WORKSPACE_DIR`，默认使用：
 
 ```text
-<OPENCLAW_STATE_DIR>/<metadata.id>
+<OPENCLAW_ROOT_DIR>/<metadata.id>
 ```
 
 路径默认值见下文 **「环境变量」** 中的 `OPENCLAW_*` 说明。
@@ -73,7 +73,7 @@ studio/built-in/<agent-name>/
 脚本会读取：
 
 ```text
-<OPENCLAW_STATE_DIR>/openclaw.json
+<OPENCLAW_ROOT_DIR>/openclaw.json
 ```
 
 然后将 `built-in` 中的 agent 逐个 upsert 到：
@@ -101,13 +101,13 @@ studio/built-in/<agent-name>/
 脚本会尝试将：
 
 ```text
-<OPENCLAW_STATE_DIR>/agents/main/agent/auth-profiles.json
+<OPENCLAW_ROOT_DIR>/agents/main/agent/auth-profiles.json
 ```
 
 复制到每个内置智能体的：
 
 ```text
-<OPENCLAW_STATE_DIR>/agents/<agent-id>/agent/auth-profiles.json
+<OPENCLAW_ROOT_DIR>/agents/<agent-id>/agent/auth-profiles.json
 ```
 
 如果主账号鉴权文件不存在，当前实现只打印 warning，不做进一步 fallback。
@@ -150,9 +150,9 @@ node studio/scripts/init_agents/index.mjs
 
 | 变量 | 作用 | 未设置时的默认 |
 | --- | --- | --- |
-| `OPENCLAW_STATE_DIR` | 状态根目录：`openclaw.json`、`agents/main/agent/auth-profiles.json`、插件复制目标等 | `~/.openclaw` |
+| `OPENCLAW_ROOT_DIR` | 状态根目录：`openclaw.json`、`agents/main/agent/auth-profiles.json`、插件复制目标等 | `~/.openclaw` |
 | `OPENCLAW_BUILT_IN_DIR` | 内置智能体定义（`metadata.json`、`SOUL.md`、`IDENTITY.md`） | 脚本文件上两级目录下的 `built-in`（本仓库布局下即 `studio/built-in`） |
-| `OPENCLAW_WORKSPACE_DIR` | 各 agent workspace 根；实际目录为 `<该目录>/<agent-id>` | 与 `OPENCLAW_STATE_DIR` 相同 |
+| `OPENCLAW_WORKSPACE_DIR` | 各 agent workspace 根；实际目录为 `<该目录>/<agent-id>` | 与 `OPENCLAW_ROOT_DIR` 相同 |
 | `OPENCLAW_EXTENSIONS_DIR` | 要复制并注册到 `plugins.entries` 的扩展源码目录 | 脚本文件上两级目录下的 `extensions`（本仓库布局下即 `studio/extensions`） |
 
 ### 执行示例
@@ -160,13 +160,13 @@ node studio/scripts/init_agents/index.mjs
 仅改状态目录：
 
 ```bash
-OPENCLAW_STATE_DIR=/data/openclaw npm --prefix studio run init:agents
+OPENCLAW_ROOT_DIR=/data/openclaw npm --prefix studio run init:agents
 ```
 
 路径类全开（典型自建部署）：
 
 ```bash
-OPENCLAW_STATE_DIR=/data/openclaw \
+OPENCLAW_ROOT_DIR=/data/openclaw \
 OPENCLAW_BUILT_IN_DIR=/path/to/dip-studio/studio/built-in \
 OPENCLAW_WORKSPACE_DIR=/data/openclaw/workspace \
 OPENCLAW_EXTENSIONS_DIR=/path/to/dip-studio/studio/extensions \

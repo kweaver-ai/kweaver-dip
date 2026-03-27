@@ -154,7 +154,7 @@ describe("normalizeInitializeGuideRequest", () => {
       })
     ).toEqual([
       ["OPENCLAW_CONFIG_PATH", "/tmp/openclaw/openclaw.json"],
-      ["OPENCLAW_STATE_DIR", "/tmp/openclaw"],
+      ["OPENCLAW_ROOT_DIR", "/tmp/openclaw"],
       ["OPENCLAW_GATEWAY_PROTOCOL", "ws"],
       ["OPENCLAW_GATEWAY_HOST", "127.0.0.1"],
       ["OPENCLAW_GATEWAY_PORT", "19001"],

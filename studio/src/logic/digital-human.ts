@@ -464,7 +464,7 @@ function toNotFoundIfAgentMissing(error: unknown, id: string): HttpError {
 /**
  * Resolves the path to the OpenClaw config file.
  *
- * Priority: OPENCLAW_CONFIG_PATH > OPENCLAW_STATE_DIR > ~/.openclaw/openclaw.json.
+ * Priority: OPENCLAW_CONFIG_PATH > OPENCLAW_ROOT_DIR > ~/.openclaw/openclaw.json.
  *
  * @returns The absolute path to the OpenClaw configuration file.
  */
@@ -473,7 +473,7 @@ function resolveOpenClawConfigPath(): string {
   if (explicit) {
     return explicit;
   }
-  const stateDir = process.env.OPENCLAW_STATE_DIR?.trim();
+  const stateDir = process.env.OPENCLAW_ROOT_DIR?.trim();
   if (stateDir) {
     return join(stateDir, "openclaw.json");
   }
