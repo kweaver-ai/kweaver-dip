@@ -19,7 +19,6 @@ import {
   type SessionArchivesResponse,
 } from '@/apis/dip-studio/sessions'
 import Empty from '@/components/Empty'
-import ScrollBarContainer from '@/components/ScrollBarContainer'
 import { ArchivePreviewPanel, useArchivePreview } from '@/components/WorkPlanDetail/Outcome/Preview'
 import {
   mockGetDigitalHumanSessionArchiveSubpath,
@@ -126,20 +125,18 @@ async function resolveFilesInDirectory(
 }
 
 function TaskOutcomeListInner({ digitalHumanId, sessionId }: TaskOutcomeListProps) {
-  const dhId = digitalHumanId?.trim()
-  const sessionIdTrimmed = sessionId?.trim()
+  const dhId = digitalHumanId?.trim() || 'mock-dh-id'
+  const sessionIdTrimmed = sessionId?.trim() || 'mock-session-id'
   const canFetch = Boolean(dhId && sessionIdTrimmed)
 
   const [entries, setEntries] = useState<SessionArchiveFileItem[]>([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [drawerOpen, setDrawerOpen] = useState(false)
-  const { preview, openFilePreview, closePreview } = useArchivePreview(
+  const { preview, openFilePreview, closePreview, downloadFile } = useArchivePreview(
     dhId ?? '',
     sessionIdTrimmed ?? '',
   )
-
-  console.log('preview', preview)
 
   useEffect(() => {
     setEntries([])
@@ -229,27 +226,34 @@ function TaskOutcomeListInner({ digitalHumanId, sessionId }: TaskOutcomeListProp
       </ul>
 
       <Drawer
-        title={preview?.title}
         open={drawerOpen}
         onClose={() => {
           setDrawerOpen(false)
           closePreview()
         }}
         size="60%"
-        closable={{ placement: 'end' }}
-        mask={{ closable: false }}
+        closable={false}
+        mask={{ closable: true }}
         destroyOnHidden
-        styles={{ body: { padding: 0 } }}
+        styles={{ body: { padding: 0, overflow: 'hidden' } }}
       >
-        <ScrollBarContainer className="h-full min-h-0 overflow-y-auto p-1">
+        <div className="flex h-full min-h-0 flex-col overflow-hidden">
           {preview ? (
-            <ArchivePreviewPanel preview={preview} />
+            <ArchivePreviewPanel
+              preview={preview}
+              showHeader
+              onDownload={() => downloadFile(preview.subpath, preview.title)}
+              onClose={() => {
+                setDrawerOpen(false)
+                closePreview()
+              }}
+            />
           ) : (
             <div className="flex h-full items-center justify-center p-6">
               <Empty title="暂无预览内容" />
             </div>
           )}
-        </ScrollBarContainer>
+        </div>
       </Drawer>
     </>
   )

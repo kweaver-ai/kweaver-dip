@@ -4,9 +4,10 @@ import type { SessionArchivesResponse } from '@/apis/dip-studio/sessions'
 
 const jpegAssetUrl = encodeURI('/123图片.jpeg')
 const pdfAssetUrl = encodeURI('/_2018年世界杯转播平台洞察报告 (1).pdf')
+const tailwindHtmlAssetUrl = encodeURI('/Width - Tailwind CSS.html')
 
 /** 为 true 时成果 Tab 走本地 mock，不调归档接口 */
-export const RESULTS_PANEL_USE_MOCK = false
+export const RESULTS_PANEL_USE_MOCK = true
 
 const delay = (ms: number) => new Promise<void>((r) => setTimeout(r, ms))
 
@@ -35,6 +36,7 @@ function mockFolderListing(folderName: string): SessionArchivesResponse {
     contents: [
       { name: '企业数字员工简报.md', type: 'file' },
       { name: '企业数字员工简报.html', type: 'file' },
+      { name: 'Width - Tailwind CSS.html', type: 'file' },
       { name: 'config.json', type: 'file' },
       { name: '_2018年世界杯转播平台洞察报告 (1).pdf', type: 'file' },
       { name: '示例.docx', type: 'file' },
@@ -168,13 +170,23 @@ export function hello(name: string): string {
 `
 }
 
-function mockFileBody(
+async function mockFileBody(
   subpath: string,
   responseType: 'json' | 'text' | 'arraybuffer' | undefined,
-): string {
+): Promise<string> {
   const lower = subpath.toLowerCase()
   if (lower.endsWith('.json') || responseType === 'json') {
     return JSON.stringify({ mock: true, path: subpath, message: 'mock json 预览' }, null, 2)
+  }
+  if (lower.endsWith('width - tailwind css.html')) {
+    try {
+      const response = await fetch(tailwindHtmlAssetUrl)
+      if (response.ok) {
+        return await response.text()
+      }
+    } catch {
+      // fallback to generic html content
+    }
   }
   if (lower.endsWith('.html')) {
     return '<!DOCTYPE html><html><body><p>mock html</p></body></html>'
@@ -210,5 +222,5 @@ export async function mockGetDigitalHumanSessionArchiveSubpath(
     return await mockBinaryArchiveBody(subpath)
   }
 
-  return mockFileBody(subpath, rt ?? 'text')
+  return await mockFileBody(subpath, rt ?? 'text')
 }

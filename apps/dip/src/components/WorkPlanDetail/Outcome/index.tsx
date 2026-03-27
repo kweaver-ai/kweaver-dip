@@ -8,7 +8,7 @@ import Empty from '@/components/Empty'
 import IconFont from '@/components/IconFont'
 import ScrollBarContainer from '@/components/ScrollBarContainer'
 import styles from './index.module.less'
-import { ArchivePreviewNav, ArchivePreviewPanel, useArchivePreview } from './Preview'
+import { ArchivePreviewPanel, useArchivePreview } from './Preview'
 import {
   mockGetDigitalHumanSessionArchiveSubpath,
   mockGetDigitalHumanSessionArchives,
@@ -106,7 +106,7 @@ const ResultsPanel = ({ planId: _planId, dhId, sessionId }: ResultsPanelProps) =
     }
   }, [activeKeys, dhId, sessionId, grouped, folderContents, loadFolder])
 
-  const { preview, openFilePreview, closePreview } = useArchivePreview(dhId, sessionId)
+  const { preview, openFilePreview, closePreview, downloadFile } = useArchivePreview(dhId, sessionId)
 
   const collapseItems = useMemo(() => {
     return dateKeys.map((dateKey) => {
@@ -249,8 +249,13 @@ const ResultsPanel = ({ planId: _planId, dhId, sessionId }: ResultsPanelProps) =
       </div>
       {preview !== null ? (
         <div className="flex min-h-0 min-w-0 flex-1 flex-col border-l border-[--dip-border-color] bg-[--dip-white]">
-          <ArchivePreviewNav title={preview.title} onClose={closePreview} />
-          <ArchivePreviewPanel preview={preview} />
+          <ArchivePreviewPanel
+            preview={preview}
+            showHeader
+            onClose={closePreview}
+            onDownload={() => downloadFile(preview.subpath, preview.title)}
+            showInlineDownload={false}
+          />
         </div>
       ) : null}
     </div>

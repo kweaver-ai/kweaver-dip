@@ -190,6 +190,7 @@ const TEXT_LIKE_EXTENSIONS = new Set([
 export type ArchivePreviewViewer =
   | 'text'
   | 'markdown'
+  | 'html'
   | 'pdf'
   | 'image'
   | 'video'
@@ -201,6 +202,7 @@ export type ArchivePreviewViewer =
 export function getArchiveTextPreviewViewer(fileName: string): ArchivePreviewViewer {
   const ext = getFileExtension(fileName)
   if (ext === 'md' || ext === 'mdx' || ext === 'markdown') return 'markdown'
+  if (ext === 'html' || ext === 'htm') return 'html'
   return 'text'
 }
 

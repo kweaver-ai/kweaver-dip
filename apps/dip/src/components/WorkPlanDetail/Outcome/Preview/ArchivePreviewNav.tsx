@@ -1,9 +1,12 @@
+import { Button } from 'antd'
 import classNames from 'classnames'
+import { useState } from 'react'
 import IconFont from '@/components/IconFont'
 
 export type ArchivePreviewNavProps = {
   title: string
   onClose?: () => void
+  onDownload?: () => Promise<void> | void
   /** 是否展示关闭按钮，默认展示 */
   closable?: boolean
   className?: string
@@ -12,9 +15,12 @@ export type ArchivePreviewNavProps = {
 const ArchivePreviewNav = ({
   title,
   onClose,
+  onDownload,
   closable = true,
   className,
 }: ArchivePreviewNavProps) => {
+  const [downloading, setDownloading] = useState(false)
+
   return (
     <div
       className={classNames(
@@ -25,6 +31,20 @@ const ArchivePreviewNav = ({
       <span className="min-w-0 flex-1 truncate text-base" title={title}>
         {title}
       </span>
+      <Button
+        disabled={!onDownload || downloading}
+        onClick={async () => {
+          if (!onDownload || downloading) return
+          setDownloading(true)
+          try {
+            await onDownload()
+          } finally {
+            setDownloading(false)
+          }
+        }}
+      >
+        下载
+      </Button>
       {closable ? (
         <button
           type="button"

@@ -22,6 +22,7 @@ function TasksPanelInner({ planId, dhId, sessionId: _sessionId }: TasksPanelProp
     body: '',
     loading: true,
     viewer: 'markdown',
+    error: null,
   })
   const { entries, total, initialLoading, loadingMore, loadError, loadMore } = useTaskRuns(planId)
   const [expandedKey, setExpandedKey] = useState<string | null>(null)
@@ -57,12 +58,14 @@ function TasksPanelInner({ planId, dhId, sessionId: _sessionId }: TasksPanelProp
       body: '',
       loading: false,
       viewer: 'markdown',
+      error: null,
     }
 
     if (!planIdTrimmed) {
       setPlanPreview({
         ...basePreview,
         body: '暂无计划文档',
+        error: null,
       })
       return
     }
@@ -77,20 +80,23 @@ function TasksPanelInner({ planId, dhId, sessionId: _sessionId }: TasksPanelProp
           setPlanPreview({
             ...basePreview,
             body,
+            error: null,
           })
         }
       } catch (error: any) {
-        console.log('error', error)
         if (!cancelled) {
+          console.log('error', error)
           if (error.code === 'NOT_FOUND') {
             setPlanPreview({
               ...basePreview,
               body: '',
             })
           } else {
+            const errorMessage = error?.description || error?.message || '计划文档加载失败'
             setPlanPreview({
               ...basePreview,
-              body: '计划文档加载失败',
+              body: '',
+              error: errorMessage,
             })
           }
         }
@@ -106,7 +112,7 @@ function TasksPanelInner({ planId, dhId, sessionId: _sessionId }: TasksPanelProp
   if (!planId?.trim()) {
     return (
       <div className="flex min-h-0 flex-1 items-center justify-center px-6">
-        <Empty title="暂无计划" desc="缺少计划 ID，无法加载任务" />
+        <Empty title="暂无计划" />
       </div>
     )
   }
@@ -150,9 +156,9 @@ function TasksPanelInner({ planId, dhId, sessionId: _sessionId }: TasksPanelProp
           className="flex min-h-0 flex-1 flex-col px-6 py-4 relative"
           style={{ overscrollBehavior: 'contain' }}
         >
-          <div className="mx-auto flex w-full max-w-[720px] flex-col gap-5 pb-2">
+          <div className="mx-auto flex h-full w-full max-w-[720px] flex-col gap-5 pb-2">
             {initialLoading ? (
-              <div className="inset-0 flex items-center justify-center py-20">
+              <div className="inset-0 flex h-full w-full items-center justify-center py-20">
                 <Spin />
               </div>
             ) : loadError && entries.length === 0 ? (

@@ -16,7 +16,7 @@ import InitializeResultStep from './components/InitializeResultStep'
 import type { StepKey } from './types'
 
 const stepTitles = ['连接 OpenClaw', '检测环境', '完成初始化']
-const MIN_STEP2_STAY_MS = 2000
+const MIN_STEP2_STAY_MS = 3000
 
 const InitialConfiguration = () => {
   const navigate = useNavigate()
@@ -69,7 +69,7 @@ const InitialConfiguration = () => {
 
     const t = window.setTimeout(() => {
       navigate('/digital-human/management', { replace: true })
-    }, 1000)
+    }, 2000)
 
     return () => window.clearTimeout(t)
   }, [step, initResult, navigate])
