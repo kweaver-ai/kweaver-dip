@@ -7,7 +7,7 @@ const pdfAssetUrl = encodeURI('/_2018年世界杯转播平台洞察报告 (1).pd
 const tailwindHtmlAssetUrl = encodeURI('/Width - Tailwind CSS.html')
 
 /** 为 true 时成果 Tab 走本地 mock，不调归档接口 */
-export const RESULTS_PANEL_USE_MOCK = true
+export const RESULTS_PANEL_USE_MOCK = false
 
 const delay = (ms: number) => new Promise<void>((r) => setTimeout(r, ms))
 
