@@ -1,5 +1,6 @@
 import type { FormInstance } from 'antd'
 import { Button, Form, Input, Spin } from 'antd'
+import Tooltip from 'antd/es/tooltip'
 import { memo } from 'react'
 import type { GuideInitializeRequest } from '@/apis/dip-studio/guide'
 
@@ -55,7 +56,17 @@ const ConnectOpenClawStep = ({
             </Form.Item>
 
             <div className="flex justify-between">
-              <div className="text-sm text-[--dip-error-color]">{submitError}</div>
+              <Tooltip
+                color={'#fff'}
+                classNames={{
+                  container: 'max-h-[300px] overflow-y-auto',
+                }}
+                title={submitError || ''}
+              >
+                <div className="text-sm text-[--dip-error-color] line-clamp-1">
+                  {submitError || ''}
+                </div>
+              </Tooltip>
               <Button type="primary" htmlType="submit" loading={submitting}>
                 下一步
               </Button>

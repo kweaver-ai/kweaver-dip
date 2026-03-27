@@ -37,7 +37,7 @@ const MicroAppContainer = () => {
     }
 
     // 兜底逻辑
-    return `/${type === 'store' ? 'store/my-app' : 'studio/project-management'}`
+    return `/${type === 'store' ? 'store/my-app' : 'home'}`
   }, [type])
 
   const [loading, setLoading] = useState(true)
