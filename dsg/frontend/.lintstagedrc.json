@@ -1,0 +1,13 @@
+{
+    "*.{ts,tsx}": [
+        "eslint --fix",
+        "prettier --write"
+    ],
+    "*.{css,less}": [
+        "stylelint --fix --allow-empty-input",
+        "prettier --write"
+    ],
+    "*.{json,md}": [
+        "prettier --write"
+    ]
+}

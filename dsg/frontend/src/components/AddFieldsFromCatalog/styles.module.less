@@ -1,0 +1,183 @@
+.add-fields-drawer {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+
+    .selected-resource {
+        display: flex;
+        margin-bottom: 20px;
+
+        .selected-resource-label {
+            width: fit-content;
+            min-width: 80px;
+            margin-right: 12px;
+        }
+
+        .selected-resource-items {
+            display: flex;
+            width: 672px;
+            max-height: 150px;
+            flex: 1;
+            flex-wrap: wrap;
+            overflow-y: auto;
+
+            .selected-resource-item {
+                display: flex;
+                width: 160px;
+                height: 32px;
+                flex-shrink: 0;
+                align-items: center;
+                padding: 0 9px;
+                margin-right: 8px;
+                margin-bottom: 12px;
+                background: rgba(214 221 237/25%);
+                border-radius: 4px;
+                color: rgb(0 0 0 / 65%);
+
+                .item-name {
+                    width: 128px;
+                    .ellipsis-mixin();
+                }
+
+                .item-del-icon {
+                    margin-top: 3px;
+                    margin-left: 4px;
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+
+    .data-catlog-content {
+        display: flex;
+        width: 100%;
+        height: 100%;
+        border: 1px solid rgb(0 0 0 / 10%);
+
+        .data-catlog-tree {
+            width: 288px;
+            height: 100%;
+            border-right: 1px solid rgb(0 0 0 / 6%);
+        }
+
+        .data-catlog-info {
+            width: 288px;
+            padding-left: 21px;
+            border-right: 1px solid rgb(0 0 0 / 6%);
+
+            .list-data-wrapper {
+                height: calc(100% - 120px);
+                margin-top: 12px;
+                overflow-y: auto;
+            }
+
+            .list-item {
+                height: fit-content;
+                padding: 0;
+                border: none;
+            }
+
+            .item-container {
+                display: flex;
+                width: 240px;
+                height: 52px;
+                align-items: center;
+                padding: 0 20px 0 16px;
+                margin-bottom: 4px;
+
+                .item-icon {
+                    margin-right: 8px;
+                    font-size: 30px;
+                }
+
+                .item-info {
+                    width: 160px;
+
+                    .item-name {
+                        .ellipsis-mixin();
+                    }
+
+                    .item-code {
+                        color: rgb(0 0 0 / 45%);
+                        .ellipsis-mixin();
+                    }
+                }
+
+                &:hover {
+                    background-color: #f5f5f7;
+                }
+            }
+
+            .item-container-active {
+                background-color: rgba(236 245 255 / 100%);
+            }
+        }
+
+        .info-items-container {
+            flex: 1;
+            padding-left: 21px;
+
+            .info-items {
+                height: calc(100% - 80px);
+                overflow-y: auto;
+
+                .field-item {
+                    display: flex;
+                    width: 280px;
+                    height: 60px;
+                    align-items: center;
+
+                    .name-container {
+                        overflow: hidden;
+                        flex: 1;
+                        margin-left: 8px;
+                    }
+
+                    .field-name {
+                        .ellipsis-mixin();
+
+                        color: rgb(0 0 0 / 85%);
+                    }
+
+                    .field-enname {
+                        color: rgb(0 0 0 / 45%);
+                        .ellipsis-mixin();
+                    }
+
+                    .field-item-checkbox {
+                        margin-right: 8px;
+                    }
+
+                    .added-flag {
+                        width: 48px;
+                        height: 20px;
+                        margin-left: 8px;
+                        background-color: rgba(0 0 0 / 7%);
+                        border-radius: 4px;
+                        color: rgb(0 0 0 / 65%);
+                        font-size: 12px;
+                        line-height: 20px;
+                        text-align: center;
+                    }
+                }
+            }
+        }
+    }
+
+    .common-title {
+        margin-top: 16px;
+        margin-bottom: 12px;
+        font-weight: 550;
+    }
+}
+
+.add-resource-drawer-footer {
+    float: right;
+
+    :global {
+        .any-fabric-ant-btn {
+            width: 80px;
+            height: 32px;
+        }
+    }
+}

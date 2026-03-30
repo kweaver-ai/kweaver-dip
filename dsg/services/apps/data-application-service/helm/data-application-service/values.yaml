@@ -1,0 +1,173 @@
+# 名称空间，服务都要在同一个空间。
+namespace: anyshare
+
+labels:
+  deployment:
+    name: data-application-service-deployment
+  pod:
+    app: data-application-service-pod
+  service:
+    app: data-application-service-service
+
+
+image:
+  registry: acr.xxx.cn
+  repository: af/data-application-service
+  tag: "1.0.0-alpha"
+  pullPolicy: IfNotPresent
+
+
+replicaCount: 1
+
+
+name: data-application-service-deployment
+
+nodeSelector: []
+
+service:
+  name: data-application-service
+  type: ClusterIP
+  port: 8156
+  version: 1.0.0
+  telemetry:
+    log:
+      enabled: true
+      endpoint: http://feed-ingester-service:13031/api/feed_ingester/v1/jobs/job-4d42d761dbf0ea95/events
+      level: error
+    trace:
+      enabled: true
+      endpoint: http://feed-ingester-service:13031/api/feed_ingester/v1/jobs/job-a2491f67d02e482c/events
+    # 审计日志
+    audit:
+      # 是否启用
+      enabled: false
+      # 上报地址
+      endpoint: https://anyrobot.example.org/api/feed_ingester/v1/jobs/12d627fb523d7362/events
+
+doc:
+  host: "127.0.0.1:8000"
+  version: "1.0"
+
+config:
+  logPath: ./logs
+
+depServices:
+  class-443:
+    ingressClass: class-443
+  rds:
+    type: mariadb
+    host: mariadb-mariadb-master.resource
+    port: 3330
+    user: anyshare
+    password: xxx
+    database: data_application_service
+  redis:
+    connectInfo:
+      masterGroupName: mymaster
+      password: password
+      sentinelHost: proton-redis-proton-redis-sentinel.resource.svc.cluster.local.
+      sentinelPassword: password
+      sentinelPort: 26379
+      sentinelUsername: root
+      username: root
+    connectType: sentinel
+    deployTrait:
+      version: ""
+    sourceType: internal
+  mq:
+    auth:
+      mechanism: PLAIN
+      password: xxx
+      username: anyrobot
+    deployTrait:
+      version: ""
+    mqHost: kafka-headless.resource.svc.cluster.local.
+    mqLookupdHost: ""
+    mqLookupdPort: 0
+    mqPort: 9097
+    mqType: kafka
+    nsq:
+      type: nsq
+      host: proton-mq-nsq-nsqd.resource
+      port: 4150
+      httpHost: proton-mq-nsq-nsqd.resource
+      httpPort: 4151
+      lookupdHost: proton-mq-nsq-nsqlookupd.resource
+      lookupdPort: 4161
+  configCenterService:
+    host: configuration-center
+    port: 8133
+  userManageService:
+    host: user-management-private
+    port: 30980
+  hydraService:
+    host: hydra-admin
+    port: 4445
+    clientId: 109be1e1-72c0-4137-8484-813b14be5e21
+    clientSecret: Si4iZL.ZZ1JO
+  metaDataManageService:
+    host: af-vega-metadata
+    port: 80
+  virtualizationEngine:
+    protocol: http
+    host: vega-gateway
+    port: 8099
+  dataCatalog:
+    host: data-catalog
+    port: 8153
+  dataView:
+    host: data-view
+    port: 8123
+  glossaryService:
+    host: glossary-service
+    port: 8183
+  workflowRest:
+    host: flow-audit-config
+    port: 9800
+    channel: data-application-service
+  dataApplicationService:
+    host: data-application-service
+    port: 8156
+  basicSearch:
+    host: basic-search
+    port: 8163
+  dataSubject:
+    host: data-subject
+    port: 8123
+  authService:
+    host: auth-service
+    port: 8155
+  oss:
+    ossApp: af
+    ossHost: ossgatewaymanager-private:9002
+    ossProtocol: http
+    ossIsDefault: true
+    ossBucket: afstorage
+
+resources:
+  requests:
+    cpu: 0.1
+    memory: 10Mi
+  limits:
+    cpu: 500m
+    memory: 1024Mi
+
+# 回调配置
+callback:
+  # 是否启用回调
+  enabled: false
+  # 通过这个地址调用回调接口，格式定义在
+  # https://github.com/grpc/grpc/blob/master/doc/naming.md
+  #
+  #
+  #  - 192.169.52.204
+  #  - 192.169.52.204:80
+  #  - work-order-callback-server.example
+  #  - work-order-callback-server.example:80
+  #  - dns:///192.169.52.204:80
+  #  - dns:///work-order-callback-server.example:80
+  #  - dns://10.96.0.10/work-order-callback-server.example.svc.cluster.local:80
+  #  - dns://10.96.0.10/192-169-52-204.example.pod.cluster.local:80
+  #  - unix:///tmp/callback.sock
+  address: localhost
+  pre_path: /data-application-gateway

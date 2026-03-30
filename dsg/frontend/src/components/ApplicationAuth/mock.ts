@@ -1,0 +1,73 @@
+import requests from '@/utils/request'
+
+export const getDictData = (): Promise<any> => {
+    return requests.get(`/api/configuration-center/v1/apps/enum-config`)
+}
+
+export const mockWorkflowAuditData = [
+    {
+        account: 'user1@example.com',
+        act_inst_id: 'ACT-001',
+        attachments: null,
+        audit_idea: 'Approved without comments',
+        audit_status: 'pass',
+        auditor: 'AUD001',
+        auditor_name: 'John Doe',
+        countersign: 'n',
+        end_time: '2024-10-23T06:12:51.000+00:00',
+        proc_status: '1',
+        start_time: '2024-10-23T06:11:20.000+00:00',
+    },
+    {
+        account: 'user2@example.com',
+        act_inst_id: 'ACT-002',
+        attachments: null,
+        audit_idea: 'Rejected due to incomplete documentation',
+        audit_status: 'reject',
+        auditor: 'AUD002',
+        auditor_name: 'Jane Smith',
+        countersign: 'n',
+        end_time: '2024-10-24T14:30:00.000+00:00',
+        proc_status: '2',
+        start_time: '2024-10-24T14:15:30.000+00:00',
+    },
+    {
+        account: 'user3@example.com',
+        act_inst_id: 'ACT-003',
+        attachments: null,
+        audit_idea: 'Passed with minor suggestions',
+        audit_status: 'pass',
+        auditor: 'AUD003',
+        auditor_name: 'Bob Johnson',
+        countersign: 'n',
+        end_time: '2024-10-25T09:45:20.000+00:00',
+        proc_status: '3',
+        start_time: '2024-10-25T09:30:00.000+00:00',
+    },
+    {
+        account: 'user4@example.com',
+        act_inst_id: 'ACT-004',
+        attachments: null,
+        audit_idea: 'Needs revision in section 3',
+        audit_status: 'reject',
+        auditor: 'AUD004',
+        auditor_name: 'Alice Brown',
+        countersign: 'n',
+        end_time: '2024-10-26T11:20:15.000+00:00',
+        proc_status: '2',
+        start_time: '2024-10-26T11:00:00.000+00:00',
+    },
+    {
+        account: 'user5@example.com',
+        act_inst_id: 'ACT-005',
+        attachments: null,
+        audit_idea: 'Approved after thorough review',
+        audit_status: 'pass',
+        auditor: 'AUD005',
+        auditor_name: 'Charlie Wilson',
+        countersign: 'n',
+        end_time: '2024-10-27T16:40:30.000+00:00',
+        proc_status: '1',
+        start_time: '2024-10-27T16:20:00.000+00:00',
+    },
+]

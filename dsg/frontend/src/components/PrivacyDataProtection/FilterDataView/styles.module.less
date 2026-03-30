@@ -1,0 +1,130 @@
+.fields-wrapper {
+    display: flex;
+    overflow: hidden;
+    height: 100%;
+    flex-direction: column;
+
+    &-radio {
+        :global {
+            .any-fabric-ant-radio-button-wrapper {
+                margin-bottom: 16px;
+                box-shadow: none;
+                color: rgba(0 0 0 / 85%);
+                text-align: center;
+
+                &.any-fabric-ant-radio-button-wrapper-checked {
+                    color: #126ee3;
+                }
+            }
+
+            .any-fabric-ant-radio-button-wrapper-checked:not(
+                    .any-fabric-ant-radio-button-wrapper-disabled
+                ):focus-within {
+                box-shadow: none;
+            }
+        }
+    }
+
+    .sampleTable {
+        .tableTDContnet {
+            display: flex;
+            // 设计规定最宽345px-左右padding之和32px=313px
+            max-width: 313px;
+            align-items: center;
+
+            .ellipsis-mixin();
+
+            .nameIcon {
+                margin-right: 4px;
+            }
+
+            &.subTableTDContnet {
+                margin-top: -2px;
+                color: rgb(0 0 0 / 45%);
+                font-size: 12px;
+                font-weight: normal;
+            }
+
+            .businessTitle {
+                .ellipsis-mixin();
+            }
+        }
+
+        :global {
+            .any-fabric-ant-table-content {
+                overflow-x: auto;
+
+                > table {
+                    width: auto;
+                    min-width: 100%;
+                }
+            }
+
+            th {
+                > div {
+                    // 设计规定最宽345px-左右padding之和32px=313px
+                    max-width: 313px;
+                }
+            }
+
+            .any-fabric-ant-table-tbody > tr > td {
+                user-select: none;
+            }
+        }
+    }
+
+    :global {
+        th {
+            background: rgb(0 55 150 / 4%);
+            color: #003796;
+
+            &::before {
+                border-right: 1px solid #d9d9d9;
+            }
+
+            div {
+                .ellipsis-mixin();
+            }
+        }
+
+        td {
+            color: rgb(0 0 0 / 65%);
+        }
+
+        .any-fabric-ant-table-cell {
+            .any-fabric-ant-tag {
+                background: rgb(214 221 237 / 25%);
+                border-radius: 2px;
+                color: #6b798d;
+            }
+        }
+    }
+
+    .aiTableDesc {
+        margin-top: 16px;
+        color: rgb(0 0 0 / 65%);
+        line-height: 20px;
+    }
+
+    .tableHeader {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 12px;
+
+        .headerLeft {
+            display: flex;
+            align-items: center;
+        }
+
+        .headerText {
+            display: inline-block;
+            max-width: 146px;
+            .ellipsis-mixin();
+        }
+
+        .headerRight {
+            color: rgb(0 0 0 / 45%);
+        }
+    }
+}

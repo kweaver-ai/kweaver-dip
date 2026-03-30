@@ -1,0 +1,127 @@
+USE af_data_exploration;
+
+create table if not exists `t_task_config` (
+    `f_id` BIGINT(20) NOT NULL COMMENT '主键id',
+    `f_task_id` BIGINT(20) NOT NULL COMMENT '任务配置记录id',
+    `f_task_name` varchar(256) DEFAULT NULL COMMENT '任务配置名称',
+    `f_task_desc` varchar(256) DEFAULT NULL COMMENT '任务配置描述',
+    `f_version` int(10) DEFAULT 0 COMMENT '当前版本',
+    `f_version_state` TINYINT(2) DEFAULT 0 COMMENT '是否为现行版本',
+    `f_query_params` longtext DEFAULT NULL COMMENT '探查任务请求参数，json格式字符串',
+    `f_explore_type` TINYINT(2) DEFAULT 0 COMMENT '探查类型',
+    `f_table` varchar(256) DEFAULT NULL COMMENT '表名',
+    `f_table_id` varchar(256) DEFAULT NULL COMMENT '表id',
+    `f_schema` varchar(256) DEFAULT NULL COMMENT '库名',
+    `f_ve_catalog` varchar(256)  DEFAULT NULL  COMMENT '虚拟化引擎数据源编目',
+    `f_total_sample` int(10) DEFAULT 0  COMMENT '探查样本数量',
+    `f_exec_status` int(10) DEFAULT 0  COMMENT '最近一次探查结果状态',
+    `f_exec_at` datetime DEFAULT NULL COMMENT '最近一次探查时间',
+    `f_enabled` TINYINT(2) DEFAULT 0  COMMENT '探查任务启用禁用状态',
+    `f_created_at` datetime DEFAULT NULL COMMENT '创建时间 ',
+    `f_created_by_uid` varchar(64) DEFAULT NULL COMMENT '创建人',
+    `f_created_by_uname` varchar(256) DEFAULT NULL COMMENT '创建人中文名',
+    `f_updated_at` datetime DEFAULT NULL COMMENT '更新时间',
+    `f_updated_by_uid` varchar(64) DEFAULT NULL COMMENT '修改人',
+    `f_updated_by_uname` varchar(256) DEFAULT NULL COMMENT '修改人中文名',
+    `f_deleted_at` datetime DEFAULT NULL COMMENT '删除时间',
+    `f_deleted_by_uid` varchar(64) DEFAULT NULL COMMENT '删除人',
+    `f_deleted_by_uname` varchar(256) DEFAULT NULL COMMENT '删除人中文名',
+    `f_dv_task_id` char(36) DEFAULT NULL COMMENT '视图服务任务id',
+    KEY `idx_task_config_task_id` (`f_task_id`),
+    PRIMARY KEY (`f_id`)
+    )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci comment '探查任务配置表';
+
+create table if not exists `t_report` (
+    `f_id` BIGINT(20) NOT NULL COMMENT '主键id',
+    `f_code`  varchar(256) DEFAULT NULL COMMENT '探查报告编号',
+    `f_task_id` BIGINT(20) NOT NULL COMMENT '任务配置记录id',
+    `f_task_version` int(10) DEFAULT 0 COMMENT '任务配置版本',
+    `f_query_params` longtext DEFAULT NULL COMMENT '探查任务请求参数，json格式字符串',
+    `f_explore_type` TINYINT(2) DEFAULT 0 COMMENT '探查类型',
+    `f_table` varchar(256) DEFAULT NULL COMMENT '表名',
+    `f_table_id` varchar(256) DEFAULT NULL COMMENT '表id',
+    `f_schema` varchar(256) DEFAULT NULL COMMENT '库名',
+    `f_ve_catalog` varchar(256)  DEFAULT NULL  COMMENT '虚拟化引擎数据源编目',
+    `f_total_sample` int(10) DEFAULT 0  COMMENT '探查样本数量',
+    `f_total_num` int(10) DEFAULT 0  COMMENT '探查表总行数',
+    `f_total_score` float(10,4) DEFAULT NULL COMMENT '探查分数',
+    `f_result` longtext DEFAULT NULL COMMENT '探查结果',
+    `f_status` TINYINT(2) DEFAULT 0  COMMENT '报告状态',
+    `f_latest` TINYINT(2) NOT NULL DEFAULT 0  COMMENT '最近一次探查结果',
+    `f_created_at` datetime DEFAULT NULL COMMENT '创建时间',
+    `f_created_by_uid` varchar(64) DEFAULT NULL COMMENT '创建人',
+    `f_created_by_uname` varchar(256) DEFAULT NULL COMMENT '创建人中文名',
+    `f_finished_at` datetime DEFAULT NULL COMMENT '完成时间',
+    `f_reason` text DEFAULT NULL COMMENT '探查异常说明',
+    `f_dv_task_id` char(36) DEFAULT NULL COMMENT '视图服务任务id',
+    `f_total_completeness` float(10,4) DEFAULT NULL COMMENT '完整性总分',
+    `f_total_standardization` float(10,4) DEFAULT NULL COMMENT '规范性总分',
+    `f_total_uniqueness` float(10,4) DEFAULT NULL COMMENT '唯一性总分',
+    `f_total_accuracy` float(10,4) DEFAULT NULL COMMENT '准确性总分',
+    `f_total_consistency` float(10,4) DEFAULT NULL COMMENT '一致性总分',
+    `f_deleted_at` datetime(3) DEFAULT NULL COMMENT '删除时间',
+    KEY `idx_report_task_id`(`f_task_id`),
+    KEY `idx_report_code`(`f_code`),
+    PRIMARY KEY (`f_id`)
+    )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci comment '探查报告记录表';
+
+
+create table if not exists `t_report_item` (
+    `f_id` BIGINT(20) NOT NULL COMMENT '主键id',
+    `f_code`  varchar(256) DEFAULT NULL COMMENT '探查报告编号',
+    `f_column` varchar(256) DEFAULT NULL COMMENT '探查字段',
+    `f_rule_id` char(36) DEFAULT NULL COMMENT '探查规则id',
+    `f_project`  varchar(256) DEFAULT NULL COMMENT '探查项目',
+    `f_params`  text DEFAULT NULL COMMENT '探查参数',
+    `f_result` longtext DEFAULT NULL COMMENT '探查结果',
+    `f_status` TINYINT(2) DEFAULT 0  COMMENT '探查状态',
+    `f_created_at` datetime DEFAULT NULL COMMENT '创建时间',
+    `f_started_at` datetime DEFAULT NULL COMMENT '开始时间',
+    `f_finished_at` datetime DEFAULT NULL COMMENT '完成时间',
+    `f_sql` text DEFAULT NULL COMMENT '探查sql',
+    `f_dimension_type` char(20) DEFAULT NULL COMMENT '维度类型',
+    KEY `idx_report_item_code` (`f_code`),
+    PRIMARY KEY (`f_id`)
+    )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci comment '探查报告记录表';
+
+
+
+CREATE TABLE IF NOT EXISTS `t_client_info` (
+    `id` BIGINT(20) NOT NULL COMMENT '唯一id，雪花算法',
+    `client_id` char(36) NOT NULL COMMENT '客户端id',
+    `client_secret` varchar(128) NOT NULL COMMENT '客户端密钥',
+    PRIMARY KEY (`id`)
+    )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci comment='客户端id密钥信息';
+
+CREATE TABLE if not exists `t_third_party_report` (
+    `f_id` BIGINT(20) NOT NULL COMMENT '主键id',
+    `f_code` VARCHAR(256) DEFAULT NULL COMMENT '探查报告编号',
+    `f_task_id` BIGINT(20) NOT NULL COMMENT '任务配置记录id',
+    `f_task_version` INT(10) DEFAULT 0 COMMENT '任务配置版本',
+    `f_query_params` LONGTEXT DEFAULT NULL COMMENT '探查任务请求参数，json格式字符串',
+    `f_explore_type` TINYINT(2) DEFAULT 0 COMMENT '探查类型',
+    `f_table` VARCHAR(256) DEFAULT NULL COMMENT '表名',
+    `f_table_id` VARCHAR(256) DEFAULT NULL COMMENT '表id',
+    `f_schema` VARCHAR(256) DEFAULT NULL COMMENT '库名',
+    `f_ve_catalog` VARCHAR(256) DEFAULT NULL COMMENT '虚拟化引擎数据源编目',
+    `f_total_sample` INT(10) DEFAULT 0 COMMENT '探查样本数量',
+    `f_total_num` INT(10) DEFAULT 0 COMMENT '探查表总行数',
+    `f_total_score` FLOAT(10,4) DEFAULT NULL COMMENT '探查分数',
+    `f_result` LONGTEXT DEFAULT NULL COMMENT '探查结果',
+    `f_status` TINYINT(2) DEFAULT 0 COMMENT '报告状态',
+    `f_latest` TINYINT(2) NOT NULL DEFAULT 0 COMMENT '最近一次探查结果',
+    `f_created_at` DATETIME DEFAULT NULL COMMENT '创建时间',
+    `f_created_by_uid` VARCHAR(64) DEFAULT NULL COMMENT '创建人',
+    `f_created_by_uname` VARCHAR(256) DEFAULT NULL COMMENT '创建人中文名',
+    `f_finished_at` DATETIME DEFAULT NULL COMMENT '完成时间',
+    `f_reason` TEXT DEFAULT NULL COMMENT '探查异常说明',
+    `f_work_order_id` CHAR(36) DEFAULT NULL COMMENT '工单id',
+    `f_total_completeness` FLOAT(10,4) DEFAULT NULL COMMENT '完整性总分',
+    `f_total_standardization` FLOAT(10,4) DEFAULT NULL COMMENT '规范性总分',
+    `f_total_uniqueness` FLOAT(10,4) DEFAULT NULL COMMENT '唯一性总分',
+    `f_total_accuracy` FLOAT(10,4) DEFAULT NULL COMMENT '准确性总分',
+    `f_total_consistency` FLOAT(10,4) DEFAULT NULL COMMENT '一致性总分',
+    KEY `idx_third_party_report_table_id` (`f_table_id`),
+    KEY `idx_third_party_report_work_order_id` (`f_work_order_id`),
+    PRIMARY KEY (`f_id`)
+    ) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='第三方探查报告记录表';

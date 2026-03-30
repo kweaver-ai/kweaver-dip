@@ -1,0 +1,216 @@
+.mountResourcesWrapper {
+    height: 100%;
+    padding: 24px;
+    padding-top: 0;
+    margin: auto;
+
+    :global {
+        .any-fabric-ant-table-cell-with-append {
+            display: flex;
+            align-items: center;
+        }
+    }
+
+    .choose-lv {
+        display: flex;
+        overflow: hidden;
+        width: 100%;
+        height: 100%;
+
+        &-left {
+            overflow: hidden;
+            width: 279px;
+            height: 100%;
+            padding-bottom: 16px;
+            border-right: 1px solid rgb(0 0 0 / 6%);
+            margin-top: -16px;
+
+            &-top {
+                padding: 0 20px;
+
+                :global {
+                    .any-fabric-ant-select-selection-item {
+                        padding-right: 20px;
+                        font-weight: 550;
+                    }
+                }
+            }
+
+            &-orgTree {
+                .ungrouped {
+                    height: 36px;
+                    padding-left: 20px;
+                    cursor: pointer;
+                    line-height: 36px;
+
+                    &:hover {
+                        background-color: #eff0f3;
+                    }
+                }
+
+                .active-ungrouped {
+                    background-color: #ecf5ff;
+
+                    &:hover {
+                        background-color: #ecf5ff;
+                    }
+                }
+
+                :global {
+                    .any-fabric-ant-tree {
+                        max-height: 350px;
+                        overflow-x: auto !important;
+                    }
+
+                    .any-fabric-ant-tree-list {
+                        display: flex;
+                        flex: 1;
+
+                        &-holder {
+                            flex: 1;
+                        }
+                    }
+
+                    .any-fabric-ant-tree-node-content-wrapper {
+                        overflow: auto !important;
+                    }
+                }
+            }
+
+            &-sbjTree,
+            &-sorTree {
+                :global {
+                    .any-fabric-ant-tree {
+                        max-height: 350px;
+                    }
+                }
+            }
+
+            :global {
+                .search-result {
+                    height: 388px !important;
+                    overflow-y: auto;
+                }
+
+                .any-fabric-ant-tree-node-content-wrapper {
+                    width: calc(100% - 40px);
+                }
+
+                .any-fabric-ant-tree .any-fabric-ant-tree-treenode {
+                    padding-right: 6px !important;
+                }
+            }
+        }
+
+        &-right {
+            width: calc(100% - 279px);
+            padding-left: 8px;
+            overflow-y: auto;
+        }
+
+        &-bottom {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+    }
+}
+
+.marketTableWrapper {
+    :global {
+        .any-fabric-ant-table-thead {
+            .any-fabric-ant-table-cell {
+                background: #f4f7fc;
+            }
+        }
+    }
+}
+
+.apiResourceWrapper {
+    .formItem {
+        padding: 20px;
+    }
+}
+
+.fieldItemWrapper {
+    display: flex;
+    width: 100%;
+    align-items: center;
+
+    .icon {
+        margin-right: 8px;
+    }
+
+    .nameBox {
+        width: calc(100% - 16px);
+
+        .name {
+            .nameText {
+                display: inline-block;
+                max-width: 100%;
+                line-height: normal;
+                .ellipsis-mixin();
+            }
+
+            .nameIcon {
+                margin-left: 4px;
+            }
+        }
+
+        .code {
+            max-width: 100%;
+            margin-top: 4px;
+            color: rgb(0 0 0 / 65%);
+            font-size: 12px;
+            line-height: normal;
+            .ellipsis-mixin();
+        }
+    }
+}
+
+.fieldLabel {
+    &::before {
+        color: rgb(240 89 100);
+        content: '*';
+    }
+}
+
+.intervalWrapper {
+    display: flex;
+    height: 32px;
+    align-items: center;
+    margin-top: 30px;
+    margin-left: 40px;
+
+    .inputWrapper {
+        margin: 0 8px;
+    }
+
+    &.timeWrapper {
+        margin-left: 0;
+    }
+}
+
+.catlgName {
+    display: flex;
+    height: 32px;
+    align-items: center;
+
+    .nameIcon {
+        margin-right: 8px;
+        font-size: 16px;
+    }
+
+    .catlgNameCont {
+        width: calc(100% - 22px);
+
+        .names {
+            .ellipsis-mixin();
+        }
+
+        .code {
+            color: rgb(0 0 0 / 45%);
+            font-size: 12px;
+        }
+    }
+}

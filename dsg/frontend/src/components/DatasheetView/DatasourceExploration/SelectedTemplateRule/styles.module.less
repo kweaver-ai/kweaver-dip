@@ -1,0 +1,232 @@
+.modalFooter {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .footerLeft {
+        display: flex;
+        align-items: center;
+        color: rgb(0 0 0 / 45%);
+    }
+
+    .footerLeftIcon {
+        margin-right: 8px;
+        font-size: 20px;
+    }
+}
+
+.ModalBox {
+    /* 三列布局样式 */
+    .three-column-modal .ant-modal-body {
+        padding: 0;
+    }
+
+    .rule-selector-container {
+        display: flex;
+        height: 500px;
+    }
+
+    .divider {
+        height: 100%;
+        margin: 0;
+    }
+
+    .rightNode {
+        display: flex;
+        height: 100%;
+    }
+
+    .left-panel,
+    .center-panel,
+    .right-panel {
+        display: flex;
+        height: 100%;
+        flex-direction: column;
+    }
+
+    .left-panel {
+        border-right: 1px solid #f0f0f0;
+    }
+
+    .panel-title {
+        margin-left: 16px;
+    }
+
+    .center-panel {
+        width: 66%;
+
+        &.noDetails {
+            width: 100%;
+        }
+    }
+
+    .right-panel {
+        width: 33%;
+        border-left: 1px solid #f0f0f0;
+
+        .details-box {
+            margin-top: 16px;
+            margin-left: 16px;
+        }
+    }
+
+    .panel-header {
+        padding: 8px 24px 12px 0;
+    }
+
+    .tree-container,
+    .rule-list-container,
+    .rule-detail-container {
+        flex: 1;
+        padding: 16px;
+        overflow-y: auto;
+    }
+
+    .tree-container {
+        padding: 0;
+    }
+
+    .rule-list-container {
+        padding: 0;
+    }
+
+    /* 树形控件样式 */
+    .tree-container .ant-tree {
+        background: transparent;
+    }
+
+    .tree-container .ant-tree-node-content-wrapper {
+        .ellipsis-mixin();
+    }
+
+    /* 规则列表样式 */
+    .rule-list {
+        display: flex;
+        flex-direction: column;
+        // gap: 12px;
+    }
+
+    .rule-item {
+        display: flex;
+        height: 60px;
+        align-items: center;
+        padding: 8px;
+        padding-left: 16px;
+        border-radius: 4px;
+        cursor: pointer;
+        gap: 8px;
+        transition: all 0.3s;
+
+        .ruleIcon {
+            margin-right: 8px;
+            font-size: 20px;
+        }
+
+        &.disabled {
+            color: rgb(0 0 0 / 30%);
+            cursor: not-allowed;
+        }
+    }
+
+    .rule-item:hover {
+        background-color: #f5f5f5;
+    }
+
+    .rule-item.active {
+        background-color: rgb(236 245 255 / 100%);
+    }
+
+    .rule-info {
+        width: calc(100% - 56px);
+        flex: 1;
+    }
+
+    .rule-name {
+        width: 100%;
+        margin-bottom: 2px;
+        font-weight: 500;
+        .ellipsis-mixin();
+    }
+
+    .rule-desc {
+        width: 100%;
+        color: rgb(0 0 0 / 45%);
+        font-size: 12px;
+        .ellipsis-mixin();
+    }
+
+    .rule-info-checked {
+        color: rgb(89 163 255 / 100%);
+    }
+
+    .remaining-rule-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8px 0;
+    }
+
+    .remaining-rule-name {
+        flex: 1;
+        margin-right: 10px;
+        .ellipsis-mixin();
+    }
+}
+
+.modalWrapper {
+    /* 底部已选标签样式 */
+    .modal-footer-tags {
+        display: flex;
+        align-items: center;
+    }
+
+    .selected-count {
+        margin-right: 8px;
+        white-space: nowrap;
+    }
+
+    .selected-tags-container {
+        display: flex;
+        overflow: hidden;
+        flex: 1;
+        flex-wrap: wrap;
+        margin-right: 16px;
+        gap: 8px;
+    }
+
+    .footer-actions {
+        white-space: nowrap;
+    }
+
+    .rule-tag,
+    .more-tag {
+        overflow: hidden;
+        max-width: 130px;
+        margin-right: 0;
+        cursor: pointer;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .rule-tag-pop {
+        margin-bottom: 4px;
+    }
+
+    .more-tag:hover {
+        background-color: #f5f5f5;
+    }
+}
+
+.moreTagPop {
+    .rule-tag-pop {
+        margin-bottom: 4px;
+    }
+}
+
+.templateRuleTree .custom-tree-list {
+    :global {
+        .any-fabric-ant-tree-title {
+            .ellipsis-mixin();
+        }
+    }
+}

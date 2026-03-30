@@ -1,0 +1,132 @@
+.workOrderTemplateManagement {
+    .searchCard {
+        margin-bottom: 16px;
+    }
+
+    .searchRow {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+
+        .contentHeader {
+            // 新增模板按钮区域
+        }
+
+        .searchInputs {
+            display: flex;
+            flex: 1;
+            gap: 12px;
+        }
+
+        .searchButtons {
+            display: flex;
+            gap: 8px;
+        }
+    }
+
+    .contentCard {
+        .contentHeader {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+    }
+
+    .paginationWrapper {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 16px;
+    }
+}
+
+.versionItem {
+    .versionTime {
+        margin-left: 8px;
+        color: rgb(0 0 0 / 65%);
+        font-size: 12px;
+    }
+
+    .versionInfo {
+        line-height: 1.8;
+
+        span {
+            display: inline-block;
+            width: 48px;
+            color: rgb(0 0 0 / 65%);
+        }
+    }
+}
+
+// 表单样式
+.basicInfo {
+    // margin-bottom: 24px;
+}
+
+.formFields {
+    .customField {
+        display: flex;
+        align-items: center;
+        padding: 8px 12px;
+        border: 1px dashed #d9d9d9;
+        background-color: #fafafa;
+        border-radius: 4px;
+        gap: 8px;
+
+        .customFieldPlaceholder {
+            color: #999;
+        }
+    }
+}
+
+// 详情样式
+.detailModal {
+    .detailContent {
+        .basicCard,
+        .contentCard {
+            margin-bottom: 16px;
+        }
+    }
+}
+
+.emptyHistory {
+    padding: 24px;
+    color: #999;
+    text-align: center;
+
+    .anticon {
+        margin-bottom: 8px;
+        font-size: 24px;
+    }
+}
+
+.historyItem {
+    .historyHeader {
+        display: flex;
+        align-items: center;
+        margin-bottom: 4px;
+        gap: 12px;
+
+        .versionTag {
+            padding: 2px 8px;
+            background: #f0f0f0;
+            border-radius: 4px;
+            color: #666;
+            font-size: 12px;
+        }
+
+        .historyTime {
+            color: #999;
+            font-size: 12px;
+        }
+    }
+
+    .historyContent {
+        .historyDescription {
+            margin: 0;
+            color: #666;
+            font-size: 13px;
+        }
+    }
+}

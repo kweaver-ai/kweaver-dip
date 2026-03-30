@@ -1,0 +1,524 @@
+openapi: 3.0.0
+info:
+  title: 语义理解工具箱
+  version: v1
+servers:
+  - url: https://{host}
+    variables:
+      host:
+        default: http://10.105.161.79:8888
+        description: API host
+components:
+  securitySchemes:
+    BearerAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: JWT 认证令牌，格式: Bearer {token}
+paths:
+  /api/data-semantic/v1/{id}/business-objects:
+    get:
+      summary: 查询业务对象识别结果
+      operationId: dataSemanticGetBusinessObjects
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: 表单视图ID
+        - name: op_id
+          in: query
+          schema:
+            type: string
+          description: 业务对象ID过滤
+        - name: keyword
+          in: query
+          schema:
+            type: string
+          description: 关键字搜索
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  list:
+                    type: array
+                    description: 业务对象列表
+                    items:
+                      type: object
+                      required:
+                        - op_id
+                        - object_name
+                        - attributes
+                      properties:
+                        op_id:
+                          type: string
+                          description: 业务对象ID
+                        object_name:
+                          type: string
+                          description: 业务对象名称
+                        attributes:
+                          type: array
+                          description: 属性列表
+                          items:
+                            type: object
+                            required:
+                              - op_id
+                              - attr_name
+                              - form_view_field_id
+                              - field_tech_name
+                              - field_business_name
+                              - field_role
+                              - field_type
+                            properties:
+                              op_id:
+                                type: string
+                                description: 属性ID
+                              attr_name:
+                                type: string
+                                description: 属性名称
+                              description:
+                                type: string
+                                description: 属性描述
+                              form_view_field_id:
+                                type: string
+                                description: 表单视图字段ID
+                              field_tech_name:
+                                type: string
+                                description: 字段技术名称
+                              field_business_name:
+                                type: string
+                                description: 字段业务名称
+                              field_role:
+                                type: integer
+                                description: 字段角色: 1-业务主键, 2-关联标识, 3-业务状态, 4-时间字段, 5-业务指标, 6-业务特征, 7-审计字段, 8-技术字段
+                              field_type:
+                                type: string
+                                description: 字段数据类型
+                  unidentified_fields:
+                    type: array
+                    items:
+                      type: object
+                      required:
+                        - op_id
+                        - technical_name
+                        - data_type
+                      properties:
+                        op_id:
+                          type: string
+                          description: 临时表数据ID
+                        technical_name:
+                          type: string
+                          description: 字段技术名称
+                        business_name:
+                          type: string
+                          description: 字段业务名称
+                        data_type:
+                          type: string
+                          description: 字段数据类型
+                        description:
+                          type: string
+                          description: 字段描述
+                        field_role:
+                          type: integer
+                          description: 字段角色: 1-业务主键, 2-关联标识, 3-业务状态, 4-时间字段, 5-业务指标, 6-业务特征, 7-审计字段, 8-技术字段
+    put:
+      summary: 保存业务对象及属性
+      operationId: dataSemanticSaveBusinessObjects
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: body
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - type
+              - op_id
+              - name
+            properties:
+              type:
+                type: string
+                description: 保存类型: object-业务对象, attribute-业务属性
+              op_id:
+                type: string
+                description: 数据ID(临时表)
+              name:
+                type: string
+                description: 业务对象/属性名称
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    description: 响应码: 0-成功
+    delete:
+      summary: 删除识别结果
+      operationId: dataSemanticDeleteBusinessObjects
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: 是否成功
+  /api/data-semantic/v1/{id}/business-objects/attributes/move:
+    put:
+      summary: 调整属性归属业务对象
+      operationId: dataSemanticMoveAttribute
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: body
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - attribute_id
+              - target_object_uuid
+            properties:
+              attribute_id:
+                type: string
+                description: 属性ID
+              target_object_uuid:
+                type: string
+                description: 目标业务对象ID
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  attribute_id:
+                    type: string
+                    description: 属性ID
+                  business_op_id:
+                    type: string
+                    description: 业务对象ID
+  /api/data-semantic/v1/{id}/business-objects/regenerate:
+    post:
+      summary: 重新识别业务对象
+      operationId: dataSemanticRegenerateBusinessObjects
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  understand_status:
+                    type: integer
+                    description: 理解状态: 1-待理解, 2-待确认, 3-已完成, 5-理解失败
+  /api/data-semantic/v1/{id}/fields:
+    get:
+      summary: 查询字段语义补全数据
+      operationId: dataSemanticGetFields
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: 表单视图ID
+        - name: keyword
+          in: query
+          schema:
+            type: string
+          description: 关键字搜索
+        - name: only_incomplete
+          in: query
+          schema:
+            type: boolean
+          description: 仅显示未补全的字段
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  table_info_id:
+                    type: string
+                    description: 表信息ID
+                  table_tech_name:
+                    type: string
+                    description: 表技术名称
+                  table_business_name:
+                    type: string
+                    description: 表业务名称
+                  table_description:
+                    type: string
+                    description: 表描述
+                  fields:
+                    type: array
+                    description: 字段列表
+                    items:
+                      type: object
+                      required:
+                        - op_id
+                        - form_view_field_id
+                        - field_business_name
+                        - field_tech_name
+                        - field_type
+                        - field_role
+                        - field_description
+                      properties:
+                        op_id:
+                          type: string
+                          description: 临时表数据ID
+                        form_view_field_id:
+                          type: string
+                          description: 表单视图字段ID
+                        field_tech_name:
+                          type: string
+                          description: 字段技术名称
+                        field_business_name:
+                          type: string
+                          description: 字段业务名称
+                        field_type:
+                          type: string
+                          description: 字段数据类型
+                        field_role:
+                          type: integer
+                          description: 字段角色: 1-业务主键, 2-关联标识, 3-业务状态, 4-时间字段, 5-业务指标, 6-业务特征, 7-审计字段, 8-技术字段
+                        field_description:
+                          type: string
+                          description: 字段描述
+  /api/data-semantic/v1/{id}/generate:
+    post:
+      summary: 一键生成理解数据
+      operationId: dataSemanticGenerateUnderstanding
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: body
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              fields:
+                type: array
+                description: 字段选择列表(可选,不传则全部理解)
+                items:
+                  type: object
+                  required:
+                    - form_view_field_id
+                    - field_tech_name
+                    - field_type
+                    - field_business_name
+                    - field_role
+                    - field_description
+                  properties:
+                    form_view_field_id:
+                      type: string
+                      description: 表单视图字段ID
+                    field_tech_name:
+                      type: string
+                      description: 字段技术名称
+                    field_type:
+                      type: string
+                      description: 字段数据类型
+                    field_business_name:
+                      type: string
+                      description: 字段业务名称
+                    field_role:
+                      type: integer
+                      description: 字段角色: 1-业务主键, 2-关联标识, 3-业务状态, 4-时间字段, 5-业务指标, 6-业务特征, 7-审计字段, 8-技术字段
+                    field_description:
+                      type: string
+                      description: 字段描述
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  understand_status:
+                    type: integer
+                    description: 理解状态: 1-待理解, 2-待确认, 3-已完成, 5-理解失败
+  /api/data-semantic/v1/{id}/semantic-info:
+    put:
+      summary: 保存库表信息补全数据
+      operationId: dataSemanticSaveSemanticInfo
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: body
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              tableData:
+                type: object
+                description: 表信息补全数据(包含ID、业务名称、描述)
+                required:
+                  - op_id
+                  - table_business_name
+                  - table_description
+                properties:
+                  op_id:
+                    type: string
+                    description: 临时表数据ID
+                  table_business_name:
+                    type: string
+                    description: 表业务名称
+                  table_description:
+                    type: string
+                    description: 表描述
+              fieldData:
+                type: object
+                description: 字段信息补全数据(包含ID、业务名称、角色、描述)
+                required:
+                  - op_id
+                  - field_business_name
+                  - field_role
+                  - field_description
+                properties:
+                  op_id:
+                    type: string
+                    description: 临时表数据ID
+                  field_business_name:
+                    type: string
+                    description: 字段业务名称
+                  field_role:
+                    type: integer
+                    description: 字段角色: 1-业务主键, 2-关联标识, 3-业务状态, 4-时间字段, 5-业务指标, 6-业务特征, 7-审计字段, 8-技术字段
+                  field_description:
+                    type: string
+                    description: 字段描述
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    description: 响应码: 0-成功
+  /api/data-semantic/v1/{id}/status:
+    get:
+      summary: 查询库表理解状态
+      operationId: dataSemanticGetStatus
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  understand_status:
+                    type: integer
+                    description: 理解状态: 1-待理解, 2-待确认, 3-已完成, 5-理解失败
+  /api/data-semantic/v1/{id}/submit:
+    post:
+      summary: 提交确认理解数据
+      operationId: dataSemanticSubmitUnderstanding
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: 是否成功
+  /api/data-semantic/v1/health:
+    get:
+      summary: 健康检查
+      operationId: healthCheck
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+x-go-zero-doc: https://go-zero.dev/
+x-goctl-version: 1.9.2

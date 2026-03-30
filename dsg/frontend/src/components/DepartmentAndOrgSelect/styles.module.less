@@ -1,0 +1,66 @@
+.orgTreeSelect {
+    :global {
+        .any-fabric-ant-select-tree-node-content-wrapper {
+            white-space: nowrap;
+        }
+    }
+
+    &.hasUnCategorized {
+        :global {
+            .any-fabric-ant-select-tree-list-holder-inner {
+                .any-fabric-ant-select-tree-treenode:last-child {
+                    padding-top: 8px;
+                    padding-bottom: 0;
+                    border-top: 1px solid rgb(0 0 0 / 10%);
+                }
+            }
+        }
+    }
+}
+
+.selectedNodesContainer {
+    max-height: 200px;
+    overflow-y: auto;
+
+    .searchSelectNodes {
+        display: flex;
+        flex-direction: column;
+        padding: 0 12px;
+
+        .nodeName {
+            display: flex;
+            overflow: hidden;
+            align-items: center;
+            gap: 8px;
+
+            .nodeNameText {
+                display: inline-block;
+                .ellipsis-mixin();
+            }
+        }
+
+        .nodePath {
+            color: rgb(0 0 0 / 45%);
+            font-size: 12px;
+            .ellipsis-mixin();
+        }
+
+        &:hover {
+            background-color: #f0f2f5;
+        }
+
+        &-selected {
+            background-color: #e6f7ff;
+        }
+
+        &-selected:hover {
+            background-color: #e6f7ff;
+        }
+    }
+
+    .searchSelectNodesDisabled {
+        background-color: #fafafa;
+        color: rgb(0 0 0 / 45%);
+        cursor: not-allowed;
+    }
+}

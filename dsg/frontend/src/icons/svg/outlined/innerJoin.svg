@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="16px" viewBox="0 0 24 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>内</title>
+    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="算子-配置" transform="translate(-1279.000000, -307.000000)" stroke="#547EE8">
+            <g id="节点配置" transform="translate(1044.000000, 52.000000)">
+                <g id="1" transform="translate(24.000000, 203.000000)">
+                    <g transform="translate(188.000000, 32.000000)" id="内">
+                        <g transform="translate(23.000000, 20.000000)">
+                            <circle id="椭圆形" fill="#FFFFFF" cx="8" cy="8" r="7.5"></circle>
+                            <circle id="椭圆形" fill="#FFFFFF" cx="16" cy="8" r="7.5"></circle>
+                            <path d="M11.910777,1.71214711 C12.9758218,2.33085054 13.8534218,3.20195692 14.4740773,4.24048059 C15.1312014,5.34002604 15.5,6.62699803 15.5,8 C15.5,10.6712763 14.1034264,13.0162781 12.0007155,14.3447105 C9.89673869,13.0165247 8.5,10.6714147 8.5,8 C8.5,5.36644248 9.85741967,3.05001565 11.910777,1.71214711 Z" id="形状结合" fill-opacity="0.45" fill="#547EE8"></path>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

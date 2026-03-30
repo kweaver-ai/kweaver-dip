@@ -1,0 +1,95 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.name }}-cm
+  namespace: {{ .Values.namespace }}
+  labels:
+    {{- toYaml .Values.labels.deployment | nindent 4}}
+data:
+  api.yaml: |
+    Name: {{ .Values.service.name }}
+    Host: 0.0.0.0
+    Port: {{ .Values.service.port }}
+    Timeout: 180000
+
+    # Telemetry 配置
+    Telemetry:
+      ServiceName: {{ .Values.service.name }}
+      ServiceVersion: "1.0.0"
+      Environment: dev
+
+      Log:
+        Level: {{ .Values.service.telemetry.log.level }}
+        Mode: console
+        Path: logs
+        KeepDays: 7
+        RemoteEnabled: {{ .Values.service.telemetry.log.enabled }}
+        RemoteUrl: {{ .Values.service.telemetry.log.endpoint }}
+        RemoteBatch: 100
+        RemoteTimeout: 5
+
+      Trace:
+        Enabled: {{ .Values.service.telemetry.trace.enabled }}
+        Endpoint: {{ .Values.service.telemetry.trace.endpoint }}
+        Sampler: 1.0
+        Batcher: otlp
+
+      Audit:
+        Enabled: false
+        Url: "http://audit-service:8080/api/audit"
+        Buffer: 100
+
+    # 数据库配置
+    DB:
+      Default:
+        Host: {{ .Values.depServices.rds.host }}
+        Port: {{ .Values.depServices.rds.port }}
+        Database: {{ .Values.depServices.rds.database }}
+        Username: {{ .Values.depServices.rds.user }}
+        Password: {{ .Values.depServices.rds.password }}
+        Charset: utf8mb4
+        MaxIdleConns: 10
+        MaxOpenConns: 100
+        ConnMaxLifetime: 3600
+        ConnMaxIdleTime: 600
+
+    # Redis 配置 (可选)
+    Redis:
+      Host: {{ .Values.depServices.redis.connectInfo.sentinelHost }}
+      Port: {{ .Values.depServices.redis.connectInfo.sentinelPort }}
+      DB: {{ .Values.depServices.redis.database }}
+      Password: {{ .Values.depServices.redis.connectInfo.password }}
+
+    # 认证配置
+    Auth:
+      AccessSecret: "your-secret-key-change-in-production-please-use-32-chars"
+      AccessExpire: 7200
+      HydraAdminURL: http://{{ .Values.depServices.hydra.administrativeHost }}:{{ .Values.depServices.hydra.administrativePort }}
+      HydraTimeoutSec: 10
+
+    # Swagger 配置
+    Swagger:
+      Enabled: true
+      Path: api/doc/swagger
+
+    # Kafka 配置
+    Kafka:
+      Brokers:
+        - {{ .Values.depServices.mq.mqHost }}:{{ .Values.depServices.mq.mqPort }}
+      Username: {{ .Values.depServices.mq.auth.username }}
+      Password: {{ .Values.depServices.mq.auth.password }}
+
+    # AI 服务配置
+    AIService:
+      URL: '{{ index .Values.depServices "af-sailor-service" "protocol" }}://{{ index .Values.depServices "af-sailor-service" "host" }}:{{ index .Values.depServices "af-sailor-service" "port" }}'
+      TimeoutSeconds: 10
+
+    # UserManagement 服务配置
+    UserManagement:
+      URL: http://{{ index .Values.depServices "user-management" "privateHost" }}:{{ index .Values.depServices "user-management" "privatePort" }}
+      TimeoutSeconds: 10
+
+    # AgentRetrieval 服务配置
+    AgentRetrieval:
+      URL: "http://agent-retrieval:30779"
+      TimeoutSeconds: 30

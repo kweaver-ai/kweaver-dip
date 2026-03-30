@@ -1,0 +1,109 @@
+{
+    "env": {
+        "browser": true,
+        "es2020": true,
+        "node": true,
+        "jest/globals": true
+    },
+    "extends": [
+        "plugin:react/recommended",
+        "airbnb",
+        "plugin:prettier/recommended",
+        "plugin:jest/recommended",
+        "plugin:jest/style"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "ecmaVersion": 11,
+        "sourceType": "module"
+    },
+    "plugins": [
+        "react",
+        "@typescript-eslint",
+        "prettier",
+        "jest"
+    ],
+    "rules": {
+        "prettier/prettier": [
+            2,
+            {
+                "printWidth": 80
+            }
+        ],
+        "semi": "off",
+        "indent": "off",
+        "import/extensions": "off",
+        "import/no-unresolved": "off",
+        "import/prefer-default-export": "off",
+        "react/jsx-indent": "off",
+        "react/jsx-filename-extension": [
+            1,
+            {
+                "extensions": [
+                    ".tsx",
+                    ".ts"
+                ]
+            }
+        ],
+        "no-use-before-define": "off",
+        "@typescript-eslint/no-use-before-define": "off",
+        "react/require-default-props": "off",
+        "no-unused-vars": "off",
+        "@typescript-eslint/no-unused-vars": "off",
+        "no-shadow": "off",
+        "@typescript-eslint/no-shadow": [
+            "error"
+        ],
+        "import/no-extraneous-dependencies": "off",
+        "react/jsx-props-no-spreading": "off",
+        "react/no-array-index-key": "off",
+        "padded-blocks": "off",
+        "jsx-a11y/aria-role": "off",
+        "react/jsx-indent-props": [
+            2,
+            4
+        ],
+        "no-new-func": "off",
+        "linebreak-style": "off",
+        "implicit-arrow-linebreak": "off",
+        "camelcase": "off",
+        "comma-dangle": [
+            2,
+            {
+                "arrays": "always-multiline",
+                "objects": "always-multiline",
+                "imports": "always-multiline",
+                "exports": "always-multiline",
+                "functions": "always-multiline"
+            }
+        ],
+        "jest/no-disabled-tests": "warn",
+        "jest/no-focused-tests": "error",
+        "jest/no-identical-title": "error",
+        "jest/prefer-to-have-length": "warn",
+        "jest/valid-expect": "error",
+        "operator-linebreak": "off",
+        "react/jsx-uses-react": "off",
+        "react/react-in-jsx-scope": "off",
+        "react/function-component-definition": [
+            2,
+            {
+                "namedComponents": [
+                    "arrow-function",
+                    "function-declaration"
+                ],
+                "unnamedComponents": "arrow-function"
+            }
+        ],
+        "no-nested-ternary": "off",
+        "jsx-a11y/click-events-have-key-events": "off",
+        "jsx-a11y/no-static-element-interactions": "off",
+        "jsx-a11y/anchor-is-valid": "off",
+        "no-template-curly-in-string": "off",
+        "react/no-danger": "off",
+        "react/no-deprecated": "off" // react 18 creatroot
+    }
+}

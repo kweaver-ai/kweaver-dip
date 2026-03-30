@@ -1,0 +1,1090 @@
+basePath: /api
+definitions:
+  devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_exploration.DeleteDataExploreReportResp:
+    properties:
+      task_id:
+        description: 任务id
+        type: string
+      version:
+        description: 任务版本
+        type: integer
+    type: object
+  devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_exploration.DeleteTaskResp:
+    properties:
+      task_id:
+        description: 任务id
+        example: "1"
+        type: string
+    type: object
+  devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_exploration.ExploreDetails:
+    properties:
+      accuracy_score:
+        description: 准确性维度评分，缺省为NULL
+        type: number
+      completeness_score:
+        description: 完整性维度评分，缺省为NULL
+        type: number
+      consistency_score:
+        description: 一致性维度评分，缺省为NULL
+        type: number
+      explore_details:
+        description: 探查结果详情
+        items:
+          $ref: '#/definitions/devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_exploration.RuleResult'
+        type: array
+      standardization_score:
+        description: 规范性维度评分，缺省为NULL
+        type: number
+      uniqueness_score:
+        description: 唯一性维度评分，缺省为NULL
+        type: number
+    type: object
+  devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_exploration.ExploreFieldDetail:
+    properties:
+      accuracy_score:
+        description: 准确性维度评分，缺省为NULL
+        type: number
+      code_info:
+        description: 码表信息
+        type: string
+      completeness_score:
+        description: 完整性维度评分，缺省为NULL
+        type: number
+      consistency_score:
+        description: 一致性维度评分，缺省为NULL
+        type: number
+      details:
+        description: 规则结果明细（仅返回部分需要呈现的字段规则输出结果）
+        items:
+          $ref: '#/definitions/devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_exploration.RuleResult'
+        type: array
+      field_id:
+        description: 字段id
+        type: string
+      standardization_score:
+        description: 规范性维度评分，缺省为NULL
+        type: number
+      uniqueness_score:
+        description: 唯一性维度评分，缺省为NULL
+        type: number
+    type: object
+  devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_exploration.FieldReportResp:
+    properties:
+      data:
+        description: 探查结果
+        type: string
+      total_sample:
+        description: 探查样本总数
+        type: integer
+    type: object
+  devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_exploration.ListReportRespParam:
+    properties:
+      entries:
+        description: 对象列表
+        items:
+          $ref: '#/definitions/devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_exploration.ReportSummary'
+        type: array
+      total_count:
+        description: 当前筛选条件下的对象数量
+        example: 3
+        minimum: 0
+        type: integer
+    required:
+    - entries
+    - total_count
+    type: object
+  devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_exploration.ReportFormat:
+    properties:
+      accuracy_score:
+        description: 准确性维度评分，缺省为NULL
+        type: number
+      code:
+        description: 数据探查报告编号
+        type: string
+      completeness_score:
+        description: 完整性维度评分，缺省为NULL
+        type: number
+      consistency_score:
+        description: 一致性维度评分，缺省为NULL
+        type: number
+      created_at:
+        description: 创建时间
+        type: integer
+      explore_type:
+        description: 探查类型,0 快速探查,1 随机快速探,2 全量探查
+        type: integer
+      field_explore:
+        description: 字段探查参数
+        items:
+          $ref: '#/definitions/devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_exploration.ExploreFieldDetail'
+        type: array
+      finished_at:
+        description: 完成时间
+        type: integer
+      metadata_explore:
+        $ref: '#/definitions/devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_exploration.ExploreDetails'
+      row_explore:
+        $ref: '#/definitions/devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_exploration.ExploreDetails'
+      schema:
+        description: 数据库名
+        type: string
+      standardization_score:
+        description: 规范性维度评分，缺省为NULL
+        type: number
+      table:
+        description: 表名称
+        type: string
+      table_explore:
+        description: 视图级探查参数
+        items:
+          $ref: '#/definitions/devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_exploration.RuleResult'
+        type: array
+      table_id:
+        description: 表id
+        type: string
+      task_id:
+        description: 任务ID
+        type: string
+      total_rows:
+        description: 实际探查数量
+        type: integer
+      total_sample:
+        description: 探查样本总数，全量探查时该参数无效
+        type: integer
+      total_score:
+        description: 总分，缺省为NULL
+        type: number
+      uniqueness_score:
+        description: 唯一性维度评分，缺省为NULL
+        type: number
+      ve_catalog:
+        description: 数据源编目
+        type: string
+      version:
+        description: 任务版本
+        type: integer
+    type: object
+  devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_exploration.ReportSummary:
+    properties:
+      accuracy_score:
+        description: 准确性维度评分，缺省为NULL
+        type: number
+      code:
+        description: 数据探查报告编号
+        type: string
+      completeness_score:
+        description: 完整性维度评分，缺省为NULL
+        type: number
+      consistency_score:
+        description: 一致性维度评分，缺省为NULL
+        type: number
+      created_at:
+        description: 创建时间
+        type: integer
+      finished_at:
+        description: 完成时间
+        type: integer
+      standardization_score:
+        description: 规范性维度评分，缺省为NULL
+        type: number
+      task_id:
+        description: 任务ID
+        type: string
+      total_rows:
+        description: 实际探查数量
+        type: integer
+      total_score:
+        description: 总评分
+        type: number
+      uniqueness_score:
+        description: 唯一性维度评分，缺省为NULL
+        type: number
+      version:
+        description: 任务版本
+        type: integer
+    type: object
+  devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_exploration.RuleResult:
+    properties:
+      accuracy_score:
+        description: 准确性维度评分，缺省为NULL
+        type: number
+      completeness_score:
+        description: 完整性维度评分，缺省为NULL
+        type: number
+      consistency_score:
+        description: 一致性维度评分，缺省为NULL
+        type: number
+      dimension:
+        description: 维度属性 0准确性,1及时性,2完整性,3唯一性，4一致性,5规范性,6数据统计
+        type: string
+      dimension_type:
+        description: 维度类型
+        type: string
+      inspected_count:
+        description: 检测数据量
+        type: integer
+      issue_count:
+        description: 问题数据量
+        type: integer
+      result:
+        description: 规则输出结果 []any规则输出列级结果
+        type: string
+      rule_config:
+        description: 规则配置
+        type: string
+      rule_description:
+        description: 规则描述
+        type: string
+      rule_id:
+        description: 规则ID
+        type: string
+      rule_name:
+        description: 规则名称
+        type: string
+      standardization_score:
+        description: 规范性维度评分，缺省为NULL
+        type: number
+      uniqueness_score:
+        description: 唯一性维度评分，缺省为NULL
+        type: number
+    type: object
+  devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_task_config.ExploreField:
+    properties:
+      code:
+        items:
+          type: string
+        type: array
+      field_id:
+        type: string
+      field_name:
+        description: 字段名称
+        maxLength: 255
+        minLength: 1
+        type: string
+      field_type:
+        description: 字段类型
+        type: string
+      params:
+        description: 探查项目参数
+        type: string
+      projects:
+        description: 探查项目
+        items:
+          $ref: '#/definitions/devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_task_config.Projects'
+        type: array
+    type: object
+  devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_task_config.Projects:
+    properties:
+      dimension:
+        type: string
+      dimension_type:
+        type: string
+      rule_config:
+        type: string
+      rule_description:
+        type: string
+      rule_id:
+        type: string
+      rule_name:
+        type: string
+    required:
+    - dimension
+    - rule_id
+    type: object
+  devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_task_config.TaskConfigListRespParam:
+    properties:
+      entries:
+        description: 对象列表
+        items:
+          $ref: '#/definitions/devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_task_config.TaskConfigRespDetail'
+        type: array
+      total_count:
+        description: 当前筛选条件下的对象数量
+        example: 3
+        minimum: 0
+        type: integer
+    required:
+    - entries
+    - total_count
+    type: object
+  devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_task_config.TaskConfigReq:
+    properties:
+      dv_task_id:
+        description: data-view任务id
+        type: string
+      explore_type:
+        description: 探查类型,1 探查数据,2 探查时间戳
+        enum:
+        - 1
+        - 2
+        type: integer
+      field_explore:
+        description: 字段探查参数
+        items:
+          $ref: '#/definitions/devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_task_config.ExploreField'
+        type: array
+      field_info:
+        type: string
+      metadata_explore:
+        description: 元数据级探查项目
+        items:
+          $ref: '#/definitions/devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_task_config.Projects'
+        type: array
+      row_explore:
+        description: 行级级探查项目
+        items:
+          $ref: '#/definitions/devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_task_config.Projects'
+        type: array
+      schema:
+        description: 数据库名
+        example: "1"
+        maxLength: 255
+        minLength: 1
+        type: string
+      table:
+        description: 表名称
+        example: "1"
+        maxLength: 255
+        minLength: 1
+        type: string
+      table_id:
+        description: 数据源表ID
+        example: "1"
+        maxLength: 255
+        minLength: 1
+        type: string
+      task_desc:
+        description: 探查描述
+        example: "1"
+        maxLength: 255
+        minLength: 0
+        type: string
+      task_enabled:
+        description: 探查配置启用禁用状态，0禁用，1启用
+        enum:
+        - 0
+        - 1
+        type: integer
+      task_name:
+        description: 探查任务配置名称
+        example: "1"
+        maxLength: 255
+        minLength: 1
+        type: string
+      total_sample:
+        description: 探查样本总数，全量探查时该参数无效
+        minimum: 0
+        type: integer
+      user_id:
+        description: 用户id
+        type: string
+      user_name:
+        description: 用户名
+        type: string
+      ve_catalog:
+        description: 数据源编
+        example: "1"
+        maxLength: 255
+        minLength: 1
+        type: string
+      view_explore:
+        description: 视图级探查项目
+        items:
+          $ref: '#/definitions/devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_task_config.Projects'
+        type: array
+    required:
+    - dv_task_id
+    - explore_type
+    - schema
+    - table
+    - table_id
+    - task_enabled
+    - ve_catalog
+    type: object
+  devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_task_config.TaskConfigResp:
+    properties:
+      task_id:
+        description: 任务配置id
+        example: "1"
+        type: string
+      version:
+        description: 版本号
+        example: 1
+        type: integer
+    type: object
+  devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_task_config.TaskConfigRespDetail:
+    properties:
+      created_at:
+        description: 创建时间
+        type: integer
+      created_by_uid:
+        description: 创建人ID
+        example: "1"
+        minLength: 1
+        type: string
+      created_by_uname:
+        description: 创建人名称
+        example: "1"
+        minLength: 1
+        type: string
+      exec_at:
+        description: 最后一次执行时间
+        type: integer
+      exec_status:
+        description: 执行状态 1未执行，2执行中，3执行成功，4已取消，5执行失败
+        enum:
+        - 0
+        - 1
+        - 2
+        - 3
+        type: integer
+      explore_type:
+        description: 探查类型,0 快速探查,1 随机快速探,2 全量探查,3 探查时间戳
+        enum:
+        - 1
+        - 2
+        - 3
+        type: integer
+      field_explore:
+        description: 字段探查参数
+        items:
+          $ref: '#/definitions/devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_task_config.ExploreField'
+        type: array
+      schema:
+        description: 数据库名
+        example: "1"
+        minLength: 1
+        type: string
+      table:
+        description: 表名称
+        example: "1"
+        minLength: 1
+        type: string
+      table_explore_projects:
+        description: 表级探查项目
+        items:
+          $ref: '#/definitions/devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_task_config.Projects'
+        type: array
+      table_id:
+        description: 数据源表ID
+        example: "1"
+        type: string
+      task_enabled:
+        description: 探查配置启用禁用状态，0禁用，1启用
+        enum:
+        - 0
+        - 1
+        type: integer
+      task_id:
+        description: 任务配置id
+        example: "1"
+        type: string
+      task_name:
+        description: 探查任务配置名称
+        example: "1"
+        minLength: 1
+        type: string
+      total_sample:
+        description: 探查样本总数，全量探查时该参数无效
+        maximum: 10000
+        minimum: 0
+        type: integer
+      updated_at:
+        description: 更新时间
+        maximum: 256
+        minimum: 0
+        type: integer
+      updated_by_uid:
+        description: 更新人ID
+        example: "1"
+        minLength: 1
+        type: string
+      updated_by_uname:
+        description: 更新人名称
+        example: "1"
+        minLength: 1
+        type: string
+      ve_catalog:
+        description: 数据源编
+        example: "1"
+        minLength: 1
+        type: string
+      version:
+        description: 版本号
+        example: 1
+        type: integer
+    required:
+    - created_by_uid
+    - created_by_uname
+    - exec_status
+    - explore_type
+    - schema
+    - table
+    - table_id
+    - task_enabled
+    - updated_by_uid
+    - updated_by_uname
+    - ve_catalog
+    type: object
+  devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_task_config.TaskConfigUpdateReq:
+    properties:
+      dv_task_id:
+        description: data-view任务id
+        type: string
+      explore_type:
+        description: 探查类型,1 探查数据,2 探查时间戳
+        enum:
+        - 1
+        - 2
+        type: integer
+      field_explore:
+        description: 字段探查参数
+        items:
+          $ref: '#/definitions/devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_task_config.ExploreField'
+        type: array
+      field_info:
+        type: string
+      metadata_explore:
+        description: 元数据级探查项目
+        items:
+          $ref: '#/definitions/devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_task_config.Projects'
+        type: array
+      row_explore:
+        description: 行级级探查项目
+        items:
+          $ref: '#/definitions/devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_task_config.Projects'
+        type: array
+      schema:
+        description: 数据库名
+        example: "1"
+        maxLength: 255
+        minLength: 1
+        type: string
+      table:
+        description: 表名称
+        example: "1"
+        maxLength: 255
+        minLength: 1
+        type: string
+      table_id:
+        description: 数据源表ID
+        example: "1"
+        maxLength: 255
+        minLength: 1
+        type: string
+      task_desc:
+        description: 探查描述
+        example: "1"
+        maxLength: 255
+        minLength: 0
+        type: string
+      task_enabled:
+        description: 探查配置启用禁用状态，0禁用，1启用
+        enum:
+        - 0
+        - 1
+        type: integer
+      task_id:
+        description: task_id
+        example: "1"
+        type: string
+      task_name:
+        description: 探查任务配置名称
+        example: "1"
+        maxLength: 255
+        minLength: 1
+        type: string
+      total_sample:
+        description: 探查样本总数，全量探查时该参数无效
+        minimum: 0
+        type: integer
+      user_id:
+        description: 用户id
+        type: string
+      user_name:
+        description: 用户名
+        type: string
+      ve_catalog:
+        description: 数据源编
+        example: "1"
+        maxLength: 255
+        minLength: 1
+        type: string
+      view_explore:
+        description: 视图级探查项目
+        items:
+          $ref: '#/definitions/devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_task_config.Projects'
+        type: array
+    required:
+    - dv_task_id
+    - explore_type
+    - schema
+    - table
+    - table_id
+    - task_enabled
+    - task_id
+    - ve_catalog
+    type: object
+  rest.HttpError:
+    properties:
+      cause:
+        description: 错误原因
+        example: 错误原因
+        type: string
+        x-omitempty: false
+      code:
+        description: '返回错误码，格式: 服务名.模块.错误'
+        example: task-center.Public.InternalError
+        type: string
+      description:
+        description: 错误描述
+        example: 内部错误
+        type: string
+      detail:
+        description: 错误详情, 一般是json对象
+        x-omitempty: false
+      solution:
+        description: 错误处理办法
+        example: 请联系内部人员
+        type: string
+        x-omitempty: false
+    type: object
+info:
+  contact: {}
+  description: AnyFabric Data Exploration
+  title: data-exploration-service
+  version: "0.0"
+paths:
+  /data-exploration-service/v1/explore-task/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: 删除探查任务
+      parameters:
+      - description: token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 任务id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_exploration.DeleteTaskResp'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 删除探查任务
+      tags:
+      - 数据探查任务管理
+  /data-exploration-service/v1/report:
+    get:
+      consumes:
+      - application/json
+      description: 按表或任务获取第三方数据探查报告
+      parameters:
+      - description: token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 表id
+        in: query
+        maxLength: 255
+        minLength: 1
+        name: table_id
+        type: string
+      - description: 任务id
+        in: query
+        name: task_id
+        type: string
+      - description: 任务版本
+        in: query
+        name: task_version
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_exploration.ReportFormat'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 按表或任务获取第三方数据探查报告
+      tags:
+      - 数据探查报告管理
+  /data-exploration-service/v1/report/{code}:
+    get:
+      consumes:
+      - application/json
+      description: 按编号获取数据探查报告
+      parameters:
+      - description: token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - default: "1"
+        description: exploration code
+        in: path
+        minLength: 1
+        name: code
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_exploration.ReportFormat'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 按编号获取数据探查报告
+      tags:
+      - 数据探查报告管理
+  /data-exploration-service/v1/report/{task_id}:
+    delete:
+      consumes:
+      - application/json
+      description: 删除数据探报告
+      parameters:
+      - description: token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - default: "1"
+        description: exploration task_id
+        in: path
+        minLength: 1
+        name: task_id
+        required: true
+        type: string
+      - description: 任务id
+        in: query
+        name: task_id
+        required: true
+        type: string
+      - description: 任务版本
+        in: query
+        name: task_version
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_exploration.DeleteDataExploreReportResp'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 删除数据探报告
+      tags:
+      - 数据探查报告管理
+  /data-exploration-service/v1/report/field:
+    get:
+      consumes:
+      - application/json
+      description: 获取表字段数据探查报告
+      parameters:
+      - description: token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 字段名
+        in: query
+        name: field_name
+        required: true
+        type: string
+      - description: 字段类型
+        in: query
+        name: field_type
+        required: true
+        type: string
+      - description: 任务id
+        in: query
+        name: task_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_exploration.FieldReportResp'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 获取表字段数据探查报告
+      tags:
+      - 数据探查报告管理
+  /data-exploration-service/v1/reports:
+    get:
+      consumes:
+      - application/json
+      description: 获取数据探查任务列表配置
+      parameters:
+      - description: token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - default: desc
+        description: 排序方向，枚举：asc：正序；desc：倒序。默认倒序
+        enum:
+        - asc
+        - desc
+        in: query
+        name: direction
+        type: string
+      - default: 15
+        description: 每页大小，默认15
+        in: query
+        maximum: 100
+        minimum: 1
+        name: limit
+        type: integer
+      - default: 1
+        description: 页码，默认1
+        in: query
+        minimum: 1
+        name: offset
+        type: integer
+      - default: f_created_at
+        description: 排序类型，枚举：f_created_at：按创建时间排序；f_updated_at：按更新时间排序; 默认按创建时间排序
+        enum:
+        - f_created_at
+        - f_updated_at
+        in: query
+        name: sort
+        type: string
+      - description: 数据源表ID
+        in: query
+        maxLength: 255
+        minLength: 1
+        name: table_id
+        type: string
+      - description: 任务id
+        in: query
+        name: task_id
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_exploration.ListReportRespParam'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 获取数据探查任务列表配置
+      tags:
+      - 数据探查报告管理
+  /data-exploration-service/v1/task:
+    post:
+      consumes:
+      - application/json
+      description: 按提交参数添加数据探查任务配置
+      parameters:
+      - description: token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 请求参数
+        in: body
+        name: _
+        required: true
+        schema:
+          $ref: '#/definitions/devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_task_config.TaskConfigReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_task_config.TaskConfigResp'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 按提交参数添加数据探查任务配置
+      tags:
+      - 数据探查任务管理
+  /data-exploration-service/v1/task/{task_id}:
+    delete:
+      consumes:
+      - application/json
+      description: 删除数据探查任务配置
+      parameters:
+      - description: token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - default: "1"
+        description: exploration task_id
+        in: path
+        minLength: 1
+        name: task_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_task_config.TaskConfigResp'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 删除数据探查任务配置
+      tags:
+      - 数据探查任务管理
+    get:
+      consumes:
+      - application/json
+      description: 获取数据探查任务配置
+      parameters:
+      - description: token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - default: "1"
+        description: exploration task_id
+        in: path
+        minLength: 1
+        name: task_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_task_config.TaskConfigRespDetail'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 获取数据探查任务配置
+      tags:
+      - 数据探查任务管理
+    put:
+      consumes:
+      - application/json
+      description: 按提交参数更新数据探查任务配置
+      parameters:
+      - description: token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 请求参数
+        in: body
+        name: _
+        required: true
+        schema:
+          $ref: '#/definitions/devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_task_config.TaskConfigUpdateReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_task_config.TaskConfigResp'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 按提交参数更新数据探查任务配置
+      tags:
+      - 数据探查任务管理
+  /data-exploration-service/v1/tasks:
+    get:
+      consumes:
+      - application/json
+      description: 获取数据探查任务列表配置
+      parameters:
+      - description: token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - default: desc
+        description: 排序方向，枚举：asc：正序；desc：倒序。默认倒序
+        enum:
+        - asc
+        - desc
+        in: query
+        name: direction
+        type: string
+      - default: 15
+        description: 每页大小，默认15
+        in: query
+        maximum: 100
+        minimum: 1
+        name: limit
+        type: integer
+      - default: 1
+        description: 页码，默认1
+        in: query
+        minimum: 1
+        name: offset
+        type: integer
+      - default: f_created_at
+        description: 排序类型，枚举：f_created_at：按创建时间排序；f_updated_at：按更新时间排序; 默认按创建时间排序
+        enum:
+        - f_created_at
+        - f_updated_at
+        in: query
+        name: sort
+        type: string
+      - description: 数据源表ID
+        example: "1"
+        in: query
+        maxLength: 255
+        minLength: 1
+        name: table_id
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_task_config.TaskConfigListRespParam'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 获取数据探查任务列表配置
+      tags:
+      - 数据探查任务管理
+swagger: "2.0"

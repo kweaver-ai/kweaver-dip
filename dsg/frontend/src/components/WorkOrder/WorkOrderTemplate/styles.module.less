@@ -1,0 +1,289 @@
+.work-order-template {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+
+    .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 10px;
+        margin-bottom: 16px;
+
+        .left {
+            display: flex;
+            align-items: center;
+        }
+
+        .right {
+            display: flex;
+            align-items: center;
+        }
+    }
+
+    .content {
+        flex: 1;
+        overflow-y: auto;
+
+        .cardWrapper {
+            display: grid;
+            max-height: calc(100% - 100px);
+            gap: 16px;
+            grid-template-columns: repeat(auto-fill, minmax(355px, 1fr));
+            overflow-y: auto;
+        }
+
+        .paginationWrapper {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 24px;
+        }
+
+        .loadingWrapper {
+            display: flex;
+            min-height: 200px;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 0;
+
+            .loadingContent {
+                color: #666;
+                text-align: center;
+
+                .loadingIcon {
+                    margin-bottom: 16px;
+                    font-size: 24px;
+                }
+
+                .loadingText {
+                    font-size: 14px;
+                }
+            }
+        }
+
+        .emptyWrapper {
+            display: flex;
+            min-height: 300px;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 0;
+
+            .emptyContent {
+                color: #999;
+                text-align: center;
+
+                .emptyIcon {
+                    width: 120px;
+                    height: 120px;
+                    margin-bottom: 16px;
+                    opacity: 0.6;
+                }
+
+                .emptyText {
+                    margin-bottom: 16px;
+                    font-size: 14px;
+                }
+
+                .emptyButton {
+                    margin-top: 8px;
+                }
+            }
+        }
+    }
+}
+
+// 模板卡片样式
+.templateCard {
+    position: relative;
+    height: 164px;
+    padding: 20px;
+    border: 1px solid rgb(0 0 0 / 10%);
+    background: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover {
+        border-color: #3c7cff;
+    }
+
+    .content {
+        .title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            color: rgb(0 0 0 / 85%);
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 550;
+            line-height: 22px;
+            text-align: left;
+
+            .titleWrap {
+                display: flex;
+                width: calc(100% - 40px);
+                align-items: center;
+                column-gap: 8px;
+
+                .iconWrap {
+                    display: flex;
+                    width: 32px;
+                    height: 32px;
+                    align-items: center;
+                    justify-content: center;
+                    background: rgb(60 124 255 / 8%);
+                    border-radius: 2px;
+                }
+
+                .title_name {
+                    max-width: calc(100% - 100px);
+                    padding-left: 8px;
+                    .ellipsis-mixin();
+                }
+
+                .builtinTag {
+                    padding: 2px 8px;
+                    background: rgb(18 110 227 / 8%);
+                    border-radius: 4px;
+                    color: rgb(18 110 227 / 100%);
+                    font-size: 12px;
+                    font-weight: normal;
+                }
+            }
+
+            .operation {
+                display: flex;
+                align-items: center;
+                column-gap: 8px;
+
+                .iconButton {
+                    display: grid;
+                    width: 32px;
+                    height: 32px;
+                    background: transparent;
+                    border-radius: 4px;
+                    cursor: pointer;
+                    place-items: center;
+                    transition: background 0.2s ease-in-out;
+
+                    &:hover {
+                        background: rgb(0 0 0 / 12%);
+                    }
+                }
+            }
+        }
+
+        .desc {
+            overflow: hidden;
+            height: 42px;
+            margin-bottom: 6px;
+            color: rgb(0 0 0 / 65%);
+            font-size: 12px;
+            line-height: 1.7;
+            text-align: left;
+            .ellipsis-line();
+        }
+
+        .meta {
+            color: rgb(0 0 0 / 45%);
+            font-size: 12px;
+            line-height: 1.7;
+
+            > div {
+                .ellipsis-mixin();
+            }
+
+            .detailWrap {
+                display: flex;
+                align-items: center;
+                column-gap: 8px;
+
+                .detail_user {
+                    max-width: 100px;
+
+                    .userWrap {
+                        .ellipsis-mixin();
+                    }
+                }
+            }
+        }
+    }
+
+    .status {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        padding: 2px 8px;
+        background: rgb(60 171 0 / 8%);
+        border-radius: 4px 0;
+        color: rgb(60 171 0 / 100%);
+        font-size: 14px;
+    }
+}
+
+.details-container {
+    .detail-item {
+        display: flex;
+        align-items: flex-start;
+        margin-top: 20px;
+
+        .detail-label {
+            min-width: 100px;
+            color: rgb(0 0 0 / 65%);
+        }
+
+        .detail-value {
+            flex: 1;
+            color: rgb(0 0 0 / 85%);
+
+            .active {
+                display: inline-block;
+                padding: 2px 8px;
+                background: rgb(60 171 0 / 7%);
+                border-radius: 4px;
+                color: rgb(60 171 0 / 100%);
+                font-size: 14px;
+            }
+        }
+    }
+}
+
+// 响应式设计
+@media (max-width: 768px) {
+    .work-order-template {
+        .header {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 16px;
+
+            .left,
+            .right {
+                justify-content: center;
+            }
+        }
+
+        .content {
+            padding: 16px;
+
+            .cardWrapper {
+                gap: 12px;
+                grid-template-columns: 1fr;
+            }
+        }
+    }
+
+    .templateCard {
+        padding: 16px;
+
+        .content {
+            .title {
+                font-size: 14px;
+            }
+
+            .desc {
+                font-size: 13px;
+            }
+        }
+    }
+}

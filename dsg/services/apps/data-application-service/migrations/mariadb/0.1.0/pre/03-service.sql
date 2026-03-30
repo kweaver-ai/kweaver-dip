@@ -1,0 +1,25 @@
+use data_application_service;
+
+-- 为接口服务表(service)添加字段
+-- 添加信息系统ID字段
+-- ALTER TABLE `service` ADD COLUMN IF NOT EXISTS `info_system_id` CHAR(36) DEFAULT NULL COMMENT '信息系统id' AFTER `department_name`;
+--
+-- -- 添加应用ID字段
+-- ALTER TABLE `service` ADD COLUMN IF NOT EXISTS `apps_id` CHAR(36) DEFAULT NULL COMMENT '应用id' AFTER `info_system_id`;
+--
+-- -- 添加网关同步标识字段
+-- ALTER TABLE `service` ADD COLUMN IF NOT EXISTS `sync_flag` VARCHAR(64) DEFAULT NULL COMMENT '网关同步标识(success、fail)' AFTER `apps_id`;
+--
+-- -- 添加网关同步信息字段
+-- ALTER TABLE `service` ADD COLUMN IF NOT EXISTS `sync_msg` TEXT DEFAULT NULL COMMENT '网关同步信息' AFTER `sync_flag`;
+--
+-- -- 添加网关更新标识字段
+-- ALTER TABLE `service` ADD COLUMN IF NOT EXISTS `update_flag` VARCHAR(64) DEFAULT NULL COMMENT '网关更新标识(success、fail)' AFTER `sync_msg`;
+--
+-- -- 添加网关更新信息字段
+-- ALTER TABLE `service` ADD COLUMN IF NOT EXISTS `update_msg` TEXT DEFAULT NULL COMMENT '网关更新信息' AFTER `update_flag`;
+--
+-- -- 添加网关授权ID字段
+-- ALTER TABLE `service` ADD COLUMN IF NOT EXISTS `paas_id` VARCHAR(255) DEFAULT NULL COMMENT '授权id' AFTER `update_msg`;
+--
+-- ALTER TABLE `service` ADD COLUMN IF NOT EXISTS `pre_path` VARCHAR(255) DEFAULT NULL COMMENT '网关路径前缀' AFTER `paas_id`;

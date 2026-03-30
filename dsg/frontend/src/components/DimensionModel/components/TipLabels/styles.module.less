@@ -1,0 +1,44 @@
+.tip-label {
+    position: fixed;
+    z-index: 0;
+    bottom: 16px;
+    left: 24px;
+    pointer-events: none;
+
+    &-fact,
+    &-dimension,
+    &-link {
+        position: relative;
+        display: flex;
+        align-items: center;
+        margin: 4px 0;
+        font-size: 16px;
+
+        .icon {
+            position: absolute;
+        }
+
+        .txt {
+            padding-left: 24px;
+            color: rgba(0 0 0 / 65%);
+            font-size: 12px;
+            line-height: 20px;
+        }
+    }
+
+    &-dimension {
+        .icon {
+            color: #5c5c66;
+        }
+    }
+
+    &-link {
+        .icon {
+            font-size: 54px;
+        }
+
+        .txt {
+            padding-left: 62px !important;
+        }
+    }
+}

@@ -1,0 +1,208 @@
+.details,
+.call-log-drawer {
+    display: flex;
+    overflow: hidden;
+    min-width: 0;
+    height: 100%;
+    min-height: 0;
+    flex: 1;
+    flex-direction: column;
+    background: #f0f2f6;
+
+    .bottom {
+        display: flex;
+        overflow: auto hidden;
+        min-width: 0;
+        height: 0;
+        min-height: 0;
+        flex: 1;
+        flex-direction: column;
+        padding: 24px;
+
+        .content {
+            display: flex;
+            height: 100%;
+            background: #fff;
+            border-radius: 4px;
+
+            .left-content {
+                width: 270px;
+            }
+
+            .split-line {
+                width: 1px;
+                height: 100%;
+                background-color: #e1e1e1;
+            }
+
+            .right-content {
+                overflow: hidden;
+                height: 100%;
+                flex: 1;
+
+                :global {
+                    .any-fabric-ant-tabs {
+                        display: flex;
+                        height: 100%;
+                        flex-direction: column;
+
+                        .any-fabric-ant-tabs-nav-list {
+                            margin-left: 24px;
+                        }
+
+                        .any-fabric-ant-tabs-content-holder {
+                            height: 0; // 强制高度计算
+                            flex: 1;
+                            padding: 0 24px 24px;
+                            overflow-y: auto;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.call-log-drawer {
+    .content {
+        padding: 24px;
+    }
+}
+
+.apply-list-container {
+    width: 100%;
+    height: 100%;
+    padding: 16px;
+
+    .apply-list-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 16px;
+
+        .title {
+            color: rgba(0 0 0 / 85%);
+            font-weight: 550;
+        }
+    }
+
+    .apply-list-content {
+        width: calc(100% + 16px);
+        height: calc(100% - 100px);
+        padding-right: 16px;
+        margin-top: 16px;
+        overflow-y: auto;
+
+        .apply-item {
+            display: flex;
+            width: 100%;
+            height: 54px;
+            align-items: center;
+            padding: 8px;
+            border: 1px solid rgba(0 0 0 / 15%);
+            margin-bottom: 8px;
+            border-radius: 4px;
+
+            .apply-icon {
+                margin-right: 8px;
+                font-size: 16px;
+            }
+
+            .item-content {
+                width: 0;
+                flex: 1;
+
+                .apply-name {
+                    width: 100%;
+                    color: rgba(0 0 0 / 85%);
+
+                    .ellipsis-mixin();
+                }
+
+                .apply-code {
+                    width: 100%;
+                    color: rgba(0 0 0 / 65%);
+                    font-size: 12px;
+
+                    .ellipsis-mixin();
+                }
+            }
+        }
+
+        .selected-apply-item {
+            border-color: #1890ff;
+        }
+    }
+}
+
+.data-push-info-container {
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+.common-details-row {
+    padding: 0 24px;
+
+    .basic-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+
+        .label {
+            flex-shrink: 0;
+            margin-right: 16px;
+            color: rgba(0 0 0/ 45%);
+        }
+
+        .value {
+            flex: 1;
+            color: rgba(0 0 0/ 85%);
+            word-break: break-all;
+        }
+    }
+}
+
+.app-info-container {
+    .app-info-title {
+        margin-bottom: 16px;
+    }
+}
+
+.multi-info-container {
+    display: flex;
+    align-items: center;
+
+    .info-content {
+        overflow: hidden;
+        flex: 1;
+        margin-right: 4px;
+        margin-left: 8px;
+
+        .name {
+            color: rgb(0 0 0 / 85%);
+            .ellipsis-mixin();
+
+            &:hover {
+                color: @primary-color;
+                cursor: pointer;
+                text-decoration: underline;
+            }
+        }
+
+        .code {
+            color: rgb(0 0 0 / 45%);
+            .ellipsis-mixin();
+        }
+    }
+
+    .name-offline {
+        color: rgba(0 0 0 / 45%) !important;
+
+        &:hover {
+            color: rgba(0 0 0 / 45%) !important;
+            cursor: default !important;
+            text-decoration: none !important;
+        }
+    }
+}

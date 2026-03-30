@@ -1,0 +1,148 @@
+.messageSetWrapper {
+    display: flex;
+    overflow: hidden;
+    height: 100%;
+    flex-direction: column;
+    padding: 24px;
+    padding-top: 22px;
+
+    .messageSetTitle {
+        font-weight: 550;
+    }
+
+    .messageSetPanel {
+        width: 880px;
+        padding: 16px;
+        border: 1px solid rgb(0 0 0 / 10%);
+        margin-top: 16px;
+        border-radius: 4px;
+    }
+
+    .timeInputNumberWrapper {
+        display: flex;
+        margin-top: 8px;
+        margin-left: 16px;
+        gap: 8px;
+
+        .timeUnit {
+            margin-top: 4px;
+        }
+    }
+
+    .messageInput {
+        width: 480px;
+        margin-top: 8px;
+        margin-left: 16px;
+    }
+
+    // 让 Tabs 组件支持内容滚动
+    :global {
+        .any-fabric-ant-tabs {
+            display: flex;
+            overflow: hidden;
+            height: 100%;
+            flex-direction: column;
+        }
+
+        .any-fabric-ant-tabs-nav {
+            flex-shrink: 0;
+        }
+
+        .any-fabric-ant-tabs-content-holder {
+            overflow: hidden;
+            flex: 1;
+        }
+
+        .any-fabric-ant-tabs-content {
+            height: 100%;
+        }
+
+        .any-fabric-ant-tabs-tabpane {
+            height: 100%;
+            overflow-y: auto;
+        }
+    }
+}
+
+.messageSetFooter {
+    display: flex;
+    margin-top: 16px;
+    gap: 8px;
+}
+
+.detailGroupWrapper {
+    margin-top: 8px;
+
+    .detailGroupTitle {
+        position: relative;
+        display: flex;
+        align-items: center;
+        margin: 4px 0;
+        border-radius: 4px;
+        font-size: 14px;
+        font-weight: 550;
+
+        &::before {
+            display: inline-block;
+            width: 3px;
+            height: 20px;
+            margin-right: 12px;
+            background-color: rgb(18 110 227 / 100%);
+            content: '';
+        }
+    }
+
+    .detailGroupTips {
+        margin-left: 16px;
+        color: rgba(0 0 0 / 45%);
+        font-size: 12px;
+    }
+}
+
+.switchWithTextWrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    .switchText {
+        color: rgba(0 0 0 / 85%);
+        font-size: 14px;
+    }
+}
+
+.cascaderOptionWithAvatar {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    .cascaderOptionLabel {
+        flex: 1;
+    }
+}
+
+// 角色级联选择器样式
+:global {
+    // 确保搜索结果路径在同一行显示，不换行
+    .any-fabric-ant-cascader-menu-item {
+        white-space: nowrap !important;
+    }
+
+    .any-fabric-ant-cascader-menu-item-content {
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    // 搜索高亮样式
+    .any-fabric-ant-cascader-menu-item-active {
+        .any-fabric-ant-cascader-menu-item-content {
+            background-color: #e6f7ff !important;
+        }
+    }
+
+    // 搜索时隐藏图标
+    .any-fabric-ant-cascader-menu-item-content .cascaderOptionWithAvatar {
+        > div:first-child {
+            display: none;
+        }
+    }
+}

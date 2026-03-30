@@ -1,0 +1,192 @@
+.task-monitor {
+    height: 100%;
+    background-color: #f0f2f6;
+
+    &-loading {
+        display: flex;
+        height: 100%;
+        align-items: center;
+        justify-content: center;
+        padding: 80px;
+    }
+
+    &-empty {
+        display: flex;
+        height: 100%;
+        align-items: center;
+        justify-content: center;
+    }
+
+    &-wrapper {
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+.monitor-top {
+    display: flex;
+    height: 220px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 24px 0;
+    column-gap: 16px;
+
+    &-item {
+        position: relative;
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 24px 24px;
+        background-color: #fff;
+        border-radius: 4px;
+        color: rgb(0 0 0 / 85%);
+
+        .tag {
+            position: absolute;
+            top: 12px;
+            left: 0;
+            width: 77px;
+            height: 32px;
+            padding-left: 14px;
+            background: linear-gradient(320deg, #59a3ff 0%, #f2f7fe 100%);
+            clip-path: polygon(0 0, 100% 0, 83% 100%, 0 100%);
+            color: #fff;
+            font-size: 18px;
+            font-weight: bold;
+            line-height: 32px;
+        }
+
+        .top {
+            display: flex;
+            width: 100%;
+            height: 32px;
+            align-items: center;
+            justify-content: flex-end;
+            margin-bottom: 12px;
+            font-size: 14px;
+        }
+
+        .content {
+            display: flex;
+            width: 100%;
+            align-items: center;
+            justify-content: space-between;
+            column-gap: 16px;
+
+            .item {
+                display: flex;
+                width: 100%;
+                height: 140px;
+                flex: 1;
+                flex-direction: column;
+                justify-content: space-between;
+                padding: 20px 24px 24px;
+                border: 1px solid rgb(0 0 0 / 15%);
+                border-radius: 4px;
+
+                .name {
+                    font-size: 18px;
+                    font-weight: bold;
+                }
+
+                .empty {
+                    color: rgb(0 0 0 / 45%);
+                    font-size: 30px;
+                }
+
+                .status {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                }
+            }
+        }
+
+        &:nth-child(1) {
+            min-width: 280px;
+            flex-shrink: 0;
+        }
+
+        &:nth-child(2) {
+            flex: 3;
+        }
+    }
+}
+
+.statusItem {
+    position: relative;
+    display: flex;
+    min-width: 56px;
+    height: 50px;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-around;
+    padding-left: 14px;
+    font-size: 16px;
+
+    > div {
+        :nth-child(1) {
+            width: 56px;
+            flex-shrink: 0;
+        }
+    }
+
+    &.onlyState {
+        font-size: 30px;
+
+        div {
+            :nth-child(1) {
+                width: 96px;
+                flex-shrink: 0;
+            }
+        }
+    }
+
+    &::before {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 5px;
+        height: 100%;
+        content: '';
+    }
+
+    &.Ready {
+        &::before {
+            background-color: rgb(0 0 0 / 45%);
+        }
+    }
+
+    &.Running {
+        &::before {
+            background-color: #2f9bff;
+        }
+    }
+
+    &.Completed {
+        &::before {
+            background-color: #52c41b;
+        }
+    }
+
+    &.Failed {
+        &::before {
+            background-color: #ff5e60;
+        }
+    }
+}
+
+.monitor-canvas {
+    position: relative;
+    width: 100%;
+    height: calc(100vh - 272px);
+    flex: 1;
+
+    &-controller {
+        position: absolute;
+        right: 24px;
+        bottom: 24px;
+    }
+}

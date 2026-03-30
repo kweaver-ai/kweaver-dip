@@ -1,0 +1,6 @@
+{
+    "code": "ConfigurationCenter.CodeGenerationRule.NotFound",
+    "description": "指定的编码规则未找到",
+    "solution": "请检查编码规则的 ID",
+    "detail": {}
+}

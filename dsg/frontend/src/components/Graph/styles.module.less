@@ -1,0 +1,396 @@
+.content {
+    width: 100%;
+    height: 100%;
+    touch-action: none;
+}
+
+.headerWrapper {
+    .header {
+        display: flex;
+        padding-left: 20px;
+        border-bottom: 1px solid rgb(0 0 0 / 10%);
+        background-color: #fff;
+
+        .headerCol {
+            display: flex;
+            width: 100%;
+            align-items: center;
+        }
+    }
+
+    .returnWrapper {
+        display: flex;
+        width: 75px;
+        border-right: 1px solid rgb(0 0 0 / 35%);
+        margin-right: 18px;
+        cursor: pointer;
+        line-height: 20px;
+
+        .returnIcon {
+            margin-top: 2px;
+        }
+
+        .return {
+            margin: 0 12px;
+            font-size: 14px;
+        }
+    }
+
+    .nameWrapper {
+        display: inline-flex;
+        width: calc(100% - 100px);
+        align-items: center;
+
+        .domainIcon {
+            padding-top: 4px;
+            margin-right: 12px;
+            font-size: 32px;
+        }
+
+        .domainName {
+            max-width: 160px;
+            margin-right: 8px;
+            font-size: 14px;
+            font-weight: 550;
+
+            .ellipsis-mixin();
+        }
+
+        .iconWrapper {
+            display: flex;
+            width: 24px;
+            height: 24px;
+            align-items: center;
+            justify-content: center;
+            border-radius: 3px;
+            cursor: pointer;
+
+            &:hover {
+                background-color: rgb(245 245 245);
+            }
+        }
+    }
+
+    .toolWrapper {
+        display: inline-flex;
+        width: 100%;
+        justify-content: center;
+
+        .toolbarContent {
+            display: inline-flex;
+            height: 20px;
+            align-items: center;
+            margin: 10px 0 10px 10px;
+
+            .toolIcon {
+                font-size: 32px;
+
+                .toolButton {
+                    display: block;
+                }
+
+                .iconEnabled {
+                    color: @title-color-secondary;
+
+                    &:hover {
+                        background-color: rgb(0 0 0 / 4%);
+                    }
+                }
+
+                .iconDisabled {
+                    display: flex !important;
+                    color: @disabled-color;
+                    cursor: default !important;
+                }
+
+                .toolSelectButton {
+                    width: 40px;
+                    height: 32px;
+                    line-height: 20px;
+                }
+
+                .toolSelectLines {
+                    display: flex;
+                    width: 54px;
+                    height: 32px;
+                    align-items: center;
+                    padding: 0 10px;
+                }
+
+                .toolSelectSize {
+                    display: flex;
+                    height: 32px;
+                    align-items: center;
+                    padding: 0 10px;
+                }
+            }
+
+            .toolButtonSpace {
+                margin-right: 10px;
+            }
+
+            .toolSplit {
+                width: 10px;
+
+                .toolSplitLine {
+                    width: 1px;
+                    height: 16px;
+                    border: 1px solid rgb(0 0 0 / 15%);
+                    margin-left: 10px;
+                }
+            }
+        }
+    }
+
+    .toolSaveWrapper {
+        display: inline-flex;
+        width: 100%;
+        height: 100%;
+        align-items: center;
+        justify-content: flex-end;
+
+        .toolSaveTip {
+            display: flex;
+            height: 100%;
+            flex-shrink: 0;
+            margin-right: 20px;
+        }
+
+        .toolSaveButton {
+            min-width: 80px;
+            margin-right: 10px;
+        }
+    }
+}
+
+.editButton {
+    width: 360px;
+    height: 36px;
+}
+
+.nodeConfigWrapper {
+    :global {
+        .any-fabric-ant-drawer-body {
+            padding: 0 24px 24px;
+            margin-top: -12px;
+        }
+
+        .any-fabric-ant-form-vertical .any-fabric-ant-form-item-label {
+            padding: 0 0 10px;
+        }
+
+        .any-fabric-ant-form-item {
+            margin-bottom: 22px;
+        }
+
+        .any-fabric-ant-drawer-header {
+            height: 54px;
+            padding: 0 10px 0 24px;
+        }
+    }
+
+    .titleWrapper {
+        display: flex;
+        width: 100%;
+        height: 54px;
+        align-items: center;
+        justify-content: space-between;
+
+        .closeBtn {
+            display: flex;
+            width: 54px;
+            height: 54px;
+            align-items: center;
+            justify-content: center;
+
+            // .closeIcon {
+            color: rgb(0 0 0 / 40%);
+            cursor: pointer;
+            font-size: 16px;
+            // }
+
+            &:hover {
+                color: rgb(0 0 0 / 65%);
+            }
+        }
+    }
+
+    .footerWrapper {
+        display: flex;
+        justify-content: flex-end;
+        margin-left: 8px;
+
+        .cancelBtn {
+            width: 80px;
+            height: 36px;
+        }
+
+        .okBtn {
+            width: 80px;
+            height: 36px;
+        }
+    }
+
+    .selectRoleUser {
+        :global {
+            .any-fabric-ant-select-single.any-fabric-ant-select-open
+                .any-fabric-ant-select-selection-item {
+                & > div {
+                    & > span {
+                        opacity: 0.25;
+                    }
+                }
+            }
+        }
+    }
+
+    .basicTitle {
+        height: 20px;
+        margin: 32px 0 16px;
+        color: #333;
+        font-size: 14px;
+        font-weight: 550;
+        line-height: 20px;
+    }
+
+    .typeSelect {
+        display: flex;
+        align-items: center;
+
+        .typeIcon {
+            margin-right: 5px;
+        }
+    }
+}
+
+.modeSelectItemWrapper {
+    height: 48px;
+
+    .top {
+        height: 22px;
+        color: @title-color-secondary;
+        font-size: 14px;
+    }
+
+    .bottom {
+        color: @text-color-third;
+        font-size: 12px;
+    }
+}
+
+.taskTypeSelectItemWrapper {
+    display: flex;
+    height: 32px;
+    align-items: center;
+
+    .circle {
+        width: 12px;
+        height: 12px;
+        margin-right: 8px;
+        border-radius: 6px;
+    }
+
+    .name {
+        color: @title-color-secondary;
+        font-size: 14px;
+    }
+
+    .listIcon {
+        display: inline-flex;
+        width: 24px;
+        height: 24px;
+        align-items: center;
+        justify-content: center;
+        margin-right: 8px;
+        border-radius: 13px;
+
+        .Icon {
+            width: 24px;
+            height: 24px;
+            fill: #fff;
+        }
+    }
+
+    .listName {
+        width: 350px;
+        height: 22px;
+        line-height: 22px;
+        white-space: nowrap;
+
+        .ellipsis-mixin();
+    }
+}
+
+.selectEmptyWrapper {
+    margin: -20px 0 10px;
+}
+
+.dropLineButton {
+    display: flex !important;
+    min-width: 76px;
+    align-items: center;
+    justify-content: left;
+    padding: 0 !important;
+}
+
+.notFoundWraper {
+    .center();
+}
+
+.resultContainer {
+    .resultTitle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 550;
+
+        .resultTitleInfo {
+            margin-left: 10px;
+            color: rgb(0 0 0 / 85%);
+            font-size: 20px;
+        }
+    }
+
+    .resultContent {
+        margin: 20px 0 30px;
+
+        .content {
+            display: flex;
+            justify-content: center;
+            color: @text-color-desc;
+        }
+    }
+
+    .resultbButton {
+        display: flex;
+        justify-content: center;
+        margin: 10px 0;
+    }
+}
+
+.confirmModal {
+    display: flex;
+    width: 360px;
+
+    .icon {
+        margin: 0 10px;
+    }
+
+    .title {
+        color: rgb(0 0 0 / 95%);
+        font-size: 16px;
+        font-weight: 550;
+    }
+
+    .contents {
+        margin-top: 12px;
+        color: rgb(0 0 0 / 75%);
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 22px;
+    }
+}
+
+.delIcon {
+    color: #f5222d !important;
+}

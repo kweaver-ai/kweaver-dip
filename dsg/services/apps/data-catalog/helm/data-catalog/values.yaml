@@ -1,0 +1,221 @@
+# 名称空间，服务都要在同一个空间。
+namespace: anyshare
+
+# 1 修改标签
+labels:
+  deployment:
+    name: data-catalog-deployment
+  pod:
+    app: data-catalog-pod
+  service:
+    app: data-catalog-service
+
+# 2 修改仓库服务的镜像地址：不同的项目记得修改repository中af后的项目名和tag
+image:
+  registry: acr.aishu.cn
+  repository: af/data-catalog
+  tag: "1.0.0-develop"
+  pullPolicy: IfNotPresent
+
+#3 修改容器副本数量
+replicaCount: 1
+
+#4 修改deployment的名称
+name: data-catalog-deployment
+
+nodeSelector: []
+
+#需要暴露的端口号列表
+#containerPort容器需要监听的端口号
+#protocol端口协议，支持TCP和UDP，默认TCP
+ports:
+  name: server-port
+  containerPort: 8153
+
+# 修改service的名字、端口，nodePort是对外的端口。
+service:
+  name: data-catalog
+  type: ClusterIP
+  port: 8153
+  version: "1.0"
+  telemetry:
+    log:
+      enabled: true
+      endpoint: "http://10.4.104.243/api/feed_ingester/v1/jobs/otl-test4-log/events"
+      level: "info"
+    trace:
+      enabled: true
+      endpoint: "http://10.4.104.243/api/feed_ingester/v1/jobs/otl-test3/events"
+
+depServices:
+  class-443:
+    ingressClass: class-443
+  rds:
+    type: mariadb
+    host: mariadb-mariadb-master.resource
+    port: 3330
+    user: anyshare
+    password: password
+    database: af_data_catalog
+    migrationPath: /usr/local/bin/af/infrastructure/repository/db/gen/migration
+  redis:
+    connectInfo:
+      masterGroupName: mymaster
+      password: ''
+      sentinelHost: proton-redis-proton-redis-sentinel.resource.svc.cluster.local
+      sentinelPassword: ''
+      sentinelPort: 26379
+      sentinelUsername: root
+      username: root
+    connectType: sentinel
+    sourceType: internal
+    database: 1
+    minIdleConns: 8
+  configuration-center:
+    host: configuration-center
+    port: 8133
+  task-center:
+    host: task-center
+    port: 8143
+  user-management:
+    publicHost: user-management-public
+    publicPort: 30980
+    privateHost: user-management-private
+    privatePort: 30980
+  oss:
+    ossApp: af
+    ossHost: ossgatewaymanager-private:9002
+    ossProtocol: http
+    ossIsDefault: true
+    ossBucket: afstorage
+  hydra:
+    publicHost: hydra-public
+    publicPort: 4444
+    administrativeHost: hydra-admin
+    administrativePort: 4445
+  metadata-manage:
+    host: af-vega-metadata
+    port: 80
+  mq:
+    auth:
+      mechanism: 'PLAIN'
+      username: 'kafkauser'
+      password: ''
+    mqHost: 'kafka.resource.svc.cluster.local'
+    mqLookupdHost: ""
+    mqLookupdPort: 0
+    mqPort: 9092
+    mqType: kafka
+  anyRobotTraceUrl: http://10.4.128.131/api/feed_ingester/v1/jobs/job-dd62796517d6dc66/events
+  logPath: /opt/log/af
+  virtualizationEngine:
+    protocol: http
+    host: af-vega-gateway
+    port: 8099
+  data-masking:
+    schema: http
+    host: data-masking-service
+    port: 8153
+  anyDataAlgServer:
+    host: 127.0.0.1
+    port: 8080
+    lineageKgID: 21
+    graphKgID: 22
+    email: email@aishu.cn
+    password: password
+    cacheMinutes: 480
+  business-grooming:
+    host: business-grooming
+    port: 8123
+  afSailorService:
+    schema: http
+    host: af-sailor-service
+    port: 80
+  workflow:
+    workflowRest:
+      host: flow-audit-config
+      port: 9800
+    docAuditRest:
+      host: flow-audit-core
+      port: 9800
+    tenantID: af_workflow
+    mqType: kafka
+  department:
+    id: 9060f92a-3c6c-11f0-9815-12b58a7f919c
+  anyData:
+    url: https://10.4.132.124:8444
+    accountType: email
+    user: 
+    password: 
+    searchServiceID: 
+  openai:
+    url: https://anyfabric-dev.openai.azure.com/
+    key: 01823c5e56174144bdd9b4dfdf83c826
+    type: azure
+    version: 2023-03-15-preview
+  basic-search:
+    host: basic-search
+    port: 8163
+  data-application-service:
+    host: data-application-service
+    port: 8156
+  data-subject:
+    host: data-subject
+    port: 8123
+  data-explore:
+    host: data-exploration-service
+    port: 8281
+  data-view:
+    host: data-view
+    port: 8123
+  authsvc:
+    host: auth-service
+    port: 8155
+  demandManagement:
+    host: demand-management
+    port: 8280
+  indicator-management:
+    host: indicator-management
+    port: 8213
+
+# 修改pod资源限制：cpu示例:0.5/500m/1/1000m;memory示例:512Mi/1Gi
+resources:
+  requests:
+    cpu: 0.1
+    memory: 10Mi
+  limits:
+    cpu: 1
+    memory: 1024Mi
+
+# 数据资源目录编码类型：catalogCodeType 1为旧的以/斜线分隔的编码，
+# 2为形如2023070718000012345001（20230707180000为年月日时分秒，12345为机器码，001为自增的数字序列））
+variables:
+  catalogCodeType: 2
+  sampleData:
+    virtualizationCacheEnable: true
+    dataMaskingEnable: true
+    bigModelSwitch: true
+    bigModelCacheEnable: true
+    haveDataExpireHour: 48
+    emptyDataExpireMinute: 20
+# 回调配置
+callback:
+  # 是否启用回调
+  enabled: false
+  # 通过这个地址调用回调接口，格式定义在
+  # https://github.com/grpc/grpc/blob/master/doc/naming.md
+  #
+  #
+  #  - 192.169.52.204
+  #  - 192.169.52.204:80
+  #  - work-order-callback-server.example
+  #  - work-order-callback-server.example:80
+  #  - dns:///192.169.52.204:80
+  #  - dns:///work-order-callback-server.example:80
+  #  - dns://10.96.0.10/work-order-callback-server.example.svc.cluster.local:80
+  #  - dns://10.96.0.10/192-169-52-204.example.pod.cluster.local:80
+  #  - unix:///tmp/callback.sock
+  address: localhost
+tenant:
+  tenantId: 10015
+

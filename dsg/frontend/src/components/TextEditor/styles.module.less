@@ -1,0 +1,50 @@
+.text-editor {
+    z-index: 9999;
+    overflow: auto;
+    height: 100%;
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+    cursor: auto;
+    transition: all 0.3s;
+
+    &:hover {
+        border-color: #3a8ff0;
+    }
+}
+
+.performance-tip {
+    position: absolute;
+    z-index: 1000;
+    right: 8px;
+    bottom: 8px;
+    padding: 4px 8px;
+    border: 1px solid rgb(255 193 7 / 30%);
+    backdrop-filter: blur(4px);
+    background: rgb(255 193 7 / 90%);
+    border-radius: 4px;
+    color: #856404;
+    font-size: 12px;
+
+    span {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+}
+
+.warning-indicator {
+    animation: pulse 1.5s ease-in-out infinite;
+    color: #dc3545;
+    font-weight: 500;
+}
+
+@keyframes pulse {
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+}

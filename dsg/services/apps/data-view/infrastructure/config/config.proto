@@ -1,0 +1,116 @@
+syntax = "proto3";
+package config;
+
+option go_package = ".;config";
+
+import "google/protobuf/duration.proto";
+
+message Bootstrap {
+  Server server = 1;
+  Doc doc = 2;
+  Telemetry   telemetry = 3;
+  DepServices depServices = 4;
+  Database database = 5;
+  Exploration  exploration = 6;
+  Config config = 7;
+}
+
+message Server {
+  message HTTP {
+    string network = 1;
+    string addr = 2;
+    google.protobuf.Duration timeout = 3;
+  }
+  message GRPC {
+    string network = 1;
+    string addr = 2;
+    google.protobuf.Duration timeout = 3;
+  }
+  string  name = 1;
+  HTTP http = 2;
+  GRPC grpc = 3;
+}
+message Doc {
+  string   host = 1;
+  string   version = 2;
+}
+message   Telemetry {
+  string traceUrl = 1;
+  string logLevel = 2;
+  string logUrl = 3;
+  string serverName = 4;
+  string serverVersion = 5;
+  string traceEnabled = 6;
+  string auditUrl = 7;
+  string auditEnabled = 8;
+}
+message DepServices {
+  message Sasl {
+    bool     enabled = 1;
+    string   username = 2;
+    string   password = 3;
+  }
+  message Producer {
+    int32   sendBufSize = 1;
+    int32   recvBufSize = 2;
+  }
+  message     KafkaMQ {
+    string     host = 1;
+    Sasl sasl = 2;
+    Producer producer = 3;
+  }
+  message    Nsq {
+    string    type = 1;
+    string    host = 2;
+    string    port = 3;
+    string    httpHost = 4;
+    string    httpPort = 5;
+    string    lookupdHost = 6;
+    string    lookupdPort = 7;
+  }
+  KafkaMQ     kafkaMQ = 1;
+  string userMgmPrivate = 2;
+  string hydraAdmin = 3;
+  string businessGroomingHost = 4;
+  string configurationCenterHost = 5;
+  string virtualizationEngineHost = 6;
+  string metadataHost = 7;
+  string authServiceHost = 8;
+  string dataSubjectHost = 9;
+  string afSailorServiceHost = 10;
+  string standardizationBackendHost = 11;
+  string dataExploreHost = 12;
+  string sceneAnalysisHost = 13;
+  string workflowHost = 14;
+  Nsq    nsq = 15;
+  string    mqType = 16;
+  string    hydraPublic = 17;
+  string mdlDataModelHost = 18;
+  string mdlUniqueryHost = 19;
+}
+
+message Database {
+  string   dbtype = 1;
+  string   host = 2;
+  string   port = 3;
+  string   username = 4;
+  string   password = 5;
+  string   database = 6;
+  int32   maxIdleConnections = 7;
+  int32   maxOpenConnections = 8;
+  int32   maxConnectionIdleTime = 9;
+  int32   maxConnectionLifeTime = 10;
+  int32   loglevel = 11;
+  bool    isdebug = 12;
+  string   tableprefix = 13;
+}
+
+message Exploration {
+  string completionDefaultOvertime = 1;
+}
+message Config {
+  SyntheticDataCache   SyntheticDataCache = 1;
+}
+message SyntheticDataCache {
+  int32   ExpirationTime = 1;
+}

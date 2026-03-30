@@ -1,0 +1,31 @@
+import { i18n } from '@/utils'
+
+export default i18n([
+    ['确定', '確定', 'Ok'],
+    ['取消', '取消', 'Cancel'],
+    ['收起', '摺疊', 'Fold'],
+    ['展开', '展開', 'Unfold'],
+    ['点击收起', '點擊摺疊', 'Click to Fold'],
+    ['点击展开', '點擊展開', 'Click to Unfold'],
+    ['暂无数据', '暫無數據', 'No data'],
+    ['缩小', '縮小', 'Zoom in'],
+    ['放大', '放大', 'Zoom out'],
+    ['定位', '定位', 'Locate'],
+    ['总览全部', '總覽全部', 'Overview All'],
+    ['搜索', '搜尋', 'Search'],
+    ['以表查看', '以表查看', 'View by Table'],
+    ['以字段查看', '以欄位查看', 'View by Field'],
+    ['业务视角', '業務視角', 'Business Perspective'],
+    ['技术视角', '技術視角', 'Technical Perspective'],
+    ['字段（${number}）', '欄位${number}）', 'Field ${number}）'],
+    ['请输入字段名称', '請輸入欄位名稱', 'Please enter the field name'],
+    ['搜索字段名称', '搜尋欄位名稱', 'Search field name'],
+    [
+        '抱歉，没有找到相关内容',
+        '抱歉，沒有找到相關內容',
+        'Sorry, no relevant results found.',
+    ],
+    ['未知类型', '未知類型', 'Unknown Type'],
+    ['搜索表名称', '搜尋表名稱', 'Search table name'],
+    ['一键收起'],
+])

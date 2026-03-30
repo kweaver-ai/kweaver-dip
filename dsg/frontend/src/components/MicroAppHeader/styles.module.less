@@ -1,0 +1,145 @@
+.microAppHeader {
+    // position: fixed;
+    z-index: 1000;
+    top: 0;
+    right: 0;
+    left: 0;
+    box-shadow: 0 2px 8px rgb(0 0 0 / 8%);
+}
+
+.leftWrapper {
+    display: flex;
+    flex: 1;
+    align-items: center;
+
+    .appTitleWrapper {
+        display: flex;
+        align-items: center;
+        margin-left: 16px;
+        gap: 8px;
+
+        .appHomeIcon {
+            cursor: pointer;
+            font-size: 24px;
+        }
+
+        .appSeparator {
+            color: rgb(0 0 0 / 25%);
+            font-size: 14px;
+        }
+
+        .appTitle {
+            display: flex;
+            align-items: center;
+            color: #000;
+            font-size: 16px;
+            font-weight: normal;
+            gap: 8px;
+
+            .appTitleIcon {
+                width: 16px;
+                height: 16px;
+                font-size: 16px;
+            }
+        }
+    }
+
+    .menuWrapper {
+        display: flex;
+        align-items: center;
+        margin-left: 32px;
+    }
+
+    .menuItem {
+        position: relative;
+        display: flex;
+        height: 52px;
+        align-items: center;
+        padding: 0 16px;
+        cursor: pointer;
+        transition: all 0.3s;
+
+        &.menuItemActive {
+            &::after {
+                position: absolute;
+                bottom: 0;
+                left: 16px;
+                width: calc(100% - 32px);
+                height: 3px;
+                background-color: #126ee3;
+                border-radius: 2px 2px 0 0;
+                content: '';
+            }
+        }
+
+        &:hover {
+            color: #126ee3;
+        }
+
+        &.menuItemDisabled {
+            cursor: not-allowed;
+            opacity: 0.5;
+
+            &:hover {
+                color: rgb(0 0 0 / 65%);
+
+                &::after {
+                    display: none;
+                }
+            }
+        }
+    }
+
+    .menuLabel {
+        color: rgb(0 0 0);
+        font-size: 14px;
+        white-space: nowrap;
+
+        &:hover,
+        &.menuLabelActive {
+            color: #126ee3;
+            font-weight: 500;
+        }
+    }
+}
+
+.operationWrapper {
+    display: flex;
+    width: auto;
+    align-items: center;
+    justify-content: flex-end;
+
+    .itemWrapper {
+        display: flex;
+        align-items: center;
+        margin-left: 24px;
+        cursor: pointer;
+    }
+
+    .downloadTask {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+
+        .downloadIcon {
+            display: flex;
+            height: 32px;
+            align-items: center;
+            padding: 8px;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+    }
+
+    .singleIcon {
+        position: relative;
+        display: flex;
+        width: 32px;
+        height: 32px;
+        align-items: center;
+        justify-content: center;
+        margin-left: 16px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+}

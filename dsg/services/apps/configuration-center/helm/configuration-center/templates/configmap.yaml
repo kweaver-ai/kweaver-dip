@@ -1,0 +1,93 @@
+apiVersion: v1
+kind: ConfigMap
+{{- $mq := .Values.depServices.mq | default dict }}
+{{- $mqNsq := $mq.nsq | default dict }}
+{{- $kafkaMQHost := printf "%s:%v" $mq.kafkaHost $mq.kafkaPort }}
+{{- if and $mq.mqHost $mq.mqPort }}
+{{- $kafkaMQHost = printf "%s:%v" $mq.mqHost $mq.mqPort }}
+{{- end }}
+{{- $nsqMQHost := $mq.nsqHost }}
+{{- if and $mqNsq.host $mqNsq.port }}
+{{- $nsqMQHost = printf "%s:%v" $mqNsq.host $mqNsq.port }}
+{{- end }}
+{{- $nsqMQHTTPHost := $mq.nsqHttpHost }}
+{{- if and $mqNsq.httpHost $mqNsq.httpPort }}
+{{- $nsqMQHTTPHost = printf "%s:%v" $mqNsq.httpHost $mqNsq.httpPort }}
+{{- end }}
+{{- $nsqLookupdHost := $mq.nsqLookupdHost }}
+{{- if and $mqNsq.lookupdHost $mqNsq.lookupdPort }}
+{{- $nsqLookupdHost = printf "%s:%v" $mqNsq.lookupdHost $mqNsq.lookupdPort }}
+{{- end }}
+{{- $redis := .Values.depServices.redis | default dict }}
+{{- $redisConnectInfo := $redis.connectInfo | default dict }}
+{{- $redisHost := printf "%s:%v" $redisConnectInfo.host $redisConnectInfo.port }}
+{{- if and $redisConnectInfo.sentinelHost $redisConnectInfo.sentinelPort }}
+{{- $redisHost = printf "%s:%v" $redisConnectInfo.sentinelHost $redisConnectInfo.sentinelPort }}
+{{- end }}
+metadata:
+  name: {{ .Values.name }}-cm
+  namespace: {{ .Values.namespace }}
+data:
+  {{- with .Values }}
+  AUDIT_ENABLED: "false"
+  ANYROBOT_ENABLED: {{ .depServices.anyrobot.enabled | quote }}
+  ANYROBOT_SERVER: {{ .depServices.anyrobot.server | quote }}
+  ANYROBOT_DATA_VIEW_ID: {{ .depServices.anyrobot.dataViewID | quote }}
+  DB_TYPE: {{ .depServices.rds.type | quote}}
+  DB_HOST: {{ .depServices.rds.host | quote}}
+  DB_PORT: {{ .depServices.rds.port | quote}}
+  DB_USERNAME: {{ .depServices.rds.user | quote }}
+  DB_PASSWORD: {{ .depServices.rds.password | quote }}
+  DB_NAME: {{ .depServices.rds.database | quote }}
+  MQ_TYPE: {{ .depServices.mq.mqType | quote }}
+  MQ_HOST: {{ .depServices.mq.mqHost| quote }}
+  MQ_PORT: {{ .depServices.mq.mqPort | quote }}
+  MQ_LOOKUPD_HOST: {{ .depServices.mq.mqLookupdHost | quote }}
+  MQ_LOOKUPD_PORT: {{ .depServices.mq.mqLookupdPort | quote }}
+  MQ_AUTH_MECHANISM: {{ .depServices.mq.auth.mechanism | quote }}
+  MQ_AUTH_USERNAME: {{ .depServices.mq.auth.username | quote }}
+  MQ_AUTH_PASSWORD: {{ .depServices.mq.auth.password | quote }}
+  KAFKA_MQ_HOST: "{{ $kafkaMQHost }}"
+  KAFKA_MQ_USENAME: "{{ .depServices.mq.auth.username}}"
+  KAFKA_MQ_PASSWORD: "{{ .depServices.mq.auth.password}}"
+  NSQ_MQ_HOST: "{{ $nsqMQHost }}"
+  NSQ_MQ_HTTP_HOST: "{{ $nsqMQHTTPHost }}"
+  NSQ_LOOKUPD_HOST: "{{ $nsqLookupdHost }}"
+  OSS_APP: {{ .depServices.oss.ossApp | quote}}
+  OSS_HOST: {{ .depServices.oss.ossHost | quote}}
+  OSS_PROTOCOL: {{ .depServices.oss.ossProtocol | quote}}
+  OSS_IS_DEFAULT: {{ .depServices.oss.ossIsDefault | quote}}
+  OSS_BUCKET: {{ .depServices.oss.ossBucket | quote}}
+  BUSINESS_GROOMING_HOST: "{{index .depServices "business-grooming" "host"}}:{{index .depServices "business-grooming" "port"}}"
+  STANDARDIZATION_HOST: "{{index .depServices "standardization" "host"}}:{{index .depServices "standardization" "port"}}"
+  DATA_SUBJECT_HOST: "{{index .depServices "data-subject" "host"}}:{{index .depServices "data-subject" "port"}}"
+  VIRTUAL_ENGINE_HOST: {{index .depServices "virtualizationEngine" "host" }}:{{index .depServices "virtualizationEngine" "port" }}
+  VIRTUAL_ENGINE_PROTOCOL: {{index .depServices "virtualizationEngine" "protocol" | quote }}
+  DATA_CONNECTION_HOST: {{index .depServices "dataConnection" "host" }}:{{index .depServices "dataConnection" "port" }}
+  DATA_CONNECTION_PROTOCOL: {{index .depServices "dataConnection" "protocol" | quote }}
+  HYDRA_HOST: "http://{{ .depServices.hydra.administrativeHost}}:{{ .depServices.hydra.administrativePort}}"
+  WORKFLOW_REST_HOST: "http://{{ .depServices.workflowRest.host}}:{{ .depServices.workflowRest.port}}"
+  USER_MANAGE_HOST: "http://{{index .depServices "user-management" "privateHost"}}:{{index .depServices "user-management" "privatePort"}}"
+  DATA_ADAPTOR_HOST: "{{index .depServices "data-adaptor" "host"}}:{{index .depServices "data-adaptor" "port"}}"
+  SERVER_NAME: {{.service.name | quote }}
+  SERVER_VERSION: {{.service.version | quote }}
+  LOG_LEVEL: {{.service.telemetry.log.level | quote }}
+  LOG_URL: {{.service.telemetry.log.endpoint | quote }}
+  TRACE_ENABLED: {{.service.telemetry.trace.enabled| quote }}
+  TRACE_URL: {{.service.telemetry.trace.endpoint | quote }}
+  {{- end }}
+  {{- with .Values.depServices.redis }}
+  REDIS_MASTER_NAME: {{ .connectInfo.masterGroupName | quote }}
+  REDIS_HOST: "{{ $redisHost }}"
+  REDIS_PASSWORD: {{ .connectInfo.password | quote }}
+  REDIS_SENTINEL_HOST: {{ .connectInfo.sentinelHost | quote }}
+  REDIS_SENTINEL_PASSWORD: {{ .connectInfo.sentinelPassword | quote }}
+  REDIS_SENTINEL_PORT: {{ .connectInfo.sentinelPort | quote }}
+  REDIS_SENTINEL_USER_NAME: {{ .connectInfo.sentinelUsername | quote }}
+  REDIS_USER_NAME: {{ .connectInfo.username | quote }}
+  REDIS_CONNECT_TYPE: {{ .connectType | quote }}
+  REDIS_DB: {{ .database | quote }}
+  {{- end }}
+  PRODUCT_VERSION: {{ .Values.env.productVersion | quote }}
+  BUILD_DATE: {{ .Values.env.buildDate | quote }}
+  VECLIENTEXPIRE: {{ .Values.env.VEClientExpire | quote }}

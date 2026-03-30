@@ -1,0 +1,44 @@
+.fieldItemWrapper {
+    display: flex;
+    width: 100%;
+    align-items: center;
+
+    &.middle {
+        margin: 8px 0;
+    }
+
+    .icon {
+        display: flex;
+        height: 20px;
+        align-items: center;
+        margin-right: 8px;
+    }
+
+    .nameBox {
+        width: calc(100% - 16px);
+
+        .name {
+            display: flex;
+
+            .nameText {
+                display: inline-block;
+                max-width: 100%;
+                line-height: normal;
+                .ellipsis-mixin();
+            }
+
+            .nameIcon {
+                margin-left: 4px;
+            }
+        }
+
+        .code {
+            max-width: 100%;
+            margin-top: 3px;
+            color: rgb(0 0 0 / 65%);
+            font-size: 12px;
+            line-height: normal;
+            .ellipsis-mixin();
+        }
+    }
+}

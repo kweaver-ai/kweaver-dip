@@ -1,0 +1,57 @@
+.explorationAttributeWrapper {
+    width: 100%;
+
+    .firstLine {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 16px;
+
+        .attributeItem {
+            display: flex;
+            width: 74px;
+            height: 32px;
+            align-items: center;
+            justify-content: center;
+            background: #f4f5f8;
+            border-radius: 4px;
+            cursor: pointer;
+
+            &.active {
+                background: rgb(18 110 227 / 10%);
+                color: #126ee3;
+            }
+
+            &.disabled {
+                color: @disabled-color;
+                cursor: not-allowed;
+            }
+        }
+
+        .checkBox {
+            display: flex;
+            align-items: center;
+            margin-left: 16px;
+
+            .ruleSwitch {
+                margin-left: 8px;
+            }
+        }
+    }
+
+    .secLine {
+        display: flex;
+        align-content: center;
+        justify-content: space-between;
+        margin-bottom: 16px;
+
+        .addBtn {
+            border: 1px solid #126ee3;
+            color: #126ee3;
+        }
+    }
+
+    .ellipsis {
+        .ellipsis-mixin();
+    }
+}

@@ -1,0 +1,202 @@
+server:
+  port: 8888
+  servlet:
+    context-path: /api/standardization
+  undertow:
+    io-threads: 8
+    worker-threads: 64
+    buffer-size: 16384
+    direct-buffers: true
+    enabled: true
+    no-request-timeout: 300000    # 5分钟（请求头→请求体的间隔）
+    connection-timeout: 600000    # 10分钟（整个连接超时）
+    max-http-post-size: 104857600  # 等效于 max-request-size
+
+spring:
+  application:
+    name: standardization
+    version: 1.0.0
+  mvc:
+    throw-exception-if-no-handler-found: true
+    pathmatch:
+      matching-strategy: ANT_PATH_MATCHER
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+  redis:
+    host: 10.4.134.47
+    port: 6379
+    password:
+  datasource:
+    hikari:
+      maximumPoolSize: 25
+      minimumIdle: 10
+      idleTimeout: 60000
+      connectionTimeout: 30000
+      maxLifetime: 1800000
+      connectionTestQuery: SELECT 1
+      pool-name: HikariCP
+#    type: com.alibaba.druid.pool.DruidDataSource #引入自定义的Druid数据源
+#    druid:
+#      #初始化时建立物理连接的个数
+#      initial-size: 15
+#      #最小连接池数量
+#      min-idle: 15
+#      #最大连接池数量 maxIdle已经不再使用
+#      max-active: 50
+#      #获取连接时最大等待时间，单位毫秒
+#      max-wait: 60000
+#      #申请连接的时候检测，如果空闲时间大于timeBetweenEvictionRunsMillis，执行validationQuery检测连接是否有效。
+#      test-while-idle: true
+#      #既作为检测的间隔时间又作为testWhileIdel执行的依据
+#      time-between-eviction-runs-millis: 60000
+#      #销毁线程时检测当前连接的最后活动时间和当前时间差大于该值时，关闭当前连接
+#      min-evictable-idle-time-millis: 30000
+#      #用来检测连接是否有效的sql 必须是一个查询语句
+#      #mysql中为 select 'x'
+#      #oracle中为 select 1 from dual
+#      validation-query: select 'x'
+#      #申请连接时会执行validationQuery检测连接是否有效,开启会降低性能,默认为true
+#      test-on-borrow: false
+#      #归还连接时会执行validationQuery检测连接是否有效,开启会降低性能,默认为true
+#      test-on-return: false
+#      #是否缓存preparedStatement,mysql5.5+建议开启
+#      pool-prepared-statements: true
+#      #当值大于0时poolPreparedStatements会自动修改为true
+#      max-pool-prepared-statement-per-connection-size: 20
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://10.4.112.77:3330/af_std?useUnicode=true&useSSL=false&characterEncoding=utf8mb4&serverTimezone=GMT%2B8
+    username: root
+    password: xxx
+    data-type: mariadb
+  kafka:
+      bootstrap-servers: 10.4.134.161:31000
+      producer:
+        properties:
+          sasl.jaas.config: org.apache.kafka.common.security.plain.PlainLoginModule required username="kafkaclient" password="xxx";
+          security.protocol: SASL_PLAINTEXT
+          sasl.mechanism: PLAIN
+      consumer:
+        properties:
+          sasl.jaas.config: org.apache.kafka.common.security.plain.PlainLoginModule required username="kafkaclient" password="xxx";
+          security.protocol: SASL_PLAINTEXT
+          sasl.mechanism: PLAIN
+          group-id: test
+
+
+#mybatis-plus配置
+mybatis-plus:
+  mapper-locations: classpath*:com/**/mapper/xml/*.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+excel:
+  import:
+    template:
+      dict: template/template_dict.xlsx
+      de: template/template_de.xlsx
+anyshare:
+  password: xxx
+  account: a6bab599-a9dd-46d9-9222-01b3ed2df0f4
+  url: https://10.2.184.163:443
+  basedir: gns://4C86CE07A5704459BCD9C7FC7620749A
+  basedir_name: AnyShare://af_std_file
+  temp_basedir: gns://4C86CE07A5704459BCD9C7FC7620749A
+  temp_basedir_name: AnyShare://af_std_file
+  temp_file_clean_interval_hours: 24
+
+nsq:
+  lookup-hosts: 10.4.129.68:4161
+  nsqd-host: 10.4.129.68:4150
+  failover-nsqd-host: 10.4.129.68:4150
+  task:
+    std-create:
+      topic: de_create_topic
+      result-topic: de_create_result_topic
+      group-id: group-de-create
+    std-rec:
+      topic: de_rec_topic
+      result-topic: de_rec_result_topic
+      group-id: group-de-rec
+  de:
+    update:
+      topic: std_de_update
+      group-id: group_std_de_update
+    delete:
+      topic: std_de_delete
+      group-id: group_std_de_delete
+
+rec:
+  service:
+    # 推荐算法服务地址
+#    url: http://localhost:8888/api/standardization/v1/dataelement/task/rec/mock
+    url: http://af-sailor-service:80/api/internal/af-sailor-service/v1/recommend/code
+    # 规则推荐地址
+    rule_url: http://af-sailor:9797/api/af-sailor/v1/internal/recommend/field/rule
+
+token:
+  check:
+    enable: false
+    url: http://hydra-admin:4445/admin/oauth2/introspect
+    client-url: http://hydra-admin:4445/admin/clients/ #客戶端url
+  access-control:
+    enable: false
+    resource-code: 30
+    url: http://configuration-center:8133/api/configuration-center/v1/access-control
+    # 填写使用POST 方式实现get查询的接口uri正则表达式，路径中有参数的使用正则表达式
+    httpGetGroupUris:
+      - /api/standardization/v1/dataelement/task/std-rec/rec
+      - /api/standardization/v1/dataelement/dict/export
+      - /api/standardization/v1/dataelement/dict/export/template
+      - /api/standardization/v1/dataelement/export
+  third-party-account:
+    url: http://configuration-center:8133/api/internal/configuration-center/v1/apps/account/
+
+
+anyrobot:
+  log:
+    enabled: false
+    endpoint: https://10.4.132.80:20443/api/feed_ingester/v1/jobs/job-4d42d761dbf0ea95/events
+    level: INFO
+  trace:
+    enabled: false
+    endpoint: https://10.4.132.80:20443/api/feed_ingester/v1/jobs/job-a2491f67d02e482c/events
+#  auditlog:
+#    enabled: false
+#    endpoint: https://10.4.119.160/api/feed_ingester/v1/jobs/job-12d627fb523d7362/events
+
+oss:
+  debug: true
+  ossApp: af
+#  ossHost: ossgatewaymanager-private:9002
+  ossHost: 10.4.133.208:9002
+  ossProtocol: http
+  ossIsDefault: true
+  ossBucket: afstorage
+
+session:
+  service:
+    url: http://10.4.134.47:8113/af/api/session/v1/userinfo
+
+# 开启 swagger api 文档页面增强
+knife4j:
+  enable: true
+
+
+configuration:
+  center: http://configuration-center:8133
+
+
+# type : standalone:单节点；sentinel：哨兵
+redisson:
+  lock:
+    server:
+      address: 10.4.134.47:6379
+      type: standalone
+      password:
+      database: 1
+
+third-party:
+  department-id: 8fd85070-3c6c-11f0-9815-12b58a7f919c/8fdbed3e-3c6c-11f0-9815-12b58a7f919c/9060f92a-3c6c-11f0-9815-12b58a7f919c
+  third-dept-id: zctc6m9par2s4nbg5wxbua

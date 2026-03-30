@@ -1,0 +1,24 @@
+{
+    "entries": [
+        {
+            "id": "13daf448-d9c4-11ee-81aa-005056b4b3fc",
+            "name": "逻辑视图",
+            "type": "DataView",
+            "prefix": "SJST",
+            "prefix_enabled": true,
+            "rule_code": "YYYYMMDD",
+            "rule_code_enabled": true,
+            "code_separator": "/",
+            "code_separator_enabled": true,
+            "digital_code_type": "Sequence",
+            "digital_code_width": 6,
+            "digital_code_starting": 1,
+            "digital_code_ending": 999999,
+            "updater_id": "69480a5b-31cb-49db-a390-c6b84c3563a0",
+            "created_at": "2024-03-22T11:04:23+08:00",
+            "updated_at": "2024-03-22T11:05:23+08:00",
+            "updater_name": "Remilia"
+        }
+    ],
+    "total_count": 1
+}

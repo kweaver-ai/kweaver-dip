@@ -1,0 +1,179 @@
+.dirContentWrapper {
+    width: 100%;
+    height: 100vh;
+    overflow-x: auto;
+
+    .dirContent {
+        min-width: 1280px;
+        height: 100vh;
+    }
+
+    .top {
+        display: flex;
+        height: 52px;
+        align-items: center;
+        padding-left: 20px;
+        border-bottom: 1px solid rgb(0 0 0 / 10%);
+        background: #fff;
+
+        .leftContent {
+            display: flex;
+            height: 100%;
+            align-items: center;
+
+            .modelIconWrapper {
+                display: flex;
+                width: 24px;
+                height: 24px;
+                align-items: center;
+                justify-content: center;
+                margin-right: 8px;
+                background-color: rgb(18 110 227 / 6%);
+                border-radius: 3px;
+
+                .modelIcon {
+                    color: @primary-color;
+                    font-size: 14px;
+                }
+            }
+
+            .businessName {
+                max-width: 160px;
+                margin-right: 8px;
+                font-weight: 550;
+                .ellipsis-mixin();
+            }
+        }
+
+        .returnInfo {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+
+            .returnArrow {
+                margin-right: 12px;
+                color: rgb(0 0 0 / 85%);
+            }
+        }
+
+        .divider {
+            width: 1px;
+            height: 20px;
+            margin: 0 24px 0 12px;
+            background-color: rgb(0 0 0 / 35%);
+        }
+
+        .businessNameContainer {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+
+            .downIcon {
+                display: flex;
+                width: 22px;
+                height: 22px;
+                align-items: center;
+                color: #333;
+            }
+        }
+
+        .overlay {
+            overflow: auto;
+            max-height: 240px;
+            box-shadow: 0 3px 6px -4px rgb(0 0 0 / 12%),
+                0 6px 16px 0 rgb(0 0 0 / 8%), 0 9px 28px 8px rgb(0 0 0 / 5%);
+
+            &::before {
+                top: 0;
+                bottom: 0;
+            }
+        }
+
+        .overlayItem {
+            width: 160px;
+            .ellipsis-mixin();
+        }
+    }
+
+    .bottom {
+        overflow: hidden;
+        height: calc(100% - 52px);
+        background-color: #f0f2f6;
+    }
+
+    .needPadding {
+        padding: 16px 24px;
+        overflow-y: auto;
+    }
+}
+
+.drawerTitle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .title {
+        display: inline-block;
+        width: 320px;
+        .ellipsis-mixin();
+    }
+
+    .icon {
+        margin-right: 4px;
+        color: rgb(0 0 0 / 40%);
+        cursor: pointer;
+    }
+}
+
+.oprIcon {
+    display: flex;
+    align-items: center;
+    margin-top: 4px;
+}
+
+.resourcesCatalogWrapper {
+    .itemBox {
+        padding: 16px;
+        border-bottom: 1px dashed rgb(0 0 0 / 10%);
+
+        .firstLine {
+            display: flex;
+            width: 100%;
+            align-items: center;
+            margin-bottom: 12px;
+            cursor: pointer;
+
+            .iconBox {
+                padding: 6px;
+                margin-right: 8px;
+                background: rgb(18 110 227 / 6%);
+                border-radius: 3px;
+
+                .icon {
+                    font-size: 30px;
+                }
+            }
+
+            .nameBox {
+                width: calc(100% - 40px);
+            }
+
+            .name {
+                font-weight: 550;
+                .ellipsis-mixin();
+            }
+
+            .code {
+                margin-top: 4px;
+                color: rgb(0 0 0 / 65%);
+                font-size: 12px;
+            }
+        }
+
+        .secondLine {
+            .label {
+                color: rgb(0 0 0 / 65%);
+            }
+        }
+    }
+}

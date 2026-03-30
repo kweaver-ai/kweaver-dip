@@ -1,0 +1,59 @@
+.relateBusinessCascaderWrapper {
+    &.hasUnCategorized {
+        :global {
+            .any-fabric-ant-cascader-menu {
+                .any-fabric-ant-cascader-menu-item:last-child {
+                    border-top: 1px solid rgb(0 0 0 / 10%);
+                }
+            }
+        }
+    }
+
+    .noData {
+        color: rgb(0 0 0 / 85%);
+        font-size: 14px;
+    }
+
+    :global {
+        .any-fabric-ant-select-dropdown {
+            width: 100%;
+        }
+
+        .any-fabric-ant-cascader-menu {
+            width: 50%;
+            height: auto;
+            max-height: 272px;
+        }
+
+        .any-fabric-ant-cascader-menu-item-content {
+            color: @text-color-desc;
+            .ellipsis-mixin();
+        }
+
+        .any-fabric-ant-cascader-menu-item-disabled {
+            color: rgb(0 0 0 / 45%) !important;
+            cursor: default;
+            font-size: 12px !important;
+        }
+
+        .any-fabric-ant-select-selection-item {
+            color: @text-color-desc;
+        }
+
+        .any-fabric-ant-select-item-empty {
+            color: rgb(0 0 0 / 85%);
+        }
+    }
+
+    .selectedOption {
+        display: flex;
+        width: 100%;
+        align-items: center;
+
+        .seletedOptionsName {
+            width: calc(100% - 30px);
+            margin-left: 8px;
+            .ellipsis-mixin();
+        }
+    }
+}

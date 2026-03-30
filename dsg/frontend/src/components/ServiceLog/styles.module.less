@@ -1,0 +1,114 @@
+.serviceLog {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    padding: 20px;
+
+    .title {
+        margin-bottom: 16px;
+        font-weight: 550;
+    }
+
+    .monitoringTabs {
+        display: flex;
+        height: 100%;
+        flex-direction: column;
+
+        :global(.ant-tabs-content-holder) {
+            flex: 1;
+        }
+
+        :global(.ant-tabs-tabpane) {
+            height: 100%;
+        }
+    }
+}
+
+.serviceLogTable {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+
+    .top {
+        margin-bottom: 16px;
+        font-weight: 550;
+    }
+}
+
+.statusView {
+    display: flex;
+    align-items: center;
+
+    .dot {
+        width: 8px;
+        height: 8px;
+        flex-shrink: 0;
+        border-radius: 50%;
+    }
+
+    .text {
+        margin-right: 4px;
+        margin-left: 8px;
+        color: rgb(0 0 0 / 85%);
+        font-size: 14px;
+        .ellipsis-mixin();
+    }
+}
+
+.ipViewWrapper {
+    display: flex;
+    max-width: 200px;
+    align-items: center;
+
+    .firstIp {
+        overflow: hidden;
+        min-width: 0;
+        padding: 0 4px;
+        background-color: #f0f0f0;
+        border-radius: 4px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .moreTag {
+        flex-shrink: 0;
+        padding: 0 4px;
+        margin-left: 4px;
+        background-color: #f0f0f0;
+        border-radius: 4px;
+        cursor: pointer;
+        white-space: nowrap;
+    }
+}
+
+.ipPopoverContent {
+    .ipPopoverItem {
+        padding: 2px 4px;
+        margin-bottom: 4px;
+        background-color: #f0f0f0;
+        border-radius: 4px;
+    }
+}
+
+.singleLogModal {
+    .topOperate {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        margin-bottom: 16px;
+        gap: 20px;
+
+        .tipLabel {
+            height: 22px;
+            margin-bottom: 4px;
+        }
+
+        .timeRangePicker {
+            width: 300px;
+        }
+
+        .statusSelect {
+            width: 200px;
+        }
+    }
+}

@@ -1,0 +1,108 @@
+.return-wrapper {
+    display: flex;
+    max-width: 30%;
+    align-items: center;
+
+    .return-info {
+        display: flex;
+        flex-shrink: 0;
+        align-items: center;
+        cursor: pointer;
+
+        .arrow {
+            margin-right: 12px;
+            color: rgb(0 0 0 / 85%);
+        }
+    }
+
+    .divider {
+        width: 1px;
+        height: 20px;
+        flex-shrink: 0;
+        margin: 0 16px 0 12px;
+        background-color: rgb(0 0 0 / 35%);
+    }
+
+    .title {
+        font-weight: 550;
+        .ellipsis-mixin();
+    }
+}
+
+.taskBox {
+    display: flex;
+    flex-direction: column;
+
+    .taskTitle {
+        display: flex;
+        align-items: center;
+        line-height: 19px;
+
+        div {
+            &:nth-child(1) {
+                .ellipsis-mixin();
+
+                &:hover {
+                    color: @primary-color;
+                    cursor: pointer;
+                    text-decoration-line: underline;
+                }
+            }
+
+            &:nth-child(2) {
+                padding: 1px 8px;
+                margin-left: 8px;
+                background: rgb(24 144 255 / 7%);
+                border-radius: 12px;
+                color: rgb(24 144 255 / 100%);
+                font-size: 12px;
+
+                &.is-reject {
+                    display: flex;
+                    background: rgb(255 77 79 / 7%);
+                    color: rgb(255 77 79 / 100%);
+                    column-gap: 3px;
+                }
+
+                &.is-undone {
+                    display: flex;
+                    background: rgba(120 120 120 / 7%);
+                    color: rgb(120 120 120 / 100%);
+                    column-gap: 3px;
+                }
+            }
+        }
+    }
+
+    .taskContent {
+        color: rgb(0 0 0 / 45%);
+        line-height: 19px;
+        .ellipsis-mixin();
+    }
+}
+
+.opt-item {
+    display: flex;
+    overflow: hidden;
+    align-items: center;
+    column-gap: 6px;
+
+    &-icon {
+        flex-shrink: 0;
+        color: rgb(0 0 0 / 45%);
+        font-size: 24px;
+    }
+
+    &-name {
+        flex-shrink: 0;
+        color: rgb(0 0 0 / 85%);
+        font-size: 14px;
+    }
+
+    &-depart {
+        min-width: 0;
+        flex: 1;
+        color: rgb(0 0 0 / 45%);
+        font-size: 12px;
+    }
+}

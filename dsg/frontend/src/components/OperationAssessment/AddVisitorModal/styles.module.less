@@ -1,0 +1,34 @@
+.visitor-wrapper {
+    .common-title {
+        margin: -8px 0 10px;
+        color: @title-color-secondary;
+        font-size: 14px;
+        font-weight: 400;
+    }
+
+    .visitor-wrapper-title {
+        width: fit-content;
+        border-bottom: 2px solid @primary-color;
+        margin-bottom: 10px;
+        color: @primary-color;
+        font-weight: 550;
+    }
+
+    &-content {
+        display: flex;
+        overflow: hidden;
+        height: 418px;
+        border: 1px solid rgba(0 0 0 / 6%);
+
+        &-left {
+            width: 50%;
+            height: 100%;
+            border-right: 1px solid rgba(0 0 0 / 6%);
+        }
+
+        &-right {
+            width: 50%;
+            height: 100%;
+        }
+    }
+}

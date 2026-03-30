@@ -1,0 +1,256 @@
+.row-filter {
+    .option-label {
+        display: flex;
+        align-items: center;
+
+        &-name {
+            flex: 1;
+            margin-left: 4px;
+            color: @title-color-secondary;
+            .ellipsis-mixin();
+
+            &.disabled {
+                color: @disabled-color;
+            }
+        }
+    }
+
+    &-outer {
+        display: flex;
+
+        .box-operator-container {
+            position: relative;
+            display: flex;
+            width: 40px;
+            align-items: center;
+            border-left: 2px solid rgb(18 110 227 / 20%);
+            margin-bottom: 16px;
+            margin-left: 16px;
+
+            .box-operator {
+                position: absolute;
+                z-index: 1;
+                left: -18px;
+                display: flex;
+                width: 36px;
+                height: 24px;
+                flex-shrink: 0;
+                align-items: center;
+                justify-content: center;
+
+                .op-select {
+                    z-index: 2;
+                    background: #dceafb;
+                    border-radius: 2px;
+                    color: #126ee3;
+                    font-size: 14px;
+
+                    :global {
+                        .any-fabric-ant-select-selector {
+                            padding: 0 4px;
+
+                            .any-fabric-ant-select-selection-item {
+                                padding-right: 12px;
+                            }
+                        }
+
+                        .any-fabric-ant-select-item {
+                            padding: 5px 11px;
+                        }
+
+                        .any-fabric-ant-select-arrow {
+                            z-index: -1;
+                            right: 4px;
+                            color: rgb(18 110 227 / 100%);
+                        }
+                    }
+                }
+            }
+        }
+
+        .groups-container {
+            width: 100%;
+
+            .group-container {
+                display: flex;
+                padding: 16px;
+                padding-bottom: 0;
+                border: 1px solid rgb(0 0 0 / 10%);
+                margin-bottom: 16px;
+                border-radius: 3px;
+
+                .inner-line {
+                    flex: 1;
+
+                    .space {
+                        display: flex;
+                        width: 100%;
+
+                        .tempInput {
+                            display: flex;
+                            align-items: center;
+
+                            & > span {
+                                margin-bottom: 24px;
+                            }
+                        }
+
+                        :global {
+                            .any-fabric-ant-space-item {
+                                &:nth-child(1) {
+                                    width: 0;
+                                    flex: 1;
+                                }
+
+                                &:nth-child(2) {
+                                    width: 0;
+                                    flex: 1;
+                                }
+
+                                &:nth-child(3) {
+                                    flex: 2;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                .box-operator {
+                    display: flex;
+                    // width: 100%;
+                    height: auto;
+                    align-items: center;
+                    border-left: 2px solid rgb(18 110 227 / 20%);
+                    margin-left: 16px;
+
+                    .op-select {
+                        z-index: 2;
+                        margin-left: calc(-50% - 5px);
+                        background: #dceafb;
+                        border-radius: 2px;
+                        color: #126ee3;
+                        font-size: 14px;
+
+                        :global {
+                            .any-fabric-ant-select-selector {
+                                padding: 0 4px;
+
+                                .any-fabric-ant-select-selection-item {
+                                    padding-right: 12px;
+                                }
+                            }
+
+                            .any-fabric-ant-select-item {
+                                padding: 5px 11px;
+                            }
+
+                            .any-fabric-ant-select-arrow {
+                                z-index: -1;
+                                right: 4px;
+                                color: rgb(18 110 227 / 100%);
+                            }
+                        }
+                    }
+                }
+
+                // .space {
+                //     &:last-child {
+                //         :global {
+                //             .any-fabric-ant-form-item {
+                //                 margin-bottom: 0;
+                //             }
+                //         }
+                //     }
+                // }
+
+                // &:last-child {
+                //     margin-bottom: 0;
+                // }
+            }
+        }
+
+        .groups-container-with-operator {
+            width: calc(100% - 56px);
+        }
+    }
+
+    &-add {
+        // margin-top: 16px;
+    }
+
+    .line-btns {
+        display: flex;
+        align-items: center;
+        column-gap: 10px;
+    }
+}
+
+.limit-content-wrapper {
+    :global {
+        .any-fabric-ant-select-selector {
+            overflow-x: hidden;
+        }
+    }
+
+    .rowWrapper {
+        display: flex;
+        height: 32px;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 12px;
+        color: rgb(0 0 0 / 45%);
+
+        .totle {
+            margin: 0 4px;
+            color: #126ee3;
+        }
+    }
+
+    .selectOpWrapper {
+        position: relative;
+        display: flex;
+        justify-content: space-between;
+
+        .selectOpLabel {
+            position: absolute;
+            z-index: 9;
+            right: 0;
+            left: 16px;
+            display: inline-block;
+            overflow: hidden;
+            width: calc(100% - 80px);
+            margin-top: 2px;
+            text-overflow: ellipsis;
+        }
+
+        .selectProgress {
+            width: calc(100% - 54px);
+
+            :global {
+                .any-fabric-ant-progress-outer {
+                    padding-right: 0;
+                    margin-right: 0;
+                }
+            }
+        }
+
+        .selectPercent {
+            position: absolute;
+            right: 16px;
+            display: inline-block;
+            width: 50px;
+            color: rgb(0 0 0 / 65%);
+            font-size: 12px;
+            text-align: right;
+            .ellipsis-mixin();
+        }
+    }
+
+    .explorationAuto {
+        :global {
+            .any-fabric-ant-select-selection-placeholder {
+                width: 100px;
+            }
+        }
+    }
+}

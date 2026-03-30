@@ -1,0 +1,230 @@
+.access-tree {
+    display: flex;
+    overflow: auto;
+    height: 100%;
+    flex-direction: column;
+
+    &-switcher {
+        padding: 20px 0 0;
+        text-align: center;
+
+        :global {
+            .any-fabric-ant-radio-group {
+                label {
+                    width: 90px;
+                }
+            }
+        }
+    }
+
+    &-content {
+        display: flex;
+        overflow: hidden;
+        flex: 1;
+        flex-direction: column;
+    }
+}
+
+.itemview-wrapper {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    line-height: 30px;
+
+    .itemview-icon {
+        display: grid;
+        align-self: center;
+        padding-right: 6px;
+        font-size: 16px;
+    }
+
+    &-nodename {
+        display: inline-block;
+        overflow: hidden;
+        max-width: calc(100% - 14px);
+        flex: 1;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+}
+
+:global {
+    .any-fabric-ant-tree .any-fabric-ant-tree-treenode {
+        padding-right: 6px !important;
+    }
+}
+
+.domain-tree {
+    height: 100%;
+
+    .search-wrapper {
+        overflow-y: auto;
+
+        .checked {
+            .search-item {
+                background-color: #ecf5ff !important;
+            }
+        }
+
+        :global {
+            .any-fabric-ant-collapse-header {
+                position: relative;
+                padding: 8px 20px !important;
+                color: #666 !important;
+
+                &::after {
+                    position: absolute;
+                    bottom: 0;
+                    left: 16px;
+                    width: calc(100% - 32px);
+                    height: 1px;
+                    background-color: #eee;
+                    content: '';
+                }
+            }
+
+            .any-fabric-ant-collapse-content-box {
+                padding: 0 !important;
+            }
+        }
+
+        &-list {
+            .search-item {
+                display: flex;
+                align-items: flex-start;
+                padding: 10px 16px 10px 38px;
+                cursor: pointer;
+                font-size: 14px;
+
+                &:hover {
+                    background-color: #eff0f3;
+                }
+
+                &-icon {
+                    padding-right: 6px;
+                }
+
+                &-right {
+                    display: flex;
+                    width: calc(100% - 24px);
+                    align-items: center;
+                    justify-content: space-between;
+                }
+
+                &-content {
+                    width: 100%;
+                    flex: 1;
+                    .ellipsis-mixin();
+
+                    &-name {
+                        overflow: hidden;
+                        font-weight: 500;
+                        text-overflow: ellipsis;
+                    }
+
+                    &-path {
+                        overflow: hidden;
+                        margin-top: 2px;
+                        color: #999;
+                        font-size: 12px;
+                        text-overflow: ellipsis;
+                    }
+                }
+
+                &-opt {
+                    padding: 2px 4px;
+                }
+
+                :global {
+                    .any-fabric-ant-badge-dot {
+                        margin-top: 16px !important;
+                    }
+
+                    .any-fabric-anticon {
+                        font-size: 16px;
+                    }
+
+                    .any-fabric-ant-collapse-arrow {
+                        margin-right: 10px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.architecture-tree {
+    height: 100%;
+
+    .search-wrapper {
+        overflow-y: auto;
+
+        .checked {
+            .search-item {
+                background-color: #ecf5ff !important;
+            }
+        }
+
+        .search-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 14px;
+
+            &:hover {
+                background-color: #eff0f3;
+            }
+
+            &-icon {
+                padding-right: 8px;
+            }
+
+            &-right {
+                display: flex;
+                width: calc(100% - 24px);
+                align-items: center;
+                justify-content: space-between;
+            }
+
+            &-content {
+                width: 100%;
+                flex: 1;
+                .ellipsis-mixin();
+
+                &-name {
+                    overflow: hidden;
+                    color: rgba(0 0 0 / 85%);
+                    font-weight: 500;
+                    text-overflow: ellipsis;
+                }
+
+                &-path {
+                    overflow: hidden;
+                    margin-top: 4px;
+                    color: rgba(0 0 0 / 45%);
+                    font-size: 12px;
+                    text-overflow: ellipsis;
+                }
+            }
+
+            &-opt {
+                padding: 2px 4px;
+            }
+
+            :global {
+                .any-fabric-ant-badge-dot {
+                    margin-top: 16px !important;
+                }
+
+                .any-fabric-anticon {
+                    font-size: 16px;
+                }
+
+                .any-fabric-ant-collapse-arrow {
+                    margin-right: 10px;
+                }
+            }
+        }
+    }
+}

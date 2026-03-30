@@ -1,0 +1,228 @@
+{
+    "connectorName": "sqlserver",
+    "schemaExist": true,
+    "url": "jdbc:sqlserver://",
+    "type": [
+        {
+            "sourceType": "TINYINT",
+            "olkSearchType": "TINYINT",
+            "olkWriteType": "TINYINT",
+            "precisionFlag": 0
+        },
+        {
+            "sourceType": "SMALLINT",
+            "olkSearchType": "SMALLINT",
+            "olkWriteType": "SMALLINT",
+            "precisionFlag": 0
+        },
+        {
+            "sourceType": "INT",
+            "olkSearchType": "INT",
+            "olkWriteType": "INT",
+            "precisionFlag": 0
+        },
+        {
+            "sourceType": "BIGINT",
+            "olkSearchType": "BIGINT",
+            "olkWriteType": "BIGINT",
+            "precisionFlag": 0
+        },
+        {
+            "sourceType": "FLOAT",
+            "olkSearchType": "REAL",
+            "olkWriteType": "REAL",
+            "precisionFlag": 0
+        },
+        {
+            "sourceType": "REAL",
+            "olkSearchType": "REAL",
+            "olkWriteType": "REAL",
+            "precisionFlag": 0
+        },
+        {
+            "sourceType": "",
+            "olkSearchType": "DOUBLE",
+            "olkWriteType": "FLOAT",
+            "precisionFlag": 0
+        },
+        {
+            "sourceType": "DECIMAL",
+            "olkSearchType": "DECIMAL",
+            "olkWriteType": "DECIMAL",
+            "precisionFlag": 2,
+            "minTypeLength": 1,
+            "maxTypeLength": 38
+        },
+        {
+            "sourceType": "NUMERIC",
+            "olkSearchType": "NUMERIC",
+            "olkWriteType": "DECIMAL",
+            "precisionFlag": 2,
+            "minTypeLength": 1,
+            "maxTypeLength": 38
+        },
+        {
+            "sourceType": "BIT",
+            "olkSearchType": "BOOLEAN",
+            "olkWriteType": "BIT",
+            "precisionFlag": 0
+        },
+        {
+            "sourceType": "DATE",
+            "olkSearchType": "DATE",
+            "olkWriteType": "DATE",
+            "precisionFlag": 0
+        },
+        {
+            "sourceType": "TIME",
+            "olkSearchType": "TIME",
+            "olkWriteType": "TIME",
+            "precisionFlag": 0
+        },
+        {
+            "sourceType": "TIMESTAMP",
+            "olkSearchType": "",
+            "olkWriteType": "",
+            "precisionFlag": 0
+        },
+        {
+            "sourceType": "DATETIME",
+            "olkSearchType": "TIMESTAMP",
+            "olkWriteType": "DATETIME",
+            "precisionFlag": 0
+        },
+        {
+            "sourceType": "DATETIME2",
+            "olkSearchType": "",
+            "olkWriteType": "",
+            "precisionFlag": 0
+        },
+        {
+            "sourceType": "SMALLDATETIME",
+            "olkSearchType": "TIMESTAMP",
+            "olkWriteType": "DATETIME",
+            "precisionFlag": 0
+        },
+        {
+            "sourceType": "DATETIMEOFFSET",
+            "olkSearchType": "",
+            "olkWriteType": "",
+            "precisionFlag": 0
+        },
+        {
+            "sourceType": "CHAR",
+            "olkSearchType": "CHAR",
+            "olkWriteType": "NCHAR",
+            "precisionFlag": 1,
+            "minTypeLength": 1,
+            "maxTypeLength": 4000
+        },
+        {
+            "sourceType": "NCHAR",
+            "olkSearchType": "VARCHAR",
+            "olkWriteType": "NVARCHAR",
+            "precisionFlag": 1
+        },
+        {
+            "sourceType": "VARCHAR",
+            "olkSearchType": "VARCHAR",
+            "olkWriteType": "NVARCHAR",
+            "precisionFlag": 1
+        },
+        {
+            "sourceType": "TEXT",
+            "olkSearchType": "VARCHAR",
+            "olkWriteType": "NVARCHAR(max)",
+            "precisionFlag": 0
+        },
+        {
+            "sourceType": "NVARCHAR",
+            "olkSearchType": "VARCHAR",
+            "olkWriteType": "NVARCHAR",
+            "precisionFlag": 1
+        },
+        {
+            "sourceType": "NTEXT",
+            "olkSearchType": "VARCHAR",
+            "olkWriteType": "NVARCHAR(max)"
+        },
+        {
+            "sourceType": "BINARY",
+            "olkSearchType": "VARBINARY",
+            "olkWriteType": "VARBINARY",
+            "precisionFlag": 0
+        },
+        {
+            "sourceType": "VARBINARY",
+            "olkSearchType": "VARBINARY",
+            "olkWriteType": "VARBINARY",
+            "precisionFlag": 0
+        },
+        {
+            "sourceType": "IMAGE",
+            "olkSearchType": "",
+            "olkWriteType": "",
+            "precisionFlag": 0
+        },
+        {
+            "sourceType": "UNIQUEIDENTIFIER",
+            "olkSearchType": "",
+            "olkWriteType": "",
+            "precisionFlag": 0
+        },
+        {
+            "sourceType": "MONEY",
+            "olkSearchType": "",
+            "olkWriteType": "",
+            "precisionFlag": 0
+        },
+        {
+            "sourceType": "SMALLMONEY",
+            "olkSearchType": "",
+            "olkWriteType": "",
+            "precisionFlag": 0
+        },
+        {
+            "sourceType": "XML",
+            "olkSearchType": "",
+            "olkWriteType": "",
+            "precisionFlag": 0
+        },
+        {
+            "sourceType": "GEOGRAPHY",
+            "olkSearchType": "",
+            "olkWriteType": "",
+            "precisionFlag": 0
+        },
+        {
+            "sourceType": "GEOMETRY",
+            "olkSearchType": "",
+            "olkWriteType": "",
+            "precisionFlag": 0
+        },
+        {
+            "sourceType": "HIERARCHYID",
+            "olkSearchType": "",
+            "olkWriteType": "",
+            "precisionFlag": 0
+        },
+        {
+            "sourceType": "SQL_VARIANT",
+            "olkSearchType": "",
+            "olkWriteType": "",
+            "precisionFlag": 0
+        },
+        {
+            "sourceType": "SYSNAME",
+            "olkSearchType": "",
+            "olkWriteType": "",
+            "precisionFlag": 0
+        },
+        {
+            "sourceType": "CURSOR",
+            "olkSearchType": "",
+            "olkWriteType": "",
+            "precisionFlag": 0
+        }
+    ]
+}

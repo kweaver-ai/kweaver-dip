@@ -1,0 +1,482 @@
+.drawerHeader {
+    display: flex;
+    height: 52px;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: space-between;
+    background: #fff;
+    box-shadow: 0 2px 10px 6px rgb(0 0 0 / 5%);
+
+    &.inFullScreen {
+        justify-content: left;
+    }
+
+    .middle {
+        display: flex;
+        height: 100%;
+        align-items: flex-end;
+        justify-content: center;
+    }
+
+    .titleText {
+        overflow: hidden;
+        max-width: 400px;
+        font-weight: 550;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .close {
+        width: 28px;
+        flex-shrink: 0;
+        margin-right: -6px;
+        color: rgb(0 0 0 / 40%);
+        transition: color 0.3s;
+
+        &:hover {
+            color: rgb(0 0 0 / 75%);
+            cursor: pointer;
+        }
+    }
+
+    .returnWrappper {
+        display: flex;
+        align-items: center;
+        column-gap: 12px;
+
+        .returnInfo {
+            display: flex;
+            flex-shrink: 0;
+            align-items: center;
+            padding-left: 20px;
+            cursor: pointer;
+
+            .returnText {
+                margin-left: 10px;
+            }
+        }
+
+        .titleIcon {
+            display: flex;
+            align-items: center;
+            font-size: 20px;
+        }
+    }
+
+    .divider {
+        width: 1px;
+        height: 15px;
+        border: 1px solid rgb(0 0 0 / 35%);
+    }
+}
+
+.details {
+    display: flex;
+    overflow: hidden;
+    min-width: 1060px;
+    height: 0;
+    min-height: 0;
+    flex: 1;
+    flex-direction: column;
+    background: #f0f2f6;
+
+    .tabs {
+        padding: 0 24px;
+
+        :global {
+            .any-fabric-ant-tabs-nav {
+                margin-bottom: 0;
+
+                &::before {
+                    display: none;
+                }
+            }
+        }
+    }
+
+    .bottom {
+        display: flex;
+        overflow: auto hidden;
+        min-width: 0;
+        height: 0;
+        min-height: 0;
+        flex: 1;
+        flex-direction: column;
+        padding: 24px;
+
+        .content {
+            display: flex;
+            height: 0;
+            min-height: 0;
+            flex: 1;
+            padding: 24px 24px 24px 32px;
+            background: #fff;
+            border-radius: 4px;
+        }
+    }
+}
+
+.detailsContentWrapper {
+    overflow: auto;
+    flex-grow: 1;
+
+    .detailsContent {
+        width: 100%;
+        min-width: 1268px;
+    }
+
+    .group {
+        margin: 16px 32px;
+    }
+
+    .subGroup {
+        margin: -8px -8px 24px;
+    }
+
+    .subRenderGroup {
+        display: flex;
+        flex-direction: column;
+        margin: 0 0 32px;
+    }
+
+    .filterRule {
+        display: flex;
+        width: 100%;
+        min-height: 22px;
+        flex-direction: column;
+    }
+
+    .pushFieldDetail {
+        display: flex;
+        flex-direction: column;
+
+        .paginationTable {
+            z-index: 1;
+            padding-top: 16px;
+            margin-right: -10px;
+            background: #fff;
+        }
+    }
+
+    .pushField {
+        display: flex;
+        column-gap: 6px;
+
+        .fieldTable {
+            display: flex;
+            width: calc(50% - 12px);
+            flex-direction: column;
+
+            .fieldTableTitle {
+                position: sticky;
+                z-index: 1;
+                top: 38px;
+                display: flex;
+                height: 30px;
+                align-items: center;
+                justify-content: space-between;
+                padding-bottom: 8px;
+                background: #fff;
+                color: rgb(0 0 0 / 45%);
+                font-size: 14px;
+            }
+
+            .privacyProtection {
+                display: flex;
+                align-items: center;
+                color: rgb(0 0 0 / 65%);
+                column-gap: 4px;
+            }
+        }
+
+        .pushFieldTable {
+            :global {
+                .any-fabric-ant-table-thead {
+                    position: sticky;
+                    z-index: 1;
+                    top: 68px;
+                }
+            }
+
+            .tableRow {
+                > td {
+                    height: 63px;
+                }
+
+                .name_desc {
+                    display: flex;
+                    align-items: center;
+
+                    .primaryKey {
+                        flex-shrink: 0;
+                        padding: 2px 6px 2px 5px;
+                        margin-left: 8px;
+                        background: rgb(24 144 255 / 7%);
+                        border-radius: 4px;
+                        color: #1890ff;
+                        font-size: 12px;
+                    }
+                }
+
+                .twoLine {
+                    display: flex;
+                    flex-direction: column;
+
+                    .firstLine,
+                    .secondLine {
+                        color: rgb(0 0 0 / 85%);
+                        .ellipsis-line(1);
+                    }
+                }
+
+                .deRuleWrap {
+                    display: flex;
+                    align-items: center;
+                    word-break: keep-all;
+
+                    .deRule {
+                        .ellipsis-line(1);
+                    }
+                }
+            }
+        }
+
+        .arrowArr {
+            display: flex;
+            width: 24px;
+            flex-direction: column;
+
+            .place {
+                position: sticky;
+                z-index: 1;
+                top: 38px;
+                height: 71px;
+                background: #fff;
+            }
+
+            .arrows {
+                display: flex;
+                flex-direction: column;
+
+                .arrowItem {
+                    display: flex;
+                    height: 63px;
+                    align-items: center;
+                    justify-content: center;
+                    color: rgb(0 0 0 / 45%);
+                }
+            }
+        }
+    }
+}
+
+.singleMonitorTable {
+    display: flex;
+    min-height: 0;
+    flex: 1;
+    flex-direction: column;
+
+    .top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 16px;
+
+        .leftOperate {
+            display: flex;
+            align-items: center;
+
+            &-title {
+                color: rgb(0 0 0 / 85%);
+                font-size: 14px;
+                font-weight: 550;
+            }
+
+            &-btn {
+                margin-right: 12px;
+            }
+
+            .time {
+                color: rgb(0 0 0 / 45%);
+                font-size: 14px;
+                line-height: 22px;
+            }
+        }
+    }
+
+    .loader {
+        margin-top: 104px;
+    }
+
+    .pagination {
+        margin-top: 16px;
+    }
+
+    .tableRow {
+        .a_name {
+            &:hover {
+                color: #126ee3;
+                cursor: pointer;
+                text-decoration: underline;
+            }
+        }
+
+        .name_desc {
+            display: flex;
+            align-items: center;
+        }
+
+        .twoLine {
+            display: flex;
+            flex-direction: column;
+
+            .firstLine,
+            .secondLine {
+                color: rgb(0 0 0 / 85%);
+                .ellipsis-line(1);
+            }
+
+            .link {
+                margin-right: 4px;
+
+                &:hover {
+                    color: #126ee3;
+                    cursor: pointer;
+                    text-decoration-line: underline;
+                }
+            }
+
+            .gray {
+                color: rgb(0 0 0 / 45%);
+            }
+
+            .label_name {
+                min-width: 56px;
+            }
+        }
+
+        .schedulePlan {
+            display: flex;
+            align-items: center;
+
+            .planIcon {
+                display: flex;
+                width: 20px;
+                height: 20px;
+                align-items: center;
+                justify-content: center;
+                margin-left: 8px;
+                border-radius: 3px;
+                cursor: pointer;
+
+                &:hover {
+                    background: rgb(0 0 0 / 4%);
+                }
+            }
+
+            :global {
+                .any-fabric-ant-popover-open {
+                    background: rgb(0 0 0 / 4%);
+                }
+            }
+        }
+    }
+}
+
+.dataPushAnchor {
+    position: relative;
+    width: 104px;
+    flex-shrink: 0;
+    margin-left: 32px;
+}
+
+.previewDesensitizedTable {
+    display: flex;
+    overflow: hidden;
+    min-width: 200px;
+    max-width: 600px;
+    height: 100%;
+    min-height: 200px;
+    flex-direction: column;
+    row-gap: 16px;
+
+    .title {
+        height: 20px;
+        font-weight: 550;
+    }
+
+    .sampleTable {
+        .tableTDContnet {
+            display: flex;
+            // 设计规定最宽345px-左右padding之和32px=313px
+            max-width: 313px;
+            align-items: center;
+
+            .ellipsis-mixin();
+
+            .nameIcon {
+                margin-right: 4px;
+            }
+
+            &.subTableTDContnet {
+                margin-top: -2px;
+                color: rgb(0 0 0 / 45%);
+                font-size: 12px;
+                font-weight: normal;
+            }
+
+            .businessTitle {
+                .ellipsis-mixin();
+            }
+        }
+
+        :global {
+            .any-fabric-ant-table-content {
+                overflow-x: auto;
+
+                > table {
+                    width: auto;
+                    min-width: 100%;
+                }
+            }
+
+            th {
+                > div {
+                    // 设计规定最宽345px-左右padding之和32px=313px
+                    max-width: 313px;
+                }
+            }
+
+            .any-fabric-ant-table-tbody > tr > td {
+                user-select: none;
+            }
+        }
+    }
+
+    :global {
+        th {
+            background: rgb(0 55 150 / 4%);
+            color: #003796;
+
+            &::before {
+                border-right: 1px solid #d9d9d9;
+            }
+
+            div {
+                .ellipsis-mixin();
+            }
+        }
+
+        td {
+            color: rgb(0 0 0 / 65%);
+        }
+
+        .any-fabric-ant-table-cell {
+            .any-fabric-ant-tag {
+                background: rgb(214 221 237 / 25%);
+                border-radius: 2px;
+                color: #6b798d;
+            }
+        }
+    }
+}

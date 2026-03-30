@@ -1,0 +1,46 @@
+.access-select {
+    font-size: 14px;
+
+    .access-checkbox {
+        width: 100%;
+
+        .line {
+            display: flex;
+            height: 36px;
+            line-height: 36px;
+
+            > * {
+                flex: 1;
+                justify-content: center;
+                text-align: center;
+            }
+
+            :global {
+                .any-fabric-ant-checkbox-wrapper {
+                    margin-left: 8px;
+                }
+            }
+
+            > span {
+                color: rgba(0 0 0 / 85%);
+            }
+
+            &:first-child {
+                span {
+                    color: rgba(0 0 0 / 65%);
+                }
+            }
+        }
+    }
+
+    .select-switcher {
+        text-align: right;
+
+        span {
+            display: inline-block;
+            padding: 2px 16px 4px;
+            color: rgb(18 110 227);
+            cursor: pointer;
+        }
+    }
+}

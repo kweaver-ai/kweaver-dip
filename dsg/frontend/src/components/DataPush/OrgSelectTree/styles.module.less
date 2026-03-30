@@ -1,0 +1,61 @@
+.orgAndDepartWrapper {
+    .itemview-wrapper {
+        display: flex;
+        width: 100%;
+        align-items: center;
+        line-height: 30px;
+
+        .itemview-icon {
+            display: grid;
+            align-self: center;
+            padding-right: 6px;
+            font-size: 16px;
+        }
+
+        &-nodename {
+            display: inline-block;
+            overflow: hidden;
+            flex: 1;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    }
+
+    .topTitle {
+        margin-left: 6px;
+        font-weight: 700;
+    }
+
+    .treeSelectWrapper {
+        overflow: scroll;
+        width: 240px;
+        max-height: 226px;
+    }
+
+    :global {
+        .any-fabric-ant-tree {
+            display: flex;
+            overflow: unset !important;
+            width: 100%;
+            flex-direction: column;
+        }
+
+        .any-fabric-ant-tree-treenode-selected {
+            background-color: #e6f8ff !important;
+        }
+
+        .any-fabric-ant-tree-list {
+            display: flex;
+
+            .any-fabric-ant-tree-list-holder {
+                flex: 1;
+            }
+        }
+
+        .any-fabric-ant-tree-treenode:first-child {
+            .any-fabric-ant-tree-switcher {
+                display: none;
+            }
+        }
+    }
+}

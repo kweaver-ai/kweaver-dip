@@ -1,0 +1,338 @@
+.graphContentWrap {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    background: #f6f9fb;
+
+    :global {
+        // 隐藏画布的滚动条
+        .x6-graph-scroller::-webkit-scrollbar {
+            width: 0; /* 设置滚动条宽度 */
+            height: 0;
+            background: #f6f9fb;
+        }
+
+        .x6-graph-scroller::-webkit-scrollbar-thumb {
+            width: 0; /* 设置滚动条宽度 */
+            height: 0;
+            background: #f6f9fb;
+        }
+
+        .any-fabric-ant-tabs-nav {
+            margin: 0;
+        }
+    }
+
+    .sceneGraphContainer {
+        width: 100%;
+        height: calc(100vh - 52px);
+    }
+
+    .loadingGraph {
+        position: absolute;
+        width: 100%;
+        .center();
+    }
+
+    .emptyGraph {
+        position: absolute;
+        display: flex;
+        width: 100%;
+        justify-content: center;
+        margin-top: 120px;
+        text-align: center;
+    }
+
+    .bottom {
+        display: flex;
+        height: 100%;
+        flex-direction: column;
+        background: #fff;
+
+        .bottomTit {
+            display: flex;
+            height: 40px;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px 8px;
+            border-bottom: 1px solid rgb(0 0 0 / 6%);
+            color: #000;
+            font-size: 14px;
+            font-weight: 550;
+
+            .bottomDescWrap {
+                display: flex;
+                max-width: 60%;
+                align-items: center;
+                color: rgb(0 0 0 / 85%);
+                font-weight: 550;
+
+                .bottomDesc {
+                    display: flex;
+                    align-items: center;
+                    color: rgb(0 0 0 / 65%);
+                    font-weight: 400;
+
+                    .bottomDescName {
+                        .ellipsis-line(1);
+                    }
+                }
+            }
+
+            .btnWrap {
+                display: flex;
+                align-items: center;
+
+                .expandIcon {
+                    display: flex;
+                    width: 24px;
+                    height: 24px;
+                    align-items: center;
+                    justify-content: center;
+                    color: rgb(0 0 0 / 85%);
+                    cursor: pointer;
+                    font-size: 14px;
+
+                    &:hover {
+                        background: #f5f5f5;
+                    }
+                }
+
+                .expandIconDisabled {
+                    color: rgb(0 0 0 / 25%);
+                    cursor: not-allowed;
+                }
+            }
+        }
+
+        .bottomList {
+            margin: 16px 24px;
+
+            :global {
+                .any-fabric-ant-table-tbody > tr > td {
+                    user-select: none;
+                }
+            }
+        }
+
+        .empty {
+            .center();
+        }
+    }
+
+    .rightContainer {
+        height: calc(100vh - 52px);
+        background-color: #fff;
+
+        .rightExtra {
+            margin-right: 12px;
+
+            .cleanIcon {
+                display: flex;
+                align-items: center;
+                padding-right: 12px;
+                font-size: 14px;
+
+                .icon {
+                    display: flex;
+                    width: 24px;
+                    height: 24px;
+                    align-items: center;
+                    justify-content: center;
+                    cursor: pointer;
+
+                    &:hover {
+                        background: #f5f5f5;
+                        border-radius: 4px;
+                    }
+                }
+            }
+        }
+
+        :global .any-fabric-ant-tabs {
+            height: 100%;
+
+            > .any-fabric-ant-tabs-nav .any-fabric-ant-tabs-nav-wrap {
+                padding: 8px 0 0 12px;
+            }
+
+            .any-fabric-ant-tabs-nav-list {
+                position: relative;
+                top: -1px;
+            }
+
+            .any-fabric-ant-tabs-content {
+                height: 100%;
+            }
+
+            .any-fabric-ant-tabs-tabpane {
+                height: 100%;
+            }
+
+            .any-fabric-ant-tabs-nav {
+                border-bottom: 8px solid #f0f2f6;
+            }
+        }
+
+        :global .any-fabric-ant-tabs-card > .any-fabric-ant-tabs-nav {
+            .any-fabric-ant-tabs-tab {
+                border: none;
+                background-color: #fff;
+
+                &:hover {
+                    background-color: rgb(240 242 246 / 65%);
+                    color: #000;
+                }
+            }
+
+            .any-fabric-ant-tabs-tab-active {
+                border: none;
+                background-color: rgb(240 242 246 / 100%);
+
+                .any-fabric-ant-tabs-tab-btn {
+                    color: #000;
+                }
+            }
+        }
+
+        .tabLabelContainer {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0;
+
+            .tabLabelText {
+                width: 146px;
+                .ellipsis-mixin();
+
+                &:hover {
+                    color: #000;
+                }
+            }
+        }
+    }
+}
+
+.notFoundWraper {
+    .center();
+}
+
+.ldWrap {
+    display: flex !important;
+    .center();
+}
+
+@keyframes shrink {
+    0% {
+        top: 20%;
+        opacity: 1;
+    }
+
+    100% {
+        top: 54px;
+        display: none;
+        opacity: 0;
+    }
+}
+
+@keyframes expand {
+    0% {
+        top: 10%;
+        opacity: 0.3;
+    }
+
+    100% {
+        top: 15%;
+        opacity: 1;
+    }
+}
+
+.fusionGraphView {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.toolWrapper {
+    display: inline-flex;
+    width: fit-content;
+    height: 44px;
+    align-items: center;
+    justify-content: center;
+    padding: 6px;
+    background: rgb(255 255 255 / 100%);
+    border-radius: 3px;
+    color: rgb(0 0 0 / 40%);
+
+    &:hover {
+        background: rgb(255 255 255 / 100%) !important;
+        color: rgb(0 0 0 / 80%);
+    }
+
+    &.smallMode {
+        height: 32px;
+
+        .toolbarContent {
+            .toolIcon {
+                font-size: 24px;
+            }
+        }
+    }
+
+    .toolbarContent {
+        display: inline-flex;
+        height: 32px;
+        align-items: center;
+
+        .toolIcon {
+            font-size: 32px;
+
+            .toolButton {
+                display: block;
+            }
+
+            .iconEnabled {
+                color: @title-color-secondary;
+
+                &:hover {
+                    background-color: rgb(0 0 0 / 4%);
+                }
+            }
+
+            .iconDisabled {
+                display: flex !important;
+                color: @disabled-color;
+                cursor: default !important;
+            }
+
+            .toolSelectSize {
+                display: flex;
+                height: 32px;
+                align-items: center;
+                padding: 0 10px;
+            }
+        }
+
+        .toolButtonSpace {
+            margin-right: 10px;
+        }
+
+        .toolSplit {
+            width: 10px;
+
+            .toolSplitLine {
+                width: 1px;
+                height: 16px;
+                border: 1px solid rgb(0 0 0 / 15%);
+                margin-left: 10px;
+            }
+        }
+    }
+
+    .divider {
+        width: 1px;
+        height: 16px;
+        margin: 0 8px;
+        background: rgb(0 0 0 / 15%);
+    }
+}

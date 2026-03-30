@@ -1,0 +1,4 @@
+# 只忽略不需要的文件
+README.md
+build.sh
+.dockerignore

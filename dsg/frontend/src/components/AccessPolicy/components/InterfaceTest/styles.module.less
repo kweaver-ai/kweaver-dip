@@ -1,0 +1,106 @@
+.serviceTest {
+    border: 1px solid #d9d9d9;
+
+    .formInfoContent {
+        position: relative;
+
+        .label {
+            color: rgb(0 0 0 / 65%);
+        }
+
+        .name {
+            // display: inline-block;
+            max-width: calc(100% - 80px);
+            // .ellipsis-mixin();
+            word-break: break-all;
+        }
+
+        .itemInfo {
+            display: flex;
+            margin: 16px 0;
+
+            .itemRight {
+                margin-left: 40px;
+            }
+        }
+
+        .title {
+            position: relative;
+            padding-left: 15px;
+            margin-bottom: 16px;
+            font-size: 14px;
+            font-weight: 550;
+
+            &::before {
+                position: absolute;
+                top: 50%;
+                left: 0;
+                width: 3px;
+                height: 20px;
+                background: #126ee3;
+                content: '';
+                transform: translateY(-50%);
+            }
+        }
+
+        .JsonContainer {
+            margin-bottom: 16px;
+
+            .successTip {
+                margin-right: 8px;
+                color: rgb(86 196 26 / 100%);
+            }
+
+            .errorTip {
+                margin-right: 8px;
+                color: rgb(255 77 79 / 100%);
+            }
+        }
+
+        .btn {
+            width: 110px;
+            height: 32px;
+            border: 1px solid #126ee3;
+            margin-top: 16px;
+            float: right;
+        }
+
+        :global {
+            .any-fabric-ant-form-item {
+                margin-bottom: 0;
+            }
+
+            .any-fabric-ant-row {
+                margin: 0 !important;
+            }
+
+            .any-fabric-ant-col {
+                padding: 16px;
+            }
+
+            .any-fabric-ant-table-thead > tr > th {
+                border: none !important;
+                background: transparent !important;
+            }
+        }
+    }
+}
+
+.jsonPreviewContainer {
+    width: 100%;
+    height: 250px;
+    padding: 16px;
+    background: rgb(240 242 246 / 45%);
+    border-radius: 4px;
+    overflow-y: auto;
+
+    .previewEmpty {
+        margin-top: -30px;
+    }
+
+    .emptyText {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+}

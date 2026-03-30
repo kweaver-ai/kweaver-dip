@@ -1,0 +1,187 @@
+.multipleSelectWrapper {
+    width: 100%;
+
+    :global {
+        .any-fabric-ant-dropdown-menu-item {
+            padding: 0;
+            cursor: initial;
+
+            &:hover {
+                background: #fff;
+            }
+        }
+
+        .any-fabric-ant-dropdown {
+            width: 100%;
+
+            .any-fabric-ant-dropdown-menu-title-content {
+                width: 100%;
+            }
+        }
+    }
+
+    .selectedText {
+        display: flex;
+        height: 32px;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 12px;
+        border: 1px solid #d9d9d9;
+        background-color: #fff;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+
+        &:hover {
+            border-color: #1890ff;
+
+            .hasData {
+                .down {
+                    display: none;
+                }
+
+                .close {
+                    display: inline-block;
+                }
+            }
+        }
+
+        .dropIcon {
+            color: @input-placeholder-color;
+            font-size: 12px;
+
+            .close {
+                display: none;
+            }
+        }
+
+        .filterText {
+            color: @input-placeholder-color;
+            .ellipsis-mixin();
+        }
+
+        .selectedTagBox {
+            display: flex;
+
+            .selectedTag {
+                display: flex;
+                height: 24px;
+                align-items: center;
+                padding: 0 8px;
+                border: 1px solid rgb(0 0 0 / 6%);
+                margin-right: 4px;
+                background: #f5f5f5;
+                border-radius: 4px;
+
+                .selectedTagName {
+                    display: inline-block;
+                    max-width: 102px;
+                    margin-right: 8px;
+                    font-size: 12px;
+                    .ellipsis-mixin();
+                }
+
+                .selectedTagIcon {
+                    cursor: pointer;
+                    font-size: 12px;
+                }
+
+                &.moreBtn:hover {
+                    background: rgb(18 110 227 / 10%);
+                    color: rgb(18 110 227 / 100%);
+                }
+            }
+        }
+    }
+
+    .dropdownOverlay {
+        .dropdownTitle,
+        .dropdownInput {
+            padding: 0 12px;
+            margin-bottom: 6px;
+            color: @text-color-third;
+        }
+
+        .itemBox {
+            max-height: 224px;
+            overflow-y: auto;
+
+            &.footer {
+                border-top: 1px solid rgb(0 0 0 / 10%);
+
+                .dropdownItem .checkItemLabel {
+                    margin-left: 0;
+                }
+            }
+
+            .dropdownItem {
+                height: 32px;
+                padding: 0 12px;
+                line-height: 32px;
+
+                &.active {
+                    background: #e6f8ff;
+                    font-weight: 550;
+                }
+
+                &:hover {
+                    background: #e6f8ff;
+                }
+
+                &.emptyDesc {
+                    color: @text-color-third;
+
+                    &:hover {
+                        background: #fff;
+                        cursor: default;
+                    }
+                }
+
+                .checkBox {
+                    display: flex;
+
+                    & > span:nth-child(2) {
+                        display: flex;
+                        max-width: calc(100% - 6px);
+                        align-items: center;
+                    }
+                }
+
+                .checkItemLabel {
+                    display: inline-block;
+                    .ellipsis-mixin();
+
+                    margin-left: 5px;
+                }
+            }
+        }
+
+        .emptyBox {
+            margin-bottom: 50px;
+        }
+    }
+
+    .hideSelectedFilterDropdown {
+        width: auto;
+
+        .hideItem {
+            display: flex;
+            align-items: center;
+            padding: 5px 12px;
+
+            &:hover {
+                background: rgb(245 245 245 / 100%);
+            }
+
+            .selectedTagIcon {
+                margin-left: 8px;
+            }
+
+            .hideItemName {
+                display: inline-block;
+                max-width: 354px;
+                .ellipsis-mixin ();
+            }
+        }
+    }
+}

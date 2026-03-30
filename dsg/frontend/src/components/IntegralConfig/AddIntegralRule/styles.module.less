@@ -1,0 +1,131 @@
+.integralRuleWrapper {
+    height: 500px;
+}
+
+.selectRuleWrapper {
+    display: flex;
+    column-gap: 16px;
+
+    .selectRuleItem {
+        display: flex;
+        width: 102px;
+        height: 48px;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #d9d9d9;
+        border-radius: 4px;
+        column-gap: 8px;
+        cursor: pointer;
+    }
+
+    .disabledRuleItem {
+        cursor: not-allowed;
+        opacity: 0.5;
+    }
+
+    .selectedRuleItem {
+        position: relative;
+        border: 1px solid #126ee3 !important;
+
+        &::before {
+            position: absolute;
+            top: 0;
+            right: 0;
+            display: flex;
+            width: 0;
+            height: 0;
+            justify-content: end;
+            // 创建右上角的三角形
+            border-width: 0 24px 24px 0;
+            border-style: solid;
+            border-color: transparent #126ee3 transparent transparent;
+            content: '';
+        }
+
+        .selectedIcon {
+            position: absolute;
+            top: 0;
+            right: 2px;
+            color: #fff;
+            font-size: 10px;
+        }
+    }
+}
+
+.integralNumberInputWrapper {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    column-gap: 8px;
+
+    & > span {
+        flex-shrink: 0;
+    }
+
+    .numberInput {
+        width: 200px;
+    }
+}
+
+.integralRateInputWrapper {
+    display: flex;
+    flex-direction: column;
+    row-gap: 8px;
+
+    .itemWrapper {
+        display: flex;
+        align-items: center;
+        column-gap: 8px;
+    }
+
+    & > span {
+        flex-shrink: 0;
+    }
+
+    .numberInput {
+        width: 200px;
+    }
+
+    .rateWrapper {
+        flex-shrink: 0;
+    }
+}
+
+.datePickerWrapper {
+    display: flex;
+    flex-direction: column;
+    padding: 4px 0;
+    row-gap: 8px;
+
+    .datePicker {
+        display: flex;
+        width: 100%;
+        height: 32px;
+        align-items: center;
+        column-gap: 8px;
+
+        & > span {
+            flex-shrink: 0;
+        }
+
+        .helperIcon {
+            flex-shrink: 0;
+            color: rgb(0 0 0 / 45%);
+            font-size: 16px;
+        }
+
+        .datePicker {
+            width: 160px;
+        }
+
+        .tooltipWrapper {
+            display: flex;
+            flex-direction: column;
+            row-gap: 8px;
+
+            & > div {
+                word-break: break-all;
+            }
+        }
+    }
+}

@@ -1,0 +1,56 @@
+.fileAudit {
+    position: relative;
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    padding: 22px 24px 24px;
+
+    .auditTitle {
+        font-weight: 550;
+    }
+
+    .auditContent {
+        height: calc(100% - 24px);
+    }
+
+    .auditOperation {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+    }
+
+    .fileNameWrapper {
+        display: flex;
+        flex-direction: column;
+
+        & > div {
+            .ellipsis-mixin();
+        }
+
+        .fileNameCode {
+            color: rgb(0 0 0 / 45%);
+            font-size: 12px;
+        }
+    }
+}
+
+.detailGroupTitle {
+    position: relative;
+    display: flex;
+    height: 46px;
+    align-items: center;
+    margin: 8px 0;
+    background: rgb(0 55 150 / 2%);
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 550;
+
+    &::before {
+        display: inline-block;
+        width: 3px;
+        height: 20px;
+        margin-right: 12px;
+        background-color: rgb(18 110 227 / 100%);
+        content: '';
+    }
+}

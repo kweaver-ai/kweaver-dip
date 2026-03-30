@@ -1,0 +1,312 @@
+syntax = "v1"
+
+import "../base.api"
+
+// ============================================
+// 数据理解 (Data Understanding) 类型定义
+// ============================================
+type (
+	// ====== 接口1: 查询库表理解状态 ======
+	GetStatusReq {
+		// 表单视图ID
+		Id string `path:"id" validate:"required,uuid"`
+	}
+	GetStatusResp {
+		// 理解状态: 1-待理解, 2-待确认, 3-已完成, 5-理解失败
+		UnderstandStatus int8 `json:"understand_status"`
+	}
+	// ====== 接口2: 一键生成理解数据 ======
+	// 字段选择参数（用于部分字段理解）
+	FieldSelection {
+		// 表单视图字段ID
+		FormViewFieldId   string  `json:"form_view_field_id" validate:"required,uuid"`
+		// 字段技术名称
+		FieldTechName     string  `json:"field_tech_name" validate:"required"`
+		// 字段数据类型
+		FieldType         string  `json:"field_type" validate:"required"`
+		// 字段业务名称
+		FieldBusinessName *string `json:"field_business_name,omitempty"`
+		// 字段角色: 1-主键, 2-外键, 3-维度, 4-度量, 5-属性, 6-时间, 7-地点, 8-标签
+		FieldRole         *int8   `json:"field_role,omitempty"`
+		// 字段描述
+		FieldDescription  *string `json:"field_description,omitempty"`
+	}
+	GenerateUnderstandingReq {
+		// 表单视图ID
+		Id     string           `path:"id" validate:"required,uuid"`
+		// 字段选择列表(可选,不传则全部理解)
+		Fields []FieldSelection `json:"fields,optional"`
+	}
+	GenerateUnderstandingResp {
+		// 理解状态: 1-待理解, 2-待确认, 3-已完成, 5-理解失败
+		UnderstandStatus int8 `json:"understand_status"`
+	}
+	// ====== 接口3: 查询字段语义补全数据 ======
+	FieldSemanticInfo {
+		// 临时表数据ID
+		Id                *string `json:"id"`
+		// 表单视图字段ID
+		FormViewFieldId   string  `json:"form_view_field_id"`
+		// 字段业务名称
+		FieldBusinessName *string `json:"field_business_name"`
+		// 字段技术名称
+		FieldTechName     string  `json:"field_tech_name"`
+		// 字段数据类型
+		FieldType         string  `json:"field_type"`
+		// 字段角色: 1-主键, 2-外键, 3-维度, 4-度量, 5-属性, 6-时间, 7-地点, 8-标签
+		FieldRole         *int8   `json:"field_role"`
+		// 字段描述
+		FieldDescription  *string `json:"field_description"`
+	}
+	GetFieldsReq {
+		// 表单视图ID
+		Id             string  `path:"id" validate:"required,uuid"`
+		// 关键字搜索
+		Keyword        *string `form:"keyword,optional"`
+		// 仅显示未补全的字段
+		OnlyIncomplete *bool   `form:"only_incomplete,optional"`
+	}
+	GetFieldsResp {
+		// 表信息ID
+		TableInfoId       *string             `json:"table_info_id"`
+		// 表业务名称
+		TableBusinessName *string             `json:"table_business_name"`
+		// 表技术名称
+		TableTechName     string              `json:"table_tech_name"`
+		// 表描述
+		TableDescription  *string             `json:"table_description"`
+		// 字段列表
+		Fields            []FieldSemanticInfo `json:"fields"`
+	}
+	// ====== 接口4: 保存库表信息补全数据 ======
+	SaveSemanticInfoTableData {
+		// 临时表数据ID
+		Id                string  `json:"id" validate:"required,uuid"`
+		// 表业务名称
+		TableBusinessName *string `json:"table_business_name" validate:"omitempty,max=255"`
+		// 表描述
+		TableDescription  *string `json:"table_description" validate:"omitempty,max=300"`
+	}
+	SaveSemanticInfoFieldData {
+		// 临时表数据ID
+		Id                string  `json:"id" validate:"required,uuid"`
+		// 字段业务名称
+		FieldBusinessName *string `json:"field_business_name" validate:"omitempty,max=255"`
+		// 字段角色: 1-主键, 2-外键, 3-维度, 4-度量, 5-属性, 6-时间, 7-地点, 8-标签
+		FieldRole         *int8   `json:"field_role" validate:"omitempty,min=1,max=8"`
+		// 字段描述
+		FieldDescription  *string `json:"field_description" validate:"omitempty,max=300"`
+	}
+	SaveSemanticInfoReq {
+		// 表单视图ID
+		Id        string                     `path:"id" validate:"required,uuid"`
+		// 表信息补全数据
+		TableData *SaveSemanticInfoTableData `json:"tableData,optional"`
+		// 字段信息补全数据
+		FieldData *SaveSemanticInfoFieldData `json:"fieldData,optional"`
+	}
+	SaveSemanticInfoResp {
+		// 响应码: 0-成功
+		Code int32 `json:"code"`
+	}
+	// ====== 接口5: 查询业务对象识别结果 ======
+	BusinessObjectAttribute {
+		// 属性ID
+		Id                string  `json:"id"`
+		// 属性名称
+		AttrName          string  `json:"attr_name"`
+		// 表单视图字段ID
+		FormViewFieldId   string  `json:"form_view_field_id"`
+		// 字段技术名称
+		FieldTechName     string  `json:"field_tech_name"`
+		// 字段业务名称
+		FieldBusinessName *string `json:"field_business_name"`
+		// 字段角色: 1-主键, 2-外键, 3-维度, 4-度量, 5-属性, 6-时间, 7-地点, 8-标签
+		FieldRole         *int8   `json:"field_role"`
+		// 字段数据类型
+		FieldType         string  `json:"field_type"`
+		// 属性描述
+		Description       *string `json:"description,optional"`
+	}
+	BusinessObject {
+		// 业务对象ID
+		Id         string                    `json:"id"`
+		// 业务对象名称
+		ObjectName string                    `json:"object_name"`
+		// 属性列表
+		Attributes []BusinessObjectAttribute `json:"attributes"`
+	}
+	GetBusinessObjectsReq {
+		// 表单视图ID
+		Id       string  `path:"id" validate:"required,uuid"`
+		// 业务对象ID过滤
+		ObjectId *string `form:"object_id,optional" validate:"omitempty,uuid"`
+		// 关键字搜索
+		Keyword  *string `form:"keyword,optional"`
+	}
+	GetBusinessObjectsResp {
+		// 业务对象列表
+		List               []BusinessObject    `json:"list"`
+		// 未识别字段列表
+		UnidentifiedFields []UnidentifiedField `json:"unidentified_fields,optional"`
+	}
+	UnidentifiedField {
+		// 临时表数据ID
+		Id            string  `json:"id"`
+		// 字段技术名称
+		TechnicalName string  `json:"technical_name"`
+		// 字段数据类型
+		DataType      string  `json:"data_type"`
+		// 字段业务名称
+		BusinessName  *string `json:"business_name,optional"`
+		// 字段角色: 1-主键, 2-外键, 3-维度, 4-度量, 5-属性, 6-时间, 7-地点, 8-标签
+		FieldRole     *int8   `json:"field_role,optional"`
+		// 字段描述
+		Description   *string `json:"description,optional"`
+	}
+	// ====== 接口6: 保存业务对象及属性 ======
+	SaveBusinessObjectsReq {
+		// 表单视图ID
+		Id   string `path:"id" validate:"required,uuid"`
+		// 保存类型: object-业务对象, attribute-业务属性
+		Type string `json:"type" validate:"required,oneof=object attribute"`
+		// 数据ID(临时表)
+		OpId   string `json:"op_id" validate:"required,uuid"`
+		// 业务对象/属性名称
+		Name string `json:"name" validate:"required,max=100"`
+	}
+	SaveBusinessObjectsResp {
+		// 响应码: 0-成功
+		Code int32 `json:"code"`
+	}
+	// ====== 接口7: 调整属性归属业务对象 ======
+	MoveAttributeReq {
+		// 表单视图ID
+		Id               string `path:"id" validate:"required,uuid"`
+		// 属性ID
+		AttributeId      string `json:"attribute_id" validate:"required,uuid"`
+		// 目标业务对象ID
+		TargetObjectUuid string `json:"target_object_uuid" validate:"required,uuid"`
+	}
+	MoveAttributeResp {
+		// 属性ID
+		AttributeId      string `json:"attribute_id"`
+		// 业务对象ID
+		BusinessObjectId string `json:"business_object_id"`
+	}
+	// ====== 接口8: 重新识别业务对象 ======
+	RegenerateBusinessObjectsReq {
+		// 表单视图ID
+		Id string `path:"id" validate:"required,uuid"`
+	}
+	RegenerateBusinessObjectsResp {
+		// 理解状态: 1-待理解, 2-待确认, 3-已完成, 5-理解失败
+		UnderstandStatus int8 `json:"understand_status"`
+	}
+	// ====== 接口9: 提交确认理解数据 ======
+	SubmitUnderstandingReq {
+		// 表单视图ID
+		Id string `path:"id" validate:"required,uuid"`
+	}
+	SubmitUnderstandingResp {
+		// 是否成功
+		Success bool `json:"success"`
+	}
+	// ====== 接口10: 删除识别结果 ======
+	DeleteBusinessObjectsReq {
+		// 表单视图ID
+		Id string `path:"id" validate:"required,uuid"`
+	}
+	DeleteBusinessObjectsResp {
+		// 是否成功
+		Success bool `json:"success"`
+	}
+
+	// ====== 接口11: 批量匹配业务对象 ======
+	// 查询条件
+	BatchObjectMatchReq {
+		Entries    []SourceObject  `json:"entries" validate:"required,min=1,max=100"`
+		KnId       string          `json:"kn_id" validate:"required"`       // 知识网络ID
+		OtId       string          `json:"ot_id" validate:"required"`       // 网络中指定对象ID
+	}
+
+	SourceObject {
+		Name       string         `json:"name" validate:"required,min=1,max=100"`    // 业务对象名称（用于模糊匹配）
+		DataSource *RequestDataSource `json:"data_source,optional"`          // 给定的视图数据（直接追加到结果）
+	}
+
+	RequestDataSource {
+		Id   string `json:"id"`   // 视图ID（对应form_view表mdl_id）
+		Name string `json:"name"`  // 视图名称
+	}
+
+	BatchObjectMatchResp {
+		Entries []MatchResult `json:"entries"` // 匹配结果列表
+	}
+
+	MatchResult {
+		Name       string               `json:"name"`                             // 原始输入名称
+		DataSource []ResponseDataSource `json:"data_source,optional"`               // 匹配的业务对象列表
+	}
+
+	ResponseDataSource {
+		Id          string `json:"id"`           // 视图ID（mdl_id）
+		Name        string `json:"name"`         // 视图名称
+		ObjectName  string `json:"object_name"`  // 业务对象名称
+	}
+)
+
+// ============================================
+// data_semantic service 定义
+// ============================================
+@server (
+	prefix: /api/data-semantic/v1
+	group:  data_semantic
+	middleware: JWTAuth
+)
+service api {
+	@doc "查询库表理解状态"
+	@handler GetStatus
+	get /:id/status (GetStatusReq) returns (GetStatusResp)
+
+	@doc "一键生成理解数据"
+	@handler GenerateUnderstanding
+	post /:id/generate (GenerateUnderstandingReq) returns (GenerateUnderstandingResp)
+
+	@doc "查询字段语义补全数据"
+	@handler GetFields
+	get /:id/fields (GetFieldsReq) returns (GetFieldsResp)
+
+	@doc "保存库表信息补全数据"
+	@handler SaveSemanticInfo
+	put /:id/semantic-info (SaveSemanticInfoReq) returns (SaveSemanticInfoResp)
+
+	@doc "查询业务对象识别结果"
+	@handler GetBusinessObjects
+	get /:id/business-objects (GetBusinessObjectsReq) returns (GetBusinessObjectsResp)
+
+	@doc "保存业务对象及属性"
+	@handler SaveBusinessObjects
+	put /:id/business-objects (SaveBusinessObjectsReq) returns (SaveBusinessObjectsResp)
+
+	@doc "调整属性归属业务对象"
+	@handler MoveAttribute
+	put /:id/business-objects/attributes/move (MoveAttributeReq) returns (MoveAttributeResp)
+
+	@doc "重新识别业务对象"
+	@handler RegenerateBusinessObjects
+	post /:id/business-objects/regenerate (RegenerateBusinessObjectsReq) returns (RegenerateBusinessObjectsResp)
+
+	@doc "提交确认理解数据"
+	@handler SubmitUnderstanding
+	post /:id/submit (SubmitUnderstandingReq) returns (SubmitUnderstandingResp)
+
+	@doc "删除识别结果"
+	@handler DeleteBusinessObjects
+	delete /:id/business-objects (DeleteBusinessObjectsReq) returns (DeleteBusinessObjectsResp)
+
+	@doc "批量匹配业务对象"
+	@handler BatchObjectMatch
+	post /batch-object-match (BatchObjectMatchReq) returns (BatchObjectMatchResp)
+}
+

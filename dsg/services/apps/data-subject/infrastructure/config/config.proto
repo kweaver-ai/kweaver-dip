@@ -1,0 +1,114 @@
+syntax = "proto3";
+package conf;
+
+option go_package = ".;conf";
+
+import "google/protobuf/duration.proto";
+
+message Bootstrap {
+  Server server = 1;
+  Doc doc = 2;
+  Telemetry   telemetry = 3;
+  DepServices depServices = 4;
+  Database database = 5;
+  SourceConf sourceConf = 6;
+}
+
+message Server {
+  message HTTP {
+    string network = 1;
+    string addr = 2;
+    google.protobuf.Duration timeout = 3;
+  }
+  message GRPC {
+    string network = 1;
+    string addr = 2;
+    google.protobuf.Duration timeout = 3;
+  }
+  string  name = 1;
+  HTTP http = 2;
+  GRPC grpc = 3;
+}
+message Doc {
+  string   host = 1;
+  string   version = 2;
+}
+message   Telemetry {
+  string traceUrl = 1;
+  string logLevel = 2;
+  string logUrl = 3;
+  string serverName = 4;
+  string serverVersion = 5;
+  string traceEnabled = 6;
+}
+message DepServices {
+  message Sasl {
+    bool     enabled = 1;
+    string   username = 2;
+    string   password = 3;
+  }
+  message Producer {
+    int32   sendBufSize = 1;
+    int32   recvBufSize = 2;
+  }
+  message     KafkaMQ {
+    int32     mqType = 1;
+    string     host = 2;
+    Sasl sasl = 3;
+    Producer producer = 4;
+  }
+  KafkaMQ     kafkaMQ = 1;
+  string userMgmPrivate = 2;
+  string hydraAdmin = 3;
+  string businessGroomingHost = 4;
+  string configurationCenterHost = 5;
+  string standardizationHost = 6;
+  string dataViewHost = 7;
+  string afSailorServiceHost = 8;
+}
+
+message Database {
+  string   dbtype = 1;
+  string   host = 2;
+  string   port = 3;
+  string   username = 4;
+  string   password = 5;
+  string   database = 6;
+  int32   maxIdleConnections = 7;
+  int32   maxOpenConnections = 8;
+  int32   maxConnectionIdleTime = 9;
+  int32   maxConnectionLifeTime = 10;
+  int32   loglevel = 11;
+  bool    isdebug = 12;
+  string   tableprefix = 13;
+}
+
+message SourceConf {
+  message Source{
+    string expression = 1;
+    string table = 2;
+    string column = 3;
+    string idColumnName = 4;
+    string timestampColumnName = 5;
+  }
+
+  message Sources {
+    string type = 1;
+    string host = 2;
+    string port = 3;
+    string username = 4;
+    string password = 5;
+    string db = 6;
+    string schema = 7;
+    repeated Source source = 8;
+  }
+
+  string broker = 1;
+  string kafkaUser = 2;
+  string kafkaPassword = 3;
+  string clientId = 4;
+  string mechanism = 5;
+  string redisHost = 6;
+  string redisPassword = 7;
+  Sources sources = 8;
+}

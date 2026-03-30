@@ -1,0 +1,35 @@
+/**** page——标准数据元——start ****/
+.stdBaseWrapper {
+    position: absolute;
+    overflow: hidden;
+    width: 100%;
+    height: calc(100vh - 52px);
+    min-height: auto;
+
+    .baseContentLayout {
+        height: 100%;
+        // height: calc(100% - 53px);
+        background: #fff;
+
+        .baseContent {
+            height: 100%;
+        }
+
+        :global {
+            .any-fabric-ant-layout-sider-trigger {
+                width: 12px !important;
+                height: 40px !important;
+                border: 1px solid rgb(0 0 0 / 15%);
+                background: #fff;
+                border-radius: 8px;
+                box-shadow: 0 0 2px 0 rgb(0 0 0 / 16%);
+            }
+        }
+    }
+}
+
+/**** page——标准数据元——end ****/
+
+.wholePageWrapper {
+    padding: 16px 24px 0;
+}

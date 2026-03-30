@@ -1,0 +1,214 @@
+{
+    "settings": {
+        "max_ngram_diff": 19,
+        "analysis": {
+            "analyzer": {
+                "lower_case_keyword_analyzer": {
+                    "type": "custom",
+                    "tokenizer": "keyword",
+                    "filter": [
+                        "lowercase",
+                        "as_word_delimiter_graph_filter"
+                    ]
+                },
+                "af_ngram_analyzer": {
+                    "tokenizer": "af_ngram_tokenizer",
+                    "filter": [
+                        "lowercase"
+                    ]
+                },
+                "as_hanlp_analyzer": {
+                    "tokenizer": "as_hanlp",
+                    "filter": [
+                        "lowercase",
+                        "asciifolding"
+                    ]
+                },
+                "graph_analyzer": {
+                    "tokenizer": "keyword",
+                    "filter": [
+                        "lowercase",
+                        "asciifolding",
+                        "as_word_delimiter_graph_filter"
+                    ]
+                }
+            },
+            "tokenizer": {
+                "af_ngram_tokenizer": {
+                    "type": "ngram",
+                    "min_gram": 1,
+                    "max_gram": 20,
+                    "token_chars": [
+                        "letter",
+                        "digit"
+                    ]
+                },
+                "as_hanlp": {
+                    "type": "hanlp_index",
+                    "enable_stop_dictionary": true,
+                    "enable_custom_config": true
+                }
+            },
+            "filter": {
+                "as_word_delimiter_graph_filter": {
+                    "type": "word_delimiter_graph",
+                    "split_on_case_change": false,
+                    "split_on_numerics": false,
+                    "stem_english_possessive": true
+                }
+            }
+        }
+    },
+    "mappings": {
+        "properties": {
+            "id": {
+                "type": "keyword",
+                "ignore_above": 36,
+                "index": false
+            },
+            "name": {
+                "type": "text",
+                "analyzer": "as_hanlp_analyzer",
+                "fields": {
+                    "ngram": {
+                        "type": "text",
+                        "analyzer": "af_ngram_analyzer",
+                        "search_analyzer": "lower_case_keyword_analyzer"
+                    },
+                    "graph": {
+                        "type": "text",
+                        "analyzer": "graph_analyzer"
+                    }
+                }
+            },
+            "description": {
+                "type": "text",
+                "analyzer": "as_hanlp_analyzer",
+                "fields": {
+                    "ngram": {
+                        "type": "text",
+                        "analyzer": "af_ngram_analyzer",
+                        "search_analyzer": "lower_case_keyword_analyzer"
+                    },
+                    "graph": {
+                        "type": "text",
+                        "analyzer": "graph_analyzer"
+                    }
+                }
+            },
+	   "code": {
+                "type": "keyword",
+                "ignore_above": 36
+            },
+		"subject_domain_id": {
+                "type": "keyword",
+                "ignore_above": 36
+            },
+            "subject_domain_name": {
+                "type": "text",
+                "analyzer": "as_hanlp_analyzer",
+                "fields": {
+                    "ngram": {
+                        "type": "text",
+                        "analyzer": "af_ngram_analyzer",
+                        "search_analyzer": "lower_case_keyword_analyzer"
+                    },
+                    "graph": {
+                        "type": "text",
+                        "analyzer": "graph_analyzer"
+                    }
+                }
+            },
+ 			"subject_domain_path": {
+                "type": "text",
+                "index": false
+            },
+            "orgcode": {
+                "type": "keyword",
+                "ignore_above": 36
+            },
+            "orgname": {
+                "type": "text",
+                "analyzer": "as_hanlp_analyzer",
+                "fields": {
+                    "ngram": {
+                        "type": "text",
+                        "analyzer": "af_ngram_analyzer",
+                        "search_analyzer": "lower_case_keyword_analyzer"
+                    },
+                    "graph": {
+                        "type": "text",
+                        "analyzer": "graph_analyzer"
+                    }
+                }
+            },
+            "orgnamepath": {
+                "type": "text",
+                "index": false
+            },
+            "updated_at": {
+                "type": "date",
+                "format": "strict_date_optional_time||epoch_millis"
+            },
+            "published_at": {
+                "type": "date",
+                "format": "strict_date_optional_time||epoch_millis"
+            },
+            "data_owner_id": {
+                "type": "keyword",
+                "ignore_above": 36,
+                "index": false
+            },
+            "data_owner_name": {
+                "type": "text",
+                "analyzer": "as_hanlp_analyzer",
+                "fields": {
+                    "ngram": {
+                        "type": "text",
+                        "analyzer": "af_ngram_analyzer",
+                        "search_analyzer": "lower_case_keyword_analyzer"
+                    },
+                    "graph": {
+                        "type": "text",
+                        "analyzer": "graph_analyzer"
+                    }
+                }
+            },
+            "fields": {
+                "type": "nested",
+                "properties": {
+                    "field_name_zh": {
+                        "type": "text",
+                        "analyzer": "as_hanlp_analyzer",
+                        "fields": {
+                            "ngram": {
+                                "type": "text",
+                                "analyzer": "af_ngram_analyzer",
+                                "search_analyzer": "lower_case_keyword_analyzer"
+                            },
+                            "graph": {
+                                "type": "text",
+                                "analyzer": "graph_analyzer"
+                            }
+                        }
+                    },
+                    "field_name_en": {
+                        "type": "text",
+                        "analyzer": "as_hanlp_analyzer",
+                        "fields": {
+                            "ngram": {
+                                "type": "text",
+                                "analyzer": "af_ngram_analyzer",
+                                "search_analyzer": "lower_case_keyword_analyzer"
+                            },
+                            "graph": {
+                                "type": "text",
+                                "analyzer": "graph_analyzer"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

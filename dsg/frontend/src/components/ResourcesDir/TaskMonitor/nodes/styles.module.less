@@ -1,0 +1,200 @@
+// 任务节点样式
+.task-node-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    user-select: none;
+}
+
+.task-node {
+    position: relative;
+    display: flex;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    justify-content: center;
+    padding: 16px;
+    background: #fff;
+    border-radius: 10px;
+    transition: all 0.3s ease-in-out;
+
+    &:hover {
+        box-shadow: 0 6px 16px 0 rgb(0 0 0 / 8%);
+    }
+
+    &.catalog-node {
+        &::after {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: rgb(0 0 0 / 4%);
+            content: '';
+        }
+
+        .task-node-header {
+            display: flex;
+            height: 76px;
+            align-items: flex-start;
+            padding-top: 6px;
+        }
+
+        .task-node-content {
+            display: flex;
+            height: 76px;
+            align-items: flex-end;
+            padding-bottom: 6px;
+        }
+    }
+
+    .task-node-header {
+        display: flex;
+        width: 100%;
+        align-items: center;
+
+        .catalog-title {
+            display: flex;
+            width: 100%;
+            align-items: center;
+            column-gap: 12px;
+
+            &-content {
+                width: calc(100% - 44px);
+                line-height: 20px;
+
+                > div {
+                    color: #999eb8;
+                    font-size: 14px;
+                    .ellipsis-mixin();
+
+                    &:nth-child(1) {
+                        color: rgb(0 0 0 / 85%);
+                        font-weight: bold;
+                    }
+                }
+            }
+        }
+
+        .title {
+            display: flex;
+            width: 100%;
+            align-items: center;
+            justify-content: space-between;
+            color: rgb(0 0 0 / 85%);
+            font-size: 14px;
+            font-weight: bold;
+            line-height: 24px;
+            .ellipsis-mixin();
+
+            .link {
+                color: #126ee3;
+                cursor: pointer;
+                font-size: 14px;
+                font-weight: normal;
+            }
+        }
+    }
+
+    .task-node-content {
+        .desc {
+            display: flex;
+            width: 100%;
+            align-items: center;
+            color: #999eb8;
+            column-gap: 4px;
+            font-size: 13px;
+            line-height: 24px;
+
+            .audit {
+                display: flex;
+                width: 100%;
+                height: 26px;
+                align-items: center;
+                justify-content: center;
+                column-gap: 4px;
+                font-size: 12px;
+            }
+        }
+    }
+}
+
+.task-status-label {
+    display: flex;
+    width: 110px;
+    height: 48px;
+    flex-direction: column;
+    align-items: center;
+
+    .top {
+        display: flex;
+        width: 100%;
+        align-items: center;
+        background: #f0f2f6;
+        color: rgb(0 0 0 / 85%);
+        column-gap: 6px;
+        font-size: 14px;
+    }
+
+    .bottom {
+        width: 64px;
+        background: #f0f2f6;
+        font-size: 16px;
+        text-align: center;
+    }
+}
+
+.table {
+    width: 100%;
+    font-size: 14px;
+    line-height: 24px;
+
+    &-title {
+        display: flex;
+        width: 100%;
+        align-items: center;
+        color: rgb(0 0 0 / 85%);
+        column-gap: 6px;
+
+        .title {
+            width: calc(100% - 24px);
+            .ellipsis-mixin();
+        }
+    }
+
+    &-desc {
+        width: 100%;
+        color: rgb(153 158 184 / 65%);
+        .ellipsis-mixin();
+    }
+}
+
+.PopBox {
+    .PopTip {
+        min-width: 120px;
+        max-width: 300px;
+        color: rgb(0 0 0 / 85%);
+        font-size: 14px;
+
+        div {
+            &:nth-child(1) {
+                display: flex;
+                align-items: center;
+                column-gap: 6px;
+                font-weight: 550;
+
+                .popTipIcon {
+                    color: rgb(255 77 79 / 100%);
+                    font-size: 16px;
+                }
+            }
+
+            &:nth-child(2) {
+                padding-top: 4px;
+                line-height: 1.4;
+                word-break: break-word;
+            }
+        }
+    }
+}

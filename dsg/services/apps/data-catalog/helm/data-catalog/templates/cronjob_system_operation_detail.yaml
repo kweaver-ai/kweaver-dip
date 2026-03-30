@@ -1,0 +1,24 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: cronjob-{{.Values.service.name}}-system-operation-detail
+  namespace: {{.Values.namespace}}
+spec:
+  concurrencyPolicy: Replace
+  startingDeadlineSeconds: 300
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 3
+  schedule: "0 0 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: hello
+            image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+            command:
+            - "/bin/sh"
+            args:
+            - "-c"
+            - "curl -X POST 'http://{{.Values.service.name}}:{{.Values.service.port}}/api/internal/data-catalog/v1/data-catalog/system-operation/detail'"

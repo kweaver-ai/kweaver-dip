@@ -1,0 +1,54 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.name }}-cm
+  namespace: {{ .Values.namespace }}
+data:
+  {{- with .Values }}
+  DOC_HOST: "0.0.0.0:8281"
+  DB_TYPE: {{ .depServices.rds.type | quote}}
+  DB_HOST: {{ .depServices.rds.host | quote}}
+  DB_PORT: {{ .depServices.rds.port | quote}}
+  DB_USERNAME: {{ .depServices.rds.user | quote }}
+  DB_PASSWORD: {{ .depServices.rds.password | quote }}
+  DB_NAME: {{ .depServices.rds.database | quote }}
+  CONFIGURATION_CENTER_HOST: "http://{{ .depServices.configCenterService.host}}:{{ .depServices.configCenterService.port}}"
+  HYDRA_HOST_PRIVATE: "http://{{ .depServices.hydraService.privateHost}}:{{ .depServices.hydraService.privatePort}}"
+  HYDRA_HOST_PUBLIC: "http://{{ .depServices.hydraService.publicHost}}:{{ .depServices.hydraService.publicPort}}"
+  USER_MANAGE_HOST: "http://{{ .depServices.userManageService.host}}:{{ .depServices.userManageService.port}}"
+  MIGRATION_PATH: {{ .depServices.rds.migrationPath | quote }}
+  LOG_PATH: {{ .depServices.logPath | quote }}
+  REDIS_HOST: "{{ .depServices.redis.connectInfo.sentinelHost }}:{{ .depServices.redis.connectInfo.sentinelPort }}"
+  REDIS_PASSWORD: {{ .depServices.redis.connectInfo.password | quote }}
+  REDIS_SENTINEL_PASSWORD: {{ .depServices.redis.connectInfo.sentinelPassword | quote }}
+  REDIS_DB: {{ .depServices.redis.db | quote }}
+  REDIS_MASTER_NAME: {{ .depServices.redis.connectInfo.masterGroupName | quote }}
+  DATA_EXPLORATION_SERVICE_HOST: "http://{{.service.name}}.{{.namespace}}:{{.service.port}}"
+  KAFKA_VERSION:  {{ .depServices.mq.version | quote }}
+  KAFKA_URI:  "{{ .depServices.mq.mqHost }}:{{ .depServices.mq.mqPort }}"
+  KAFKA_MECHANISM: {{ .depServices.mq.auth.mechanism | quote }}
+  KAFKA_USERNAME: {{ .depServices.mq.auth.username | quote }}
+  KAFKA_PASSWORD: {{ .depServices.mq.auth.password | quote }}
+  KAFKA_CONSUMER_GROUP: {{ .depServices.mq.groupId | quote }}
+  TRACE_URL: "{{ .service.telemetry.trace.endpoint}}"
+  TRACE_ENABLED: "{{ .service.telemetry.trace.enabled}}"    
+  LOG_LEVEL: "{{ .service.telemetry.log.level}}"
+  LOG_URL: "{{ .service.telemetry.log.endpoint}}"
+  SERVER_NAME: "{{ .service.name}}"
+  SERVER_VERSION: "{{ .service.version}}"
+  VIRTUALIZATION_ENGINE_URL: "{{ .depServices.virtualizationEngine.protocol}}://{{ .depServices.virtualizationEngine.host}}:{{ .depServices.virtualizationEngine.port}}"
+  STANDARDIZATION_HOST: "http://{{ .depServices.standardizationService.host}}:{{ .depServices.standardizationService.port}}"
+  EXPLORE_CACHE_EXPIRE_TIME: "{{ .exploration.cacheExpireTime}}"
+  EXPLORE_GROUP_LIMIT: "{{ .exploration.groupLimit}}"
+  REPORT_DEFAULT_OVER_TIME: "{{ .exploration.reportDefaultOvertime}}"
+  VIRTUAL_QUERY_RESULT_TOPIC: "{{ .exploration.virtualQueryResultTopic}}"
+  VIRTUAL_ENGINE_TIMEOUT: "{{ .exploration.virtualEngineTimeout}}"
+  concurrency_enable: "true"
+  concurrency_limit: "5000"
+  concurrency_task_limit: "20"
+  retry_count: "3"
+  retry_wait_time: "100"
+  retry_time_out: "60s"
+  mdl_uni_query_client_time_out: "120"
+  MDL_UNIQUERY_CALL_INTERVAL: "{{ .exploration.mdlUniQueryCallInterval}}"
+  {{- end }}

@@ -1,0 +1,145 @@
+server {
+    listen      8686;
+    listen [::]:8686;
+
+    client_max_body_size 20m;
+    gzip on;
+    gzip_vary on;
+    gzip_min_length 512;
+    gzip_proxied expired no-cache no-store private auth;
+    gzip_comp_level 4;
+    gzip_types
+        # text/html is always compressed by HttpGzipModule
+        text/css
+        text/javascript
+        text/xml
+        text/plain
+        text/x-component
+        application/javascript
+        application/x-javascript
+        application/json
+        application/xml
+        application/rss+xml
+        application/atom+xml
+        font/truetype
+        font/opentype
+        application/vnd.ms-fontobject
+        image/svg+xml;
+
+    root /app/dist/;
+
+    # static directory
+
+    location = /anyfabric {
+       return 301 https://$http_host/anyfabric/;
+    }
+    # 主应用入口匹配
+    location = /anyfabric/ {
+        root /app/dist/;
+        rewrite ^/anyfabric(.*) /$1;
+        try_files $uri $uri/ /index.html;
+    }
+    # 智能找数入口配置
+    location = /anyfabric/smartDataFind.html {
+        root /app/dist/;
+        rewrite ^/anyfabric(.*) /$1;
+        try_files $uri $uri/ /smartDataFind.html;
+    }
+    # 语义治理入口配置
+    location = /anyfabric/semanticGovernance.html {
+        root /app/dist/;
+        rewrite ^/anyfabric(.*) /$1;
+        try_files $uri $uri/ /semanticGovernance.html;
+    }
+    # 数据运营审核入口配置
+    location = /anyfabric/dataOperationAudit.html {
+        root /app/dist/;
+        rewrite ^/anyfabric(.*) /$1;
+        try_files $uri $uri/ /dataOperationAudit.html;
+    }
+    # 下载微应用入口配置
+    location = /anyfabric/download.html {
+        root /app/dist/;
+        rewrite ^/anyfabric(.*) /$1;
+        try_files $uri $uri/ /download.html;
+    }
+    # 数据需求审核流程
+    location = /anyfabric/dmdAudit.html {
+        root /app/dist/;
+        rewrite ^/anyfabric(.*) /$1;
+        try_files $uri $uri/ /dmdAudit.html;
+    }
+    # AS插件开发框架入口
+    location = /anyfabric/afPluginFrameworkForAs.html {
+        root /app/dist/;
+        rewrite ^/anyfabric(.*) /$1;
+        try_files $uri $uri/ /afPluginFrameworkForAs.html;
+    }
+    # 智能数据查询入口配置
+    location = /anyfabric/smartDataQuery.html {
+        root /app/dist/;
+        rewrite ^/anyfabric(.*) /$1;
+        try_files $uri $uri/ /smartDataQuery.html;
+    }
+    # drawio 应用入口匹配
+    #location = /anyfabric/webapp/ {
+    #    root /app/dist/webapp/;
+    #    try_files $uri $uri/ /webapp/index.html;
+    #}
+    # drawio 静态资源匹配
+    #location ~ ^/anyfabric/webapp/.*\.(js|css|jpg|jpeg|gif|png|ico|cur|gz|svg|svgz|mp4|ogg|ogv|webm|txt|MF|xml|jar|map) {
+    #   root /app/dist/webapp/;
+    #   rewrite ^/anyfabric(.*) /$1;
+    #   add_header X-Frame-Options sameorigin always;
+    #}
+    # 主应用静态资源匹配
+    location ~ ^/anyfabric/.*\.(js|css|jpg|jpeg|gif|png|ico|cur|gz|svg|svgz|mp4|ogg|ogv|webm|xlsx|woff|woff2|eot|ttf|otf|pdf) {
+       rewrite ^/anyfabric(.*) /$1;
+       add_header X-Frame-Options sameorigin always;
+    }
+    # 下载.zip文件设置响应头
+    location ~ .*\.(zip)$ {
+       rewrite ^/anyfabric(.*) /$1;
+       add_header Content-Type application/zip;
+       add_header Cache-Control "no-cache";
+    }
+    # react路由匹配
+    location ~ ^/anyfabric/(.*) {
+       rewrite ^/anyfabric/(.*) /$1 break;
+       try_files $uri /index.html =404;
+    }
+    # app cancle stage be renamed appid_unstage
+    location ~ /*(_unstage|_bak)/* {
+       deny all;
+    }
+
+    location ~ .*\.(?:jpg|jpeg|gif|png|ico|cur|gz|svg|svgz|mp4|ogg|ogv|webm)$ {
+        add_header Cache-Control "no-cache";
+    }
+
+    location ~ .*\.(?:js|css)$ {
+        add_header Cache-Control "no-cache";
+    }
+
+    location ~ .*\.(?:htm|html)$ {
+        add_header Cache-Control "private, no-store, no-cache, must-revalidate, proxy-revalidate";
+    }
+
+    error_page   500 502 503 504  /50x.html;
+
+    location = /50x.html {
+        root   /usr/share/nginx/html;
+    }
+
+    location = /health/alive {
+        access_log off;
+        error_log  /dev/null;
+        return 200 "alive";
+    }
+
+    location = /health/ready {
+        access_log off;
+        error_log  /dev/null;
+        return 200 "ready";
+    }
+}

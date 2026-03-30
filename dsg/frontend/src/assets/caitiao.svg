@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="32px" height="12px" viewBox="0 0 32 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 64 (93537) - https://sketch.com -->
+    <title>画板@3x</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#EEEEEE" stop-opacity="0" offset="0%"></stop>
+            <stop stop-color="#FF9500" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="100%" x2="50%" y2="0%" id="linearGradient-2">
+            <stop stop-color="#EEEEEE" stop-opacity="0" offset="0%"></stop>
+            <stop stop-color="#3E75FF" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="画板" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="组-698备份" transform="translate(16.000000, 6.000000) scale(-1, 1) translate(-16.000000, -6.000000) " fill-rule="nonzero">
+            <polygon id="矩形" fill="url(#linearGradient-1)" transform="translate(22.500000, 8.000000) rotate(90.000000) translate(-22.500000, -8.000000) " points="18.5 -1.5 26.5 -1.5 26.5 17.5 18.5 17.5"></polygon>
+            <polygon id="矩形备份-3" fill="url(#linearGradient-2)" transform="translate(9.696970, 4.000000) rotate(90.000000) translate(-9.696970, -4.000000) " points="5.6969697 -5.6969697 13.6969697 -5.6969697 13.6969697 13.6969697 5.6969697 13.6969697"></polygon>
+        </g>
+    </g>
+</svg>

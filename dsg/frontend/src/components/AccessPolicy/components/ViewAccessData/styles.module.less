@@ -1,0 +1,113 @@
+.table-title {
+    display: flex;
+    min-width: 192px;
+    // max-width: 313px;
+    height: 48px;
+    align-items: center;
+    justify-content: space-between;
+
+    .table-title-left {
+        .business-name-item {
+            max-width: 230px;
+            color: rgba(0 0 0 / 85%);
+
+            .ellipsis-mixin();
+
+            .business-name {
+                margin-left: 6px;
+            }
+        }
+
+        .technical-name {
+            max-width: 230px;
+            color: rgba(0 0 0 / 65%);
+            font-size: 12px;
+            font-weight: 400;
+
+            .ellipsis-mixin();
+        }
+    }
+
+    .table-title-right {
+        margin-left: 10px;
+    }
+}
+
+.data-table {
+    :global {
+        .any-fabric-ant-table-cell {
+            // padding: 0 !important;
+
+            &:has(.col-checked) {
+                background-color: #ecf5ff !important;
+            }
+        }
+
+        .any-fabric-ant-table-content {
+            overflow-x: auto;
+
+            > table {
+                width: auto;
+                min-width: 100%;
+            }
+        }
+
+        // th {
+        //     > div {
+        //         // 设计规定最宽345px-左右padding之和32px=313px
+        //         max-width: 313px;
+        //     }
+        // }
+
+        .any-fabric-ant-table-tbody > tr > td {
+            user-select: none;
+        }
+    }
+}
+
+.popover-content-wrapper {
+    :global {
+        .any-fabric-ant-popover-inner-content {
+            padding: 16px 16px 8px;
+        }
+    }
+}
+
+.field-filter-wrapper {
+    .filter-form-item {
+        margin-bottom: 12px;
+    }
+
+    .filter-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .footer-btn {
+            margin-right: -8px;
+        }
+
+        :global {
+            .any-fabric-ant-btn {
+                display: flex;
+                width: 44px;
+                height: 24px;
+                align-items: center;
+                justify-content: center;
+            }
+        }
+    }
+}
+
+.field-filter-icon {
+    cursor: pointer;
+}
+
+.field-filter-active-icon {
+    color: #126ee3;
+}
+
+.disable-field-filter-icon {
+    color: rgba(0 0 0 / 25%);
+    cursor: not-allowed;
+}

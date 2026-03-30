@@ -1,0 +1,495 @@
+.rescCatlgOverview {
+    display: flex;
+    overflow: hidden;
+    height: 100%;
+    flex-direction: column;
+    padding: 16px 24px 24px;
+    background: #f0f2f6;
+
+    .overviewHeader {
+        display: flex;
+        height: 48px;
+        flex-shrink: 0;
+        align-items: flex-end;
+        justify-content: space-between;
+        padding: 0 24px;
+        margin-bottom: 16px;
+        background: #fff;
+        border-radius: 4px;
+
+        :global {
+            .any-fabric-ant-tabs-nav {
+                height: 48px;
+                margin-bottom: 0;
+            }
+
+            .any-fabric-ant-tabs {
+                width: 100%;
+
+                .any-fabric-ant-tabs-nav-list {
+                    background: #fff;
+                }
+            }
+        }
+    }
+
+    // 总览
+    .summaryWrapper {
+        overflow: hidden auto;
+        // margin: 16px 0 24px;
+        // height: calc(100% - 64px);
+        flex: 1;
+
+        .summaryItemWrapper {
+            // height: 480px;
+            min-height: 402px;
+            padding: 16px 24px 24px 20px;
+            background: #fff;
+            border-radius: 4px;
+
+            .summaryItemTop {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-bottom: 16px;
+                color: rgb(0 0 0 / 85%);
+                font-size: 14px;
+                font-weight: 550;
+                line-height: 20px;
+                text-align: left;
+
+                .summaryItemValue {
+                    color: rgb(0 0 0 / 45%);
+                    font-size: 14px;
+                    line-height: 22px;
+
+                    .summaryItemValueCount {
+                        margin-left: 8px;
+                        color: #000;
+                        font-size: 16px;
+                        line-height: 24px;
+                    }
+                }
+            }
+
+            .summaryItemContentWrapper {
+                // border-bottom: 1px dotted #c2c6ce;
+
+                .summaryCountInfo {
+                    display: flex;
+                    flex-wrap: nowrap;
+                    justify-content: space-between;
+                    margin-bottom: 24px;
+
+                    &:nth-child(3) {
+                        flex-grow: 2;
+                    }
+
+                    .countItem {
+                        min-width: 64px;
+                        // flex: 1;
+                        flex-grow: 1;
+
+                        & + .countItem:not(.smallCountItem) {
+                            flex-grow: 1;
+                            padding-left: 16px;
+                            border-left: 1px dotted #c2c6ce;
+                        }
+
+                        &:nth-child(3) {
+                            width: 110px;
+                            flex-grow: 0;
+                        }
+
+                        &.smallCountItem {
+                            display: flex;
+                            min-width: 66px;
+                            flex: 0 1 auto;
+                            flex-direction: column;
+                            justify-content: flex-end;
+
+                            & + .smallCountItem {
+                                min-width: 82px;
+                                padding-left: 16px;
+                                border-left: 1px dotted #c2c6ce;
+                            }
+
+                            .countItemTitle {
+                                line-height: 20px;
+                            }
+
+                            .countItemValue {
+                                color: #333843;
+                                font-size: 16px;
+                                line-height: 22px;
+                            }
+                        }
+                    }
+
+                    .countItemTitle {
+                        margin-bottom: 6px;
+                        color: rgb(0 0 0 / 45%);
+                        font-size: 14px;
+                        line-height: 22px;
+                    }
+
+                    .countItemValue {
+                        color: #404040;
+                        font-size: 28px;
+                        line-height: 34px;
+                    }
+
+                    @media screen and (max-width: 1280px) {
+                        // .countItem:nth-child(1) {
+                        //     width: 100px;
+                        // }
+                        // .countItem:nth-child(2) {
+                        //     width: 92px;
+                        // }
+
+                        .countItem {
+                            min-width: 64px;
+
+                            & + .countItem:not(.smallCountItem) {
+                                flex-grow: 1;
+                                padding-left: 10px;
+                            }
+                        }
+
+                        .smallCountItem {
+                            width: 64px;
+                            flex-shrink: 0;
+                            padding-left: 10px;
+                        }
+                    }
+
+                    @media screen and (min-width: 1281px) and (max-width: 1440px) {
+                        // .countItem:nth-child(1),
+                        .countItem:nth-child(3) {
+                            width: 110px;
+                        }
+                    }
+
+                    @media screen and (min-width: 1441px) {
+                        // .countItem:nth-child(1),
+                        // .countItem:nth-child(2) {
+                        //     min-width: 202px;
+                        // }
+                        .countItem:nth-child(3) {
+                            width: 130px;
+                        }
+                    }
+                }
+
+                .auditStaticsWrapper {
+                    padding: 16px 0 0;
+                    border-top: 1px dotted #c2c6ce;
+                    margin-top: 24px;
+
+                    .auditTitle {
+                        margin-bottom: 16px;
+                        color: #858d9d;
+                        font-size: 14px;
+                        font-weight: 550;
+                        line-height: 20px;
+                    }
+                }
+
+                :global {
+                    .g2-tooltip {
+                        background: #1a1c21;
+                        color: #fff;
+                        font-size: 12px;
+                        line-height: 16px;
+                    }
+                }
+            }
+        }
+
+        .auditInfoWrapper {
+            height: 480px;
+
+            .auditStaticsWrapper {
+                position: relative;
+
+                .auditTitle {
+                    position: absolute;
+                    top: 10px;
+                    left: 0;
+                }
+            }
+        }
+
+        // 数据资源统计
+        .linkCatlgInfoWrapper {
+            height: 480px;
+
+            .linkCatlgInfo {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 24px;
+
+                .linkCatlgNums {
+                    width: 226px;
+                    flex-shrink: 0;
+
+                    .linkNumItem {
+                        overflow: hidden;
+                        width: 100%;
+                        height: 107px;
+                        padding: 20px 24px;
+                        background: rgb(246 247 251 / 57%);
+                        border-radius: 4px;
+
+                        & + .linkNumItem {
+                            margin-top: 16px;
+                        }
+
+                        .linkTitle {
+                            .ellipsis-mixin();
+
+                            color: rgb(0 0 0 / 45%);
+                            font-size: 14px;
+                            line-height: 22px;
+                        }
+
+                        .linkNum {
+                            margin-top: 6px;
+                            margin-left: 16px;
+                            color: #404040;
+                            font-size: 28px;
+                            line-height: 34px;
+                        }
+                    }
+                }
+
+                .linkProgressChart {
+                    flex-grow: 1;
+                }
+            }
+        }
+
+        .linkProgressItemWrapper {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+
+            .index {
+                color: #404040;
+                font-size: 14px;
+                font-weight: 600;
+                line-height: 22px;
+                text-shadow: 0 4px 30px rgb(26 28 33 / 5%);
+            }
+        }
+
+        .linkProgressItem {
+            overflow: hidden;
+            flex-grow: 1;
+
+            & + .linkProgressItem {
+                margin-top: 84px;
+            }
+
+            .linkItemInfo {
+                display: flex;
+                width: 100%;
+                align-items: center;
+                justify-content: space-between;
+                // margin-bottom: 8px;
+                .title {
+                    .ellipsis-mixin();
+
+                    height: 20px;
+                    flex-grow: 1;
+                    color: #858d9d;
+                    font-size: 14px;
+                    line-height: 20px;
+
+                    .titleContent {
+                        display: inline-block;
+                        max-width: 100%;
+                        .ellipsis-mixin();
+                    }
+                }
+
+                .linkNum {
+                    flex-shrink: 0;
+                    margin-left: 16px;
+                    color: #333843;
+                    font-size: 14px;
+                    line-height: 20px;
+                }
+
+                .linkProportion {
+                    margin-left: 16px;
+                    color: #858d9d;
+                    font-size: 14px;
+                    line-height: 20px;
+                }
+            }
+        }
+        // 数据资源目录统计
+        .depCatlgWrapper {
+            display: flex;
+            height: 410px;
+            flex-direction: column;
+            padding: 16px 0 24px;
+
+            .summaryItemTop {
+                flex-shrink: 0;
+                padding: 0 24px;
+            }
+
+            .depItemContentWrapper {
+                overflow: hidden auto;
+                flex: 1;
+                padding: 0 24px;
+            }
+        }
+
+        // 共享统计
+        .shareStaticsWrapper {
+            height: 410px;
+
+            .summaryItemContentWrapper {
+                :global {
+                    .g2-tooltip {
+                        min-width: 180px;
+                        max-width: 60% !important;
+                    }
+                }
+            }
+        }
+
+        // 目录使用统计
+        .catlgUseWrapper {
+            min-height: 402px;
+        }
+
+        // 目录反馈统计
+        .catlgFedbkWrapper {
+            min-height: 402px;
+        }
+
+        :global {
+            .any-fabric-ant-progress-inner,
+            .any-fabric-ant-progress-bg {
+                border-radius: 2px !important;
+            }
+        }
+    }
+
+    // 分类统计
+    .classStaticsWrapper {
+        // background: #fff;
+        // overflow: hidden;
+        display: flex;
+        overflow: hidden auto;
+        flex: 1;
+        flex-direction: column;
+
+        .classStaticsTitle {
+            padding: 16px;
+            background: #fff;
+            color: rgb(0 0 0 / 85%);
+            font-size: 14px;
+            font-weight: 550;
+            line-height: 22px;
+        }
+
+        .catlgStaticsWrapper {
+            .staticsItemWrapper {
+                position: relative;
+                padding: 16px 0;
+                border-top: 1px solid #f0f0f0;
+                background: #fff;
+
+                .tabLink {
+                    color: rgb(0 0 0 / 65%);
+                    font-size: 14px;
+                    line-height: 20px;
+
+                    &.activeLink {
+                        color: #126ee3;
+
+                        &::after {
+                            position: absolute;
+                            bottom: 0;
+                            width: 16px;
+                            height: 2px;
+                            margin: auto 0;
+                            background: #126ee3;
+                            content: '';
+                        }
+                    }
+                }
+
+                :global {
+                    .any-fabric-ant-tabs {
+                        position: absolute;
+                        z-index: 7;
+                        height: 20px;
+
+                        .any-fabric-ant-tabs-nav {
+                            padding: 0 16px;
+
+                            &::before {
+                                border: none;
+                            }
+
+                            .any-fabric-ant-tabs-tab {
+                                padding: 0 0 4px;
+                                color: rgb(0 0 0 / 65%);
+                                line-height: 20px;
+                            }
+
+                            .any-fabric-ant-tabs-ink-bar {
+                                height: 2px;
+                                background: none;
+
+                                &::before {
+                                    position: absolute;
+                                    top: -12px;
+                                    left: calc(50% - 8px);
+                                    width: 16px;
+                                    height: 14px;
+                                    border-bottom: 2px solid #126ee3;
+                                    content: '';
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            .fedBakStaticsWrapper {
+                margin-top: 16px;
+                background: #fff;
+            }
+        }
+    }
+
+    .loadingWrapper {
+        flex: 1;
+        background: #fff;
+    }
+
+    :global {
+        .g2-tooltip {
+            background: #1a1c21 !important;
+            color: #fff !important;
+            font-size: 12px !important;
+            line-height: 16px !important;
+        }
+    }
+}
+
+.tooltip {
+    :global {
+        overflow: hidden;
+        max-width: 250px;
+        white-space: normal;
+    }
+}

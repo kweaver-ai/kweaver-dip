@@ -1,0 +1,235 @@
+.dataDictionaryContent {
+    position: relative;
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    padding: 22px 24px 24px;
+
+    .dataDictionaryHeader {
+        margin-bottom: 16px;
+        font-weight: 550;
+    }
+
+    .dataDictionaryOperation {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 0 0 16px;
+
+        .dataDictionaryTitle {
+            width: 200px;
+            flex: none;
+            font-weight: 550;
+        }
+
+        .topRight {
+            display: flex;
+            flex: auto;
+            justify-content: flex-end;
+        }
+    }
+}
+
+.columnTitle {
+    color: rgb(0 0 0 / 85%);
+    cursor: pointer;
+
+    &:hover,
+    &:active {
+        color: #3a8ff0;
+    }
+}
+
+.editFormWrapper {
+    position: relative;
+    overflow: auto;
+    width: calc(100% - 48px);
+    height: calc(100% - 24px);
+    padding: 24px 0;
+    margin: 24px 24px 0;
+    background-color: #fff;
+    border-radius: 4px;
+
+    .editForm {
+        overflow: visible;
+        width: 1200px;
+        box-sizing: border-box;
+        margin: 0 auto;
+
+        .contentWrapper {
+            padding: 0 16px;
+            margin-top: 12px;
+
+            .tipCol {
+                width: 0;
+                flex: none;
+            }
+
+            .labelTitle {
+                display: inline-block;
+                color: #666;
+            }
+
+            .required {
+                margin-right: 4px;
+                color: #ff4d4f;
+            }
+
+            .catalogDetail {
+                padding: 12px;
+                margin: 12px 0;
+                background-color: #fafafa;
+                border-radius: 4px;
+            }
+        }
+    }
+}
+
+.dictionaryItemWrapper {
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+        background: #fafafa;
+    }
+
+    &.dragging {
+        background: #f0f0f0;
+        box-shadow: 0 2px 8px rgb(0 0 0 / 15%);
+    }
+
+    .itemCol {
+        width: 0;
+        height: 32px;
+        flex: none;
+        line-height: 32px;
+    }
+
+    .itemDragHandle {
+        cursor: move;
+
+        &:hover {
+            color: #666;
+        }
+    }
+
+    .itemDeleteIcon {
+        color: rgb(0 0 0 / 85%);
+        cursor: pointer;
+    }
+}
+
+.drawerTitle {
+    display: flex;
+    width: 900px;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 550;
+
+    .return {
+        cursor: pointer;
+
+        .returnText {
+            margin-left: 12px;
+        }
+    }
+
+    .objectionName {
+        width: 520px;
+        padding-left: 12px;
+        border-left: 1px solid rgba(0 0 0 / 25%);
+        margin-left: 12px;
+        color: @heading-color;
+        .ellipsis-mixin();
+    }
+}
+
+.detailGroupTitle {
+    position: relative;
+    display: flex;
+    height: 46px;
+    align-items: center;
+    margin: 8px 0;
+    background: rgb(0 55 150 / 2%);
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 550;
+
+    &::before {
+        display: inline-block;
+        width: 3px;
+        height: 20px;
+        margin-right: 12px;
+        background-color: rgb(18 110 227 / 100%);
+        content: '';
+    }
+}
+
+:global {
+    .ant-form-item {
+        margin-bottom: 0;
+    }
+
+    [data-rbd-droppable-id] {
+        min-height: 100px;
+    }
+}
+
+.detailsWrapper {
+    position: relative;
+    display: flex;
+    overflow: auto;
+    height: calc(100vh - 102px);
+    padding-right: 100px;
+
+    .detailsContentWrapper {
+        height: 100%;
+        flex: auto;
+        padding-right: 20px;
+    }
+
+    .titleWrapper {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 12px;
+
+        .title {
+            width: 100px;
+            flex: none;
+            font-weight: 550;
+        }
+
+        .searchInput {
+            width: 200px;
+        }
+    }
+}
+
+.anchor {
+    position: fixed;
+    z-index: 100;
+    top: 80px;
+    right: 40px;
+    width: 100px;
+    flex: none;
+    margin-left: 20px;
+    background: #fff;
+}
+
+.detailSectionWrapper {
+    margin-bottom: 20px;
+
+    .title {
+        width: 100px;
+        margin-bottom: 12px;
+        font-weight: 550;
+    }
+}
+
+.emptyWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 12px;
+}

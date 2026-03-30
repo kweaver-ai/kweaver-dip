@@ -1,0 +1,86 @@
+Name: data-semantic-api
+Host: 0.0.0.0
+Port: 8888
+Timeout: 180000
+
+# Telemetry 配置
+Telemetry:
+  ServiceName: data-semantic-api
+  ServiceVersion: "1.0.0"
+  Environment: dev
+
+  Log:
+    Level: info
+    Mode: console
+    Path: logs
+    KeepDays: 7
+    RemoteEnabled: false
+    RemoteUrl: "http://log-collector:8080/api/logs"
+    RemoteBatch: 100
+    RemoteTimeout: 5
+
+  Trace:
+    Enabled: false
+    Endpoint: "localhost:4317"
+    Sampler: 1.0
+    Batcher: otlp
+
+  Audit:
+    Enabled: false
+    Url: "http://audit-service:8080/api/audit"
+    Buffer: 100
+
+# 数据库配置
+DB:
+  Default:
+    Host: localhost
+    Port: 3306
+    Database: data-semantic
+    Username: root
+    Password: root123456
+    Charset: utf8mb4
+    MaxIdleConns: 10
+    MaxOpenConns: 100
+    ConnMaxLifetime: 3600
+    ConnMaxIdleTime: 600
+
+# Redis 配置 (可选)
+Redis:
+  Host: localhost
+  Port: 6379
+  DB: 0
+  Password: ""
+
+# 认证配置
+Auth:
+  AccessSecret: "your-secret-key-change-in-production-please-use-32-chars"
+  AccessExpire: 7200
+  HydraAdminURL: "http://localhost:4445"
+  HydraTimeoutSec: 10
+
+# Swagger 配置
+Swagger:
+  Enabled: true
+  Path: D:/go/data-semantic/api/doc/swagger
+
+# Kafka 配置
+Kafka:
+  Brokers:
+    - localhost:9092
+  Username: ""  # SASL 用户名（可选）
+  Password: ""  # SASL 密码（可选）
+
+# AI 服务配置
+AIService:
+  URL: ""
+  TimeoutSeconds: 10
+
+# UserManagement 服务配置
+UserManagement:
+  URL: ""
+  TimeoutSeconds: 10
+
+# AgentRetrieval 服务配置
+AgentRetrieval:
+  URL: "http://agent-retrieval:30779"
+  TimeoutSeconds: 30

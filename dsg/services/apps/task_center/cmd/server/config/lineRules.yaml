@@ -1,0 +1,110 @@
+lineRules:
+  - Name: 主干业务清单表
+    ModelsName: 主干业务名称
+    Type: 1
+    KvContent:
+      Start: 3
+      End: 3
+    SheetName:
+      Row: 2
+    Instruction:
+      Rows:
+        - 1
+    TableContent:
+      TitleNum: 3
+      ContentCount: 1
+
+  - Name: 调研任务表test
+    ModelsName:
+    type: 2
+    KvContent:
+      Start: 3
+      End: 14
+    SheetName:
+      Row: 2
+    Instruction:
+      Rows:
+        - 1
+  - Name: fusionForm
+    ModelsName:
+    SheetName:
+      Row: 2
+    Type: 1
+    KvContent:
+      Start: 3
+      End: 4
+    TableContent:
+      TitleNum: 5
+      ContentCount: 1
+    Instruction:
+      Rows:
+        - 1
+  - Name: 指标汇总表
+    ModelsName:
+    Type: 1
+    KvContent:
+      Start: 6
+      End: 6
+    SheetName:
+      Row: 5
+    Instruction:
+      Rows:
+        - 1
+    TableContent:
+      TitleNum: 6
+      ContentCount: 1
+
+  - Name: 原始表清单表
+    KvContent:
+      Start: 1
+      End: 1
+    SheetName:
+      Row: 2
+    Instruction:
+      Rows:
+        - 1
+    TableContent:
+      TitleNum: 3
+      ContentCount: 2
+  - Name: 原始表字段表
+    KvContent:
+      Start: 1
+      End: 1
+    SheetName:
+      Row: 2
+    CateName:
+      Row: 3
+    Instruction:
+      Rows:
+        - 1
+    TableContent:
+      TitleNum: 4
+      ContentCount: 5
+
+  - Name: 标准表清单表
+    KvContent:
+      Start: 1
+      End: 1
+    SheetName:
+      Row: 2
+    Instruction:
+      Rows:
+        - 1
+    TableContent:
+      TitleNum: 3
+      ContentCount: 1
+  - Name: 标准表字段表
+    KvContent:
+      Start: 1
+      End: 1
+    SheetName:
+      Row: 2
+    CateName:
+      Row: 3
+    Instruction:
+      Rows:
+        - 1
+    TableContent:
+      TitleNum: 4
+      ContentCount: 1
+

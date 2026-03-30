@@ -1,0 +1,123 @@
+# 名称空间，服务都要在同一个空间。
+namespace: anyshare
+
+# 1 修改标签
+labels:
+  deployment:
+    name: data-exploration-deployment
+  pod:
+    app: data-explorationt-pod
+  service:
+    app: data-exploration-service
+
+# 2 修改仓库服务的镜像地址：不同的项目记得修改repository中af后的项目名和tag
+image:
+  registry: acr.aishu.cn
+  repository: af/data-exploration-service
+  tag: "1.0.0-alpha"
+  pullPolicy: IfNotPresent
+
+#3 修改容器副本数量
+replicaCount: 1
+
+#4 修改deployment的名称
+name: data-exploration-deployment
+
+nodeSelector: []
+
+#需要暴露的端口号列表
+#containerPort容器需要监听的端口号
+#protocol端口协议，支持TCP和UDP，默认TCP
+ports:
+  name: server-port
+  containerPort: 8281
+
+
+# 修改service的名字、端口，nodePort是对外的端口。
+service:
+  name: data-exploration-service
+  type: ClusterIP
+  port: 8281
+  version: "1.0"
+  telemetry:
+    log:
+      enabled: true
+      endpoint: "http://feed-ingester-service:13031/api/feed_ingester/v1/jobs/job-4d42d761dbf0ea95/events"
+      level: "info"
+    trace:
+      enabled: true
+      endpoint: "http://feed-ingester-service:13031/api/feed_ingester/v1/jobs/job-a2491f67d02e482c/events"
+      
+
+depServices:
+  class-443:
+    ingressClass: class-443
+  rds:
+    type: mariadb
+    host: mariadb-mariadb-master.resource
+    port: 3330
+    user: anyshare
+    password: password
+    database: af_data_exploration
+    migrationPath: /usr/local/bin/af/infrastructure/repository/db/gen/migration  
+  redis:
+    connectInfo:
+      masterGroupName: mymaster
+      password: ''
+      sentinelHost: proton-redis-proton-redis-sentinel.resource.svc.cluster.local
+      sentinelPassword: ''
+      sentinelPort: 26379
+      sentinelUsername: root
+      username: root
+    connectType: sentinel
+    sourceType: internal
+    db: 3
+    masterName: mymaster
+  configCenterService:
+    host: configuration-center
+    port: 8133
+  standardizationService:
+    host: standardization
+    port: 80
+  virtualizationEngine:
+    protocol: http
+    host: af-vega-gateway
+    port: 8099
+  userManageService:
+    host: user-management-private
+    port: 30980
+  hydraService:
+    privateHost: hydra-admin
+    privatePort: 4445
+    publicHost: hydra-public
+    publicPort: 4444
+  logPath: /opt/log/af
+  mq:
+    auth:
+      mechanism: 'PLAIN'
+      username: 'kafkauser'
+      password: ''
+    mqHost: 'kafka.resource.svc.cluster.local'
+    mqLookupdHost: ""
+    mqLookupdPort: 0
+    mqPort: 9092
+    mqType: kafka
+    version: 2.3.1
+    groupId: af.data_exploration
+
+# 修改pod资源限制：cpu示例:0.5/500m/1/1000m;memory示例:512Mi/1Gi
+resources:
+  requests:
+    cpu: 0.1
+    memory: 10Mi
+  limits:
+    cpu: 4
+    memory: 5120Mi
+
+exploration:
+  cacheExpireTime: 30
+  groupLimit: 20
+  reportDefaultOvertime: 7200 
+  virtualQueryResultTopic: af.data_exploration_virtual_result
+  virtualEngineTimeout: 300
+  mdlUniQueryCallInterval: 1ms

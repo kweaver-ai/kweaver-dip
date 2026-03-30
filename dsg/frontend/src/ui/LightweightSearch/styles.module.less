@@ -1,0 +1,205 @@
+.filterBox {
+    max-width: 320px;
+
+    .filterBtn {
+        display: flex;
+        align-items: center;
+        padding: 4px 12px;
+        cursor: pointer;
+
+        &:focus {
+            border: 1px solid #ccc;
+            color: @label-color;
+        }
+
+        .filterIcon {
+            margin-top: 2px;
+        }
+
+        .dropIcon {
+            margin-left: 8px;
+            font-size: 14px;
+        }
+
+        .filterText {
+            .ellipsis-mixin();
+
+            display: inline-block;
+            max-width: 252px;
+        }
+
+        &.filterBtnActive {
+            border-color: @primary-color;
+            color: @primary-color;
+
+            .filterIcon svg path {
+                color: #126ee3;
+                fill: #126ee3;
+                opacity: 1;
+            }
+        }
+    }
+
+    .filterContent {
+        // width: 240px;
+
+        .title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid rgb(0 0 0 / 8%);
+        }
+
+        .timeContainer {
+            padding: 12px;
+
+            :global {
+                .any-fabric-ant-picker-input {
+                    input {
+                        font-size: 12px;
+                    }
+                }
+            }
+        }
+
+        .filterCollapse {
+            max-height: 520px;
+            overflow-x: hidden;
+            overflow-y: auto;
+
+            :global {
+                .any-fabric-ant-collapse-item
+                    > .any-fabric-ant-collapse-header {
+                    padding: 5px 10px;
+                    margin-top: 4px;
+                    background: #fafafa;
+                }
+
+                .any-fabric-ant-collapse-header-text {
+                    color: @text-color-third;
+                }
+            }
+        }
+
+        :global {
+            .any-fabric-ant-collapse-ghost
+                > .any-fabric-ant-collapse-item
+                > .any-fabric-ant-collapse-content
+                > .any-fabric-ant-collapse-content-box {
+                max-height: 320px;
+                padding: 8px 0 4px;
+                overflow-x: hidden;
+                overflow-y: auto;
+            }
+        }
+
+        .filterItem {
+            display: flex;
+            width: 100%;
+            min-width: 0;
+            align-items: center;
+            padding: 5px 12px;
+            margin-left: 0;
+
+            .labelContainer {
+                display: flex;
+            }
+
+            .label {
+                display: inline-block;
+                width: 170px;
+                .ellipsis-mixin();
+            }
+
+            .icon {
+                flex-shrink: 0;
+                margin-right: 4px;
+            }
+
+            .itemText {
+                min-width: 0;
+                flex: 1;
+                .ellipsis-mixin();
+            }
+
+            &:hover {
+                background: rgb(0 0 0 / 4%);
+            }
+
+            &.singleFilterItem {
+                padding-left: 16px;
+
+                &.active {
+                    background: #e6f8ff;
+                    color: #000;
+                    font-weight: 550;
+                }
+
+                .label {
+                    width: auto;
+                }
+
+                .itemText {
+                    flex: none;
+                }
+            }
+
+            &.active {
+                color: @primary-color;
+            }
+
+            &.default {
+                color: @text-color;
+            }
+        }
+    }
+
+    .filterDropdown {
+        .dropIcon {
+            margin-left: 4px;
+        }
+
+        :global {
+            .any-fabric-ant-dropdown-menu {
+                padding: 0;
+            }
+
+            .any-fabric-ant-dropdown-menu-item {
+                padding: 0;
+
+                &:hover {
+                    background: #fff;
+                }
+            }
+        }
+    }
+}
+
+.checkboxWrapper {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+
+    :global {
+        .any-fabric-ant-checkbox-wrapper {
+            width: calc(100% - 8px);
+            height: 32px;
+            line-height: 32px;
+
+            .any-fabric-ant-checkbox {
+                margin-left: 12px;
+            }
+        }
+
+        .any-fabric-ant-checkbox + span {
+            display: inline-block;
+            width: calc(100% - 30px);
+            .ellipsis-mixin();
+        }
+
+        .any-fabric-ant-checkbox-wrapper + .any-fabric-ant-checkbox-wrapper {
+            margin-left: 0;
+        }
+    }
+}

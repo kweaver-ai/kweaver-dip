@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dsg.standardization.mapper.StdFileMgrMapper">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.dsg.standardization.entity.StdFileMgrEntity" id="baseMap">
+        <result property="id" column="f_id"/>
+        <result property="number" column="f_number"/>
+        <result property="version" column="f_version"/>
+        <result property="catalogId" column="f_catalog_id"/>
+        <result property="name" column="f_name"/>
+        <result property="actDate" column="f_act_date"/>
+        <result property="state" column="f_state"/>
+        <result property="disableReason" column="f_disable_reason"/>
+        <result property="disableDate" column="f_disable_date"/>
+        <result property="publishDate" column="f_publish_date"/>
+        <result property="attachmentType" column="f_attachment_type"/>
+        <result property="attachmentUrl" column="f_attachment_url"/>
+        <result property="fileName" column="f_file_name"/>
+        <result property="orgType" column="f_org_type"/>
+        <result property="description" column="f_description"/>
+        <result property="authorityId" column="f_authority_id"/>
+        <result property="createTime" column="f_create_time"/>
+        <result property="createUser" column="f_create_user"/>
+        <result property="updateTime" column="f_update_time"/>
+        <result property="updateUser" column="f_update_user"/>
+        <result property="deleted" column="f_deleted"/>
+        <result property="departmentIds" column="f_department_ids"/>
+        <result property="thirdDeptId" column="f_third_dept_id"/>
+    </resultMap>
+
+    <resultMap extends="baseMap" type="com.dsg.standardization.entity.StdFileMgrEntity" id="baseMapList">
+        <result property="catalogName" column="f_catalog_name"/>
+    </resultMap>
+
+    <select id="queryList" resultMap="baseMapList">
+        select t.*,f.f_catalog_name from t_std_file t , t_de_catalog_info f where t.f_catalog_id=f.f_id and t.f_deleted=0
+        <if test="catalogIds != null and catalogIds.size() > 0">
+            and t.f_catalog_id in
+            <foreach collection="catalogIds" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="state != null">
+            and t.f_state = #{state}
+        </if>
+        <if test="orgType != null">
+            and t.f_org_type = #{orgType}
+        </if>
+        <if test="keyword != null and keyword != ''">
+            and (lower(t.f_name) like lower(CONCAT('%',#{keyword},'%'))
+            or lower(t.f_number) like lower(CONCAT('%',#{keyword},'%')) )
+        </if>
+        <if test="departmentId != null and departmentId != ''">
+            and t.f_department_ids like CONCAT('%',#{departmentId},'%')
+        </if>
+    </select>
+
+    <select id="queryByNumber" resultMap="baseMap">
+        select * from t_std_file where f_number=#{number} and f_deleted=0
+    </select>
+
+    <select id="queryByOrgTypeAndName" resultMap="baseMap">
+        select * from t_std_file where f_org_type=#{orgType} and f_name=#{name} and f_deleted=0
+    </select>
+    <select id="queryByIds" resultMap="baseMap">
+        select * from t_std_file where f_id in
+        <foreach collection="idList" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+    <select id="queryData" resultMap="baseMap">
+        select * from t_std_file where f_deleted=0
+        <if test="number != null">
+            and f_number = #{number}
+        </if>
+        <if test="orgType != null">
+            and f_org_type = #{orgType}
+        </if>
+        <if test="name != null and name != ''">
+            and f_name = #{name}
+        </if>
+        <if test="filterId != null">
+            and f_id != #{filterId}
+        </if>
+        <if test="deptIds != null and deptIds != ''">
+            and f_department_ids = #{deptIds}
+        </if>
+        limit 1
+    </select>
+
+    <select id="queryStdFilesByDictId" resultMap="baseMap">
+        select t1.*
+        from t_std_file t1
+        join t_relation_dict_file t2
+        on t1.f_id=t2.f_file_id
+        where t2.f_dict_id = #{dictId}
+    </select>
+
+    <select id="queryStdFilesByRuleId" resultMap="baseMap">
+        select t1.*
+        from t_std_file t1
+        join t_relation_rule_file t2
+        on t1.f_id=t2.f_file_id
+        where t2.f_rule_id = #{ruleId}
+    </select>
+
+    <delete id="deleteByIds">
+        update t_std_file set f_deleted=f_id where f_id in
+        <foreach collection="idList" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+    <update id="removeCatalog">
+        update t_std_file
+        set f_catalog_id = #{catalogId},
+        f_version = f_version+1,
+        f_update_time=now(),
+        f_update_user=#{updateUser}
+        where f_deleted=0
+        and f_id in
+        <foreach collection="ids" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        and f_catalog_id != #{catalogId}
+    </update>
+    <update id="updateNumberActDate">
+        update t_std_file
+        set f_number = #{number},f_act_date=#{actDate}
+        where f_id = #{id}
+    </update>
+
+</mapper>

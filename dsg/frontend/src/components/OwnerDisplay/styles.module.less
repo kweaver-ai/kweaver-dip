@@ -1,0 +1,39 @@
+.ownerDisplayText {
+    display: inline-block;
+    overflow: hidden;
+    width: 100%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.tooltipContent {
+    overflow: auto;
+    width: 280px;
+    max-height: 230px;
+
+    .ownerHeader {
+        margin-bottom: 4px;
+        color: rgb(0 0 0 / 45%);
+    }
+
+    .ownerItem {
+        display: flex;
+        align-items: center;
+        padding: 4px 0;
+
+        .ownerNumber {
+            width: 16px;
+            height: 16px;
+            margin-right: 8px;
+            background: #eef1f3;
+            border-radius: 8px;
+            font-size: 12px;
+            line-height: 16px;
+            text-align: center;
+        }
+
+        .ownerName {
+            display: inline-block;
+        }
+    }
+}

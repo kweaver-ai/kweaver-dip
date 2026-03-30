@@ -1,0 +1,44 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+}
+
+.visitorContainer {
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+}
+
+.tagsGroupContainer {
+    display: flex;
+    width: 100%;
+    max-height: 300px;
+    flex-wrap: wrap;
+    gap: 8px;
+    overflow-y: auto;
+
+    .tagItemContainer {
+        display: flex;
+        overflow: hidden;
+        width: fit-content;
+        max-width: 120px;
+        height: 32px;
+        align-items: center;
+        padding: 0 8px;
+        background: rgb(240 242 246 / 45%);
+        border-radius: 3px;
+        column-gap: 4px;
+
+        .text {
+            flex: 0 1 auto;
+            .ellipsis-mixin();
+        }
+    }
+
+    .ellipsisText {
+        display: flex;
+        flex-shrink: 0;
+        align-items: flex-end;
+    }
+}

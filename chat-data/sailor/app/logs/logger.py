@@ -8,14 +8,14 @@ import logging
 from config import settings
 
 # 1、创建一个logger
-logger = logging.getLogger('af-sailor')
+logger = logging.getLogger('sailor')
 if settings.IF_DEBUG:
     logger.setLevel(logging.DEBUG)
 else:
     logger.setLevel(logging.INFO)
 
 # 2、创建一个handler，用于写入日志文件
-fh = logging.FileHandler('af-sailor.log')
+fh = logging.FileHandler('sailor.log')
 if settings.IF_DEBUG:
     fh.setLevel(logging.DEBUG)
 else:

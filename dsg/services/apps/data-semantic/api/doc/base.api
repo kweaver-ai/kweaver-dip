@@ -1,0 +1,62 @@
+syntax = "v1"
+
+info (
+    title:   "IDRM Base Types"
+    desc:    "通用请求/响应类型定义，供各模块引用"
+    version: "v1"
+)
+
+// ============================================
+// 分页请求
+// ============================================
+
+// PageBaseInfo 基础分页参数
+type PageBaseInfo {
+    Offset int `form:"offset,default=1,range=[1:]"`     // 页码，默认1
+    Limit  int `form:"limit,default=10,range=[0:2000]"` // 每页大小，默认10，0表示不分页
+}
+
+// PageInfo 完整分页参数（含排序）
+type PageInfo {
+    PageBaseInfo
+    Direction string `form:"direction,default=desc,options=asc|desc"`              // 排序方向：asc 正序，desc 倒序
+    Sort      string `form:"sort,default=created_at,options=created_at|updated_at"` // 排序字段
+}
+
+// KeywordInfo 关键字搜索
+type KeywordInfo {
+    Keyword string `form:"keyword,optional"` // 关键字查询
+}
+
+// PageInfoWithKeyword 分页+关键字组合
+type PageInfoWithKeyword {
+    PageInfo
+    KeywordInfo
+}
+
+// ============================================
+// 通用请求
+// ============================================
+
+// IdReq 通用ID请求（路径参数）
+type IdReq {
+    Id int64 `path:"id"`
+}
+
+// IdsReq 批量ID请求
+type IdsReq {
+    Ids []int64 `json:"ids"`
+}
+
+// ============================================
+// 通用响应
+// ============================================
+
+// PageResp 分页响应
+type PageResp {
+    Entries    interface{} `json:"entries"`     // 数据列表
+    TotalCount int64       `json:"total_count"` // 总记录数
+}
+
+// EmptyResp 空响应
+type EmptyResp {}

@@ -1,0 +1,15 @@
+*.svg
+*.json
+yarn.lock
+.npmignore
+.gitignore
+.prettierignore
+public/*
+config
+scripts
+.eslintignore
+.eslintrc.json
+.editorconfig
+.eslintcache
+.npmrc
+.yarnrc

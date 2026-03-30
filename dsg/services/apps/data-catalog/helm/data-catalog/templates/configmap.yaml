@@ -1,0 +1,91 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.name }}-cm
+  namespace: {{ .Values.namespace }}
+data:
+  {{- with .Values }}
+  CALLBACK_ADDRESS: {{ .callback.address | quote }}
+  CALLBACK_ENABLED: {{ .callback.enabled | quote }}
+  TENANT_ID: {{ .tenant.tenantId | quote}}
+  OSS_APP: {{ .depServices.oss.ossApp | quote }}
+  OSS_HOST: {{ .depServices.oss.ossHost | quote }}
+  OSS_PROTOCOL: {{ .depServices.oss.ossProtocol | quote }}
+  OSS_IS_DEFAULT: {{ .depServices.oss.ossIsDefault | quote }}
+  OSS_BUCKET: {{ .depServices.oss.ossBucket | quote }}
+  DOC_HOST: "0.0.0.0:8153"
+  DB_TYPE: {{ .depServices.rds.type | quote}}
+  DB_HOST: {{ .depServices.rds.host | quote}}
+  DB_PORT: {{ .depServices.rds.port | quote}}
+  DB_USERNAME: {{ .depServices.rds.user | quote }}
+  DB_PASSWORD: {{ .depServices.rds.password | quote }}
+  DB_NAME: {{ .depServices.rds.database | quote }}
+  CONFIGURATION_CENTER_HOST: "http://{{ index .depServices "configuration-center" "host"}}:{{ index .depServices "configuration-center" "port"}}"
+  TASK_CENTER_HOST: "http://{{index .depServices "task-center" "host"}}:{{index .depServices "task-center" "port"}}"
+  INDICATOR_MANAGEMENT_HOST: "http://{{index .depServices "indicator-management" "host"}}:{{index .depServices "indicator-management" "port"}}"
+  HYDRA_HOST: "http://{{ .depServices.hydra.administrativeHost}}:{{ .depServices.hydra.administrativePort}}"
+  HYDRA_PUBLIC_HOST: "http://{{ .depServices.hydra.publicHost}}:{{ .depServices.hydra.publicPort}}"
+  USER_MANAGE_HOST: "http://{{index .depServices "user-management" "privateHost"}}:{{ index .depServices "user-management" "privatePort"}}"
+  MIGRATION_PATH: {{ .depServices.rds.migrationPath | quote }}
+  LOG_PATH: {{ .depServices.logPath | quote }}
+  REDIS_HOST: "{{ .depServices.redis.connectInfo.sentinelHost }}:{{ .depServices.redis.connectInfo.sentinelPort }}"
+  REDIS_PASSWORD: {{ .depServices.redis.connectInfo.password | quote }}
+  REDIS_DB: {{ .depServices.redis.database | quote }}
+  REDIS_MIN_IDLE_CONNS: {{ .depServices.redis.minIdleConns | quote }}
+  DATA_CATALOG_HOST: "http://{{.service.name}}.{{.namespace}}:{{.service.port}}"
+  KAFKA_MQ_HOST: "{{ .depServices.mq.mqHost }}:{{ .depServices.mq.mqPort }}"
+  KAFKA_MQ_USENAME: "{{ .depServices.mq.auth.username }}"
+  KAFKA_MQ_PASSWORD: "{{ .depServices.mq.auth.password }}"
+  NSQ_MQ_HOST: "{{ .depServices.mq.mqHost}}:4150"
+  NSQ_MQ_HTTP_HOST: "{{ .depServices.mq.mqHttpHost}}:{{ .depServices.mq.mqHttpPort}}"
+  NSQ_LOOKUPD_HOST: "{{ .depServices.mq.mqLookupdHost}}:{{ .depServices.mq.mqLookupdPort}}"
+  META_DATA_MANAGE_HOST: "http://{{index .depServices "metadata-manage" "host"}}:{{index .depServices "metadata-manage" "port"}}"
+  ANYROBOT_TRACE_URL: "{{.depServices.anyRobotTraceUrl}}"
+  VIRTUALIZATION_ENGINE_URL: "{{index .depServices "virtualizationEngine" "protocol"}}://{{index .depServices "virtualizationEngine" "host"}}:{{index .depServices "virtualizationEngine" "port"}}"
+  DATA_MASKING_HOST: "{{index .depServices "data-masking" "schema"}}://{{index .depServices "data-masking" "host"}}:{{index .depServices "data-masking" "port"}}"
+  CATALOG_CODE_TYPE: {{ .variables.catalogCodeType | quote }}
+  SAMPLE_VIRTUALIZATION_CACHE_ENABLE: {{ .variables.sampleData.virtualizationCacheEnable | quote }}
+  SAMPLE_DATA_MASKING_ENABLE: {{ .variables.sampleData.dataMaskingEnable | quote }}
+  SAMPLE_BIG_MODEL_SWITCH: {{ .variables.sampleData.bigModelSwitch | quote }}
+  SAMPLE_BIG_MODEL_CACHE_ENABLE: {{ .variables.sampleData.bigModelCacheEnable | quote }}
+  SAMPLE_HAVE_DATA_EXPIRE_HOUR: {{ .variables.sampleData.haveDataExpireHour | quote }}
+  SAMPLE_EMPTY_DATA_EXPIRE_MINUTE: {{ .variables.sampleData.emptyDataExpireMinute | quote }}
+  ANYDATA_ALG_SERVER: "https://{{ .depServices.anyDataAlgServer.host}}:{{ .depServices.anyDataAlgServer.port}}"
+  ANYDATA_ALG_LINEAGE_KG_ID: {{ .depServices.anyDataAlgServer.lineageKgID | quote}}
+  ANYDATA_ALG_GRAPH_KG_ID: {{ .depServices.anyDataAlgServer.graphKgID | quote}}
+  ANYDATA_ALG_EMAIL: {{ .depServices.anyDataAlgServer.email | quote}}
+  ANYDATA_ALG_PASSWORD: {{ .depServices.anyDataAlgServer.password | quote}}
+  LINEAGE_CACHE_EXPIRE_MINUTES: {{ .depServices.anyDataAlgServer.cacheMinutes | quote}}
+  BUSINESS_GROOMING_HOST: "http://{{index .depServices "business-grooming" "host"}}:{{index .depServices "business-grooming" "port"}}"
+  WORKFLOW_REST_HOST: "http://{{ .depServices.workflow.workflowRest.host}}:{{ .depServices.workflow.workflowRest.port}}"
+  DOC_AUDIT_REST_HOST: "http://{{ .depServices.workflow.docAuditRest.host}}:{{ .depServices.workflow.docAuditRest.port}}"
+  WORKFLOW_TENANT_ID: {{ .depServices.workflow.tenantID | quote}}
+  DEPARTMENT_ID: {{ .depServices.department.id | quote}}
+  WORKFLOW_MQ_TYPE: {{ .depServices.mq.mqType | quote}}
+  OPENAI_URL: {{ .depServices.openai.url | quote}}
+  OPENAI_API_KEY: {{ .depServices.openai.key | quote}}
+  OPENAI_API_VERSION: {{ .depServices.openai.version | quote}}
+  OPENAI_API_TYPE: {{ .depServices.openai.type | quote}}
+  ANYDATA_URL: {{ .depServices.anyData.url | quote}}
+  ANYDATA_ACCOUNT_TYPE: {{ .depServices.anyData.accountType | quote}}
+  ANYDATA_USER: {{ .depServices.anyData.user | quote}}
+  ANYDATA_PASSWORD: {{ .depServices.anyData.password | quote}}
+  ANYDATA_SEARCH_SERVICE_ID: {{ .depServices.anyData.searchServiceID | quote}}
+  BASIC_SEARCH_HOST: "http://{{index .depServices "basic-search" "host"}}:{{index .depServices "basic-search" "port"}}"
+  AF_SAILOR_SERVICE_HOST: {{.depServices.afSailorService.schema}}://{{.depServices.afSailorService.host}}:{{.depServices.afSailorService.port}}
+  INTERFACE_SVC_HOST: "http://{{index .depServices "data-application-service" "host"}}:{{index .depServices "data-application-service" "port"}}"
+  DATA_SUBJECT_HOST: "http://{{index .depServices "data-subject" "host"}}:{{index .depServices "data-subject" "port"}}"
+  TRACE_URL: "{{ .service.telemetry.trace.endpoint}}"
+  TRACE_ENABLED: "{{ .service.telemetry.trace.enabled}}"
+  LOG_LEVEL: "{{ .service.telemetry.log.level}}"
+  LOG_URL: "{{ .service.telemetry.log.endpoint}}"
+  LOG_ENABLED: "{{ .service.telemetry.log.enabled}}"
+  SERVER_NAME: "{{ .service.name}}"
+  SERVER_VERSION: "{{ .service.version}}"
+  DATA_EXPLORE_HOST: "http://{{index .depServices "data-explore" "host"}}:{{index .depServices "data-explore" "port"}}"
+  DATA_VIEW_HOST: "http://{{index .depServices "data-view" "host"}}:{{index .depServices "data-view" "port"}}"
+  AUTH_SERVICE_HOST: "http://{{ .depServices.authsvc.host}}:{{ .depServices.authsvc.port}}"
+  {{- with .depServices.demandManagement }}
+  DEMAND_MANAGEMENT_HOST: "http://{{ .host }}:{{ .port }}"
+  {{- end }}
+  {{- end }}

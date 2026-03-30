@@ -1,0 +1,154 @@
+.main {
+    width: 100%;
+    height: 100%;
+    touch-action: none;
+
+    .tipMessage {
+        :global {
+            .any-fabric-ant-modal-footer {
+                border-top: 0 solid #f0f0f0;
+            }
+        }
+    }
+}
+
+.formTitleLabel {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    column-gap: 8px;
+
+    .titleIcon {
+        flex-shrink: 0;
+        font-size: 20px;
+    }
+
+    .titleContent {
+        display: flex;
+        overflow: hidden;
+        flex-direction: column;
+
+        .name {
+            flex: 0 1 auto;
+            color: #000;
+            font-size: 14px;
+            font-weight: 550;
+            // cursor: pointer;
+            .ellipsis-mixin();
+
+            // &:hover {
+            //     text-decoration: underline;
+            //     color: #126ee3;
+            // }
+        }
+
+        .dataSourceWrapper {
+            display: flex;
+            overflow: hidden;
+            align-items: center;
+            column-gap: 8px;
+            font-size: 12px;
+
+            .sourceIcon {
+                flex-shrink: 0;
+            }
+
+            .dataSourceName {
+                flex: 0 1 auto;
+                color: rgb(0 0 0 / 65%);
+                .ellipsis-mixin();
+            }
+        }
+    }
+}
+
+.fieldTitleLabel {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 8px;
+
+    .fieldContent {
+        min-width: 0;
+        flex: 0 1 auto;
+
+        .nameText {
+            display: flex;
+            overflow: hidden;
+            align-items: center;
+            column-gap: 8px;
+            font-size: 12px;
+
+            .nameIcon {
+                flex-shrink: 0;
+            }
+
+            .name {
+                flex: 0 1 auto;
+                // cursor: pointer;
+                .ellipsis-mixin();
+
+                // &:hover {
+                //     text-decoration: underline;
+                //     color: #126ee3;
+                // }
+            }
+        }
+
+        .nameEnText {
+            padding-left: 20px;
+            color: rgb(0 0 0 / 65%);
+            font-size: 12px;
+        }
+    }
+
+    .mainKey {
+        width: 24px;
+        height: 12px;
+        flex-shrink: 0;
+        background-color: rgb(24 144 255 / 7%);
+        border-radius: 3px;
+        color: #1890ff;
+        font-size: 12px;
+    }
+}
+
+.expressToolTipWrapper {
+    width: 260px;
+    font-size: 12px;
+
+    .title {
+        margin-bottom: 12px;
+        font-weight: 550;
+    }
+
+    .content {
+        padding: 8px;
+        background: rgb(240 242 246 / 45%);
+        border-radius: 6px;
+    }
+}
+
+.sheetWrapper {
+    display: flex;
+    overflow: hidden;
+    flex-wrap: wrap;
+    column-gap: 8px;
+    row-gap: 8px;
+
+    .item {
+        display: flex;
+        flex: 0 1 auto;
+        padding: 0 8px;
+        background: rgb(240 242 246 / 45%);
+        border-radius: 3px;
+        column-gap: 4px;
+
+        .text {
+            .ellipsis-mixin();
+        }
+    }
+}

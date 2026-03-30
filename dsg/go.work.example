@@ -1,0 +1,21 @@
+go 1.24
+
+# 使用 go.work 管理多个 Go 模块
+# 注意：此文件主要用于本地开发，不要提交到生产环境
+
+use (
+    # 添加所有需要联合开发的服务
+    ./services/apps/basic-search
+    
+    # 添加更多服务（当有新的服务时）
+    # ./services/apps/service-a
+    # ./services/apps/service-b
+    
+    # 如果有共享库
+    # ./services/lib/common
+)
+
+# 如果需要统一替换依赖，可以在这里配置
+# replace (
+#     github.com/kweaver-ai/idrm-go-frame => ../idrm-go-frame
+# )

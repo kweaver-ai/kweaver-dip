@@ -1,0 +1,34 @@
+.fieldItemWrapper {
+    display: flex;
+    width: 100%;
+    align-items: flex-start;
+
+    .icon {
+        margin-right: 8px;
+    }
+
+    .nameBox {
+        width: calc(100% - 16px);
+
+        .name {
+            .nameText {
+                display: inline-block;
+                max-width: 100%;
+                line-height: normal;
+                .ellipsis-mixin();
+            }
+
+            .nameIcon {
+                margin-left: 4px;
+            }
+        }
+
+        .code {
+            max-width: 100%;
+            color: rgb(0 0 0 / 65%);
+            font-size: 12px;
+            line-height: normal;
+            .ellipsis-mixin();
+        }
+    }
+}

@@ -1,0 +1,78 @@
+apiVersion: v1
+kind: ConfigMap
+{{- $mq := .Values.depServices.mq | default dict }}
+{{- $mqType := $mq.mqType | default $mq.mq_type }}
+{{- $mqHost := $mq.mqHost | default $mq.mq_hosts }}
+{{- $mqPort := $mq.mqPort | default $mq.mq_port }}
+{{- $mqLookupdHost := $mq.mqLookupdHost | default $mq.mq_hosts }}
+{{- $mqLookupdPort := $mq.mqLookupdPort | default $mq.mq_port }}
+metadata:
+  name: {{ .Values.name }}-cm
+  namespace: {{ .Values.namespace }}
+data:
+  {{- with .Values.service }}
+  OAUTH_CLIENT_ID: {{ .oauthClientID | quote }}
+  OAUTH_CLIENT_SECRET: {{ .oauthClientSecret | quote }}
+  {{- end }}
+  {{- with .Values.config }}
+  SESSION_EXPIRE_SECOND: {{ .sessionExpireSecond | quote }}
+  HTTP_EXPIRE_SECOND: {{ .httpClientExpireSecond | quote }}
+  {{- end }}
+  {{- with .Values.depServices.redis }}
+  REDIS_MASTER_NAME: {{ .connectInfo.masterGroupName | quote }}
+  REDIS_PASSWORD: {{ .connectInfo.password | quote }}
+  REDIS_SENTINEL_HOST: {{ .connectInfo.sentinelHost | quote }}
+  REDIS_SENTINEL_PASSWORD: {{ .connectInfo.sentinelPassword | quote }}
+  REDIS_SENTINEL_PORT: {{ .connectInfo.sentinelPort | quote }}
+  REDIS_SENTINEL_USER_NAME: {{ .connectInfo.sentinelUsername | quote }}
+  REDIS_USER_NAME: {{ .connectInfo.username | quote }}
+  REDIS_CONNECT_TYPE: {{ .connectType | quote }}
+  REDIS_DB: {{ .database | quote }}
+#  REDIS_USERNAME: { { .username | quote } }
+#  REDIS_PASSWORD: { { .password | quote } }
+#  REDIS_HOST: { { .host | quote } }
+#  REDIS_PORT: { { .port | quote } }
+#  REDIS_SENTINEL_HOST: { { .sentinelHost | quote } }
+#  REDIS_SENTINEL_PORT: { { .sentinelPort | quote } }
+#  REDIS_MASTER_HOST: { { .masterHost | quote } }
+#  REDIS_SLAVE_HOST: { { .slaveHost | quote } }
+#  REDIS_SENTINEL_USERNAME: { { .sentinelUsername | quote } }
+#  REDIS_SENTINEL_PASSWORD: { { .sentinelPassword | quote } }
+#  REDIS_MASTER_NAME: { { .masterGroupName | quote } }
+  {{- end }}
+
+  {{- with $mq }}
+  KAFKA_TYPE: "{{ $mqType }}"
+  KAFKA_HOST: "{{ $mqHost }}"
+  KAFKA_PORT: "{{ $mqPort }}"
+  KAFKA_LOOKUPD_HOST: "{{ $mqLookupdHost }}"
+  KAFKA_LOOKUPD_PORT: "{{ $mqLookupdPort }}"
+  KAFKA_USERNAME: "{{ .auth.username }}"
+  KAFKA_PASSWORD: "{{ .auth.password }}"
+  KAFKA_MECHANISM: "{{ .auth.mechanism }}"
+  NSQ_TYPE: "{{ .nsq.type }}"
+  NSQ_HOST: "{{ .nsq.host }}"
+  NSQ_PORT: "{{ .nsq.port }}"
+  NSQ_HTTP_HOST: "{{ .nsq.httpHost }}"
+  NSQ_HTTP_PORT: "{{ .nsq.httpPort }}"
+  NSQ_LOOKUPD_HOST: "{{ .nsq.lookupdHost }}"
+  NSQ_LOOKUPD_PORT: "{{ .nsq.lookupdPort }}"
+  {{- end }}
+
+  {{- with .Values }}
+  HYDRA_ADMIN_HOST: "http://{{ .depServices.hydra.administrativeHost}}:{{ .depServices.hydra.administrativePort}}"
+  HYDRA_PUBLIC_HOST: "http://{{ .depServices.hydra.publicHost}}:{{ .depServices.hydra.publicPort}}"
+  USER_MANAGE_HOST: "http://{{index .depServices "user-management" "privateHost"}}:{{index .depServices "user-management" "privatePort"}}"
+  DEPLOY_MANAGE_HOST: "http://{{index .depServices "deploy-management" "host"}}:{{index .depServices "deploy-management" "port"}}"
+  CONFIGURATION_CENTER_HOST: "http://{{index .depServices "configuration-center" "host"}}:{{index .depServices "configuration-center" "port"}}"
+  TRACE_ENABLED: {{.service.telemetry.trace.enabled| quote }}
+  TRACE_URL: {{.service.telemetry.trace.endpoint | quote }}
+  LOG_LEVEL: {{.service.telemetry.log.level | quote }}
+  LOG_URL: {{.service.telemetry.log.endpoint | quote }}
+  SERVER_NAME: {{.service.name | quote }}
+  SERVER_VERSION: {{.service.version | quote }}
+  {{- end }}
+  {{- with .Values.optionalDepServices.anyshare }}
+  ANYSHARE_HOST: "{{ .protocol}}://{{ .host}}:{{ .port}}"
+  {{- end }}
+

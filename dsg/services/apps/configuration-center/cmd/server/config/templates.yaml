@@ -1,0 +1,71 @@
+templates:
+  - name: firm_list
+    sheet_templates:
+      - sheet_name: 厂商名录
+        components:
+          - index: 1
+            label: 公司名称
+            name: name
+            rule:
+              required: true
+              required_info: 公司名称不可为空
+              max_length: 128
+              length_info: 公司名称超过最大长度：128
+              unique: true
+              duplicated_info: 公司名称需要全局唯一
+          - index: 2
+            label: 统一社会信用代码
+            name: uniform_code
+            rule:
+              required: true
+              required_info: 统一社会信用代码不可为空
+              regexp: ^[0-9A-HJ-NPQRTUW-Y]{15}$|^[0-9A-HJ-NPQRTUW-Y]{18}$
+              regexp_info: 统一社会信用代码仅支持大写英文字母（I、O、Z、S、V除外）及数字，且长度为15或18个字符
+              max_length: 18
+              length_info: 统一社会信用代码超过最大长度：18
+              unique: true
+              duplicated_info: 统一社会信用代码需要全局唯一
+          - index: 3
+            label: 法定代表人/负责人姓名
+            name: legal_represent
+            rule:
+              required: true
+              required_info: 法定代表人/负责人姓名不可为空
+              max_length: 128
+              length_info: 法定代表人/负责人姓名超过最大长度：128
+          - index: 4
+            label: 联系电话
+            name: contact_phone
+            rule:
+              required: true
+              required_info: 联系电话不可为空
+              regexp: ^[0-9+-]{3,20}$
+              regexp_info: 联系电话仅支持数字及+、-，且长度满足[3,20]区间
+  - name: address_book_list
+    sheet_templates:
+      - sheet_name: 通讯录导入模板
+        components:
+          - index: 1
+            label: 人员名称
+            name: name
+            rule:
+              required: true
+              required_info: 人员名称不可为空
+              max_length: 128
+              length_info: 人员名称超过最大长度：128
+          - index: 2
+            label: 手机号
+            name: contact_phone
+            rule:
+              required: true
+              required_info: 手机号码不可为空
+              regexp: ^[0-9+-]{3,20}$
+              regexp_info: 手机号码仅支持数字及+、-，且长度满足[3,20]区间
+          - index: 3
+            label: 邮箱地址
+            name: contact_mail
+            rule:
+              regexp: ^([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}|)$
+              regexp_info: 邮箱地址仅支持字母数字及@._%+-，且最大长度为128
+              max_length: 128
+              length_info: 邮箱地址超过最大长度：128

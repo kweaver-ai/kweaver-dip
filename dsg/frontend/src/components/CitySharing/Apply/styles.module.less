@@ -1,0 +1,459 @@
+.apply,
+.analysis-details-wrapper {
+    display: flex;
+    overflow: hidden;
+    min-width: 0;
+    height: 0;
+    min-height: 0;
+    flex: 1;
+    flex-direction: column;
+    background: #f0f2f6;
+
+    .bottom {
+        display: flex;
+        overflow: auto hidden;
+        min-width: 0;
+        height: 0;
+        min-height: 0;
+        flex: 1;
+        flex-direction: column;
+        padding: 24px;
+
+        .content {
+            display: flex;
+            min-width: 0;
+            height: 0;
+            min-height: 0;
+            flex: 1;
+            flex-direction: column;
+            justify-content: center;
+            background: #fff;
+            border-radius: 4px;
+
+            .form_content {
+                display: flex;
+                min-width: 0;
+                height: 0;
+                min-height: 0;
+                flex: 1;
+                padding: 24px 24px 0;
+            }
+
+            .footer {
+                display: flex;
+                height: 65px;
+                flex-shrink: 0;
+                align-items: center;
+                justify-content: flex-end;
+                padding: 16px 24px;
+                border-top: 1px solid rgb(0 0 0 / 6%);
+
+                .btn {
+                    min-width: 80px;
+                    height: 36px;
+                }
+            }
+        }
+    }
+}
+
+.applyAnchor {
+    position: relative;
+    flex-shrink: 0;
+    margin-left: 16px;
+}
+
+.applyForm {
+    overflow: hidden auto;
+    min-width: 0;
+    min-height: 0;
+    flex: 1;
+
+    .form {
+        // max-width: 1200px;
+        margin: 0 auto;
+
+        .form_item {
+            &-content {
+                margin: 20px 16px 0;
+            }
+        }
+
+        .group {
+            margin: 12px 0 16px 8px;
+        }
+    }
+
+    .app-form-item {
+        margin-bottom: 10px;
+    }
+
+    .app-link {
+        margin-bottom: 16px;
+    }
+
+    .appInfo {
+        display: flex;
+        height: 46px;
+        align-items: center;
+        padding: 12px;
+        margin-bottom: 24px;
+        background: #f8f9fb;
+        color: rgb(0 0 0 / 65%);
+
+        .appInfoItem {
+            display: flex;
+            min-width: 10%;
+            margin-right: 24px;
+            white-space: nowrap;
+
+            &:last-child {
+                margin-right: 0;
+            }
+
+            .appInfoValue {
+                .ellipsis-mixin();
+            }
+        }
+    }
+
+    .applyCatalogInfo {
+        display: flex;
+        flex-direction: column;
+        margin: 16px 16px 16px 0;
+        row-gap: 16px;
+
+        &-content {
+            display: flex;
+            gap: 12px;
+
+            &-details {
+                height: max-content;
+                flex: 1;
+                padding: 16px 24px 0;
+                border: 1px solid rgb(0 0 0 / 15%);
+                border-radius: 4px;
+            }
+
+            .config-content-container {
+                flex: 1;
+            }
+
+            .list-top-info {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-bottom: 15px;
+            }
+
+            .config-operate {
+                display: flex;
+                align-items: center;
+                justify-content: flex-end;
+                margin-bottom: 15px;
+
+                .config-label {
+                    margin-right: 8px;
+                    color: rgb(0 0 0 / 45%);
+                }
+
+                .config-count {
+                    margin-right: 16px;
+                    color: #126ee3;
+                }
+
+                .save-btn {
+                    width: 130px;
+                    height: 32px;
+                }
+            }
+        }
+    }
+}
+
+.catalogForm {
+    .group {
+        margin: 8px -8px 16px;
+    }
+
+    .res-info-container {
+        margin: 8px -16px 0;
+    }
+
+    .catalogForm_item {
+        &-content {
+            margin-top: 16px;
+
+            .resourceInfo {
+                display: flex;
+                width: 100%;
+                height: 46px;
+                align-items: center;
+                padding: 0 12px;
+                margin-bottom: 20px;
+                background-color: #f8f9fb;
+
+                .resourceName {
+                    display: flex;
+                    width: 249px;
+
+                    .label {
+                        width: fit-content;
+                        flex-shrink: 0;
+                        color: rgb(0 0 0 / 65%);
+                    }
+
+                    .name {
+                        flex: 1;
+                        .ellipsis-mixin();
+
+                        &:hover {
+                            color: @primary-color;
+                            cursor: pointer;
+                            text-decoration: underline;
+                        }
+                    }
+                }
+
+                .resourceDesc {
+                    flex: 1;
+                    margin-left: 66px;
+                    .ellipsis-mixin();
+                }
+            }
+        }
+
+        .form_row {
+            :global {
+                .any-fabric-ant-form-item-row {
+                    flex-direction: row;
+
+                    .any-fabric-ant-form-item-label {
+                        padding: 0;
+                        margin-right: 16px;
+
+                        &::after {
+                            position: relative;
+                            top: -0.5px;
+                            margin: 0 8px 0 2px;
+                            content: ':';
+                        }
+
+                        > label {
+                            height: 32px;
+                        }
+                    }
+
+                    .any-fabric-ant-form-item-control {
+                        flex: 1;
+                    }
+                }
+            }
+        }
+
+        .unit {
+            margin-left: 16px;
+            color: rgb(0 0 0 / 45%);
+            font-size: 14px;
+        }
+
+        .unit-container {
+            width: 50px;
+            height: 32px;
+            border: 1px solid rgb(0 0 0 / 8%);
+            margin-top: 4px;
+            border-radius: 4px;
+            color: rgb(0 0 0 / 45%);
+            line-height: 32px;
+            text-align: center;
+        }
+
+        .interface-desc-area {
+            height: 120px;
+
+            textarea {
+                resize: none;
+            }
+        }
+    }
+
+    .catalogForm-header {
+        display: flex;
+        justify-content: space-between;
+
+        .catalogForm-header-left {
+            display: flex;
+        }
+
+        .catalogForm-header-title {
+            font-weight: 550;
+        }
+
+        .catalogForm-header-operate {
+            display: flex;
+            align-items: center;
+            margin-left: 14px;
+
+            .operate-icon {
+                color: rgb(0 0 0 / 45%);
+                cursor: pointer;
+            }
+        }
+    }
+}
+
+.uploadFiles {
+    .fileDesc {
+        display: flex;
+        height: 22px;
+        align-items: center;
+        color: @text-color-third;
+        font-size: 12px;
+        line-height: 22px;
+
+        .fileOrder {
+            width: 3px;
+            height: 3px;
+            margin: 0 6px;
+            background: @text-color-third;
+            border-radius: 50%;
+        }
+
+        .primary {
+            color: #126ee3;
+            cursor: pointer;
+        }
+    }
+
+    .uploadBtn {
+        margin-top: 14px;
+        font-size: 12px;
+    }
+
+    .uploadedFile {
+        display: flex;
+        width: fit-content;
+        height: 36px;
+        align-items: center;
+        padding: 0 12px;
+        margin-top: 16px;
+        background-color: #f1f7fe;
+        border-radius: 3px;
+        color: @title-color-secondary;
+
+        .fileName {
+            margin: 0 24px 0 8px;
+            .ellipsis-line(1);
+        }
+
+        .deleteIcon {
+            display: flex;
+            width: 24px;
+            height: 24px;
+            align-items: center;
+            justify-content: center;
+            color: rgb(0 0 0 / 25%);
+
+            &:hover {
+                color: rgb(0 0 0 / 45%);
+            }
+        }
+    }
+}
+
+.catalog-table-wrapper {
+    .operate-content {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 16px;
+
+        .add-btn {
+            display: flex;
+            align-items: center;
+
+            .add-btn-icon {
+                margin-right: 4px;
+            }
+        }
+    }
+
+    .provider-radio-group {
+        display: flex;
+    }
+
+    .catalog-info-container {
+        display: flex;
+        align-items: center;
+
+        .catalog-info {
+            overflow: hidden;
+            flex: 1;
+            margin-right: 4px;
+            margin-left: 8px;
+
+            .catalog-name {
+                color: rgb(0 0 0 / 85%);
+                .ellipsis-mixin();
+            }
+
+            .catalog-code {
+                color: rgb(0 0 0 / 45%);
+                .ellipsis-mixin();
+            }
+        }
+
+        .config-finished-icon {
+            width: 20px;
+            font-size: 16px;
+        }
+
+        .unpublished-flag {
+            width: 52px;
+            height: 18px;
+            flex-shrink: 0;
+            background: rgba(24 144 255 / 7%);
+            border-radius: 12px;
+            color: #1890ff;
+            font-size: 12px;
+            line-height: 18px;
+            text-align: center;
+        }
+
+        .sync-failed-flag {
+            width: 102px;
+            height: 18px;
+            flex-shrink: 0;
+            background: rgba(255 77 79 / 7%);
+            border-radius: 12px;
+            color: #ff4d4f;
+            font-size: 12px;
+            line-height: 18px;
+            text-align: center;
+        }
+    }
+
+    .catalog-columns-container {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+
+        .catalog-columns-item {
+            max-width: 120px;
+            height: 24px;
+            padding: 0 10px;
+            background: rgba(214 221 237 / 25%);
+            color: #6b798d;
+            line-height: 24px;
+            .ellipsis-mixin();
+        }
+
+        .catalog-columns-more {
+            height: 24px;
+            padding: 0 10px;
+            background: rgba(214 221 237 / 25%);
+            color: #6b798d;
+            line-height: 24px;
+        }
+    }
+}

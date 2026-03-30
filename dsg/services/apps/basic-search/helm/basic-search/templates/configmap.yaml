@@ -1,0 +1,49 @@
+apiVersion: v1
+kind: ConfigMap
+{{- $opensearch := .Values.depServices.opensearch | default dict }}
+{{- $opensearchReadURI := $opensearch.readUri }}
+{{- $opensearchWriteURI := $opensearch.writeUri }}
+{{- if and $opensearch.protocol $opensearch.host $opensearch.port }}
+{{- $opensearchReadURI = printf "%s://%s:%v" $opensearch.protocol $opensearch.host $opensearch.port }}
+{{- $opensearchWriteURI = printf "%s://%s:%v" $opensearch.protocol $opensearch.host $opensearch.port }}
+{{- end }}
+{{- $opensearchUsername := $opensearch.user | default $opensearch.username }}
+{{- $kafka := .Values.depServices.kafka | default dict }}
+{{- $mq := .Values.depServices.mq | default dict }}
+{{- $kafkaVersion := $mq.version | default $kafka.version }}
+{{- $kafkaURI := $kafka.uri }}
+{{- if and $mq.mqHost $mq.mqPort }}
+{{- $kafkaURI = printf "%s:%v" $mq.mqHost $mq.mqPort }}
+{{- end }}
+{{- $kafkaClientID := $mq.clientId | default $kafka.clientId }}
+{{- $kafkaUsername := $mq.auth.username | default $kafka.username }}
+{{- $kafkaPassword := $mq.auth.password | default $kafka.password }}
+{{- $kafkaGroupID := $mq.groupId | default $kafka.groupId }}
+metadata:
+  name: {{ .Values.name }}-cm
+  namespace: {{ .Values.namespace }}
+data:
+  {{- with .Values }}
+  DOC_HOST: "0.0.0.0:8163"
+  HYDRA_HOST: "http://{{ .depServices.hydra.administrativeHost}}:{{ .depServices.hydra.administrativePort}}"
+  USER_MANAGE_HOST: "http://{{index .depServices "user-management" "privateHost"}}:{{index .depServices "user-management" "privatePort"}}"
+  ANYROBOT_TRACE_URL: "{{.depServices.anyRobotTraceUrl}}"
+  OPENSEARCH_READ_URI: "{{ $opensearchReadURI }}"
+  OPENSEARCH_WRITE_URI: "{{ $opensearchWriteURI }}"
+  OPENSEARCH_USERNAME: "{{ $opensearchUsername }}"
+  OPENSEARCH_PASSWORD: "{{ $opensearch.password }}"
+  KAFKA_VERSION: "{{ $kafkaVersion }}"
+  KAFKA_URI: "{{ $kafkaURI }}"
+  KAFKA_CLIENT_ID: "{{ $kafkaClientID }}"
+  KAFKA_USERNAME: "{{ $kafkaUsername }}"
+  KAFKA_PASSWORD: "{{ $kafkaPassword }}"
+  KAFKA_GROUP_ID: "{{ $kafkaGroupID }}"
+  CONFIG_CENTER_HOST: "http://{{index  .depServices "configuration-center" "host"}}:{{index .depServices "configuration-center" "port"}}"
+  TRACE_URL: "{{ .service.telemetry.trace.endpoint}}"
+  TRACE_ENABLED: "{{ .service.telemetry.trace.enabled}}"
+  LOG_LEVEL: "{{ .service.telemetry.log.level}}"
+  LOG_URL: "{{ .service.telemetry.log.endpoint}}"
+  LOG_ENABLED: "{{ .service.telemetry.log.enabled}}"
+  SERVER_NAME: "{{ .service.name}}"
+  SERVER_VERSION: "{{ .service.version}}"
+  {{- end }}

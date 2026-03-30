@@ -1,0 +1,370 @@
+.selectRescCatlgWrapper {
+    :global {
+        .any-fabric-ant-drawer-body {
+            display: flex;
+            height: 100vh;
+            max-height: 100vh;
+            flex-direction: column;
+        }
+    }
+
+    .selectRescContent {
+        display: flex;
+        flex-shrink: 0;
+        align-items: center;
+        padding: 20px 20px 8px;
+        gap: 4px;
+
+        .selectedCountInfo {
+            margin-right: 16px;
+            color: #000;
+            font-size: 14px;
+            line-height: 32px;
+        }
+
+        .tagContainer {
+            display: flex;
+            overflow: hidden;
+            flex: 1;
+            align-items: center;
+        }
+    }
+
+    .selectRescCatlgContent {
+        display: flex;
+        overflow: hidden;
+        height: calc(100vh - 200px);
+        min-height: 500px;
+        flex: 1;
+
+        .leftContent {
+            width: 320px;
+            height: 100%;
+            flex-shrink: 0;
+            border: 1px solid rgb(0 0 0 / 6%);
+
+            .titleContainer {
+                height: 100%;
+                margin-top: 20px;
+                margin-left: 20px;
+
+                :global {
+                    .any-fabric-ant-radio-button-wrapper {
+                        width: 140px;
+                        text-align: center;
+                    }
+                }
+            }
+
+            .treeContainer {
+                height: 100%;
+
+                :global {
+                    // .any-fabric-ant-tree {
+                    //     height: 340px !important;
+                    // }
+
+                    .search-result {
+                        height: 380px !important;
+                    }
+
+                    .any-fabric-ant-tree-list {
+                        display: flex;
+                        flex: 1;
+
+                        &-holder {
+                            flex: 1;
+                        }
+                    }
+
+                    .any-fabric-ant-tree-node-content-wrapper {
+                        overflow: auto !important;
+                    }
+                }
+            }
+        }
+
+        .rightContent {
+            display: flex;
+            height: 100%;
+            flex: 1;
+            flex-direction: column;
+            padding: 16px 20px;
+            border: 1px solid rgb(0 0 0 / 6%);
+
+            .viewItems {
+                height: 0;
+                flex: 1;
+                margin-top: 16px;
+                overflow-x: hidden;
+                overflow-y: auto;
+
+                // 确保滚动条可见
+                &::-webkit-scrollbar {
+                    width: 6px;
+                }
+
+                &::-webkit-scrollbar-track {
+                    background: #f1f1f1;
+                    border-radius: 3px;
+                }
+
+                &::-webkit-scrollbar-thumb {
+                    background: #c1c1c1;
+                    border-radius: 3px;
+                }
+
+                &::-webkit-scrollbar-thumb:hover {
+                    background: #a8a8a8;
+                }
+            }
+
+            .viewItem {
+                display: flex;
+                width: 100%;
+                height: 52px;
+                align-items: center;
+                padding: 6px 16px;
+
+                &:hover {
+                    background: #ecf5ff;
+                }
+
+                &.autoRelatedItem {
+                    :global {
+                        .any-fabric-ant-checkbox-inner {
+                            opacity: 0.35;
+                        }
+                    }
+                }
+
+                .viewInfo {
+                    display: flex;
+                    flex: 1;
+                    align-items: center;
+                    margin: 0 20px 0 16px;
+
+                    .icon {
+                        margin: 0 8px 0 16px;
+                        font-size: 30px;
+                    }
+
+                    .viewNames {
+                        width: 200px;
+                        margin-left: 8px;
+                        color: #000;
+                        font-size: 14px;
+
+                        .top {
+                            .ellipsis-mixin();
+
+                            line-height: 20px;
+                        }
+
+                        .bottom {
+                            .ellipsis-mixin();
+
+                            margin-top: 4px;
+                            color: rgb(0 0 0 / 45%);
+                            line-height: 16px;
+                        }
+                    }
+                }
+
+                .autoReleteTag {
+                    flex-shrink: 0;
+                    padding: 0 8px;
+                    margin: 0 20px;
+                    background: rgb(245 137 13 / 7%);
+                    border-radius: 12px;
+                    color: #ff8600;
+                    line-height: 20px;
+                }
+
+                .preivewBtn {
+                    flex-shrink: 0;
+
+                    .tagsItem {
+                        .tagsText {
+                            color: #000;
+                        }
+                    }
+                }
+            }
+
+            .selectedViewItem {
+                background-color: #ecf5ff;
+            }
+
+            .selectedInfo {
+                color: rgb(0 0 0 / 45%);
+                font-size: 16px;
+
+                .clearIcon {
+                    margin-left: 16px;
+                    cursor: pointer;
+                    font-size: 16px;
+                }
+            }
+        }
+    }
+
+    .selectRescCatlgFooter {
+        float: right;
+
+        .btn {
+            width: 80px;
+            height: 32px;
+        }
+    }
+}
+
+// 已选资源tags显示组件
+.selRescTagTextView {
+    display: flex;
+    width: 100%;
+    max-height: 132px;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px 8px;
+    overflow-y: auto;
+
+    :global {
+        .any-fabric-ant-typography {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px 8px;
+        }
+    }
+
+    .checkedTag {
+        display: flex;
+        max-width: 160px;
+        height: 32px;
+        align-items: center;
+        padding: 0 8px;
+        background: rgb(214 221 237 / 25%);
+        border-radius: 4px;
+        color: rgb(0 0 0 / 65%);
+        gap: 4px;
+
+        .tagName {
+            .ellipsis-mixin();
+
+            font-size: 14px;
+            line-height: 22px;
+        }
+
+        .relateTag {
+            height: 20px;
+            margin-left: 4px;
+            background: #fff3dc;
+            border-radius: 4px;
+            color: #ff8600;
+            line-height: 20px;
+        }
+
+        // .closeIcon {
+        //     &:hover {
+        //         color: @primary-color;
+        //     }
+        // }
+    }
+}
+
+// 已选资源tag显示
+.perviewContentWrapper {
+    display: flex;
+    flex-direction: column;
+    // width: 354px;
+    // max-height: 320px;
+    // overflow-y: auto;
+    color: #000;
+
+    .previewTitle {
+        padding: 20px 20px 0;
+        font-size: 14px;
+        line-height: 20px;
+    }
+
+    .fieldsContentWrapepr {
+        display: flex;
+        overflow: hidden auto;
+        min-height: 214px;
+        max-height: 320px;
+        flex: 1;
+        padding: 0 20px 8px;
+        // align-items: center;
+        // gap: 8px;
+        margin-top: 16px;
+
+        .listEmpty {
+            width: 100%;
+            padding-bottom: 40px;
+        }
+
+        .fieldContWrapper {
+            display: flex;
+            max-width: 314px;
+            align-items: center;
+            background: #fff;
+            color: #000;
+
+            & + .fieldContWrapper {
+                margin-top: 16px;
+            }
+
+            .fieldNameWrapper {
+                overflow: hidden;
+                margin-left: 8px;
+            }
+
+            .nameCn {
+                .ellipsis-mixin();
+
+                color: rgb(0 0 0 / 85%);
+                font-size: 14px;
+                line-height: 20px;
+            }
+
+            .nameEn {
+                .ellipsis-mixin();
+
+                margin-top: 4px;
+                color: rgb(0 0 0 / 45%);
+                font-size: 12px;
+                line-height: 18px;
+            }
+        }
+    }
+}
+
+:global {
+    .selRescItemsWrapper {
+        width: 354px;
+        max-width: none;
+        max-height: 360px;
+        padding: 0;
+        padding-top: 4px;
+        color: rgb(0 0 0);
+        // overflow: hidden;
+
+        .any-fabric-ant-tooltip-inner {
+            // overflow-y: auto;
+            // overflow: hidden auto;
+            overflow: hidden;
+            // color: #000;
+            width: 100%;
+            // width: 354px;
+            // max-height: 360px;
+            padding: 0;
+        }
+    }
+}
+
+.previewLoading {
+    display: flex;
+    height: 200px;
+    align-items: center;
+    justify-content: center;
+}

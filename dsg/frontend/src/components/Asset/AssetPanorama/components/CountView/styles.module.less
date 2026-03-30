@@ -1,0 +1,128 @@
+.count-view {
+    color: rgb(0 0 0 / 85%);
+
+    &-show {
+        width: 156px;
+        padding: 15px 0;
+        background: white;
+        border-radius: 4px;
+
+        .icon {
+            display: grid;
+            width: 24px;
+            height: 24px;
+            align-content: center;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 22px;
+            text-align: center;
+
+            &:hover {
+                background: rgb(0 0 0 / 12%);
+            }
+        }
+
+        .title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 18px;
+            font-size: 14px;
+        }
+
+        .total {
+            overflow: hidden;
+            height: 18px;
+            margin: 16px 18px;
+            background: #e8eef2;
+            border-radius: 8px;
+            color: #8492a6;
+            font-size: 12px;
+            text-align: center;
+            text-overflow: ellipsis;
+        }
+
+        .list {
+            display: grid;
+            max-height: calc(100vh - 274px);
+            padding: 10px 18px 0;
+            padding-top: 10px;
+            overflow-x: hidden;
+            overflow-y: auto;
+            row-gap: 14px;
+        }
+    }
+
+    &-hidden {
+        display: grid;
+        width: 44px;
+        height: 44px;
+        align-content: center;
+        border: 1px solid rgb(0 0 0 / 8%);
+        background: #fff;
+        border-radius: 50%;
+        box-shadow: 0 0 6px 0 rgb(0 0 0 / 10%);
+        cursor: pointer;
+        text-align: center;
+
+        > * {
+            font-size: 20px;
+            font-weight: 550;
+        }
+
+        &:hover {
+            border-color: #3e75ff;
+            color: #3e75ff;
+        }
+    }
+}
+
+.hierarchy-item {
+    border: 2px solid #00000040;
+    border-radius: 4px;
+    color: rgb(0 0 0 / 85%);
+
+    &-title {
+        display: flex;
+        align-items: center;
+        padding: 6px 5px;
+        background: linear-gradient(
+            to right,
+            rgb(0 0 0 / 10%),
+            rgb(0 0 0 / 0%)
+        );
+        font-size: 14px;
+
+        .icon {
+            cursor: default;
+            font-size: 18px;
+
+            &:hover {
+                background: none;
+            }
+        }
+
+        .name {
+            overflow: hidden;
+            width: 85px;
+            padding-left: 2px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    }
+
+    &-count {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8px;
+        font-size: 12px;
+
+        > span:nth-child(2) {
+            overflow: hidden;
+            width: 60px;
+            text-align: right;
+            text-overflow: ellipsis;
+        }
+    }
+}

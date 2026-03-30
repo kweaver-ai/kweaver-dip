@@ -1,0 +1,345 @@
+.comprehension-template {
+    .table {
+        display: flex;
+        height: 100%;
+        justify-content: space-between;
+
+        .ellipsisTitle {
+            .ellipsis-mixin();
+        }
+
+        .titleBox {
+            display: flex;
+            flex-direction: column;
+
+            .planTitle {
+                display: flex;
+                align-items: center;
+                line-height: 19px;
+
+                div {
+                    &:nth-child(1) {
+                        .ellipsis-mixin();
+
+                        &:hover {
+                            color: @primary-color;
+                            cursor: pointer;
+                            text-decoration-line: underline;
+                        }
+                    }
+
+                    &:nth-child(2) {
+                        padding: 1px 8px;
+                        margin-left: 8px;
+                        background: rgb(24 144 255 / 7%);
+                        border-radius: 12px;
+                        color: rgb(24 144 255 / 100%);
+                        font-size: 12px;
+
+                        &.is-reject {
+                            display: flex;
+                            background: rgb(255 77 79 / 7%);
+                            color: rgb(255 77 79 / 100%);
+                            column-gap: 3px;
+                        }
+
+                        &.is-undo {
+                            display: flex;
+                            background: rgba(120 120 120 / 7%);
+                            color: rgb(120 120 120 / 100%);
+                            column-gap: 3px;
+                        }
+                    }
+                }
+            }
+
+            .planContent {
+                color: rgb(0 0 0 / 45%);
+                line-height: 19px;
+                .ellipsis-mixin();
+            }
+        }
+
+        .tableRow {
+            &:hover {
+                .primaryColor {
+                    color: @primary-color;
+                }
+            }
+        }
+
+        .dataTypeList,
+        .labelList {
+            display: flex;
+            height: 24px;
+            align-items: center;
+
+            & > span {
+                overflow: hidden;
+                // max-width: 78px;
+                padding: 0 4px;
+                border: none;
+                margin-right: 8px;
+                background: rgb(214 221 237 / 25%);
+                border-radius: 2px;
+                color: #6b798d;
+                line-height: 24px;
+                .ellipsis-mixin();
+
+                .labelDot {
+                    margin-left: 5px;
+                }
+            }
+        }
+
+        .dataTypeList {
+            > span {
+                flex-shrink: 0;
+            }
+        }
+
+        .oprColumn {
+            :global {
+                .any-fabric-ant-btn {
+                    height: 30px;
+                    padding: 0;
+                }
+            }
+        }
+
+        .emptyWrapper {
+            width: 100%;
+            margin-top: 100px;
+        }
+
+        :global {
+            .any-fabric-ant-table-wrapper {
+                width: 100%;
+            }
+        }
+
+        .isExpansion :global {
+            .any-fabric-ant-table-pagination.any-fabric-ant-pagination {
+                margin-top: 18px;
+            }
+        }
+    }
+
+    .operate-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 20px;
+
+        .operate-left {
+            display: flex;
+            align-items: center;
+            color: rgb(0 0 0 / 45%);
+
+            .clear-icon {
+                margin-left: 8px;
+                cursor: pointer;
+                font-size: 16px;
+            }
+
+            .switch {
+                margin-left: 4px;
+            }
+        }
+    }
+}
+
+.pop {
+    :global {
+        .any-fabric-ant-popover-inner-content {
+            max-width: 300px;
+            padding: 8px;
+        }
+    }
+
+    .popContent {
+        display: flex;
+        flex-direction: column;
+        color: rgb(0 0 0 / 65%);
+
+        > div {
+            &.title {
+                color: rgb(0 0 0 / 85%);
+                font-size: 14px;
+                font-weight: bold;
+            }
+
+            &.intro {
+                width: 100%;
+                max-height: 300px;
+                flex: 1 1;
+                font-size: 12px;
+                line-height: 2;
+                overflow-y: auto;
+
+                .tipBlock {
+                    padding: 8px;
+                    margin: 2px 0;
+                    background-color: rgb(240 242 246 / 65%);
+                    border-radius: 3px;
+
+                    .tipInfo {
+                        .tipName {
+                            display: inline-block;
+                            padding-right: 4px;
+                            font-weight: bold;
+                            white-space: nowrap;
+                        }
+
+                        .tipValue {
+                            display: inline;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.loadingContainer {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+.drawerFootWrapper {
+    display: flex;
+    justify-content: flex-end;
+
+    .btn {
+        min-width: 80px;
+    }
+}
+
+.configFormWrapper {
+    .moduleTitle {
+        position: relative;
+        display: flex;
+        height: 32px;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 16px;
+        background: rgb(0 55 150 / 2%);
+        border-radius: 4px;
+        font-size: 14px;
+
+        h4 {
+            font-weight: 550;
+
+            &::before {
+                position: relative;
+                top: 4px;
+                display: inline-block;
+                width: 3px;
+                height: 20px;
+                margin-right: 12px;
+                background-color: rgb(18 110 227 / 100%);
+                content: '';
+            }
+        }
+    }
+
+    .titleIcon {
+        margin-right: 8px;
+        font-size: 16px;
+    }
+
+    :global {
+        .any-fabric-ant-collapse {
+            overflow: hidden;
+            border-color: rgb(0 0 0 / 15%);
+            margin: 8px 0;
+
+            .any-fabric-ant-collapse-item {
+                border-bottom: 1px solid rgb(0 0 0 / 15%);
+            }
+
+            .any-fabric-ant-collapse-header {
+                padding: 12px;
+                background: white;
+            }
+
+            .any-fabric-ant-collapse-content {
+                border-top: none;
+
+                .any-fabric-ant-collapse-content-box {
+                    padding: 0 6px 6px;
+
+                    .any-fabric-ant-form-item {
+                        margin-bottom: 0;
+                    }
+                }
+            }
+        }
+    }
+
+    &.noCheck {
+        :global {
+            .any-fabric-ant-collapse {
+                overflow: hidden;
+                border-color: rgb(245 34 45 / 100%);
+                margin: 8px 0;
+
+                .any-fabric-ant-collapse-item {
+                    border-bottom: 1px solid rgb(245 34 45 / 100%);
+                }
+            }
+        }
+    }
+
+    .showLine {
+        display: flex;
+        align-items: flex-start;
+        padding-left: 16px;
+        margin: 8px 0;
+        line-height: 1.8;
+
+        > div {
+            &:nth-child(1) {
+                padding-right: 12px;
+                color: rgb(0 0 0 / 45%);
+                white-space: nowrap;
+            }
+
+            &:nth-child(2) {
+                display: inline-flex;
+                flex: 1;
+                flex-wrap: wrap;
+                color: rgb(0 0 0 / 85%);
+
+                :global {
+                    .any-fabric-ant-tag {
+                        padding: 6px 8px;
+                        border: none;
+                        background: rgb(240 242 246 / 65%);
+                        background-color: rgb(240 242 246 / 65%);
+                        border-radius: 3px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.mixedCheckBox {
+    .checkBoxItem {
+        display: inline-flex;
+        align-items: center;
+        padding: 6px 8px;
+        margin: 4px;
+        background-color: rgb(240 242 246 / 65%);
+        border-radius: 3px;
+    }
+
+    .checkBoxChild {
+        display: inline-flex;
+        align-items: center;
+    }
+}

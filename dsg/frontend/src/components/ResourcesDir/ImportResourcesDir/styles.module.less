@@ -1,0 +1,170 @@
+.importWrapper {
+    width: 100%;
+
+    .importBox {
+        width: 100%;
+        height: calc(100vh - 50px);
+        padding: 24px;
+        background-color: #e9e9ed;
+
+        .importCont {
+            height: calc(100% - 68px);
+            background-color: #fff;
+            overflow-y: auto;
+
+            .importContent {
+                width: 1106px;
+                margin: auto;
+            }
+        }
+
+        .footer {
+            width: 100%;
+            padding: 16px 0;
+            border-top: 1px solid rgb(0 0 0 / 10%);
+            background: #fff;
+            text-align: right;
+        }
+    }
+
+    .uploadingWrapper {
+        display: flex;
+        width: 480px;
+        height: 32px;
+        align-items: center;
+        padding: 0 16px;
+        background: rgb(250 173 20 / 10%);
+        color: @text-color-desc;
+        font-size: 12px;
+
+        .uploadingIcon {
+            margin-right: 6px;
+            color: #faad14;
+            font-size: 14px;
+        }
+
+        .errorText {
+            display: inline-block;
+        }
+    }
+
+    .importErrorWrapper {
+        display: flex;
+        width: 480px;
+        height: 32px;
+        align-items: center;
+        padding: 0 16px;
+        background-color: rgba(245 34 45 / 6%);
+        color: @text-color-desc;
+        font-size: 12px;
+
+        .errorIcon {
+            margin-right: 6px;
+            color: #f5222d;
+            font-size: 14px;
+        }
+
+        .errorText {
+            display: inline-block;
+        }
+    }
+
+    .uploadBody {
+        padding: 0 32px;
+
+        .uploadTitle {
+            margin-top: 10px;
+            margin-bottom: 8px;
+            color: @title-color-secondary;
+            font-size: 14px;
+            font-weight: 550;
+        }
+
+        .fileDesc {
+            display: flex;
+            height: 22px;
+            color: @text-color-third;
+            font-size: 12px;
+            line-height: 22px;
+
+            .fileOrder {
+                margin-top: -1px;
+                margin-right: 3px;
+                font-size: 32px;
+            }
+        }
+
+        .uploadBtn {
+            width: 94px;
+            height: 34px;
+            padding: 0 12px;
+            margin-top: 12px;
+            margin-bottom: 16px;
+            font-size: 12px;
+
+            .uploadIcon {
+                font-size: 14px;
+                font-weight: bold;
+            }
+        }
+
+        .uploadedFile {
+            display: flex;
+            height: 34px;
+            justify-content: space-between;
+            padding-left: 12px;
+            margin-bottom: 16px;
+            color: @title-color-secondary;
+            font-size: 14px;
+            font-weight: bold;
+            line-height: 34px;
+
+            .fileInfo {
+                display: flex;
+                overflow: hidden;
+                width: calc(100% - 20px);
+                justify-content: space-between;
+                background-color: #f1f7fe;
+
+                .xlsIcon {
+                    display: flex;
+                    align-items: center;
+                    margin: 0 8px;
+                    font-size: 16px;
+                }
+
+                .fileName {
+                    width: 100%;
+                    .ellipsis-mixin();
+                }
+            }
+
+            .updateTip {
+                display: flex;
+                max-width: 50%;
+                align-items: center;
+                padding-right: 12px;
+                gap: 8px;
+
+                .tipText {
+                    width: calc(100% - 20px);
+                    .ellipsis-mixin();
+                }
+            }
+
+            .deleteIcon {
+                display: flex;
+                align-items: center;
+                padding: 2px 4px;
+                margin-left: 8px;
+                border-radius: 3px;
+                color: rgb(0 0 0 / 25%);
+                cursor: pointer;
+
+                &:hover {
+                    background-color: #eff0f3;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,95 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "data-semantic.fullname" . }}-api
+  namespace: {{ include "data-semantic.namespace" . }}
+  labels:
+    {{- include "data-semantic.labels" . | nindent 4 }}
+data:
+  api.yaml: |
+    Name: data-semantic-api
+    Host: 0.0.0.0
+    Port: 8888
+    Timeout: 180000
+
+    # Telemetry 配置
+    Telemetry:
+      ServiceName: data-semantic-api
+      ServiceVersion: "1.0.0"
+      Environment: dev
+
+      Log:
+        Level: info
+        Mode: console
+        Path: logs
+        KeepDays: 7
+        RemoteEnabled: false
+        RemoteUrl: http://10.4.104.243/api/feed_ingester/v1/jobs/otl-test4-log/events
+        RemoteBatch: 100
+        RemoteTimeout: 5
+
+      Trace:
+        Enabled: false
+        Endpoint: http://10.4.104.243/api/feed_ingester/v1/jobs/otl-test3/events
+        Sampler: 1.0
+        Batcher: otlp
+
+      Audit:
+        Enabled: false
+        Url: "http://audit-service:8080/api/audit"
+        Buffer: 100
+
+    # 数据库配置
+    DB:
+      Default:
+        Host: mariadb-mariadb-master.resource.svc.cluster.local.
+        Port: 3330
+        Database: af_main
+        Username: anyshare
+        Password: eisoo.com123
+        Charset: utf8mb4
+        MaxIdleConns: 10
+        MaxOpenConns: 100
+        ConnMaxLifetime: 3600
+        ConnMaxIdleTime: 600
+
+    # Redis 配置 (可选)
+    Redis:
+      Host: proton-redis-proton-redis-sentinel.resource.svc.cluster.local.
+      Port: 26379
+      DB: 0
+      Password: "eisoo.com123"
+
+    # 认证配置
+    Auth:
+      AccessSecret: "your-secret-key-change-in-production-please-use-32-chars"
+      AccessExpire: 7200
+      HydraAdminURL: http://hydra-admin:4445
+      HydraTimeoutSec: 10
+
+    # Swagger 配置
+    Swagger:
+      Enabled: true
+      Path: api/doc/swagger
+
+    # Kafka 配置
+    Kafka:
+      Brokers:
+        - kafka-headless.resource:9097
+      Username: kafkaclient
+      Password: eisoo.com123
+
+    # AI 服务配置
+    AIService:
+      URL: "http://af-sailor-agent:9595"
+      TimeoutSeconds: 10
+
+    # UserManagement 服务配置
+    UserManagement:
+      URL: http://user-management-private:30980
+      TimeoutSeconds: 10
+
+    # AgentRetrieval 服务配置
+    AgentRetrieval:
+      URL: "http://agent-retrieval:30779"
+      TimeoutSeconds: 30

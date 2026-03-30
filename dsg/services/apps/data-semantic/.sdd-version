@@ -1,0 +1,12 @@
+{
+  "version": "0.8.3",
+  "installed_at": "2026-02-04T02:37:02Z",
+  "services": ["api","consumer"],
+  "project_name": "data-semantic",
+  "go_module": "github.com/kweaver-ai/dsg/services/apps/data-semantic",
+  "db_config": {
+    "host": "localhost",
+    "port": 3306,
+    "database": "data-semantic"
+  }
+}

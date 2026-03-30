@@ -1,0 +1,159 @@
+namespace: anyshare
+
+labels:
+  deployment:
+    name: data-view-deployment
+  pod:
+    app: data-view-pod
+  service:
+    app: data-view-service
+
+image:
+  registry: acr.xxx.cn
+  repository: af/data-view
+  tag: "1.0.0-develop"
+  pullPolicy: IfNotPresent
+
+replicaCount: 1
+
+name: data-view-deployment
+
+nodeSelector: []
+
+ports:
+  name: server-port
+  containerPort: 8123
+
+service:
+  name: data-view
+  type: ClusterIP
+  port: 8123
+  telemetry:
+    log:
+      enabled: true
+      endpoint: http://feed-ingester-service:13031/api/feed_ingester/v1/jobs/job-4d42d761dbf0ea95/events
+      level: info
+    trace:
+      enabled: true
+      endpoint: http://feed-ingester-service:13031/api/feed_ingester/v1/jobs/job-a2491f67d02e482c/events
+    audit:
+      enabled: true
+      endpoint: http://feed-ingester-service:13031/api/feed_ingester/v1/jobs/12d627fb523d7362/events
+
+depServices:
+  class-443:
+    ingressClass: class-443
+  rds:
+    type: mariadb
+    host: mariadb-mariadb-master.resource
+    port: 3330
+    user: anyshare
+    password: xxx
+    database: af_main
+  redis:
+    connectInfo:
+      masterGroupName: mymaster
+      password: xxx
+      sentinelHost: proton-redis-proton-redis-sentinel.resource
+      sentinelPassword: xxx
+      sentinelPort: 26379
+      sentinelUsername: root
+      username: root
+    connectType: sentinel
+    database: 0
+  hydra:
+    publicHost: hydra-public
+    publicPort: 4444
+    administrativeHost: hydra-admin
+    administrativePort: 4445
+  user-management:
+    publicHost: user-management-public
+    publicPort: 30980
+    privateHost: user-management-private
+    privatePort: 30980
+  task-center:
+    host: task-center
+    port: 8143
+  configuration-center:
+    host: configuration-center
+    port: 8133
+  virtualizationEngine:
+    protocol: http
+    host: af-vega-gateway
+    port: 8099
+  oss:
+    ossApp: af
+    ossHost: ossgatewaymanager-private:9002
+    ossProtocol: http
+    ossIsDefault: true
+    ossBucket: afstorage
+  external-plugin-framework:
+    host: external-plugin-framework
+    port: 9613
+  metadata-manage:
+    protocol: http
+    host: af-vega-metadata:80
+  data-explore:
+    host: data-exploration-service
+    port: 8281
+  auth-service:
+    protocol: http
+    host: auth-service:8155
+  data-subject:
+    protocol: http
+    host: data-subject:8123
+  af-sailor-service:
+    protocol: http
+    host: af-sailor-service:80
+  sceneAnalysis:
+    protocol: http
+    host: scene-analysis
+    port: 8193
+  mdl-data-model:
+    protocol: http
+    host: mdl-data-model-svc:13020
+  mdl-uniquery:
+    protocol: http
+    host: mdl-uniquery-svc:13011
+  mq:
+    mqHost: kafka-external-31000.resource
+    mqPort: 9098
+    mqType: "kafka"
+    mqLookupdHost: proton-mq-nsq-nsqlookupd.resource
+    mqLookupdPort: 4161
+    LookupdHost: kafka-0.kafka-headless.resource
+    LookupdPort: 9097
+    auth:
+      username: anyrobot
+      password: xxx
+      mechanism: PLAIN
+    kafkaHost: kafka-0.kafka-headless.resource
+    kafkaPort: 9097
+    nsq:
+      type: nsq
+      host: proton-mq-nsq-nsqd.resource
+      port: 4150
+      httpHost: proton-mq-nsq-nsqd.resource
+      httpPort: 4151
+      lookupdHost: proton-mq-nsq-nsqlookupd.resource
+      lookupdPort: 4161
+  standardization-backend:
+    protocol: http
+    host: standardization
+    port: 80
+  
+
+exploration:
+  completionDefaultOvertime: 7200
+
+config:
+  SyntheticDataCache:
+      ExpirationTime: 0
+
+resources:
+  requests:
+    cpu: 0.1
+    memory: 10Mi
+  limits:
+    cpu: 1
+    memory: 1024Mi

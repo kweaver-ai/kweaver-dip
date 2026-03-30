@@ -1,0 +1,148 @@
+.iframe {
+    width: 560px;
+    height: 426px;
+    border: none;
+}
+
+.footerWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 4px;
+    color: rgb(127 131 145 / 70%);
+    font-size: 13px;
+    line-height: 23px;
+    text-align: center;
+
+    .link {
+        color: rgb(52 97 236 / 75%);
+        cursor: pointer;
+        text-decoration: none;
+        transition: none;
+
+        &:hover {
+            color: #3461ec;
+        }
+    }
+}
+
+.aboutWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #7f8391;
+    cursor: pointer;
+    font-size: 12px;
+    text-align: center;
+
+    .colLine {
+        height: 8px;
+        border-right: 1px solid #7f8391;
+        margin: 0 12px;
+    }
+
+    .link {
+        &:hover {
+            color: rgb(86 125 245 / 80%);
+        }
+    }
+}
+
+.headerWrapper {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0 24px;
+
+    .downloadButton {
+        cursor: pointer;
+
+        &:hover {
+            color: rgb(86 126 245);
+            text-decoration-line: underline;
+        }
+
+        .icon {
+            margin-right: 8px;
+        }
+    }
+}
+
+.container {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    overflow: auto;
+    background: #f9f9f9;
+
+    .background-container {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background: url('../../assets/logo.png');
+        background-position: 50%;
+        background-repeat: no-repeat;
+        background-size: cover;
+        filter: blur(18px);
+        opacity: 0.2;
+    }
+
+    .wrapper {
+        position: relative;
+        top: 50%;
+        left: 50%;
+        width: 1000px;
+        height: 560px;
+        border: none;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 2px 3px 16px 3px #0000002e;
+        transform: translate(-50%, -50%);
+
+        .oem {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 440px;
+            height: 560px;
+            border: none;
+            background: #0000;
+            border-radius: 8px 0 0 8px;
+
+            .oem-img {
+                width: 440px;
+                height: 560px;
+                border: none;
+                background-image: url('../../assets/logo.png');
+                background-size: 440px 560px;
+                border-radius: 8px 0 0 8px;
+                outline: none;
+            }
+        }
+
+        .index {
+            position: absolute;
+            left: 440px;
+            overflow: hidden;
+            height: 560px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .wrap-header-bar {
+            height: 64px;
+        }
+
+        .wrap-login {
+            height: 426px;
+        }
+
+        .wrap-footer {
+            text-align: center;
+        }
+    }
+}

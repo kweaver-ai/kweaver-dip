@@ -1,0 +1,99 @@
+.pop {
+    :global {
+        .any-fabric-ant-popover-arrow {
+            display: none;
+        }
+
+        .any-fabric-ant-popover-inner-content {
+            padding: 0;
+        }
+    }
+}
+
+.nameWrapper {
+    display: flex;
+    align-items: center;
+
+    .userIconDark {
+        display: flex;
+        width: 24px;
+        height: 24px;
+        align-items: center;
+        justify-content: center;
+        background: transparent;
+        border-radius: 50%;
+        color: #fff;
+        font-size: 22px;
+    }
+
+    .name {
+        max-width: 120px;
+        margin: 0 8px;
+        .ellipsis-mixin();
+    }
+}
+
+.popoverWrapper {
+    width: 288px;
+    background-color: #fff;
+
+    .userWrap {
+        display: flex;
+        overflow: hidden auto;
+        max-height: 400px;
+        padding: 20px 16px 16px;
+        padding-bottom: 16px;
+        border-bottom: 1px solid rgb(0 0 0 / 10%);
+
+        .userIcon {
+            margin-right: 12px;
+        }
+
+        .userWrapper {
+            overflow: hidden auto;
+        }
+
+        .userName {
+            margin-bottom: 4px;
+            font-size: 16px;
+            font-weight: 550;
+            .ellipsis-mixin();
+        }
+
+        .roleInfo {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+
+            .tag {
+                max-width: 184px;
+                margin-top: 8px;
+                background-color: #fafafa;
+                border-radius: 2px;
+                color: rgb(0 0 0 / 85%);
+                .ellipsis-mixin();
+            }
+        }
+    }
+
+    .operationWrapper {
+        padding: 4px 0;
+    }
+
+    .item {
+        display: flex;
+        height: 32px;
+        padding: 0 16px 0 20px;
+        cursor: pointer;
+        line-height: 32px;
+
+        .logoutLink {
+            width: 100%;
+            color: rgb(0 0 0 / 85%);
+        }
+
+        &:hover {
+            background-color: #f5f5f5;
+        }
+    }
+}

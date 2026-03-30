@@ -1,0 +1,31 @@
+syntax = "v1"
+
+info (
+	title:   "data-semantic API"
+	desc:    "data-semantic API 服务"
+	version: "v1"
+)
+
+// 健康检查响应
+type HealthResp {
+	Status string `json:"status"`
+}
+
+// 引入通用类型
+import "base.api"
+// 引入 data_semantic 模块
+import "data_semantic/data_semantic.api"
+
+// ============================================
+// 公开接口 (无需鉴权)
+// ============================================
+@server (
+	prefix: /api/data-semantic/v1
+)
+service api {
+	// 健康检查
+	@doc "健康检查"
+	@handler HealthCheck
+	get /health returns (HealthResp)
+}
+

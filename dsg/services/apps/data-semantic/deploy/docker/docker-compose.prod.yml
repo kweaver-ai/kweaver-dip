@@ -1,0 +1,52 @@
+version: "3.8"
+
+services:
+  # API 服务
+  api:
+    build:
+      context: ../..
+      dockerfile: deploy/docker/Dockerfile.api
+    image: ${REGISTRY:-data-semantic}/api:${TAG:-latest}
+    container_name: data-semantic-api
+    restart: always
+    environment:
+      TZ: Asia/Shanghai
+    ports:
+      - "8888:8888"
+    depends_on:
+      - mysql
+      - redis
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8888/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    networks:
+      - data-semantic-net
+
+  # Consumer 服务
+  consumer:
+    build:
+      context: ../..
+      dockerfile: deploy/docker/Dockerfile.consumer
+    image: ${REGISTRY:-data-semantic}/consumer:${TAG:-latest}
+    container_name: data-semantic-consumer
+    restart: always
+    environment:
+      TZ: Asia/Shanghai
+    depends_on:
+      - mysql
+      - redis
+      - kafka
+    networks:
+      - data-semantic-net
+
+volumes:
+  mysql_data:
+  redis_data:
+  kafka_data:
+
+networks:
+  data-semantic-net:
+    driver: bridge

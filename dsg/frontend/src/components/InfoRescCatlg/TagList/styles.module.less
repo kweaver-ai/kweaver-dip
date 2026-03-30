@@ -1,0 +1,35 @@
+.tag-container {
+    display: flex;
+    width: 200px;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+.tag {
+    display: inline-block;
+    overflow: hidden;
+    max-width: 80px;
+    padding: 2px 8px;
+    border: 1px solid rgb(0 0 0 / 20%);
+    border-radius: 4px;
+    font-size: 12px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.more-tags {
+    display: inline-block;
+    padding: 2px 8px;
+    border: 1px solid #126ee3;
+    border-radius: 4px;
+    color: #126ee3;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.tags-tooltip {
+    display: flex;
+    flex-direction: column;
+    color: rgb(0 0 0 / 85%);
+    gap: 4px;
+}

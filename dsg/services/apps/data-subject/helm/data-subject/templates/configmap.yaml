@@ -1,0 +1,50 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.name }}-cm
+  namespace: {{ .Values.namespace }}
+data:
+  {{- with .Values }}
+  DB_TYPE: {{ .depServices.rds.type | quote}}
+  DB_HOST: {{ .depServices.rds.host | quote}}
+  DB_PORT: {{ .depServices.rds.port | quote}}
+  DB_USERNAME: {{ .depServices.rds.user | quote }}
+  DB_PASSWORD: {{ .depServices.rds.password | quote }}
+  DB_NAME: {{ .depServices.rds.database | quote }}
+  HYDRA_HOST: "http://{{ .depServices.hydra.administrativeHost}}:{{ .depServices.hydra.administrativePort}}"
+  USER_MANAGE_HOST: "http://{{index .depServices "user-management" "privateHost"}}:{{index .depServices "user-management" "privatePort"}}"
+  TASK_CENTER_HOST: "{{index .depServices "task-center" "host"}}:{{index .depServices "task-center" "port"}}"
+  BUSINESS_GROOMING_HOST: "http://{{index .depServices "business-grooming" "host"}}:{{index .depServices "business-grooming" "port"}}"
+  CONFIGURATION_CENTER_HOST: "http://{{index .depServices "configuration-center" "host"}}:{{index .depServices "configuration-center" "port"}}"
+  STANDARDIZATION_HOST: "{{index .depServices "standardization" "protocol"}}://{{index .depServices "standardization" "host"}}:{{index .depServices "standardization" "port"}}"
+  DATA_VIEW_HOST: "{{index .depServices "data-view" "protocol"}}://{{index .depServices "data-view" "host"}}:{{index .depServices "data-view" "port"}}"
+  AF_SAILOR_SERVICE_HOST: "{{index .depServices "af-sailor-service" "protocol"}}://{{index .depServices "af-sailor-service" "host"}}:{{index .depServices "af-sailor-service" "port"}}"
+  OSS_APP: {{ .depServices.oss.ossApp | quote}}
+  OSS_HOST: {{ .depServices.oss.ossHost | quote}}
+  OSS_PROTOCOL: {{ .depServices.oss.ossProtocol | quote}}
+  OSS_IS_DEFAULT: {{ .depServices.oss.ossIsDefault | quote}}
+  OSS_BUCKET: {{ .depServices.oss.ossBucket | quote}}
+  EXTERNAL_PLUGIN_FW_ADDR: "{{index .depServices "external-plugin-framework" "host"}}:{{index .depServices "external-plugin-framework" "port"}}"
+  MQ_TYPE: {{ .depServices.mq.mqType | quote }}
+  KAFKA_MQ_HOST: "{{ .depServices.mq.mqHost }}:{{ .depServices.mq.mqPort }}"
+  MQ_PORT: {{ .depServices.mq.mqPort | quote }}
+  MQ_LOOKUPD_HOST: {{ .depServices.mq.mqLookupdHost | quote }}
+  MQ_LOOKUPD_PORT: {{ .depServices.mq.mqLookupdPort | quote }}
+  KAFKA_MQ_USENAME: {{ .depServices.mq.auth.username | quote }}
+  KAFKA_MQ_PASSWORD: {{ .depServices.mq.auth.password | quote }}
+  AUTH_MECHANISM: {{ .depServices.mq.auth.mechanism | quote }}
+  SERVER_NAME: {{.service.name | quote }}
+  LOG_LEVEL: {{.service.telemetry.log.level | quote }}
+  LOG_URL: {{.service.telemetry.log.endpoint | quote }}
+  TRACE_ENABLED: {{.service.telemetry.trace.enabled| quote }}
+  TRACE_URL: {{.service.telemetry.trace.endpoint | quote }}
+  REDIS_HOST: "{{ .depServices.redis.connectInfo.sentinelHost }}:{{ .depServices.redis.connectInfo.sentinelPort }}"
+  REDIS_PASSWORD: {{ .depServices.redis.connectInfo.password | quote }}
+  REDIS_DB: {{ .depServices.redis.database | quote }}
+  REDIS_MIN_IDLE_CONNS: {{ .depServices.redis.minIdleConns | quote }}
+  CRON_EXPRESSION: {{ .depServices.cron.expression | quote }}
+  CRON_TABLE: {{ .depServices.cron.table | quote }}
+  CRON_COLUMN: {{ .depServices.cron.column | quote }}
+  CRON_ID_COLUMN_NAME: {{ .depServices.cron.idColumnName | quote }}
+  CRON_TIMESTAMP_COLUMN_NAME: {{ .depServices.cron.timeStampColumnName | quote }}
+  {{- end }}

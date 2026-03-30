@@ -1,0 +1,94 @@
+.topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    &-left {
+        display: flex;
+        align-items: center;
+
+        .back {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+
+            &-icon {
+                margin-right: 12px;
+                color: rgb(0 0 0 / 85%);
+            }
+        }
+
+        .divider {
+            width: 1px;
+            height: 20px;
+            margin: 0 12px;
+            background-color: rgb(0 0 0 / 35%);
+        }
+
+        .info {
+            display: flex;
+            align-items: center;
+            font-weight: bold;
+
+            &-icon {
+                margin: 0 12px;
+                font-size: 24px;
+            }
+
+            &-title {
+                width: 20vw;
+                min-width: 240px;
+                max-width: 480px;
+                margin-right: 8px;
+                color: rgba(0 0 0 / 85%);
+                .ellipsis-mixin();
+
+                .ownerName {
+                    color: rgb(0 0 0 / 45%);
+                    font-size: 12px;
+                    font-weight: 400;
+                }
+            }
+        }
+    }
+
+    &-right {
+        display: flex;
+        align-items: center;
+        color: rgba(0 0 0 / 85%);
+
+        > div {
+            &::before {
+                display: inline-block;
+                width: 8px;
+                height: 8px;
+                margin-right: 8px;
+                background: transparent;
+                border-radius: 50%;
+                content: '';
+            }
+
+            span {
+                color: rgba(0 0 0 / 45%);
+            }
+        }
+
+        &.state-3 {
+            > div::before {
+                background: rgb(47 155 255);
+            }
+        }
+
+        &.state-5 {
+            > div::before {
+                background: rgb(82 196 27);
+            }
+        }
+
+        &.state-8 {
+            > div::before {
+                background: rgb(255 94 96);
+            }
+        }
+    }
+}

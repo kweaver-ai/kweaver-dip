@@ -1,0 +1,79 @@
+.categoryTree {
+    display: flex;
+    height: calc(100% - 46px);
+    flex-direction: column;
+    background: #fff;
+}
+
+// ItemView 组件样式
+.itemviewWrapper {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    line-height: 30px;
+
+    .itemviewWrapperNodename {
+        display: flex;
+        overflow: hidden;
+        max-width: calc(100% - 14px);
+        flex: 1;
+
+        .catlgName {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    }
+}
+
+.menuBtnWrapper {
+    display: none;
+
+    &.visible {
+        display: block;
+    }
+}
+
+.menuBtn {
+    display: grid;
+    width: 24px;
+    height: 24px;
+    margin-left: 4px;
+    border-radius: 2px;
+    cursor: pointer;
+    place-content: center;
+
+    &:hover,
+    &.active {
+        background-color: rgb(0 0 0 / 12%);
+    }
+}
+
+// 搜索结果样式
+.searchResult {
+    padding: 8px 0;
+
+    .searchItemWrapper {
+        display: flex;
+        height: 32px;
+        align-items: center;
+        padding: 0 20px;
+        margin-bottom: 4px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.2s;
+
+        &:hover {
+            background: rgb(0 0 0 / 4%);
+        }
+
+        &.selected {
+            background: rgb(236 245 255);
+            color: @primary-color;
+        }
+
+        .itemviewWrapper {
+            width: 100%;
+        }
+    }
+}

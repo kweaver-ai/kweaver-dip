@@ -1,0 +1,353 @@
+.field-preview {
+    height: 100%;
+    padding: 12px 24px;
+}
+
+.dimension-graph {
+    width: 100vw;
+    height: 100vh;
+
+    &-content {
+        width: 100%;
+        height: 100%;
+        background: #f6f9fb;
+
+        &-container {
+            width: 100%;
+            height: 100%;
+        }
+
+        &-empty {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            padding-top: 160px;
+        }
+    }
+}
+
+.DimensionPageWrapper {
+    overflow: hidden;
+
+    .title {
+        height: 52px;
+        padding-left: 24px;
+        color: #000;
+        font-size: 16px;
+        font-weight: 550;
+        line-height: 52px;
+    }
+}
+
+.dimModelName {
+    .ellipsis-mixin();
+
+    color: @title-color-secondary;
+    font-size: 14px;
+
+    span:hover {
+        color: @primary-color;
+        cursor: pointer;
+        text-decoration: underline;
+    }
+}
+
+:global(.any-fabric-ant-table-cell-row-hover) {
+    .dimModelName {
+        color: @primary-color;
+        transition: color 0.2s ease-in-out;
+    }
+}
+
+.dimensionModelWrapper {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    padding: 16px;
+    padding-top: 22px;
+
+    .top {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 16px;
+
+        .topLeft {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+
+            .titleWrap {
+                margin-bottom: 16px;
+                font-weight: 550;
+            }
+        }
+
+        .topRight {
+            display: flex;
+            align-items: center;
+            align-self: flex-end;
+            justify-content: space-between;
+        }
+    }
+
+    .bottom {
+        flex: 1;
+        overflow-x: hidden;
+        overflow-y: auto;
+
+        .list {
+            width: calc(100% - 10px);
+        }
+
+        .pagination {
+            margin-right: 10px;
+            float: right;
+        }
+    }
+
+    .emptyWrapper {
+        margin-top: 120px;
+    }
+}
+
+.graphHeaderWrapper {
+    position: absolute;
+    z-index: 110;
+    top: 0;
+    width: 100%;
+
+    .gh_header {
+        display: flex;
+        align-items: center;
+        padding-left: 20px;
+        border-bottom: 1px solid rgb(0 0 0 / 10%);
+        background-color: #fff;
+    }
+
+    .gh_topLeftWrap {
+        display: flex;
+        align-items: center;
+
+        .returnWrapper {
+            display: inline-flex;
+            height: 20px;
+            align-items: center;
+            border-right: 1px solid rgb(0 0 0 / 35%);
+            margin-right: 18px;
+            cursor: pointer;
+
+            .return {
+                width: 30px;
+                margin: 0 12px;
+                font-size: 14px;
+            }
+        }
+
+        .nameWrapper {
+            display: inline-flex;
+            width: calc(100% - 100px);
+            align-items: center;
+
+            .domainName {
+                max-width: 160px;
+                margin-right: 8px;
+                font-size: 14px;
+                font-weight: 550;
+
+                .ellipsis-mixin();
+            }
+
+            .iconWrapper {
+                z-index: 10;
+                display: flex;
+                width: 24px;
+                height: 24px;
+                align-items: center;
+                justify-content: center;
+                border-radius: 3px;
+                cursor: pointer;
+
+                &:hover {
+                    background-color: rgb(245 245 245);
+                }
+            }
+        }
+    }
+
+    .toolWrapper {
+        display: inline-flex;
+        width: 100%;
+        height: 100%;
+        align-items: center;
+        justify-content: center;
+
+        .toolbarContent {
+            display: inline-flex;
+            height: 20px;
+            align-items: center;
+            margin: 10px 0 10px 10px;
+
+            .toolIcon {
+                font-size: 32px;
+
+                .toolButton {
+                    display: block;
+                }
+
+                .iconEnabled {
+                    color: @title-color-secondary;
+
+                    &:hover {
+                        background-color: rgb(0 0 0 / 4%);
+                    }
+                }
+
+                .iconDisabled {
+                    display: flex !important;
+                    color: @disabled-color;
+                    cursor: default !important;
+                }
+
+                .toolSelectButton {
+                    width: 40px;
+                    height: 32px;
+                    line-height: 20px;
+                }
+
+                .toolSelectLines {
+                    display: flex;
+                    width: 54px;
+                    height: 32px;
+                    align-items: center;
+                    padding: 0 10px;
+                }
+
+                .toolSelectSize {
+                    display: flex;
+                    height: 32px;
+                    align-items: center;
+                    padding: 0 10px;
+                }
+            }
+
+            .toolSplit {
+                width: 10px;
+
+                .toolSplitLine {
+                    width: 1px;
+                    height: 16px;
+                    border: 1px solid rgb(0 0 0 / 15%);
+                    margin-left: 10px;
+                }
+            }
+        }
+    }
+
+    .toolSaveWrapper {
+        display: inline-flex;
+        width: 100%;
+        height: 100%;
+        align-items: center;
+        justify-content: flex-end;
+    }
+}
+
+.panel-setting {
+    z-index: 110;
+    bottom: 0;
+    width: 100vw;
+    height: 100%;
+    background: white;
+    box-shadow: 0 -2px 8px 0 rgba(0 0 0 / 6%);
+    transition: height 0.3s ease-in-out;
+}
+
+.attr-icons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: inherit;
+}
+
+.not-found {
+    .center();
+}
+
+.alarmDetailContainer {
+    height: 100%;
+
+    .alarm-table-row {
+        &:hover {
+            background-color: #f5f5f5;
+        }
+    }
+
+    :global(.ant-table-thead > tr > th) {
+        background-color: #fafafa;
+        color: rgb(0 0 0 / 85%);
+        font-weight: 600;
+    }
+
+    :global(.ant-table-tbody > tr > td) {
+        padding: 12px 16px;
+        border-bottom: 1px solid #f0f0f0;
+    }
+}
+
+// 垂直拖拽
+.drag-vertical {
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    flex: 1;
+
+    :global {
+        .gutter {
+            position: relative;
+            width: 100%;
+            border-top: 1px solid rgb(15 32 68 / 10%);
+            background: #fff;
+            cursor: ns-resize;
+
+            .gutterIcon {
+                position: absolute;
+                z-index: 9;
+                top: -13px;
+                left: calc(50% - 7px);
+                display: flex;
+                width: 16px;
+                height: 16px;
+                align-items: center;
+                justify-content: center;
+
+                &:hover {
+                    color: #126ee3;
+                }
+            }
+        }
+
+        .gutter.gutter-vertical {
+            cursor: ns-resize;
+        }
+
+        .gutter:hover {
+            border-top: 1px solid rgb(15 32 68 / 30%);
+        }
+    }
+
+    &-top {
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
+
+    &-bottom {
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
+}
+
+.optionBtnGroup button {
+    height: 22px;
+}

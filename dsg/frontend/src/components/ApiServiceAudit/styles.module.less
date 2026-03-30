@@ -1,0 +1,58 @@
+.wrapper {
+    display: block;
+    padding: 6px 10px 10px;
+
+    .text {
+        display: table;
+        width: 100%;
+        padding: 6px 0;
+        margin: 0;
+        cursor: inherit;
+        line-height: 23px;
+        table-layout: fixed;
+
+        .clums {
+            display: table-cell;
+            width: 110px;
+            color: rgb(0 0 0 / 50%);
+            font-size: 15px;
+            vertical-align: middle;
+        }
+
+        .texts {
+            display: table-cell;
+            overflow: hidden;
+            color: rgb(0 0 0);
+            font-size: 15px;
+            text-overflow: ellipsis;
+            vertical-align: middle;
+            white-space: nowrap;
+        }
+
+        .link {
+            color: #126ee3;
+            cursor: pointer;
+        }
+    }
+}
+
+.statusTextBox {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    .statusDot {
+        width: 10px;
+        height: 10px;
+        flex-shrink: 0;
+        border-radius: 5px;
+    }
+
+    .text {
+        margin-left: 8px;
+    }
+
+    .advice {
+        margin-left: 8px;
+    }
+}

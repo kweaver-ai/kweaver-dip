@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dsg.standardization.mapper.RelationDictFileMapper">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.dsg.standardization.entity.RelationDictFileEntity" id="baseMap">
+        <result property="id" column="f_id"/>
+        <result property="dictId" column="f_dict_id"/>
+        <result property="fileId" column="f_file_id"/>
+    </resultMap>
+    <insert id="save">
+        insert into t_relation_dict_file(f_id,f_dict_id,f_file_id) values
+        <foreach collection="dataList" item="item" separator=",">
+            (
+            #{item.id},
+            #{item.dictId},
+            #{item.fileId}
+            )
+        </foreach>
+    </insert>
+    <delete id="deleteByDictId">
+        delete from t_relation_dict_file where f_dict_id=#{dictId}
+    </delete>
+    <delete id="deleteByFileId">
+        delete from t_relation_dict_file where f_file_id=#{fileId}
+    </delete>
+    <select id="queryByDictId" resultMap="baseMap">
+        select * from t_relation_dict_file where f_dict_id = #{dictId}
+    </select>
+    <select id="queryByFileId" resultMap="baseMap">
+        select * from t_relation_dict_file where f_file_id = #{fileId}
+    </select>
+</mapper>

@@ -1,0 +1,111 @@
+.split {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    flex-direction: row;
+
+    :global {
+        .gutter {
+            width: 3px;
+            border-left: 1px solid rgb(0 0 0 / 10%);
+            background: transparent;
+            cursor: ew-resize;
+        }
+
+        .gutter.gutter-horizontal {
+            border-left: 1px solid rgb(0 0 0 / 10%);
+            cursor: ew-resize;
+        }
+
+        .gutter:hover {
+            border-left: 1px solid rgb(0 0 0 / 40%);
+        }
+    }
+
+    .leftSpanList {
+        display: flex;
+        height: 100%;
+        flex-direction: column;
+
+        .expandList {
+            position: relative;
+            display: flex;
+            width: 100%;
+            height: 100%;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+            .listContent {
+                width: 100%;
+                height: 100%;
+            }
+
+            .expandOpen {
+                position: absolute;
+                z-index: 999;
+                top: 120px;
+                right: -6px;
+                display: flex;
+                width: 12px;
+                height: 40px;
+                align-items: center;
+                justify-content: center;
+                border: 1px solid rgb(0 0 0 / 15%);
+                background: #fff;
+                border-radius: 8px;
+                box-shadow: 0 0 2px 0 rgb(0 0 0 / 16%);
+                cursor: pointer;
+                font-size: 12px;
+
+                &:hover {
+                    color: #126ee3;
+                }
+            }
+        }
+
+        .unexpandList {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+            .expandClose {
+                position: absolute;
+                z-index: 999;
+                top: 120px;
+                left: 0;
+                display: flex;
+                width: 24px;
+                height: 52px;
+                align-items: center;
+                justify-content: center;
+                padding-top: 4px;
+                background: #b4b1b4;
+                border-radius: 0 5px 5px 0;
+                color: white;
+                cursor: pointer;
+                font-size: 12px;
+                letter-spacing: 5px;
+                writing-mode: vertical-lr;
+
+                &:hover {
+                    background: #d8d4d8;
+                }
+            }
+        }
+    }
+
+    .rightNode {
+        width: 100%;
+        height: 100%;
+    }
+
+    .rightNodeOn {
+        padding: 0 24px 0 4px;
+    }
+
+    .rightNodeExpandOff {
+        padding: 0 24px;
+    }
+}

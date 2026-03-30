@@ -1,0 +1,2653 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "AnyFabric basic search",
+        "title": "basic-search",
+        "contact": {},
+        "version": "0.0"
+    },
+    "basePath": "/api/basic-search/v1",
+    "paths": {
+        "/api/basic-search/v1/data-catalog/search": {
+            "post": {
+                "description": "搜索数据目录",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "数据目录"
+                ],
+                "summary": "搜索数据目录",
+                "parameters": [
+                    {
+                        "type": "boolean",
+                        "example": true,
+                        "description": "是否返回统计信息，若body参数中next_flag存在，则该参数无效（不会返回统计信息）",
+                        "name": "statistics",
+                        "in": "query"
+                    },
+                    {
+                        "description": "请求参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_catalog.SearchReqBodyParam"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_catalog.SearchRespParam"
+                        }
+                    },
+                    "400": {
+                        "description": "失败响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/rest.HttpError"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/basic-search/v1/data-catalog/statistics": {
+            "post": {
+                "description": "获取统计信息",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "数据目录"
+                ],
+                "summary": "获取统计信息",
+                "parameters": [
+                    {
+                        "description": "请求参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_catalog.StatisticsReqBodyParam"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_catalog.StatisticsRespParam"
+                        }
+                    },
+                    "400": {
+                        "description": "失败响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/rest.HttpError"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/basic-search/v1/data-resource/search": {
+            "post": {
+                "description": "搜索数据视图和接口服务",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "数据资源"
+                ],
+                "summary": "搜索数据视图和接口服务",
+                "parameters": [
+                    {
+                        "description": "请求参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_search_all.SearchReqBodyParam"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_search_all.SearchAllRespParam"
+                        }
+                    },
+                    "400": {
+                        "description": "失败响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/rest.HttpError"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/basic-search/v1/data-view/search": {
+            "post": {
+                "description": "获取逻辑视图列表，支持关键字搜索、组织架构过滤",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "逻辑视图搜索"
+                ],
+                "summary": "获取逻辑视图列表",
+                "parameters": [
+                    {
+                        "description": "请求参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_view.SearchReqBodyParam"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_view.SearchResp"
+                        }
+                    },
+                    "400": {
+                        "description": "失败响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/rest.HttpError"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/basic-search/v1/info-catalog/search": {
+            "post": {
+                "description": "搜索信息资源目录",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "信息资源目录"
+                ],
+                "summary": "搜索信息资源目录",
+                "parameters": [
+                    {
+                        "type": "boolean",
+                        "example": true,
+                        "description": "是否返回统计信息，若body参数中next_flag存在，则该参数无效（不会返回统计信息）",
+                        "name": "statistics",
+                        "in": "query"
+                    },
+                    {
+                        "description": "请求参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_info_catalog.SearchReqBodyParam"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_info_catalog.SearchRespParam"
+                        }
+                    },
+                    "400": {
+                        "description": "失败响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/rest.HttpError"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/basic-search/v1/info-catalog/statistics": {
+            "post": {
+                "description": "获取统计信息",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "信息资源目录"
+                ],
+                "summary": "获取统计信息",
+                "parameters": [
+                    {
+                        "description": "请求参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_info_catalog.StatisticsReqBodyParam"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_info_catalog.StatisticsRespParam"
+                        }
+                    },
+                    "400": {
+                        "description": "失败响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/rest.HttpError"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/basic-search/v1/interface-svc/search": {
+            "post": {
+                "description": "获取接口服务列表，支持关键字搜索、组织架构过滤",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "接口服务搜索"
+                ],
+                "summary": "获取接口服务列表",
+                "parameters": [
+                    {
+                        "description": "请求参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_interface_svc.SearchReqBodyParam"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_interface_svc.SearchResp"
+                        }
+                    },
+                    "400": {
+                        "description": "失败响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/rest.HttpError"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "github_com_kweaver-ai_dsg_services_apps_basic-search_adapter_driven_es_common.BusinessObjectEntity": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "业务对象id",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "业务对象名称",
+                    "type": "string"
+                },
+                "path": {
+                    "description": "业务对象路径",
+                    "type": "string"
+                },
+                "path_id": {
+                    "description": "业务对象路径 ID",
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_basic-search_adapter_driven_es_common.BusinessProcess": {
+            "type": "object",
+            "properties": {
+                "business_process_path": {
+                    "description": "业务流程路径名称",
+                    "type": "string"
+                },
+                "business_process_path_id": {
+                    "description": "业务流程路径id",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "业务流程uuid",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "业务流程名称",
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_basic-search_adapter_driven_es_common.CateInfo": {
+            "type": "object",
+            "properties": {
+                "cate_id": {
+                    "type": "string"
+                },
+                "node_id": {
+                    "type": "string"
+                },
+                "node_name": {
+                    "type": "string"
+                },
+                "node_path": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_basic-search_adapter_driven_es_common.CateInfoR": {
+            "type": "object",
+            "properties": {
+                "cate_id": {
+                    "type": "string"
+                },
+                "node_ids": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_basic-search_adapter_driven_es_common.Field": {
+            "type": "object",
+            "properties": {
+                "field_name_en": {
+                    "type": "string"
+                },
+                "field_name_zh": {
+                    "type": "string"
+                },
+                "hit": {
+                    "type": "boolean"
+                },
+                "raw_field_name_en": {
+                    "type": "string"
+                },
+                "raw_field_name_zh": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_basic-search_adapter_driven_es_common.MountDataResources": {
+            "type": "object",
+            "properties": {
+                "data_resources_ids": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "data_resources_type": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_basic-search_adapter_driven_es_common.Reference": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "资源 ID",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "资源名称",
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_catalog.Order": {
+            "type": "object",
+            "required": [
+                "direction",
+                "sort"
+            ],
+            "properties": {
+                "direction": {
+                    "description": "排序方向，枚举：asc：正序；desc：倒序。默认倒序",
+                    "type": "string",
+                    "enum": [
+                        "asc",
+                        "desc"
+                    ],
+                    "example": "desc"
+                },
+                "sort": {
+                    "description": "排序类型，枚举：_score：按算分排序；data_updated_at：按数据更新时间排序；table_rows：按数据量排序；apply_num：按申请量排序。默认按算分排序",
+                    "type": "string",
+                    "enum": [
+                        "_score",
+                        "updated_at",
+                        "online_at",
+                        "published_at",
+                        "apply_num",
+                        "data_updated_at"
+                    ],
+                    "example": "_score"
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_catalog.SearchReqBodyParam": {
+            "type": "object",
+            "properties": {
+                "business_object_ids": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "cate_info": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_adapter_driven_es_common.CateInfoR"
+                    }
+                },
+                "data_range": {
+                    "description": "数据范围",
+                    "type": "array",
+                    "maxItems": 10,
+                    "uniqueItems": true,
+                    "items": {
+                        "type": "integer"
+                    },
+                    "example": [
+                        4
+                    ]
+                },
+                "data_resource_type": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "fields": {
+                    "description": "字段列表。如果非空，关键字仅匹配指定字段",
+                    "type": "array",
+                    "uniqueItems": true,
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "ids": {
+                    "description": "资源目录的ID",
+                    "type": "array",
+                    "uniqueItems": true,
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "is_online": {
+                    "type": "boolean",
+                    "example": false
+                },
+                "is_publish": {
+                    "description": "是否发布，如果为 nil 则不根据发布状态过滤搜索结果",
+                    "type": "boolean",
+                    "example": false
+                },
+                "keyword": {
+                    "description": "关键字查询，字符无限制",
+                    "type": "string",
+                    "minLength": 1,
+                    "example": "keyword"
+                },
+                "next_flag": {
+                    "description": "从该flag标志后获取数据，该flag标志由上次的搜索请求返回，若本次与上次的搜索参数存在变动，则该参数不能传入，否则结果不准确",
+                    "type": "array",
+                    "maxItems": 3,
+                    "minItems": 2,
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "1",
+                        "abc"
+                    ]
+                },
+                "online_at": {
+                    "description": "上线时间",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_catalog.TimeRange"
+                        }
+                    ]
+                },
+                "online_status": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "orders": {
+                    "description": "排序，没有keyword时默认以data_updated_at desc \u0026 table_rows desc排序，有keyword时默认以_score desc排序",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_catalog.Order"
+                    }
+                },
+                "published_at": {
+                    "description": "发布时间",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_catalog.TimeRange"
+                        }
+                    ]
+                },
+                "published_status": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "shared_type": {
+                    "description": "共享条件",
+                    "type": "array",
+                    "maxItems": 10,
+                    "uniqueItems": true,
+                    "items": {
+                        "type": "integer"
+                    },
+                    "example": [
+                        2
+                    ]
+                },
+                "size": {
+                    "description": "要获取到的记录条数",
+                    "type": "integer",
+                    "default": 20,
+                    "example": 20
+                },
+                "update_cycle": {
+                    "description": "更新频率",
+                    "type": "array",
+                    "maxItems": 10,
+                    "uniqueItems": true,
+                    "items": {
+                        "type": "integer"
+                    },
+                    "example": [
+                        3,
+                        7
+                    ]
+                },
+                "updated_at": {
+                    "description": "更新时间",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_catalog.TimeRange"
+                        }
+                    ]
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_catalog.SearchRespParam": {
+            "type": "object",
+            "required": [
+                "entries",
+                "total_count"
+            ],
+            "properties": {
+                "entries": {
+                    "description": "对象列表",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_catalog.SummaryInfo"
+                    }
+                },
+                "next_flag": {
+                    "description": "获取下一页数据的请求中，需携带本参数，若本参数为空，则数据已全部获取，没有下一页了",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "0.987",
+                        "abc"
+                    ]
+                },
+                "statistics": {
+                    "description": "统计信息",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_catalog.statisticsInfo"
+                        }
+                    ]
+                },
+                "total_count": {
+                    "description": "当前筛选条件下的对象数量",
+                    "type": "integer",
+                    "minimum": 0,
+                    "example": 3
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_catalog.StatisticsReqBodyParam": {
+            "type": "object",
+            "properties": {
+                "business_object_ids": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "cate_info": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_adapter_driven_es_common.CateInfoR"
+                    }
+                },
+                "data_range": {
+                    "description": "数据范围",
+                    "type": "array",
+                    "maxItems": 10,
+                    "uniqueItems": true,
+                    "items": {
+                        "type": "integer"
+                    },
+                    "example": [
+                        4
+                    ]
+                },
+                "data_resource_type": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "fields": {
+                    "description": "字段列表。如果非空，关键字仅匹配指定字段",
+                    "type": "array",
+                    "uniqueItems": true,
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "ids": {
+                    "description": "资源目录的ID",
+                    "type": "array",
+                    "uniqueItems": true,
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "is_online": {
+                    "type": "boolean",
+                    "example": false
+                },
+                "is_publish": {
+                    "description": "是否发布，如果为 nil 则不根据发布状态过滤搜索结果",
+                    "type": "boolean",
+                    "example": false
+                },
+                "keyword": {
+                    "description": "关键字查询，字符无限制",
+                    "type": "string",
+                    "minLength": 1,
+                    "example": "keyword"
+                },
+                "online_at": {
+                    "description": "上线时间",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_catalog.TimeRange"
+                        }
+                    ]
+                },
+                "online_status": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "published_at": {
+                    "description": "发布时间",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_catalog.TimeRange"
+                        }
+                    ]
+                },
+                "published_status": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "shared_type": {
+                    "description": "共享条件",
+                    "type": "array",
+                    "maxItems": 10,
+                    "uniqueItems": true,
+                    "items": {
+                        "type": "integer"
+                    },
+                    "example": [
+                        2
+                    ]
+                },
+                "update_cycle": {
+                    "description": "更新频率",
+                    "type": "array",
+                    "maxItems": 10,
+                    "uniqueItems": true,
+                    "items": {
+                        "type": "integer"
+                    },
+                    "example": [
+                        3,
+                        7
+                    ]
+                },
+                "updated_at": {
+                    "description": "更新时间",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_catalog.TimeRange"
+                        }
+                    ]
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_catalog.StatisticsRespParam": {
+            "type": "object",
+            "properties": {
+                "statistics": {
+                    "description": "统计信息",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_catalog.statisticsInfo"
+                        }
+                    ]
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_catalog.SummaryInfo": {
+            "type": "object",
+            "properties": {
+                "apply_num": {
+                    "description": "申请量",
+                    "type": "integer"
+                },
+                "business_objects": {
+                    "description": "业务对象ID数组，里面ID用于左侧树业务域选中节点筛选",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_adapter_driven_es_common.BusinessObjectEntity"
+                    }
+                },
+                "cate_info": {
+                    "description": "类目的信息",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_adapter_driven_es_common.CateInfo"
+                    }
+                },
+                "code": {
+                    "description": "数据目录编码",
+                    "type": "string"
+                },
+                "data_range": {
+                    "description": "数据范围",
+                    "type": "integer"
+                },
+                "data_updated_at": {
+                    "description": "数据更新时间",
+                    "type": "string"
+                },
+                "description": {
+                    "description": "数据目录描述，可能存在高亮标签",
+                    "type": "string"
+                },
+                "fields": {
+                    "description": "字段列表，有匹配字段的排在前面",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_adapter_driven_es_common.Field"
+                    }
+                },
+                "id": {
+                    "description": "数据目录ID",
+                    "type": "string"
+                },
+                "is_online": {
+                    "type": "boolean"
+                },
+                "is_publish": {
+                    "type": "boolean"
+                },
+                "mount_data_resources": {
+                    "description": "挂接的数据资源",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_adapter_driven_es_common.MountDataResources"
+                    }
+                },
+                "name": {
+                    "description": "数据目录名称，可能存在高亮标签",
+                    "type": "string"
+                },
+                "online_at": {
+                    "description": "上线时间",
+                    "type": "integer"
+                },
+                "online_status": {
+                    "description": "上线状态",
+                    "type": "string"
+                },
+                "published_at": {
+                    "description": "发布时间",
+                    "type": "integer"
+                },
+                "published_status": {
+                    "description": "发布状态",
+                    "type": "string"
+                },
+                "raw_code": {
+                    "description": "数据目录编码",
+                    "type": "string"
+                },
+                "raw_description": {
+                    "description": "数据目录描述，不会存在高亮标签",
+                    "type": "string"
+                },
+                "raw_name": {
+                    "description": "数据目录名称，不会存在高亮标签",
+                    "type": "string"
+                },
+                "shared_type": {
+                    "description": "共享条件",
+                    "type": "integer"
+                },
+                "update_cycle": {
+                    "description": "更新频率",
+                    "type": "integer"
+                },
+                "updated_at": {
+                    "description": "更新时间",
+                    "type": "integer"
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_catalog.TimeRange": {
+            "type": "object",
+            "properties": {
+                "end_time": {
+                    "description": "结束时间，毫秒时间戳",
+                    "type": "integer",
+                    "minimum": 0,
+                    "example": 1682586655000
+                },
+                "start_time": {
+                    "description": "开始时间，毫秒时间戳",
+                    "type": "integer",
+                    "minimum": 0,
+                    "example": 1682586655000
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_catalog.statisticsInfo": {
+            "type": "object",
+            "properties": {
+                "data_kind_count": {
+                    "description": "基础信息分类各个类别对应的数量",
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "integer"
+                    },
+                    "example": {
+                        "1": 11,
+                        "2": 22
+                    }
+                },
+                "data_range_count": {
+                    "description": "数据范围分类各个类别对应的数量",
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "integer"
+                    },
+                    "example": {
+                        "1": 11,
+                        "2": 22
+                    }
+                },
+                "shared_type_count": {
+                    "description": "共享条件分类各个类别对应的数量",
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "integer"
+                    },
+                    "example": {
+                        "1": 11,
+                        "2": 22
+                    }
+                },
+                "update_cycle_count": {
+                    "description": "更新频率分类各个类别对应的数量",
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "integer"
+                    },
+                    "example": {
+                        "1": 11,
+                        "2": 22
+                    }
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_search_all.CateInfoEntity": {
+            "type": "object",
+            "properties": {
+                "cate_id": {
+                    "type": "string"
+                },
+                "node_id": {
+                    "type": "string"
+                },
+                "node_name": {
+                    "type": "string"
+                },
+                "node_path": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_search_all.ExtSummaryInfo": {
+            "type": "object",
+            "properties": {
+                "api_type": {
+                    "description": "接口类型",
+                    "type": "string"
+                },
+                "cate_info": {
+                    "description": "类目的信息",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_search_all.CateInfoEntity"
+                    }
+                },
+                "code": {
+                    "description": "编码，可能存在高亮标签",
+                    "type": "string"
+                },
+                "description": {
+                    "description": "描述，可能存在高亮标签",
+                    "type": "string"
+                },
+                "fields": {
+                    "description": "字段列表，有匹配字段的排在前面",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_search_all.FieldEntity"
+                    }
+                },
+                "id": {
+                    "description": "ID",
+                    "type": "string"
+                },
+                "indicator_type": {
+                    "description": "指标类型",
+                    "type": "string"
+                },
+                "is_online": {
+                    "description": "是否已经上线",
+                    "type": "boolean"
+                },
+                "is_publish": {
+                    "description": "是否已经发布",
+                    "type": "boolean"
+                },
+                "name": {
+                    "description": "名称，可能存在高亮标签",
+                    "type": "string"
+                },
+                "name_en": {
+                    "description": "技术名称",
+                    "type": "string"
+                },
+                "online_at": {
+                    "description": "上线时间",
+                    "type": "integer"
+                },
+                "owner_id": {
+                    "description": "数据OwnerID",
+                    "type": "string"
+                },
+                "owner_name": {
+                    "description": "数据Owner名称",
+                    "type": "string"
+                },
+                "published_at": {
+                    "description": "发布时间",
+                    "type": "integer"
+                },
+                "published_status": {
+                    "description": "发布状态",
+                    "type": "string"
+                },
+                "raw_code": {
+                    "description": "编码，不会存在高亮标签",
+                    "type": "string"
+                },
+                "raw_description": {
+                    "description": "描述，不会存在高亮标签",
+                    "type": "string"
+                },
+                "raw_name": {
+                    "description": "名称，不会存在高亮标签",
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_search_all.FieldEntity": {
+            "type": "object",
+            "properties": {
+                "field_name_en": {
+                    "type": "string"
+                },
+                "field_name_zh": {
+                    "type": "string"
+                },
+                "raw_field_name_en": {
+                    "type": "string"
+                },
+                "raw_field_name_zh": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_search_all.Order": {
+            "type": "object",
+            "required": [
+                "direction",
+                "sort"
+            ],
+            "properties": {
+                "direction": {
+                    "description": "排序方向，枚举：asc：正序；desc：倒序。默认倒序",
+                    "type": "string",
+                    "enum": [
+                        "asc",
+                        "desc"
+                    ],
+                    "example": "desc"
+                },
+                "sort": {
+                    "description": "排序类型，枚举：_score：按算分排序；data_updated_at：按数据更新时间排序；table_rows：按数据量排序；online_at：按数据上线时间排序。默认按算分排序",
+                    "type": "string",
+                    "enum": [
+                        "_score",
+                        "data_updated_at",
+                        "table_rows",
+                        "published_at",
+                        "online_at"
+                    ],
+                    "example": "_score"
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_search_all.SearchAllRespParam": {
+            "type": "object",
+            "required": [
+                "entries",
+                "total_count"
+            ],
+            "properties": {
+                "entries": {
+                    "description": "对象列表",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_search_all.ExtSummaryInfo"
+                    }
+                },
+                "next_flag": {
+                    "description": "获取下一页数据的请求中，需携带本参数，若本参数为空，则数据已全部获取，没有下一页了",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "0.987",
+                        "abc"
+                    ]
+                },
+                "total_count": {
+                    "description": "当前筛选条件下的对象数量",
+                    "type": "integer",
+                    "minimum": 0,
+                    "example": 3
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_search_all.SearchReqBodyParam": {
+            "type": "object",
+            "properties": {
+                "api_type": {
+                    "description": "接口服务类型",
+                    "type": "string"
+                },
+                "cate_info": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_adapter_driven_es_common.CateInfoR"
+                    }
+                },
+                "data_owner_id": {
+                    "description": "数据资源的 Owner ID。非空时搜索 Owner 是这个用户的数据资源",
+                    "type": "string",
+                    "example": "664c3791-297e-44da-bfbb-2f1b82f3b672"
+                },
+                "data_updated_at": {
+                    "description": "数据更新时间",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_search_all.TimeRange"
+                        }
+                    ]
+                },
+                "fields": {
+                    "description": "字段列表。如果非空，关键字仅匹配指定字段",
+                    "type": "array",
+                    "uniqueItems": true,
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "ids": {
+                    "description": "资源的ID",
+                    "type": "array",
+                    "uniqueItems": true,
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "is_online": {
+                    "type": "boolean",
+                    "example": false
+                },
+                "is_publish": {
+                    "description": "是否发布，如果为 nil 则不根据发布状态过滤搜索结果",
+                    "type": "boolean",
+                    "example": false
+                },
+                "keyword": {
+                    "description": "关键字查询，字符无限制",
+                    "type": "string",
+                    "minLength": 1,
+                    "example": "keyword"
+                },
+                "next_flag": {
+                    "description": "从该flag标志后获取数据，该flag标志由上次的搜索请求返回，若本次与上次的搜索参数存在变动，则该参数不能传入，否则结果不准确",
+                    "type": "array",
+                    "maxItems": 3,
+                    "minItems": 2,
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "1",
+                        "abc"
+                    ]
+                },
+                "online_at": {
+                    "description": "上线时间",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_search_all.TimeRange"
+                        }
+                    ]
+                },
+                "orders": {
+                    "description": "排序，没有keyword时默认以data_published_at desc  排序，有keyword时默认以_score desc排序",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_search_all.Order"
+                    }
+                },
+                "published_at": {
+                    "description": "发布时间",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_search_all.TimeRange"
+                        }
+                    ]
+                },
+                "published_status": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "size": {
+                    "description": "要获取到的记录条数",
+                    "type": "integer",
+                    "default": 20,
+                    "example": 20
+                },
+                "type": {
+                    "description": "资源",
+                    "type": "array",
+                    "uniqueItems": true,
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "data-view",
+                        "svc"
+                    ]
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_search_all.TimeRange": {
+            "type": "object",
+            "properties": {
+                "end_time": {
+                    "description": "结束时间，毫秒时间戳",
+                    "type": "integer",
+                    "minimum": 0,
+                    "example": 1682586655000
+                },
+                "start_time": {
+                    "description": "开始时间，毫秒时间戳",
+                    "type": "integer",
+                    "minimum": 0,
+                    "example": 1682586655000
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_view.DataViewBaseInfo": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "description": "逻辑视图描述，可能存在高亮标签",
+                    "type": "string"
+                },
+                "fields": {
+                    "description": "字段列表",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_adapter_driven_es_common.Field"
+                    }
+                },
+                "id": {
+                    "description": "逻辑视图id",
+                    "type": "string"
+                },
+                "is_publish": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "description": "逻辑视图名称，可能存在高亮标签",
+                    "type": "string"
+                },
+                "orgcode": {
+                    "description": "逻辑视图所属组织架构ID",
+                    "type": "string"
+                },
+                "orgname": {
+                    "description": "所属组织架构ID",
+                    "type": "string"
+                },
+                "owner_id": {
+                    "description": "data owner id",
+                    "type": "string"
+                },
+                "owner_name": {
+                    "description": "data owner 名称",
+                    "type": "string"
+                },
+                "published_at": {
+                    "type": "integer"
+                },
+                "raw_description": {
+                    "description": "逻辑视图描述，不会存在高亮标签",
+                    "type": "string"
+                },
+                "raw_name": {
+                    "description": "逻辑视图名称，不会存在高亮标签",
+                    "type": "string"
+                },
+                "raw_orgname": {
+                    "type": "string"
+                },
+                "raw_owner_name": {
+                    "description": "data owner 名称",
+                    "type": "string"
+                },
+                "updated_at": {
+                    "description": "逻辑视图更新时间",
+                    "type": "integer"
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_view.Order": {
+            "type": "object",
+            "required": [
+                "direction",
+                "sort"
+            ],
+            "properties": {
+                "direction": {
+                    "description": "排序方向，枚举 asc正序，desc倒序",
+                    "type": "string",
+                    "enum": [
+                        "asc",
+                        "desc"
+                    ],
+                    "example": "desc"
+                },
+                "sort": {
+                    "description": "排序类型，枚举 updated_at更新时间 online_at上线时间",
+                    "type": "string",
+                    "enum": [
+                        "updated_at",
+                        "online_at"
+                    ],
+                    "example": "online_at"
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_view.SearchReqBodyParam": {
+            "type": "object",
+            "properties": {
+                "keyword": {
+                    "description": "搜索关键词，支持字段：接口名称，接口说明",
+                    "type": "string",
+                    "minLength": 1,
+                    "example": "keyword"
+                },
+                "next_flag": {
+                    "description": "从该flag标志后获取数据，该flag标志由上次的搜索请求返回，若本次与上次的搜索参数存在变动，则该参数不能传入，否则结果不准确",
+                    "type": "array",
+                    "maxItems": 3,
+                    "minItems": 2,
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "1",
+                        "abc"
+                    ]
+                },
+                "orders": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_view.Order"
+                    }
+                },
+                "orgcodes": {
+                    "description": "所属组织架构ID",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "664c3791-297e-44da-bfbb-2f1b82f3b672"
+                    ]
+                },
+                "published_at": {
+                    "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_view.TimeRange"
+                },
+                "size": {
+                    "description": "要获取到的记录条数",
+                    "type": "integer",
+                    "default": 20,
+                    "example": 20
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_view.SearchResp": {
+            "type": "object",
+            "required": [
+                "entries",
+                "total_count"
+            ],
+            "properties": {
+                "entries": {
+                    "description": "对象列表",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_view.DataViewBaseInfo"
+                    }
+                },
+                "next_flag": {
+                    "description": "获取下一页数据的请求中，需携带本参数，若本参数为空，则数据已全部获取，没有下一页了",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "0.987",
+                        "abc"
+                    ]
+                },
+                "total_count": {
+                    "description": "当前筛选条件下的对象数量",
+                    "type": "integer",
+                    "minimum": 0,
+                    "example": 3
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_view.TimeRange": {
+            "type": "object",
+            "properties": {
+                "end_time": {
+                    "description": "结束时间，毫秒时间戳",
+                    "type": "integer",
+                    "minimum": 0,
+                    "example": 1682586655000
+                },
+                "start_time": {
+                    "description": "开始时间，毫秒时间戳",
+                    "type": "integer",
+                    "minimum": 0,
+                    "example": 1682586655000
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_basic-search_domain_elec_license.Order": {
+            "type": "object",
+            "required": [
+                "direction",
+                "sort"
+            ],
+            "properties": {
+                "direction": {
+                    "description": "排序方向，枚举：asc：正序；desc：倒序。默认倒序",
+                    "type": "string",
+                    "enum": [
+                        "asc",
+                        "desc"
+                    ],
+                    "example": "desc"
+                },
+                "sort": {
+                    "description": "排序类型，枚举：_score：按算分排序；data_updated_at：按数据更新时间排序；table_rows：按数据量排序。默认按算分排序",
+                    "type": "string",
+                    "enum": [
+                        "_score",
+                        "updated_at",
+                        "online_at",
+                        "published_at"
+                    ],
+                    "example": "_score"
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_basic-search_domain_elec_license.SearchReqBodyParam": {
+            "type": "object",
+            "properties": {
+                "data_updated_at": {
+                    "description": "更新时间",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_elec_license.TimeRange"
+                        }
+                    ]
+                },
+                "fields": {
+                    "description": "字段列表。如果非空，关键字仅匹配指定字段",
+                    "type": "array",
+                    "uniqueItems": true,
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "ids": {
+                    "description": "资源目录的ID",
+                    "type": "array",
+                    "uniqueItems": true,
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "industry_department_ids": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "industry_departments": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "is_online": {
+                    "type": "boolean"
+                },
+                "keyword": {
+                    "description": "关键字查询，字符无限制",
+                    "type": "string",
+                    "minLength": 1
+                },
+                "next_flag": {
+                    "description": "从该flag标志后获取数据，该flag标志由上次的搜索请求返回，若本次与上次的搜索参数存在变动，则该参数不能传入，否则结果不准确",
+                    "type": "array",
+                    "maxItems": 3,
+                    "minItems": 2,
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "1",
+                        "abc"
+                    ]
+                },
+                "online_at": {
+                    "description": "上线时间",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_elec_license.TimeRange"
+                        }
+                    ]
+                },
+                "online_status": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "orders": {
+                    "description": "排序，没有keyword时默认以data_updated_at desc \u0026 table_rows desc排序，有keyword时默认以_score desc排序",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_elec_license.Order"
+                    }
+                },
+                "size": {
+                    "description": "要获取到的记录条数",
+                    "type": "integer",
+                    "default": 20,
+                    "example": 20
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_basic-search_domain_elec_license.SearchRespParam": {
+            "type": "object",
+            "required": [
+                "entries",
+                "total_count"
+            ],
+            "properties": {
+                "entries": {
+                    "description": "对象列表",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_elec_license.SummaryInfo"
+                    }
+                },
+                "next_flag": {
+                    "description": "获取下一页数据的请求中，需携带本参数，若本参数为空，则数据已全部获取，没有下一页了",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "0.987",
+                        "abc"
+                    ]
+                },
+                "statistics": {
+                    "description": "统计信息",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_elec_license.statisticsInfo"
+                        }
+                    ]
+                },
+                "total_count": {
+                    "description": "当前筛选条件下的对象数量",
+                    "type": "integer",
+                    "minimum": 0,
+                    "example": 3
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_basic-search_domain_elec_license.StatisticsReqBodyParam": {
+            "type": "object",
+            "properties": {
+                "data_updated_at": {
+                    "description": "更新时间",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_elec_license.TimeRange"
+                        }
+                    ]
+                },
+                "fields": {
+                    "description": "字段列表。如果非空，关键字仅匹配指定字段",
+                    "type": "array",
+                    "uniqueItems": true,
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "ids": {
+                    "description": "资源目录的ID",
+                    "type": "array",
+                    "uniqueItems": true,
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "industry_department_ids": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "industry_departments": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "is_online": {
+                    "type": "boolean"
+                },
+                "keyword": {
+                    "description": "关键字查询，字符无限制",
+                    "type": "string",
+                    "minLength": 1
+                },
+                "online_at": {
+                    "description": "上线时间",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_elec_license.TimeRange"
+                        }
+                    ]
+                },
+                "online_status": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_basic-search_domain_elec_license.StatisticsRespParam": {
+            "type": "object",
+            "properties": {
+                "statistics": {
+                    "description": "统计信息",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_elec_license.statisticsInfo"
+                        }
+                    ]
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_basic-search_domain_elec_license.SummaryInfo": {
+            "type": "object",
+            "properties": {
+                "certification_level": {
+                    "description": "发证级别",
+                    "type": "string"
+                },
+                "code": {
+                    "description": "电子证照目录编码",
+                    "type": "string"
+                },
+                "department": {
+                    "description": "管理部门:xx市数据资源管理局",
+                    "type": "string"
+                },
+                "expire": {
+                    "description": "有效期",
+                    "type": "string"
+                },
+                "fields": {
+                    "description": "字段列表，有匹配字段的排在前面",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_adapter_driven_es_common.Field"
+                    }
+                },
+                "holder_type": {
+                    "description": "证照主体",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "电子证照目录ID",
+                    "type": "string"
+                },
+                "industry_department": {
+                    "description": "行业类别:市场监督",
+                    "type": "string"
+                },
+                "industry_department_id": {
+                    "description": "行业类别id",
+                    "type": "string"
+                },
+                "is_online": {
+                    "type": "boolean"
+                },
+                "license_type": {
+                    "description": "证件类型:证照",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "电子证照目录名称，可能存在高亮标签",
+                    "type": "string"
+                },
+                "online_at": {
+                    "description": "上线时间",
+                    "type": "integer"
+                },
+                "online_status": {
+                    "description": "上线状态",
+                    "type": "string"
+                },
+                "raw_code": {
+                    "description": "电子证照目录编码",
+                    "type": "string"
+                },
+                "raw_name": {
+                    "description": "电子证照目录名称，不会存在高亮标签",
+                    "type": "string"
+                },
+                "updated_at": {
+                    "description": "更新时间",
+                    "type": "integer"
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_basic-search_domain_elec_license.TimeRange": {
+            "type": "object",
+            "properties": {
+                "end_time": {
+                    "description": "结束时间，毫秒时间戳",
+                    "type": "integer",
+                    "minimum": 0,
+                    "example": 1682586655000
+                },
+                "start_time": {
+                    "description": "开始时间，毫秒时间戳",
+                    "type": "integer",
+                    "minimum": 0,
+                    "example": 1682586655000
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_basic-search_domain_elec_license.statisticsInfo": {
+            "type": "object",
+            "properties": {
+                "data_kind_count": {
+                    "description": "基础信息分类各个类别对应的数量",
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "integer"
+                    },
+                    "example": {
+                        "1": 11,
+                        "2": 22
+                    }
+                },
+                "data_range_count": {
+                    "description": "数据范围分类各个类别对应的数量",
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "integer"
+                    },
+                    "example": {
+                        "1": 11,
+                        "2": 22
+                    }
+                },
+                "shared_type_count": {
+                    "description": "共享条件分类各个类别对应的数量",
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "integer"
+                    },
+                    "example": {
+                        "1": 11,
+                        "2": 22
+                    }
+                },
+                "update_cycle_count": {
+                    "description": "更新频率分类各个类别对应的数量",
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "integer"
+                    },
+                    "example": {
+                        "1": 11,
+                        "2": 22
+                    }
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_basic-search_domain_info_catalog.Order": {
+            "type": "object",
+            "required": [
+                "direction",
+                "sort"
+            ],
+            "properties": {
+                "direction": {
+                    "description": "排序方向，枚举：asc：正序；desc：倒序。默认倒序",
+                    "type": "string",
+                    "enum": [
+                        "asc",
+                        "desc"
+                    ],
+                    "example": "desc"
+                },
+                "sort": {
+                    "description": "排序类型，枚举：_score：按算分排序；data_updated_at：按数据更新时间排序；table_rows：按数据量排序。默认按算分排序",
+                    "type": "string",
+                    "enum": [
+                        "_score",
+                        "updated_at",
+                        "online_at",
+                        "published_at"
+                    ],
+                    "example": "_score"
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_basic-search_domain_info_catalog.SearchReqBodyParam": {
+            "type": "object",
+            "properties": {
+                "business_object_ids": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "business_process_ids": {
+                    "description": "业务流程id, 用户筛选的多个业务流程id",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "cate_info": {
+                    "description": "用户筛选的多个类目列表",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_adapter_driven_es_common.CateInfoR"
+                    }
+                },
+                "data_range": {
+                    "description": "数据范围",
+                    "type": "array",
+                    "maxItems": 10,
+                    "uniqueItems": true,
+                    "items": {
+                        "type": "integer"
+                    },
+                    "example": [
+                        4
+                    ]
+                },
+                "data_resource_type": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "data_updated_at": {
+                    "description": "更新时间",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_info_catalog.TimeRange"
+                        }
+                    ]
+                },
+                "fields": {
+                    "description": "字段列表。如果非空，关键字仅匹配指定字段",
+                    "type": "array",
+                    "uniqueItems": true,
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "ids": {
+                    "description": "资源目录的ID",
+                    "type": "array",
+                    "uniqueItems": true,
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "is_online": {
+                    "type": "boolean"
+                },
+                "is_publish": {
+                    "description": "是否发布，如果为 nil 则不根据发布状态过滤搜索结果",
+                    "type": "boolean"
+                },
+                "keyword": {
+                    "description": "关键字查询，字符无限制",
+                    "type": "string",
+                    "minLength": 1
+                },
+                "next_flag": {
+                    "description": "从该flag标志后获取数据，该flag标志由上次的搜索请求返回，若本次与上次的搜索参数存在变动，则该参数不能传入，否则结果不准确",
+                    "type": "array",
+                    "maxItems": 3,
+                    "minItems": 2,
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "1",
+                        "abc"
+                    ]
+                },
+                "online_at": {
+                    "description": "上线时间",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_info_catalog.TimeRange"
+                        }
+                    ]
+                },
+                "online_status": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "orders": {
+                    "description": "排序，没有keyword时默认以data_updated_at desc \u0026 table_rows desc排序，有keyword时默认以_score desc排序",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_info_catalog.Order"
+                    }
+                },
+                "published_at": {
+                    "description": "发布时间",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_info_catalog.TimeRange"
+                        }
+                    ]
+                },
+                "published_status": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "shared_type": {
+                    "description": "共享条件",
+                    "type": "array",
+                    "maxItems": 10,
+                    "uniqueItems": true,
+                    "items": {
+                        "type": "integer"
+                    },
+                    "example": [
+                        2
+                    ]
+                },
+                "size": {
+                    "description": "要获取到的记录条数",
+                    "type": "integer",
+                    "default": 20,
+                    "example": 20
+                },
+                "update_cycle": {
+                    "description": "更新频率",
+                    "type": "array",
+                    "maxItems": 10,
+                    "uniqueItems": true,
+                    "items": {
+                        "type": "integer"
+                    },
+                    "example": [
+                        3,
+                        7
+                    ]
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_basic-search_domain_info_catalog.SearchRespParam": {
+            "type": "object",
+            "required": [
+                "entries",
+                "total_count"
+            ],
+            "properties": {
+                "entries": {
+                    "description": "对象列表",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_info_catalog.SummaryInfo"
+                    }
+                },
+                "next_flag": {
+                    "description": "获取下一页数据的请求中，需携带本参数，若本参数为空，则数据已全部获取，没有下一页了",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "0.987",
+                        "abc"
+                    ]
+                },
+                "statistics": {
+                    "description": "统计信息",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_info_catalog.statisticsInfo"
+                        }
+                    ]
+                },
+                "total_count": {
+                    "description": "当前筛选条件下的对象数量",
+                    "type": "integer",
+                    "minimum": 0,
+                    "example": 3
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_basic-search_domain_info_catalog.StatisticsReqBodyParam": {
+            "type": "object",
+            "properties": {
+                "business_object_ids": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "business_process_ids": {
+                    "description": "业务流程id, 用户筛选的多个业务流程id",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "cate_info": {
+                    "description": "用户筛选的多个类目列表",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_adapter_driven_es_common.CateInfoR"
+                    }
+                },
+                "data_range": {
+                    "description": "数据范围",
+                    "type": "array",
+                    "maxItems": 10,
+                    "uniqueItems": true,
+                    "items": {
+                        "type": "integer"
+                    },
+                    "example": [
+                        4
+                    ]
+                },
+                "data_resource_type": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "data_updated_at": {
+                    "description": "更新时间",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_info_catalog.TimeRange"
+                        }
+                    ]
+                },
+                "fields": {
+                    "description": "字段列表。如果非空，关键字仅匹配指定字段",
+                    "type": "array",
+                    "uniqueItems": true,
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "ids": {
+                    "description": "资源目录的ID",
+                    "type": "array",
+                    "uniqueItems": true,
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "is_online": {
+                    "type": "boolean"
+                },
+                "is_publish": {
+                    "description": "是否发布，如果为 nil 则不根据发布状态过滤搜索结果",
+                    "type": "boolean"
+                },
+                "keyword": {
+                    "description": "关键字查询，字符无限制",
+                    "type": "string",
+                    "minLength": 1
+                },
+                "online_at": {
+                    "description": "上线时间",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_info_catalog.TimeRange"
+                        }
+                    ]
+                },
+                "online_status": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "published_at": {
+                    "description": "发布时间",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_info_catalog.TimeRange"
+                        }
+                    ]
+                },
+                "published_status": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "shared_type": {
+                    "description": "共享条件",
+                    "type": "array",
+                    "maxItems": 10,
+                    "uniqueItems": true,
+                    "items": {
+                        "type": "integer"
+                    },
+                    "example": [
+                        2
+                    ]
+                },
+                "update_cycle": {
+                    "description": "更新频率",
+                    "type": "array",
+                    "maxItems": 10,
+                    "uniqueItems": true,
+                    "items": {
+                        "type": "integer"
+                    },
+                    "example": [
+                        3,
+                        7
+                    ]
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_basic-search_domain_info_catalog.StatisticsRespParam": {
+            "type": "object",
+            "properties": {
+                "statistics": {
+                    "description": "统计信息",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_info_catalog.statisticsInfo"
+                        }
+                    ]
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_basic-search_domain_info_catalog.SummaryInfo": {
+            "type": "object",
+            "properties": {
+                "business_domain": {
+                    "description": "信息资源目录 - 业务表 - 业务模型 - 主干业务 - 业务领域",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_adapter_driven_es_common.Reference"
+                        }
+                    ]
+                },
+                "business_form": {
+                    "description": "信息资源目录 - 业务表",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_adapter_driven_es_common.Reference"
+                        }
+                    ]
+                },
+                "business_model": {
+                    "description": "信息资源目录 - 业务表 - 业务模型",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_adapter_driven_es_common.Reference"
+                        }
+                    ]
+                },
+                "business_processes": {
+                    "description": "业务流程",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_adapter_driven_es_common.BusinessProcess"
+                    }
+                },
+                "cate_info": {
+                    "description": "类目的信息",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_adapter_driven_es_common.CateInfo"
+                    }
+                },
+                "code": {
+                    "description": "数据目录编码",
+                    "type": "string"
+                },
+                "data_resource_catalogs": {
+                    "description": "信息资源目录 - 数据资源目录",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_adapter_driven_es_common.Reference"
+                    }
+                },
+                "description": {
+                    "description": "数据目录描述，可能存在高亮标签",
+                    "type": "string"
+                },
+                "fields": {
+                    "description": "字段列表，有匹配字段的排在前面",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_adapter_driven_es_common.Field"
+                    }
+                },
+                "id": {
+                    "description": "数据目录ID",
+                    "type": "string"
+                },
+                "label_list_resp": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/label.LabelResp"
+                    }
+                },
+                "main_business_departments": {
+                    "description": "信息资源目录 - 业务表 - 业务模型 - 主干业务 - 部门及其上级部门，为从顶级部门开始",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_adapter_driven_es_common.Reference"
+                    }
+                },
+                "name": {
+                    "description": "数据目录名称，可能存在高亮标签",
+                    "type": "string"
+                },
+                "online_at": {
+                    "description": "上线时间",
+                    "type": "integer"
+                },
+                "online_status": {
+                    "description": "上线状态",
+                    "type": "string"
+                },
+                "published_at": {
+                    "description": "发布时间",
+                    "type": "integer"
+                },
+                "published_status": {
+                    "description": "IsPublish         bool                         `json:\"is_publish\"`\nIsOnline          bool                         `json:\"is_online\"`",
+                    "type": "string"
+                },
+                "raw_code": {
+                    "description": "数据目录编码",
+                    "type": "string"
+                },
+                "raw_description": {
+                    "description": "数据目录描述，不会存在高亮标签",
+                    "type": "string"
+                },
+                "raw_name": {
+                    "description": "数据目录名称，不会存在高亮标签",
+                    "type": "string"
+                },
+                "shared_type": {
+                    "description": "共享条件",
+                    "type": "integer"
+                },
+                "update_cycle": {
+                    "description": "DataRange         int8                         `json:\"data_range\"`      // 数据范围",
+                    "type": "integer"
+                },
+                "updated_at": {
+                    "description": "更新时间",
+                    "type": "integer"
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_basic-search_domain_info_catalog.TimeRange": {
+            "type": "object",
+            "properties": {
+                "end_time": {
+                    "description": "结束时间，毫秒时间戳",
+                    "type": "integer",
+                    "minimum": 0,
+                    "example": 1682586655000
+                },
+                "start_time": {
+                    "description": "开始时间，毫秒时间戳",
+                    "type": "integer",
+                    "minimum": 0,
+                    "example": 1682586655000
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_basic-search_domain_info_catalog.statisticsInfo": {
+            "type": "object",
+            "properties": {
+                "data_kind_count": {
+                    "description": "基础信息分类各个类别对应的数量",
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "integer"
+                    },
+                    "example": {
+                        "1": 11,
+                        "2": 22
+                    }
+                },
+                "data_range_count": {
+                    "description": "数据范围分类各个类别对应的数量",
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "integer"
+                    },
+                    "example": {
+                        "1": 11,
+                        "2": 22
+                    }
+                },
+                "shared_type_count": {
+                    "description": "共享条件分类各个类别对应的数量",
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "integer"
+                    },
+                    "example": {
+                        "1": 11,
+                        "2": 22
+                    }
+                },
+                "update_cycle_count": {
+                    "description": "更新频率分类各个类别对应的数量",
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "integer"
+                    },
+                    "example": {
+                        "1": 11,
+                        "2": 22
+                    }
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_basic-search_domain_interface_svc.InterfaceSvcBaseInfo": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "description": "接口服务描述，可能存在高亮标签",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "接口服务id",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "接口服务名称，可能存在高亮标签",
+                    "type": "string"
+                },
+                "online_at": {
+                    "description": "接口服务发布时间",
+                    "type": "integer"
+                },
+                "owner_id": {
+                    "description": "data owner id",
+                    "type": "string"
+                },
+                "owner_name": {
+                    "description": "data owner 名称",
+                    "type": "string"
+                },
+                "published_at": {
+                    "type": "integer"
+                },
+                "raw_description": {
+                    "description": "接口服务描述，不会存在高亮标签",
+                    "type": "string"
+                },
+                "raw_name": {
+                    "description": "接口服务名称，不会存在高亮标签",
+                    "type": "string"
+                },
+                "raw_owner_name": {
+                    "description": "data owner 名称",
+                    "type": "string"
+                },
+                "updated_at": {
+                    "description": "接口服务更新时间",
+                    "type": "integer"
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_basic-search_domain_interface_svc.Order": {
+            "type": "object",
+            "required": [
+                "direction",
+                "sort"
+            ],
+            "properties": {
+                "direction": {
+                    "description": "排序方向，枚举 asc正序，desc倒序",
+                    "type": "string",
+                    "enum": [
+                        "asc",
+                        "desc"
+                    ],
+                    "example": "desc"
+                },
+                "sort": {
+                    "description": "排序类型，枚举 updated_at更新时间 online_at上线时间",
+                    "type": "string",
+                    "enum": [
+                        "updated_at",
+                        "online_at"
+                    ],
+                    "example": "online_at"
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_basic-search_domain_interface_svc.SearchReqBodyParam": {
+            "type": "object",
+            "properties": {
+                "keyword": {
+                    "description": "搜索关键词，支持字段：接口名称，接口说明",
+                    "type": "string",
+                    "minLength": 1,
+                    "example": "keyword"
+                },
+                "next_flag": {
+                    "description": "从该flag标志后获取数据，该flag标志由上次的搜索请求返回，若本次与上次的搜索参数存在变动，则该参数不能传入，否则结果不准确",
+                    "type": "array",
+                    "maxItems": 3,
+                    "minItems": 2,
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "1",
+                        "abc"
+                    ]
+                },
+                "online_at": {
+                    "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_interface_svc.TimeRange"
+                },
+                "orders": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_interface_svc.Order"
+                    }
+                },
+                "orgcodes": {
+                    "description": "接口服务所属组织架构ID",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "664c3791-297e-44da-bfbb-2f1b82f3b672"
+                    ]
+                },
+                "size": {
+                    "description": "要获取到的记录条数",
+                    "type": "integer",
+                    "default": 20,
+                    "example": 20
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_basic-search_domain_interface_svc.SearchResp": {
+            "type": "object",
+            "required": [
+                "entries",
+                "total_count"
+            ],
+            "properties": {
+                "entries": {
+                    "description": "对象列表",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_interface_svc.InterfaceSvcBaseInfo"
+                    }
+                },
+                "next_flag": {
+                    "description": "获取下一页数据的请求中，需携带本参数，若本参数为空，则数据已全部获取，没有下一页了",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "0.987",
+                        "abc"
+                    ]
+                },
+                "total_count": {
+                    "description": "当前筛选条件下的对象数量",
+                    "type": "integer",
+                    "minimum": 0,
+                    "example": 3
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_basic-search_domain_interface_svc.TimeRange": {
+            "type": "object",
+            "properties": {
+                "end_time": {
+                    "description": "结束时间，毫秒时间戳",
+                    "type": "integer",
+                    "minimum": 0,
+                    "example": 1682586655000
+                },
+                "start_time": {
+                    "description": "开始时间，毫秒时间戳",
+                    "type": "integer",
+                    "minimum": 0,
+                    "example": 1682586655000
+                }
+            }
+        },
+        "label.LabelResp": {
+            "type": "object",
+            "required": [
+                "id",
+                "name"
+            ],
+            "properties": {
+                "id": {
+                    "description": "唯一id",
+                    "type": "string",
+                    "maxLength": 20,
+                    "example": "1"
+                },
+                "name": {
+                    "description": "标签名称",
+                    "type": "string",
+                    "maxLength": 30,
+                    "example": "1"
+                },
+                "path": {
+                    "description": "标签路径",
+                    "type": "string",
+                    "maxLength": 2000,
+                    "example": "a/b/c"
+                }
+            }
+        },
+        "rest.HttpError": {
+            "type": "object",
+            "properties": {
+                "cause": {
+                    "description": "错误原因",
+                    "type": "string",
+                    "x-omitempty": false,
+                    "example": "错误原因"
+                },
+                "code": {
+                    "description": "返回错误码，格式: 服务名.模块.错误",
+                    "type": "string",
+                    "example": "task-center.Public.InternalError"
+                },
+                "description": {
+                    "description": "错误描述",
+                    "type": "string",
+                    "example": "内部错误"
+                },
+                "detail": {
+                    "description": "错误详情, 一般是json对象",
+                    "x-omitempty": false
+                },
+                "solution": {
+                    "description": "错误处理办法",
+                    "type": "string",
+                    "x-omitempty": false,
+                    "example": "请联系内部人员"
+                }
+            }
+        }
+    }
+}

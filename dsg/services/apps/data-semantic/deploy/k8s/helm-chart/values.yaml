@@ -1,0 +1,50 @@
+# 默认镜像配置
+image:
+  api:
+    repository: data-semantic-api
+    tag: latest
+    pullPolicy: IfNotPresent
+  consumer:
+    repository: data-semantic-consumer
+    tag: latest
+    pullPolicy: IfNotPresent
+
+# 服务配置
+service:
+  api:
+    type: ClusterIP
+    port: 8888
+  consumer:
+    type: ClusterIP
+    port: 8888
+
+# API 服务配置
+api:
+  replicaCount: 1
+  resources:
+    limits:
+      cpu: 500m
+      memory: 512Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+
+# Consumer 服务配置
+consumer:
+  enabled: true
+  replicaCount: 1
+  resources:
+    limits:
+      cpu: 500m
+      memory: 512Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+
+# ServiceAccount 配置
+serviceAccount:
+  create: true
+
+# Pod 安全上下文
+securityContext: {}
+podSecurityContext: {}

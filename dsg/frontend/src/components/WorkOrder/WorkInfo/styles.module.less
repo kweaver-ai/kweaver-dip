@@ -1,0 +1,137 @@
+.container {
+    padding-bottom: 20px;
+
+    .work-info {
+        width: 456px;
+        padding: 20px;
+        background-color: rgb(18 110 227 / 4%);
+
+        .loader {
+            display: flex;
+            width: 100%;
+            align-items: center;
+            padding-top: 200px;
+        }
+
+        .moduleTitle {
+            position: relative;
+            display: flex;
+            height: 40px;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            background: rgb(0 55 150 / 2%);
+            border-radius: 4px;
+            font-size: 16px;
+
+            h4 {
+                font-weight: 700;
+
+                &::before {
+                    position: relative;
+                    top: 4px;
+                    display: inline-block;
+                    width: 3px;
+                    height: 20px;
+                    margin-right: 12px;
+                    background-color: rgb(18 110 227 / 100%);
+                    content: '';
+                }
+            }
+        }
+
+        &-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            color: rgb(0 0 0 / 85%);
+            font-size: 14px;
+            font-weight: bold;
+
+            > span:nth-child(2) {
+                cursor: pointer;
+            }
+        }
+
+        &-content {
+            line-height: 1.8;
+
+            .businessFormList {
+                display: flex !important;
+                flex: auto !important;
+                flex-wrap: wrap;
+                gap: 4px;
+
+                :global {
+                    .any-fabric-ant-tag {
+                        overflow: hidden;
+                        max-width: 100px;
+                        margin-right: 0;
+                        .ellipsis-mixin();
+                    }
+                }
+            }
+
+            &-line {
+                display: flex;
+                align-items: flex-start;
+                margin: 14px 0;
+
+                .ellipsisTxt {
+                    .ellipsis-line(3);
+
+                    display: box !important;
+                    word-break: break-all;
+                }
+
+                .lineValue {
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+
+                > div {
+                    font-size: 14px;
+
+                    &:nth-child(1) {
+                        display: inline-block;
+                        width: 120px;
+                        padding-right: 12px;
+                        color: rgb(0 0 0 / 45%);
+                        white-space: nowrap;
+                    }
+
+                    &:nth-child(2) {
+                        display: inline-block;
+                        flex: 1;
+                        color: rgb(0 0 0 / 85%);
+                    }
+                }
+            }
+        }
+    }
+
+    .tag-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+
+        &-item {
+            overflow: hidden;
+            max-width: 140px;
+            .ellipsis-mixin();
+        }
+    }
+
+    .workInfoIcon {
+        display: inline-flex;
+        width: 40px;
+        height: 40px;
+        align-items: center;
+        justify-content: center;
+        background: white;
+        border-radius: 24px;
+        box-shadow: 0 3px 10px 0 rgb(18 110 227 / 20%);
+        cursor: pointer;
+    }
+}

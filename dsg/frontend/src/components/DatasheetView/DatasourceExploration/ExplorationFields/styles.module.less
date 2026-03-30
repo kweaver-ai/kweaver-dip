@@ -1,0 +1,73 @@
+.explorationFieldsWrapper {
+    width: 100%;
+
+    .titleBox {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 10px;
+
+        .title {
+            font-weight: 500;
+        }
+
+        .checkBox {
+            display: flex;
+            align-items: center;
+            color: rgb(0 0 0 / 65%);
+            font-size: 12px;
+
+            .ruleSwitch {
+                margin-left: 4px;
+            }
+        }
+    }
+
+    .searchBox {
+        margin-bottom: 10px;
+    }
+
+    .fieldBox {
+        overflow-y: auto;
+
+        .fieldItem {
+            display: flex;
+            width: 100%;
+            height: 54px;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 12px;
+            border: 1px solid rgb(0 0 0 / 15%);
+            margin-bottom: 8px;
+            border-radius: 4px;
+            cursor: pointer;
+
+            &.active {
+                border: 1px solid #126ee3;
+                background: rgb(18 110 227 / 2%);
+            }
+
+            &.isDatasource {
+                height: auto;
+            }
+
+            .fieldLeft {
+                width: calc(100% - 40px);
+            }
+
+            .fieldRight {
+                text-align: end;
+
+                .fieldSum {
+                    height: 16px;
+                    // margin-top: 4px;
+                    font-size: 12px;
+
+                    .fieldSumText {
+                        color: #126ee3;
+                    }
+                }
+            }
+        }
+    }
+}

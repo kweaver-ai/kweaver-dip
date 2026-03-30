@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsg.standardization.mapper.DataElementInfoMapper">
+
+    <resultMap type="com.dsg.standardization.entity.DataElementInfo" id="baseMap">
+        <result property="id" column="f_de_id"/>
+        <result property="code" column="f_de_code"/>
+        <result property="nameEn" column="f_name_en"/>
+        <result property="nameCn" column="f_name_cn"/>
+        <result property="synonyms" column="f_synonym"/>
+        <result property="stdType" column="f_std_type"/>
+        <result property="dataType" column="f_data_type"/>
+        <result property="dataLength" column="f_data_length"/>
+        <result property="dataPrecision" column="f_data_precision"/>
+        <result property="dictCode" column="f_dict_code"/>
+        <result property="description" column="f_description"/>
+        <result property="version" column="f_version"/>
+        <result property="catalogId" column="f_catalog_id"/>
+        <result property="ruleId" column="f_rule_id"/>
+        <result property="authorityId" column="f_authority_id"/>
+        <result property="createTime" column="f_create_time"/>
+        <result property="createUser" column="f_create_user"/>
+        <result property="updateTime" column="f_update_time"/>
+        <result property="updateUser" column="f_update_user"/>
+        <result property="deleted" column="f_deleted"/>
+        <result property="state" column="f_state"/>
+        <result property="disableReason" column="f_disable_reason"/>
+        <result property="departmentIds" column="f_department_ids"/>
+        <result property="thirdDeptId" column="f_third_dept_id"/>
+
+    </resultMap>
+    <update id="deleteByIds">
+        update t_data_element_info set f_deleted=f_de_id
+        where f_de_id in
+        <foreach collection="idList" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <update id="deleteByLabelIds">
+        update t_data_element_info set f_label_id= null
+        where f_label_id in
+        <foreach collection="idList" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+
+    <update id="updateVersionByIds">
+        update t_data_element_info
+        set f_version=f_version+1,
+        f_update_user=#{updateUser},
+        f_update_time=now()
+        where f_de_id in
+        <foreach collection="idList" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <select id="queryUsedDictCode" resultType="java.lang.Long">
+        select distinct(f_dict_code) from t_data_element_info where f_deleted=0 and f_dict_code in
+        <foreach collection="dictCodes" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="queryByRuleId" resultMap="baseMap">
+        select * from t_data_element_info where f_deleted=0 and f_rule_id = #{ruleId}
+    </select>
+
+    <select id="queryByDictCode" resultMap="baseMap">
+        select * from t_data_element_info where f_deleted=0 and f_dict_code = #{dictCode}
+    </select>
+
+    <select id="queryByCodes" resultMap="baseMap">
+        select * from t_data_element_info where f_deleted=0 and f_de_code in
+        <foreach collection="codes" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+    <select id="queryByFileId" resultMap="baseMap">
+        select t1.*
+        from t_data_element_info t1
+        join t_relation_de_file t2
+        on t1.f_de_id = t2.f_de_id
+        where t2.f_file_id = #{fileId}
+        and t1.f_deleted=0
+    </select>
+
+    <select id="queryPageByFileId" resultMap="baseMap">
+        select t1.*
+        from t_data_element_info t1
+        join t_relation_de_file t2
+        on t1.f_de_id = t2.f_de_id
+        where t2.f_file_id = #{fileId}
+        and t1.f_deleted=0
+    </select>
+
+
+    <select id="queryByRuleIds" resultType="java.lang.Long">
+        select distinct(f_rule_id) from t_data_element_info where  f_deleted=0 and f_rule_id in
+        <foreach collection="ruleIds" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="queryRuleIdByDataCodes" resultType="java.lang.Long">
+        select f_de_code from t_data_element_info where f_rule_id in
+        <foreach collection="ruleIds" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+    <select id="queryDictIdByDataCodes" resultType="java.lang.Long">
+        select d.f_de_code from t_data_element_info d,t_de_dict t where d.f_dict_code=t.f_code and  t.f_id in
+        <foreach collection="dictIds" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <update id="updateBatchEnable" >
+        update t_data_element_info
+        set f_update_time=now(),
+        f_disable_reason=#{reason},
+        f_state=#{stateCode}
+        where f_de_id in
+        <foreach collection="ids" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+</mapper>

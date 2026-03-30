@@ -1,0 +1,57 @@
+{{- if .Values.consumer.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.consumer.name }}-cm
+  namespace: {{ .Values.namespace }}
+  labels:
+    {{- toYaml .Values.labels.consumer.deployment | nindent 4}}
+data:
+  consumer.yaml: |
+    Name: {{ .Values.consumer.name }}
+    Mode: console
+
+    Log:
+      ServiceName: {{ .Values.consumer.name }}
+      Mode: console
+      Level: info
+
+    Telemetry:
+      Name: data-semantic-consumer
+      Endpoint: ""
+      Sampler: 1.0
+      Batcher: jaeger
+
+    MQ:
+      Type: {{ .Values.depServices.mq.mqType }}
+      Kafka:
+        Brokers:
+          - {{ .Values.depServices.mq.mqHost }}:{{ .Values.depServices.mq.mqPort }}
+        Topic: data-understanding-responses
+        Group: data-semantic-consumer-group
+        Username: {{ .Values.depServices.mq.auth.username }}
+        Password: {{ .Values.depServices.mq.auth.password }}
+      Redis:
+        Host: {{ .Values.depServices.redis.connectInfo.sentinelHost }}
+        Port: {{ .Values.depServices.redis.connectInfo.sentinelPort }}
+        Password: {{ .Values.depServices.redis.connectInfo.password }}
+        Channel: messages
+
+    DB:
+      Default:
+        Host: {{ .Values.depServices.rds.host }}
+        Port: {{ .Values.depServices.rds.port }}
+        Database: {{ .Values.depServices.rds.database }}
+        Username: {{ .Values.depServices.rds.user }}
+        Password: {{ .Values.depServices.rds.password }}
+        Charset: utf8mb4
+        MaxIdleConns: 10
+        MaxOpenConns: 100
+        ConnMaxLifetime: 3600
+        LogLevel: warn
+        SlowThreshold: 200
+
+    Cache:
+      - Host: {{ .Values.depServices.redis.connectInfo.sentinelHost }}:{{ .Values.depServices.redis.connectInfo.sentinelPort }}
+        Type: node
+{{- end }}

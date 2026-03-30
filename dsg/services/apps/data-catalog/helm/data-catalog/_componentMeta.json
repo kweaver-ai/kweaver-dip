@@ -1,0 +1,92 @@
+{
+    "conponentDefineType": "helm/service",
+    "name": "data-catalog",
+    "version": "1.0.0",
+    "configSchema": {
+        "title": "data-catalog",
+        "description": "组件配置定义",
+        "type": "object",
+        "properties": {
+            "resources": {
+                "type": "object",
+                "title": "容器资源控制",
+                "properties": {
+                    "requests": {
+                        "type": "object",
+                        "description": "容器运行需要的最小资源分配",
+                        "properties": {
+                            "memory": {
+                                "type": "string",
+                                "title": "内存"
+                            },
+                            "cpu": {
+                                "type": "string",
+                                "title": "cpu"
+                            }
+                        }
+                    },
+                    "limits": {
+                        "type": "object",
+                        "description": "容器运行最大资源限制",
+                        "properties": {
+                            "memory": {
+                                "type": "string",
+                                "title": "内存"
+                            },
+                            "cpu": {
+                                "type": "string",
+                                "title": "cpu"
+                            }
+                        }
+                    }
+                }
+            },
+            "replicaCount": {
+                "type": "number",
+                "title": "服务副本数"
+            },
+            "callback": {
+                "type": "object",
+                "title": "回调配置",
+                "properties": {
+                    "enabled": {
+                        "type": "boolean",
+                        "title": "是否启用回调"
+                    },
+                    "address": {
+                        "type": "string",
+                        "title": "回调地址",
+                        "description": "通过这个地址调用回调接口，格式定义在\nhttps://github.com/grpc/grpc/blob/master/doc/naming.md\n\n  - 192.169.52.204\n  - 192.169.52.204:80\n  - work-order-callback-server.example\n  - work-order-callback-server.example:80\n  - dns:///192.169.52.204:80\n  - dns:///work-order-callback-server.example:80\n  - dns://10.96.0.10/work-order-callback-server.example.svc.cluster.local:80\n  - dns://10.96.0.10/192-169-52-204.example.pod.cluster.local:80\n  - unix:///tmp/callback.sock"
+                    }
+                }
+            },
+            "tenant": {
+                "type": "object",
+                "title": "租户配置",
+                "properties": {
+                    "tenantId": {
+                        "type": "number",
+                        "title": "租户 ID"
+                    }
+                }
+            }
+        }
+    },
+    "dependence": [
+        {
+            "name": "af-dbo-dm-pre"
+        },
+        {
+            "name": "rds"
+        },
+        {
+            "name": "redis"
+        },
+        {
+            "name": "mq"
+        },
+        {
+            "name": "class-443"
+        }
+    ]
+}

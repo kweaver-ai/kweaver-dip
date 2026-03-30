@@ -1,0 +1,131 @@
+.generalConfigWrap {
+    width: 100%;
+    height: 100%;
+    padding: 24px;
+    padding-top: 22px;
+    overflow-y: auto;
+
+    .titleWrap {
+        margin-bottom: 16px;
+        font-size: 16px;
+        font-weight: 550;
+    }
+
+    .title {
+        // margin-bottom: 16px;
+        font-weight: 550;
+
+        .subTitle {
+            margin-left: 4px;
+            color: rgb(0 0 0 / 45%);
+            font-weight: normal;
+        }
+    }
+
+    .configItem {
+        display: flex;
+        width: 100%;
+        align-items: center;
+        justify-content: space-between;
+        padding: 16px;
+        border: 1px solid rgb(0 0 0 / 10%);
+        margin: 8px 0 16px;
+        border-radius: 4px;
+        box-shadow: 0 5px 12px 4px rgb(0 0 0 / 5%);
+
+        .text {
+            width: 100%;
+
+            .textTitle {
+                font-weight: 550;
+            }
+
+            .textContent {
+                color: rgb(0 0 0 / 45%);
+            }
+        }
+
+        .statusTip {
+            display: flex;
+            width: 66px;
+            height: 24px;
+            flex-shrink: 0;
+            align-items: center;
+            justify-content: center;
+            background: rgb(60 171 0 / 7%);
+            border-radius: 11px;
+            color: #3cab00;
+        }
+    }
+}
+
+.tagsSelectWrapper {
+    .fieldSelect {
+        width: 100%;
+        // height: 120px;
+        margin-top: 12px;
+    }
+
+    :global {
+        .any-fabric-ant-select-multiple {
+            .any-fabric-ant-select-selection-placeholder {
+                top: 16px;
+            }
+
+            .any-fabric-ant-select-selector {
+                height: 120px;
+                align-items: baseline;
+            }
+        }
+    }
+
+    .errorText {
+        margin-top: 8px;
+        color: #e60012;
+    }
+}
+
+// 样例数据
+.sampleDataCardContainer {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    gap: 16px;
+
+    .simpleDataConfigItem {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+
+        .simpleDataConfigItemTextWrapper {
+            flex: 1;
+
+            .simpleDataConfigItemTitle {
+                font-weight: 550;
+            }
+
+            .simpleDataConfigItemContent {
+                color: rgb(0 0 0 / 45%);
+            }
+        }
+
+        .simpleDataConfigItemInput {
+            display: flex;
+            width: 130px;
+            flex-shrink: 0;
+            align-items: center;
+            column-gap: 8px;
+        }
+
+        .simpleDataConfigItemRadio {
+            flex-shrink: 0;
+        }
+    }
+
+    .line {
+        width: 100%;
+        height: 1px;
+        background: rgb(0 0 0 / 10%);
+    }
+}

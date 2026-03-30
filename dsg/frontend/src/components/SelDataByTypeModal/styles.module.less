@@ -1,0 +1,342 @@
+// 数据选择对话框
+.selDataByTypeModalWrapper {
+    background: #fff;
+}
+
+.selDataModal {
+    .selDataFooterWrapper {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .noFind {
+            color: rgb(0 0 0 / 45%);
+        }
+
+        .btn {
+            width: 80px;
+        }
+
+        .footerBtnWrapper {
+            flex: 1;
+        }
+    }
+
+    .modalContent {
+        display: flex;
+        height: 100%;
+        background: #fff;
+
+        .directoryWrapper {
+            height: 100%;
+            background: #fff;
+        }
+    }
+
+    .dataContent {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+
+        .dataSort {
+            .dataSortHeader {
+                display: flex;
+                align-items: center;
+                justify-content: flex-end;
+                padding: 20px 24px 20px 20px;
+
+                .selectWrapper {
+                    display: inline-block;
+                    margin-left: 8px;
+                }
+            }
+
+            .tipContent {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                // margin: 0 32px 8px 8px;
+                margin: 0 0 16px 18px;
+                color: rgb(0 0 0 / 45%);
+
+                > div {
+                    display: flex;
+                    height: 22px;
+                    align-items: center;
+                }
+
+                .addNew {
+                    color: #006feb;
+                }
+
+                :global {
+                    .any-fabric-ant-icon {
+                        display: flex;
+                        align-items: center;
+                        margin-right: 8px;
+                    }
+                }
+            }
+        }
+
+        .dataListContent {
+            flex-grow: 1;
+            background: #fff;
+            overflow-y: scroll;
+
+            .dataTable {
+                padding: 0 10px;
+
+                :global {
+                    .ant-table.ant-table-small {
+                        border: none;
+                    }
+
+                    .any-fabric-ant-table-selection-col {
+                        width: 34px;
+                    }
+
+                    .any-fabric-ant-table-tbody {
+                        > tr {
+                            > td {
+                                padding: 0;
+                                border: none;
+                            }
+                        }
+
+                        .any-fabric-ant-table-row {
+                            height: 56px;
+
+                            &:hover {
+                                background: #fafafa;
+                            }
+
+                            &.any-fabric-ant-table-row-selected {
+                                background: rgb(18 110 227 / 6%);
+                            }
+                        }
+
+                        .any-fabric-ant-table-selection-column {
+                            display: inline-flex;
+                            height: 56px;
+                            justify-content: flex-start;
+                            padding-top: 9px;
+
+                            .any-fabric-ant-checkbox-wrapper,
+                            .any-fabric-ant-radio-wrapper {
+                                padding: 0 8px 0 10px;
+                            }
+                        }
+
+                        .any-fabric-ant-table-row-selected {
+                            background: rgb(18 110 227 / 6%);
+
+                            > td {
+                                background: none;
+                            }
+                        }
+                    }
+                }
+            }
+
+            // 目录为空导致的右侧列表为空
+            .showEmpty {
+                .empty.empty-center {
+                    margin-top: 116px;
+                }
+            }
+        }
+
+        .showTableInfo {
+            display: flex;
+            height: 56px;
+            align-items: flex-start;
+
+            .detailInfo {
+                overflow: hidden;
+                height: 56px;
+                flex-grow: 1;
+                padding: 9px 0 3px;
+
+                .titleInfo {
+                    display: flex;
+                    align-items: center;
+                    font-size: 12px;
+
+                    .name {
+                        .ellipsis-mixin();
+
+                        margin-left: 6px;
+                        font-size: 14px;
+                    }
+
+                    .disbaled_name {
+                        color: rgba(0 0 0 / 25%);
+                    }
+
+                    .org_type {
+                        height: 22px;
+                        flex-shrink: 0;
+                        padding: 0 8px;
+                        border: 1px solid #bae0ff;
+                        background: #e6f4ff;
+                        border-radius: 4px;
+                        color: #1677ff;
+                        font-size: 12px;
+                    }
+
+                    .disabled_org_type {
+                        background-color: rgba(230 244 255 / 35%);
+                        color: rgba(22 119 255 / 35%);
+                    }
+
+                    .recFlag {
+                        height: 20px;
+                        flex-shrink: 0;
+                        padding: 0 5px;
+                        border: 1px solid #fab11f;
+                        margin-right: 6px;
+                        background: rgba(250 177 31 / 8%);
+                        border-radius: 4px;
+                        color: #fab11f;
+                        font-size: 12px;
+                    }
+                }
+            }
+
+            .status {
+                width: 56px;
+                height: 56px;
+                flex-shrink: 0;
+                margin-left: 24px;
+                font-size: 56px;
+                line-height: 56px;
+            }
+
+            .link {
+                flex-shrink: 0;
+                margin: 9px 10px 0 16px;
+                color: #006feb;
+                cursor: pointer;
+
+                // font-weight: 600;
+            }
+
+            .otherInfo {
+                display: inline-block;
+                overflow: hidden;
+                width: 100%;
+                margin-top: 2px;
+                color: rgb(0 0 0 / 45%);
+                font-size: 12px;
+                // font-weight: 600;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+
+            .disabledOtherInfo {
+                color: rgba(0 0 0 /25%);
+            }
+        }
+    }
+
+    .error {
+        display: flex;
+        width: 556px;
+        height: 32px;
+        padding-top: 8px;
+        background-color: rgba(245 34 45 / 6%);
+        color: @text-color-desc;
+        font-size: 12px;
+
+        .errorIcon {
+            margin-right: 7px;
+            margin-left: 17px;
+            color: #f5222d;
+            font-size: 14px;
+        }
+
+        .errorText {
+            display: inline-block;
+        }
+    }
+
+    .directoryBox {
+        .searchDirInput {
+            margin: 24px 20px 10px;
+        }
+
+        .directory {
+            height: calc(100% - 66px);
+        }
+    }
+
+    :global {
+        .any-fabric-ant-modal-content {
+            position: relative;
+            height: 100%;
+            padding: 0;
+        }
+
+        .any-fabric-ant-modal-footer {
+            padding: 10px 24px;
+        }
+
+        .any-fabric-ant-modal-wrap {
+            .any-fabric-ant-modal {
+                position: relative;
+                // 垂直居中，减去自身高度的一般
+                // top: calc(50% - 344px);
+            }
+
+            .any-fabric-ant-modal-footer {
+                padding: 10px 24px;
+            }
+        }
+    }
+}
+
+.showEmpty {
+    display: flex;
+    width: 100%;
+    // margin-top: 116px;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+
+    p,
+    span {
+        margin: 0;
+        color: rgb(0 0 0 / 65%);
+        line-height: 22px;
+    }
+
+    .operate {
+        color: @primary-color;
+    }
+}
+
+// 占满全屏的drawer
+:global {
+    .fullDrawer.any-fabric-ant-drawer {
+        position: fixed;
+        z-index: 1000;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        overflow: hidden;
+
+        .any-fabric-ant-drawer-mask {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            overflow: auto;
+            background-color: rgb(0 0 0 / 50%);
+            user-select: none;
+        }
+    }
+}

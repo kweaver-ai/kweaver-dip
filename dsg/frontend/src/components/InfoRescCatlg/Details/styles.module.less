@@ -1,0 +1,480 @@
+// 目录内容/详情页————————————————————————————————start
+.labelTitleWrapper {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    padding: 5px 0;
+    // margin: 10px 0;
+    margin-bottom: 20px;
+    background: rgb(0 55 150 / 2%);
+    color: @label-color;
+    font-size: 16px;
+    font-weight: 550;
+
+    .labelLine {
+        display: inline-block;
+        width: 3px;
+        height: 20px;
+        margin-right: 20px;
+        background: #126ee3;
+    }
+}
+
+.dirContentWrapper {
+    width: 100%;
+    height: 100vh;
+    overflow-x: auto;
+
+    .dirContent {
+        min-width: 1280px;
+        height: 100vh;
+    }
+
+    .top {
+        display: flex;
+        height: 52px;
+        align-items: center;
+        padding-left: 20px;
+        border-bottom: 1px solid rgb(0 0 0 / 10%);
+
+        .leftContent {
+            display: flex;
+            height: 100%;
+            align-items: center;
+
+            .modelIconWrapper {
+                display: flex;
+                width: 24px;
+                height: 24px;
+                align-items: center;
+                justify-content: center;
+                margin-right: 8px;
+                background-color: rgb(18 110 227 / 6%);
+                border-radius: 3px;
+
+                .modelIcon {
+                    color: @primary-color;
+                    font-size: 14px;
+                }
+            }
+
+            .businessName {
+                max-width: 160px;
+                margin-right: 8px;
+                font-weight: 550;
+                .ellipsis-mixin();
+            }
+        }
+
+        .returnInfo {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+
+            .returnArrow {
+                margin-right: 12px;
+                color: rgb(0 0 0 / 85%);
+            }
+        }
+
+        .divider {
+            width: 1px;
+            height: 20px;
+            margin: 0 24px 0 12px;
+            background-color: rgb(0 0 0 / 35%);
+        }
+
+        .businessNameContainer {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+
+            .downIcon {
+                display: flex;
+                width: 22px;
+                height: 22px;
+                align-items: center;
+                color: #333;
+            }
+        }
+
+        .overlay {
+            overflow: auto;
+            max-height: 240px;
+            box-shadow: 0 3px 6px -4px rgb(0 0 0 / 12%),
+                0 6px 16px 0 rgb(0 0 0 / 8%), 0 9px 28px 8px rgb(0 0 0 / 5%);
+
+            &::before {
+                top: 0;
+                bottom: 0;
+            }
+        }
+
+        .overlayItem {
+            width: 160px;
+            .ellipsis-mixin();
+        }
+    }
+
+    .bottom {
+        height: calc(100% - 52px);
+        background-color: #f0f2f6;
+        overflow-y: auto;
+    }
+
+    .needPadding {
+        padding: 24px;
+    }
+}
+
+.tabs {
+    display: flex;
+    width: 100%;
+    height: 50px;
+    justify-content: center;
+    padding: 4px 24px 21px;
+    background-color: white;
+
+    :global {
+        .any-fabric-ant-tabs-top {
+            height: 100%;
+
+            .any-fabric-ant-tabs-content-holder {
+                position: relative;
+                // overflow: hidden;
+                overflow: scroll;
+                margin-top: 8px;
+            }
+        }
+    }
+}
+
+// 目录内容页-基本信息
+.basicContentWrapper {
+    width: 100%;
+    background: #fff;
+
+    .headerBox {
+        padding: 16px 24px;
+        border-bottom: 1px solid #f0f0f0;
+
+        .headerTitle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            .headerLeft {
+                display: flex;
+                // width: calc(100% - 80px);
+                overflow: hidden;
+                align-items: flex-start;
+                color: rgb(0 0 0 / 85%);
+
+                .icon {
+                    margin-top: 2px;
+                    margin-right: 12px;
+                    font-size: 40px;
+                }
+
+                .catlgNameCont {
+                    overflow: hidden;
+                    flex: 1;
+
+                    .nameWrapper {
+                        display: flex;
+                        align-items: center;
+                        gap: 8px;
+
+                        .names {
+                            // flex-shrink: 0;
+                            color: @title-color-secondary;
+                            font-size: 16px;
+                            font-weight: 550;
+                            .ellipsis-mixin();
+                        }
+                    }
+
+                    .typeIcon {
+                        height: 26px;
+                        margin-top: -21px;
+                        margin-left: 5px;
+                        font-size: 46px;
+                    }
+                }
+
+                .info {
+                    display: flex;
+                    align-items: center;
+                    margin-bottom: 8px;
+
+                    .infoItem {
+                        display: flex;
+                        margin-right: 24px;
+
+                        .text {
+                            display: flex;
+                        }
+                    }
+
+                    .lable {
+                        color: rgb(0 0 0 / 45%);
+                    }
+
+                    .text {
+                        display: flex;
+                        align-items: center;
+                    }
+                }
+            }
+        }
+
+        .desc {
+            display: flex;
+            color: rgb(0 0 0 / 45%);
+
+            & > div {
+                width: calc(100% - 128px);
+            }
+        }
+    }
+
+    .basicContent {
+        padding: 20px;
+
+        .tagWrapper {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .relationValueWrapper {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .tagItem {
+            .ellipsis-mixin();
+
+            max-width: 112px;
+            height: 24px;
+            padding: 0 8px;
+            background: rgb(0 0 0 / 4%);
+            border-radius: 2px;
+            color: rgb(0 0 0 / 65%);
+            font-size: 14px;
+            line-height: 24px;
+        }
+
+        .relationInfoItemText {
+            .ellipsis-mixin();
+
+            max-width: 112px;
+        }
+
+        .subTitle {
+            margin: 8px 0 16px;
+        }
+
+        .resourceBox {
+            padding: 0 8px;
+        }
+
+        .mountNameBtnDisable {
+            color: rgb(18 110 227 / 40%) !important;
+            cursor: not-allowed;
+        }
+    }
+}
+
+.dirColumnWapper {
+    &.showTitleColumnWapper {
+        height: calc(100% - 12px);
+        padding: 10px 20px 0;
+        margin-top: 12px;
+        background: #fff;
+
+        .dirColumnHeader {
+            justify-content: space-between;
+            border-bottom: 1px solid rgb(0 0 0 / 6%);
+        }
+    }
+
+    .empty {
+        height: 100%;
+    }
+
+    .dirColumnHeader {
+        display: flex;
+        justify-content: flex-end;
+        padding-bottom: 10px;
+        margin: 0 0 16px;
+    }
+
+    // .dirColumnContent {
+    .tableEmpty {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 100px;
+
+        .description {
+            color: @text-color-desc;
+            font-size: 14px;
+        }
+    }
+
+    .dirColumnContent {
+        td {
+            vertical-align: middle;
+        }
+
+        .infoNames {
+            .catlgNameCont {
+                display: flex;
+                width: 100%;
+                align-items: center;
+
+                .typeIcon {
+                    height: 26px;
+                    margin-top: -21px;
+                    margin-left: 5px;
+                    font-size: 46px;
+                }
+            }
+        }
+    }
+    // }
+}
+
+:global .selRescTagsWrapper {
+    max-width: 200px;
+    // max-height: 360px;
+    // padding: 0;
+    // padding-top: 4px;
+    // color: rgb(0 0 0) !important;
+
+    .any-fabric-ant-tooltip-inner {
+        overflow: hidden auto;
+        width: 100%;
+        max-width: 200px;
+        max-height: 160px;
+        padding: 8px;
+        color: rgb(0 0 0 / 85%);
+    }
+
+    .link {
+        &:hover {
+            color: #126ee3;
+            cursor: pointer;
+            text-decoration-line: underline;
+        }
+    }
+}
+// 目录内容/详情页————————————————————————————————end
+
+// 目录内容-相关目录-图示节点————————————————————————————————start
+.asset-wrapper {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: calc(100vh - 50px) !important;
+
+    &-graph {
+        width: 100%;
+        height: 100%;
+    }
+
+    &-controller {
+        position: absolute;
+        right: 24px;
+        bottom: 24px;
+    }
+
+    &-label {
+        position: absolute;
+        bottom: 24px;
+        left: 32px;
+    }
+}
+
+.infoRescCatlgNode {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    background: #fff;
+    border-radius: 4px;
+    box-shadow: 0 5px 12px 4px rgb(0 0 0 / 5%);
+    // font-size: 18px;
+    color: rgb(0 0 0 / 85%);
+    line-height: 22px;
+
+    .content {
+        display: flex;
+        width: 100%;
+        height: 100%;
+        align-items: center;
+        // padding: 12px 16px;
+        padding: 0 16px;
+
+        .catlgTopWrapper {
+            display: flex;
+            overflow: hidden;
+            width: 100%;
+            align-items: center;
+            justify-content: center;
+            // font-size: 16px;
+            color: rgb(0 0 0 / 85%);
+            gap: 8px;
+        }
+
+        .rescName {
+            .ellipsis-mixin();
+
+            color: rgb(0 0 0 / 85%);
+            font-size: 16px;
+            line-height: 22px;
+        }
+
+        // .divider {
+        //     width: 100%;
+        //     height: 1px;
+        //     padding: 0 8px;
+        //     margin: 8px 0;
+        //     background-color: #f0f0f0;
+        // }
+
+        // .mountRescInfo {
+        //     display: flex;
+        //     align-items: center;
+
+        //     .iconContainer {
+        //         border-radius: 3px;
+        //         font-size: 14px;
+        //     }
+
+        //     .rescName {
+        //         margin-left: 8px;
+        //         color: rgb(0 0 0 / 65%);
+        //         font-size: 12px;
+        //         line-height: 20px;
+        //         .ellipsis-mixin();
+        //     }
+        // }
+    }
+
+    .curDirMark {
+        position: absolute;
+        top: 0;
+        right: 0;
+        height: 18px;
+        padding: 0 6px;
+        background: #b8e0ff;
+        border-radius: 0 3px 0 0;
+        color: #126ee3;
+        font-size: 12px;
+        line-height: 18px;
+        opacity: 0.67;
+    }
+}
+
+// 目录内容-相关目录-图示节点————————————————————————————————end

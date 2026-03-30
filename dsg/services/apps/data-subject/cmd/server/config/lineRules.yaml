@@ -1,0 +1,8 @@
+lineRules:
+  - Name: 业务对象或活动清单
+    TableContent:
+      TitleNum: 3
+  # - Name: 业务对象或活动字段
+  #   TableContent:
+  #     TitleNum: 3
+

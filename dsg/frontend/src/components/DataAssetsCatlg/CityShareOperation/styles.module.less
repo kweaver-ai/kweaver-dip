@@ -1,0 +1,43 @@
+.oprBtn {
+    display: inline-flex !important;
+    align-items: center;
+    border-color: rgb(0 0 0 / 15%) !important;
+    gap: 8px;
+    // color: rgba(0, 0, 0, 0.85) !important;
+
+    &:hover,
+    &:focus {
+        border-color: #d9d9d9 !important;
+    }
+}
+
+.oprIcon {
+    cursor: pointer;
+}
+
+.isInCitySharing {
+    color: #faac14;
+}
+
+.msgNoticeWrapper {
+    // .msgContent {
+    //     display: flex;
+    //     align-items: center;
+
+    // }
+
+    :global {
+        .any-fabric-ant-message-custom-content {
+            display: flex;
+            align-items: center;
+        }
+    }
+}
+
+.link {
+    margin-bottom: 0;
+    color: #126ee3;
+    cursor: pointer;
+    font-size: 14px;
+    line-height: 20px;
+}

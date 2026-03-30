@@ -1,0 +1,29 @@
+.sensitive-wrapper {
+    height: 100%;
+    padding: 24px;
+    padding-top: 22px;
+
+    .sensitive-top-title {
+        margin-bottom: 16px;
+    }
+
+    .catlgName {
+        .ellipsis-mixin();
+
+        display: flex;
+        line-height: 19px;
+
+        &:hover {
+            color: @primary-color;
+            cursor: pointer;
+        }
+
+        .ellipsis:hover {
+            text-decoration-line: underline;
+        }
+
+        .statusTag {
+            cursor: default;
+        }
+    }
+}

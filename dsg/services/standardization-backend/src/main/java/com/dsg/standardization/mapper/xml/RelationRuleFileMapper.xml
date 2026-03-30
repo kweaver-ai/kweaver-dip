@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dsg.standardization.mapper.RelationRuleFileMapper">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.dsg.standardization.entity.RelationRuleFileEntity" id="baseMap">
+        <result property="id" column="f_id"/>
+        <result property="ruleId" column="f_rule_id"/>
+        <result property="fileId" column="f_file_id"/>
+
+    </resultMap>
+    <insert id="save">
+        insert into t_relation_rule_file(f_id,f_rule_id,f_file_id) values
+        <foreach collection="relations" item="item" separator=",">
+            (
+            #{item.id},
+            #{item.ruleId},
+            #{item.fileId}
+            )
+        </foreach>
+    </insert>
+    <select id="queryByRuleId" resultMap="baseMap">
+        select * from t_relation_rule_file where f_rule_id = #{ruleId}
+    </select>
+    <select id="queryByFileId" resultMap="baseMap">
+        select * from t_relation_rule_file where f_file_id = #{fileId}
+    </select>
+    <delete id="deleteByRuleId">
+        delete from t_relation_rule_file where f_rule_id=#{ruleId}
+    </delete>
+    <delete id="deleteByFileId">
+        delete from t_relation_rule_file where f_file_id=#{fileId}
+    </delete>
+
+</mapper>

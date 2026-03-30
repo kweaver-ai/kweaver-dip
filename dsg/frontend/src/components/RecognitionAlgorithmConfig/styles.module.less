@@ -1,0 +1,434 @@
+.container {
+    width: 100%;
+    height: 100%;
+    padding: 16px 24px;
+
+    .titleTip {
+        display: flex;
+        align-items: center;
+        column-gap: 8px;
+    }
+
+    .titleText {
+        font-weight: 550;
+    }
+
+    .tableContainer {
+        margin-top: 16px;
+    }
+}
+
+.titleTooltipWrapper {
+    display: flex;
+    flex-direction: column;
+    row-gap: 4px;
+
+    .title {
+        font-size: 14px;
+        font-weight: 550;
+    }
+
+    .descriptionWrapper {
+        display: flex;
+        flex-direction: column;
+        color: rgb(255 99 4 / 100%);
+        row-gap: 4px;
+    }
+}
+
+.tableContainer {
+    display: flex;
+    flex-direction: column;
+    row-gap: 16px;
+
+    .tableToolbarWrapper {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .paginationBox {
+        display: flex;
+        width: 100%;
+        flex-shrink: 0;
+        justify-content: flex-end;
+        padding-top: 16px;
+    }
+
+    .nameTitleContainer {
+        .subTitle {
+            color: rgb(0 0 0 / 45%);
+        }
+    }
+
+    .rowNameContainer {
+        display: flex;
+        overflow: hidden;
+        width: 100%;
+        flex-direction: column;
+        row-gap: 4px;
+
+        .description {
+            display: inline-block;
+            max-width: 100%;
+            color: rgb(0 0 0 / 45%);
+            font-size: 12px;
+            .ellipsis-mixin();
+        }
+
+        .nameWrapper {
+            display: flex;
+            overflow: hidden;
+            align-items: center;
+            row-gap: 4px;
+
+            .name {
+                flex: 0 1 auto;
+                .ellipsis-mixin();
+            }
+
+            .introduction {
+                display: flex;
+                width: 40px;
+                align-items: center;
+                justify-content: center;
+                margin-left: 4px;
+                background-color: rgb(18 110 227 / 8%);
+                color: #126ee3;
+                font-size: 12px;
+            }
+        }
+    }
+}
+
+.introductionTooltipWrapper {
+    display: flex;
+    flex-direction: column;
+
+    .title {
+        margin-bottom: 4px;
+        font-weight: 550;
+    }
+
+    .contentWrapper {
+        display: flex;
+        flex-direction: column;
+        row-gap: 4px;
+    }
+
+    .supplement {
+        margin-top: 4px;
+        color: rgb(0 0 0 / 45%);
+    }
+}
+
+.statusWrapper {
+    display: flex;
+    align-items: center;
+    column-gap: 12px;
+
+    .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+    }
+
+    .stopDot {
+        background: #ff5e60;
+    }
+
+    .enableDot {
+        background: #52c41b;
+    }
+}
+
+.filterEnabledIcon {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background: #52c41b;
+    border-radius: 50%;
+}
+
+.filterDisabledIcon {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background: #ff5e60;
+    border-radius: 50%;
+}
+
+.selectAlgorithmContainer {
+    display: flex;
+    column-gap: 16px;
+
+    .item {
+        display: flex;
+        width: 102px;
+        height: 32px;
+        align-items: center;
+        justify-content: center;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .selected {
+        background-color: rgb(18 110 227 / 10%);
+        color: #126ee3;
+    }
+
+    .item:not(.selected) {
+        background-color: rgb(244 245 248 / 100%);
+        color: #000;
+    }
+}
+
+.createAlgorithmContainer {
+    width: 100%;
+    height: 100%;
+
+    .splitLine {
+        width: 100%;
+        height: 1px;
+        background: rgb(0 0 0 / 10%);
+    }
+
+    .testContainer {
+        display: flex;
+        flex-direction: column;
+        margin-top: 16px;
+        row-gap: 12px;
+
+        .titleText {
+            font-weight: 550;
+        }
+
+        .testContent {
+            display: flex;
+            column-gap: 16px;
+
+            .item {
+                display: flex;
+                width: 0;
+                flex: 1;
+                flex-direction: column;
+                row-gap: 8px;
+
+                .resultWrapper {
+                    display: flex;
+                    height: 30px;
+                    align-items: center;
+                    padding: 0 12px;
+                    border: 1px solid #d9d9d9;
+                    background: #f5f5f5;
+                    border-radius: 4px;
+
+                    .resultText {
+                        display: flex;
+                        align-items: center;
+                        column-gap: 8px;
+
+                        .errorIcon {
+                            color: #ff4d4f;
+                        }
+
+                        .successIcon {
+                            color: #52c41b;
+                        }
+                    }
+
+                    .normal {
+                        color: rgb(0 0 0 / 30%);
+                    }
+                }
+            }
+        }
+    }
+
+    .testButton {
+        display: flex;
+        align-items: center;
+        column-gap: 8px;
+
+        .button {
+            min-width: 80px;
+        }
+
+        .errorText {
+            color: #ff4d4f;
+        }
+    }
+
+    .algorithmImportWrapper {
+        position: relative;
+
+        .importButton {
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+    }
+}
+
+.drawerFooterWrapper {
+    display: flex;
+    justify-content: flex-end;
+    column-gap: 8px;
+
+    .button {
+        min-width: 80px;
+    }
+}
+
+.detailContainer {
+    display: flex;
+    flex-direction: column;
+    row-gap: 24px;
+
+    .groupContainer {
+        display: flex;
+        flex-direction: column;
+        row-gap: 16px;
+
+        .titleContainer {
+            display: flex;
+            height: 40px;
+            align-items: center;
+            background: rgb(0 55 150 / 2%);
+            border-radius: 4px;
+
+            .line {
+                width: 3px;
+                height: 20px;
+                margin-right: 12px;
+                background: #126ee3;
+            }
+        }
+
+        .labelName {
+            color: rgb(0 0 0 / 65%);
+        }
+
+        .contentContainer {
+            padding: 016px;
+        }
+    }
+}
+
+.usedDataContainer {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    row-gap: 24px;
+
+    .messageContainer {
+        display: flex;
+        align-items: center;
+        column-gap: 16px;
+    }
+
+    .tableContainer {
+        display: flex;
+        flex-direction: column;
+        row-gap: 8px;
+
+        .titleBarWrapper {
+            display: flex;
+            align-items: center;
+            column-gap: 12px;
+
+            .countWrapper {
+                color: rgb(0 0 0 / 45%);
+                font-size: 14px;
+            }
+        }
+
+        .nameTitleContainer {
+            .subTitle {
+                color: rgb(0 0 0 / 45%);
+            }
+        }
+
+        .rowNameContainer {
+            display: flex;
+            overflow: hidden;
+            width: 100%;
+            flex-direction: column;
+            row-gap: 4px;
+
+            .description {
+                color: rgb(0 0 0 / 45%);
+                font-size: 12px;
+                .ellipsis-mixin();
+            }
+
+            .nameWrapper {
+                display: flex;
+                overflow: hidden;
+                align-items: center;
+                row-gap: 4px;
+
+                .name {
+                    flex: 0 1 auto;
+                    .ellipsis-mixin();
+                }
+
+                .introduction {
+                    display: flex;
+                    width: 40px;
+                    align-items: center;
+                    justify-content: center;
+                    margin-left: 4px;
+                    background-color: rgb(18 110 227 / 8%);
+                    color: #126ee3;
+                    font-size: 12px;
+                }
+
+                .introductionTooltipWrapper {
+                    display: flex;
+                    flex-direction: column;
+
+                    .title {
+                        margin-bottom: 16px;
+                        font-weight: 550;
+                    }
+
+                    .contentWrapper {
+                        display: flex;
+                        flex-direction: column;
+                        row-gap: 4px;
+                    }
+
+                    .supplement {
+                        margin-top: 4px;
+                        color: rgb(0 0 0 / 45%);
+                    }
+                }
+            }
+        }
+    }
+
+    .relationsWrapper {
+        display: flex;
+        flex-direction: column;
+
+        .splitLine {
+            width: 100%;
+            height: 1px;
+            background: rgb(0 0 0 / 10%);
+        }
+
+        .item {
+            display: flex;
+            overflow: hidden;
+            height: 32px;
+            align-items: center;
+            column-gap: 8px;
+
+            .text {
+                .ellipsis-mixin();
+            }
+        }
+    }
+}

@@ -1,0 +1,294 @@
+.searchFormWrapper {
+    .btnBox {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 16px;
+
+        .leftBtn {
+            flex: 1 1 auto;
+        }
+
+        .rightBtn {
+            display: flex;
+            align-items: center;
+
+            .searchInput {
+                margin-right: 8px;
+            }
+
+            .prefixIcon {
+                margin-right: 8px;
+
+                svg path {
+                    opacity: 0.65;
+                }
+            }
+
+            .suffixIcon {
+                margin-left: 8px;
+
+                svg path {
+                    color: rgb(0 0 0 / 65%);
+                }
+            }
+
+            .suffixNode {
+                margin-left: 8px;
+            }
+
+            .line {
+                display: inline-block;
+                width: 1px;
+                height: 16px;
+                margin-right: 8px;
+                margin-left: 16px;
+                background: rgb(0 0 0 / 45%);
+            }
+
+            :global {
+                .any-fabric-ant-btn:hover,
+                .any-fabric-ant-btn:focus {
+                    border: 1px solid #ccc;
+                    background: #fff;
+                    color: rgb(0 0 0 / 65%);
+                }
+
+                .any-fabric-ant-btn-text:focus {
+                    border: 1px solid transparent;
+                    background: #fff;
+                }
+
+                .any-fabric-ant-btn-text:hover {
+                    border: 1px solid transparent;
+                    background: rgb(0 0 0 / 12%);
+                }
+
+                .active.any-fabric-ant-btn:hover,
+                .active.any-fabric-ant-btn:focus {
+                    border: 1px solid #126ee3;
+                    background: #fff;
+                    color: #126ee3;
+                }
+            }
+
+            .active {
+                border: 1px solid #126ee3;
+                color: #126ee3;
+
+                svg path {
+                    color: #126ee3;
+                    fill: #126ee3;
+                    opacity: 1;
+                }
+
+                &:hover,
+                &:focus {
+                    border: 1px solid #126ee3;
+                    background: #fff;
+                    color: #126ee3;
+                }
+            }
+        }
+    }
+
+    .bottomBox {
+        display: flex;
+        align-items: center;
+        margin-bottom: 16px;
+
+        .selectedTags {
+            display: flex;
+            align-items: center;
+            padding: 2px 8px;
+            margin-right: 8px;
+            background-color: transparent;
+            border-radius: 4px;
+            // 高版本浏览器加边框会出现闪动，用阴影代替边框
+            // box-shadow: 0 0 0 1px #d9d9d9;
+        }
+
+        .title {
+            display: inline-block;
+            max-width: 364px;
+            font-size: 12px;
+            .ellipsis-mixin();
+        }
+
+        .clearAllBtn {
+            // margin-left: 8px;
+            color: #126ee3;
+            cursor: pointer;
+        }
+
+        .closeBtn {
+            display: inline-flex;
+            margin-left: 8px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        :global {
+            .any-fabric-ant-tabs-nav-operations {
+                button {
+                    padding: 2px 12px;
+                }
+            }
+
+            .any-fabric-ant-tabs
+                > .any-fabric-ant-tabs-nav
+                .any-fabric-ant-tabs-nav-operations-hidden,
+            .any-fabric-ant-tabs
+                > div
+                > .any-fabric-ant-tabs-nav
+                .any-fabric-ant-tabs-nav-operations-hidden {
+                position: relative;
+            }
+
+            .any-fabric-ant-tabs {
+                max-width: calc(100% - 140px);
+            }
+
+            .any-fabric-ant-tabs-nav {
+                margin: 0;
+
+                &::before {
+                    border: none;
+                }
+
+                .any-fabric-ant-tabs-tab {
+                    padding: 1px;
+                    margin: 0;
+                    cursor: default;
+
+                    &:hover {
+                        color: @text-color;
+                    }
+
+                    &.any-fabric-ant-tabs-tab-active
+                        .any-fabric-ant-tabs-tab-btn {
+                        color: @text-color;
+                        text-shadow: none;
+                    }
+
+                    .any-fabric-anticon {
+                        margin-right: 0;
+                    }
+                }
+
+                .any-fabric-ant-tabs-ink-bar {
+                    display: none;
+                }
+            }
+        }
+    }
+
+    .searchForm {
+        position: relative;
+        padding: 16px 56px 0 16px;
+        margin-bottom: 16px;
+        background: #fafbfc;
+
+        .closeBtn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+
+            &:hover {
+                // color: #126ee3;
+                background: rgb(0 0 0 / 12%);
+            }
+        }
+
+        .searchBtnBox {
+            display: flex;
+            align-items: center;
+
+            &.mb {
+                margin-bottom: 16px;
+            }
+
+            &.end {
+                justify-content: flex-end;
+                // margin-left: auto;
+            }
+
+            .placeholderTag {
+                width: 100%;
+                height: 30px;
+            }
+
+            :global {
+                .any-fabric-ant-form-item {
+                    margin-bottom: 16px;
+                }
+            }
+
+            .resetBtn:focus,
+            .resetBtn:active {
+                border: 1px solid #ccc;
+                color: rgb(0 0 0 / 85%);
+            }
+
+            .searchBtn,
+            .resetBtn:hover {
+                border: 1px solid #126ee3;
+                color: #126ee3;
+            }
+        }
+
+        .searchColItem {
+            margin-bottom: 16px;
+
+            // &.searchTimeColItem {
+            //     min-width: 220px;
+            // }
+
+            :global {
+                .has-uncategorized {
+                    .any-fabric-ant-select-dropdown {
+                        .any-fabric-ant-select-item-option:last-child {
+                            border-top: 1px solid rgb(0 0 0 / 10%);
+                        }
+                    }
+                }
+
+                .any-fabric-ant-form-item-label {
+                    height: 30px;
+
+                    label {
+                        display: inline-block;
+                        width: 100%;
+                        .ellipsis-mixin();
+                    }
+                }
+            }
+        }
+
+        .timeSearchCol {
+            :global {
+                .any-fabric-ant-picker-input > input {
+                    font-size: 13px;
+                }
+            }
+        }
+
+        :global .any-fabric-ant-picker-range {
+            width: 100%;
+        }
+    }
+}
+
+.selectedTabsBox {
+    .selectedTags {
+        border: none;
+        background-color: transparent;
+    }
+
+    :global {
+        .any-fabric-ant-tabs-dropdown-menu .closeBtn {
+            margin-left: 8px;
+            cursor: pointer;
+        }
+    }
+}

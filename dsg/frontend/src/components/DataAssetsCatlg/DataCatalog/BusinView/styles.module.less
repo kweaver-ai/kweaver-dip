@@ -1,0 +1,41 @@
+.businViewWrapper {
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    border-radius: 2px;
+
+    .graphWrapper {
+        position: relative;
+        overflow: hidden;
+        flex: 1;
+    }
+
+    .searchWrapper {
+        position: absolute;
+        z-index: 2;
+        top: 24px;
+        right: 24px;
+        width: fit-content;
+    }
+
+    .graphContainer {
+        width: 100%;
+        max-width: 100% !important;
+        height: 100%;
+    }
+
+    .floatController {
+        position: absolute;
+        right: 24px;
+
+        /* top: -68px; */
+        bottom: 24px;
+        width: fit-content;
+    }
+
+    .cardWrapper {
+        min-width: 417px;
+    }
+}

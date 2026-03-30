@@ -1,0 +1,76 @@
+server:
+  http:
+    addr: 0.0.0.0:8000
+    timeout: 1s
+  grpc:
+    addr: 0.0.0.0:9000
+    timeout: 1s
+data:
+  database:
+    driver: mysql
+    source:
+  redis:
+    addr: 127.0.0.1:6379
+    read_timeout: 0.2s
+    write_timeout: 0.2s
+doc:
+  host: "${DOC_HOST}"
+  version: "1.0"
+database:
+  default:
+    dbtype: mysql
+    host: "${MYSQL_HOST}"
+    username: "${MYSQL_USERNAME}"
+    password: "${MYSQL_PASSWORD}"
+    database: "${MYSQL_DB}"
+    maxa: 10
+    maxb: 10
+    maxc: 60
+    loglevel: 2
+    isdebug: true
+    tableprefix: t_
+
+logs:
+  - name: task_center
+    default: true
+    enable_caller: true
+    stacktrace_level: error
+    development: false
+    cores:
+      - destination: /data/logs/info.log        #日志输出地址
+        rotate_size: 100MB                      #文件分割尺寸
+        core_type: file                         #core类型，file, stdout两种
+        enable_color: false                     #是否开启输出颜色
+        output_format: json                     #日志输出的格式, json, console
+        log_level: info                         #该日志流的等级
+      - destination: /data/logs/error.log
+        rotate_size: 100MB
+        core_type: file
+        output_format: json
+        log_level: error
+      - destination: console
+        core_type: stdout
+        output_format: console
+        enable_color: true
+        log_level: debug
+  - name: task_center_request
+    default: false
+    enable_caller: true
+    development: false
+    cores:
+      - destination: /data/logs/http_request.log
+        rotate_size: 100MB
+        core_type: file
+        output_format: json
+        log_level: info
+      - destination: console
+        core_type: stdout
+        output_format: console
+        enable_color: true
+        log_level: info
+nsq:
+  nsqlookupdHost: "${NSQ_LOOKUPD_HOST}"
+  nsqlookupdPort: "${NSQ_LOOKUPD_PORT}"
+  nsqdHost: "${NSQD_HOST}"
+  nsqdPort: "${NSQD_PORT}"
+  nsqdHttpPort: "${NSQD_PORT}"

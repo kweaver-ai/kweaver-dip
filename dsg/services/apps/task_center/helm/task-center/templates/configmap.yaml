@@ -1,0 +1,65 @@
+apiVersion: v1
+kind: ConfigMap
+{{- $mq := .Values.depServices.mq | default dict }}
+{{- $kafka := .Values.kafka | default dict }}
+{{- $kafkaURI := $kafka.uri | default "" }}
+{{- if and $mq.mqHost $mq.mqPort }}
+{{- $kafkaURI = printf "%s:%v" $mq.mqHost $mq.mqPort }}
+{{- else if $mq.mqHost }}
+{{- $kafkaURI = $mq.mqHost }}
+{{- end }}
+metadata:
+  name: {{ .Values.name }}-cm
+  namespace: {{ .Values.namespace }}
+data:
+  {{- with .Values }}
+  CALLBACK_ADDRESS: {{ .callback.address | quote }}
+  CALLBACK_ENABLED: {{ .callback.enabled | quote }}
+  DB_TYPE: {{ .depServices.rds.type | quote}}
+  DB_HOST: {{ .depServices.rds.host | quote}}
+  DB_PORT: {{ .depServices.rds.port | quote}}
+  DB_USERNAME: {{ .depServices.rds.user | quote }}
+  DB_PASSWORD: {{ .depServices.rds.password | quote }}
+  DB_NAME: {{ .depServices.rds.database | quote }}
+  NSQD_HOST: {{ .depServices.nsq.nsqdHost | quote }}
+  NSQD_PORT: {{ .depServices.nsq.nsqdPort | quote }}
+  NSQD_PORT_TCP: {{ .depServices.mq.nsqdPortTCP | quote}}
+  CONNECTOR_TYPE: {{ .depServices.mq.mqType | quote }}
+  MQ_HOST: {{ .depServices.mq.mqHost | quote }}
+  NSQ_LOOKUPD_HOST: {{ .depServices.mq.mqLookupdHost | quote }}
+  NSQ_LOOKUPD_PORT:  {{ .depServices.mq.mqLookupdPort | quote }}
+  MQ_PORT: {{ .depServices.mq.mqPort | quote }}
+  MQ_AUTH_MECHANISM: {{ .depServices.mq.auth.mechanism | quote }}
+  MQ_AUTH_PASSWORD: {{ .depServices.mq.auth.password | quote }}
+  MQ_AUTH_USERNAME: {{ .depServices.mq.auth.username | quote }}
+  KAFKA_VERSION: {{ $mq.version | default $kafka.version | quote }}
+  KAFKA_URI:  {{ $kafkaURI | quote}}
+  KAFKA_CLIENT_ID:  {{ $mq.clientId | default $kafka.clientId | quote}}
+  KAFKA_USERNAME:  {{ $mq.auth.username | default $kafka.username | quote}}
+  KAFKA_PASSWORD:  {{ $mq.auth.password | default $kafka.password | quote }}
+  KAFKA_GROUP_ID:  {{ $mq.groupId | default $kafka.groupId | quote}}
+  CONFIG_CENTER_HOST: "{{index .depServices "configuration-center" "host"}}:{{index .depServices "configuration-center" "port"}}"
+  HYDRA_HOST: "{{index .depServices "hydraService" "administrativeHost"}}:{{index .depServices "hydraService" "administrativePort"}}"
+  HYDRA_PUBLIC_HOST: "{{index .depServices "hydraService" "publicHost"}}:{{index .depServices "hydraService" "publicPort"}}"
+  USER_MANAGE_HOST: "{{index .depServices "userManageService" "host"}}:{{index .depServices "userManageService" "port"}}"
+  TENANT_APPLICATION_CODE_RULE_ID: "{{index .depServices "codeRuleIDConf" "tenant"}}"
+  BUSINESS_GROOMING_HOST: "{{index .depServices "business-grooming" "host"}}:{{index .depServices "business-grooming" "port"}}"
+  CATALOG_SERVICE_HOST: "{{index .depServices "data-catalog" "host" }}:{{index .depServices "data-catalog" "port"}}"
+  DATA_VIEW_HOST: "{{index .depServices "data-view" "host" }}:{{index .depServices "data-view" "port"}}"
+  DATA_EXPLORATION_HOST: "{{index .depServices "data-exploration" "host"}}:{{index .depServices "data-exploration" "port"}}"
+  OSS_APP: {{ .depServices.oss.ossApp | quote}}
+  OSS_HOST: {{ .depServices.oss.ossHost | quote}}
+  OSS_PROTOCOL: {{ .depServices.oss.ossProtocol | quote}}
+  OSS_IS_DEFAULT: {{ .depServices.oss.ossIsDefault | quote}}
+  OSS_BUCKET: {{ .depServices.oss.ossBucket | quote}}
+  TRACE_ENABLED: {{.service.telemetry.trace.enabled| quote }}
+  TRACE_URL: {{.service.telemetry.trace.endpoint | quote }}
+  LOG_LEVEL: {{.service.telemetry.log.level | quote }}
+  LOG_URL: {{.service.telemetry.log.endpoint | quote }}
+  SERVER_NAME: {{.service.name | quote }}
+  SERVER_VERSION: {{.service.version | quote }}
+  WORKFLOW_REST_HOST: "http://{{index .depServices "workflow" "workflow-rest" "host"}}:{{index .depServices "workflow" "workflow-rest" "port"}}"
+  DOC_AUDIT_REST_HOST: "http://{{index .depServices "workflow" "doc-audit-rest" "host"}}:{{index .depServices "workflow" "doc-audit-rest" "port"}}"
+  WORKFLOW_TENANT_ID: "{{ .depServices.workflow.tenantID }}"
+  TENANT_ID: {{ .tenantID | quote }}
+  {{- end }}

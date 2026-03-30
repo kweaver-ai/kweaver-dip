@@ -1,0 +1,90 @@
+.dimension-node {
+    display: flex;
+    overflow: hidden;
+    height: 100%;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 5px 12px 4px rgba(0 0 0 / 5%);
+    cursor: default;
+
+    &-color {
+        width: 6px;
+        height: 100%;
+        background: #d5d5d5;
+    }
+
+    &-item {
+        overflow: hidden;
+        width: 210px;
+        flex: 1;
+        padding: 8px 16px;
+        color: rgba(0 0 0 / 45%);
+        font-size: 12px;
+
+        &-desc {
+            color: rgba(0 0 0 / 85%);
+            font-size: 14px;
+        }
+
+        span {
+            color: inherit;
+        }
+
+        > div {
+            overflow: hidden;
+            width: 100%;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            word-break: keep-all;
+        }
+
+        .table-name {
+            color: rgba(0 0 0 / 65%);
+        }
+
+        .table-desc {
+            color: rgba(0 0 0 / 65%);
+            .ellipsis-line();
+        }
+    }
+}
+
+.derivation-graph {
+    width: 100%;
+    height: 100%;
+}
+
+.dimension-expand {
+    position: absolute;
+    top: 50%;
+    left: -37px;
+
+    &-yes {
+        &::after {
+            position: absolute;
+            z-index: 1;
+            top: 0;
+            left: 23px;
+            width: 14px;
+            height: 1px;
+            background-color: #d5d5d5;
+            content: '';
+        }
+    }
+
+    &-icon {
+        z-index: 20;
+        display: flex;
+        width: 24px;
+        height: 24px;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid rgba(0 0 0 / 10%);
+        margin-top: -12px;
+        background: #fff;
+        border-radius: 50%;
+        color: #575b66;
+        cursor: pointer;
+        font-size: 14px;
+    }
+}

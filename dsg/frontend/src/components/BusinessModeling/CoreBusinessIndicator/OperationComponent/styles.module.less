@@ -1,0 +1,516 @@
+.operationModelContainer {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    background: #e9e9ed;
+
+    .menuContainer {
+        position: absolute;
+        z-index: 1000;
+        top: 0;
+        right: 0;
+        margin: 40px 48px 0 0;
+    }
+}
+
+.common-form {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    padding: 20px;
+    background: #fff;
+    overflow-y: auto;
+
+    :global {
+        .any-fabric-ant-form-item-label > label {
+            width: 100%;
+        }
+    }
+
+    .commonFormContent {
+        width: 1098px;
+        height: 100%;
+    }
+
+    .insert-field {
+        width: 25%;
+        padding-bottom: 4px;
+        margin-top: -12px;
+        margin-left: 120px;
+        text-align: right;
+
+        span {
+            color: rgb(18 110 227 / 80%);
+            cursor: pointer;
+
+            &:hover {
+                color: rgb(18 110 227 / 100%);
+            }
+        }
+    }
+
+    .baseInfoForm {
+        padding-bottom: 20px;
+    }
+}
+
+.common-detail {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    padding: 20px;
+    background: #fff;
+    overflow-y: auto;
+
+    .commonDetailContent {
+        width: 1098px;
+        height: 100%;
+
+        .contentWrapper {
+            display: flex;
+            flex-direction: column;
+            padding-bottom: 16px;
+            row-gap: 16px;
+
+            .contentItem {
+                display: flex;
+                align-items: center;
+                column-gap: 16px;
+
+                .label {
+                    width: 80px;
+                    flex-shrink: 0;
+                    color: rgb(0 0 0 / 45%);
+                }
+
+                .value {
+                    width: 0;
+                    flex: 1;
+                    color: rgb(0 0 0 / 85%);
+                }
+            }
+        }
+    }
+}
+
+.labelTitleWrapper {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    padding: 5px 0;
+    // margin: 10px 0;
+    margin-bottom: 20px;
+    background: rgb(0 55 150 / 2%);
+    color: @label-color;
+    font-size: 16px;
+    font-weight: 550;
+
+    .labelLine {
+        display: inline-block;
+        width: 3px;
+        height: 20px;
+        margin-right: 20px;
+        background: #126ee3;
+    }
+}
+
+.labelItemWrapper {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+
+    .labelTitle {
+        display: flex;
+        align-items: center;
+        column-gap: 4px;
+    }
+}
+
+.formsSelectConfigWrapper {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    padding: 16px;
+    row-gap: 16px;
+
+    .tableItemWrapper {
+        display: flex;
+        flex-direction: column;
+        padding: 16px;
+        border: 1px solid rgb(0 0 0 / 10%);
+        border-radius: 3px;
+
+        .tableTitleContent {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            .titleNameWrapper {
+                display: flex;
+                overflow: hidden;
+                width: 0;
+                flex: 1;
+                align-items: center;
+                column-gap: 8px;
+
+                .nameWrapper {
+                    flex: 0 1 auto;
+                    .ellipsis-mixin();
+                }
+            }
+
+            .removeTableBtn {
+                flex-shrink: 0;
+            }
+        }
+    }
+
+    .addButtonWrapper {
+        width: 100%;
+    }
+}
+
+.selectTableListWrapper {
+    display: flex;
+    width: 500px;
+    height: 100%;
+    flex: 1;
+    flex-direction: column;
+    padding: 16px 0;
+    border-right: 1px solid rgb(0 0 0 / 5%);
+    border-left: 1px solid rgb(0 0 0 / 5%);
+
+    .searchWrapper {
+        display: flex;
+        flex-shrink: 0;
+        align-items: center;
+        padding: 0 20px;
+        margin: 16px 0;
+        column-gap: 8px;
+    }
+
+    .selectedAllWrapper {
+        display: flex;
+        height: 32px;
+        flex-shrink: 0;
+        align-items: center;
+        padding: 0 20px;
+        column-gap: 4px;
+    }
+
+    .scrollWrapper {
+        overflow: auto;
+        flex: 1;
+
+        .itemWrapper {
+            display: flex;
+            height: 56px;
+            align-items: center;
+            padding: 0 0 0 20px;
+            column-gap: 4px;
+            cursor: pointer;
+
+            .checkboxWrapper {
+                flex-shrink: 0;
+            }
+
+            .itemContent {
+                display: flex;
+                width: 0;
+                height: 100%;
+                flex: 1;
+                align-items: center;
+                padding: 0 4px;
+                column-gap: 8px;
+
+                .iconWrapper {
+                    flex-shrink: 0;
+                    font-size: 20px;
+                }
+
+                .textWrapper {
+                    display: flex;
+                    overflow: hidden;
+                    flex: 1;
+                    flex-direction: column;
+                    column-gap: 4px;
+
+                    .nameWrapper {
+                        display: flex;
+                        overflow: hidden;
+                        align-items: center;
+                        column-gap: 4px;
+                        font-size: 14px;
+                        font-weight: 550;
+
+                        .text {
+                            .ellipsis-mixin();
+                        }
+                    }
+
+                    .name_enWrapper {
+                        color: rgb(0 0 0 / 45%);
+                        font-size: 12px;
+                        .ellipsis-mixin();
+                    }
+                }
+            }
+
+            .selected {
+                background: #ecf5ff;
+            }
+        }
+    }
+}
+
+.selectListTitle {
+    flex-shrink: 0;
+    padding: 0 20px;
+    font-size: 14px;
+    font-weight: 550;
+}
+
+.selectListWrapper {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    padding: 16px 0;
+    row-gap: 16px;
+
+    .allWrapper {
+        display: flex;
+        flex-direction: column;
+
+        .allItem {
+            display: flex;
+            height: 36px;
+            align-items: center;
+            padding: 0 20px;
+            column-gap: 4px;
+            cursor: pointer;
+
+            &:hover {
+                background: rgb(0 55 150 / 2%);
+            }
+        }
+    }
+
+    .selectedItem {
+        background: #eaf4ff !important;
+
+        &:hover {
+            background: #eaf4ff !important;
+        }
+    }
+
+    .listWrapper {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        overflow-y: auto;
+
+        .leftItemData {
+            display: flex;
+            height: 36px;
+            align-items: center;
+            padding: 0 20px 0 36px;
+            column-gap: 4px;
+            cursor: pointer;
+
+            &:hover {
+                background: rgb(0 55 150 / 2%);
+            }
+        }
+    }
+
+    .fieldListWrapper {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        overflow-y: auto;
+
+        .fieldItem {
+            display: flex;
+            height: 48px;
+            align-items: center;
+            padding: 0 20px;
+            column-gap: 8px;
+
+            .fieldIcon {
+                flex-shrink: 0;
+                font-size: 20px;
+            }
+
+            .fieldName {
+                display: flex;
+                overflow: hidden;
+                flex-direction: column;
+
+                .fieldText {
+                    .ellipsis-mixin();
+                }
+
+                .lastText {
+                    color: rgb(0 0 0 / 45%);
+                    font-size: 12px;
+                    .ellipsis-mixin();
+                }
+            }
+        }
+    }
+
+    .emptyWrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 120px;
+    }
+}
+
+.listLoading {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+.footer {
+    display: flex;
+    column-gap: 16px;
+
+    .btnOp {
+        min-width: 80px;
+    }
+}
+
+.selFieldList {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    column-gap: 8px;
+
+    .footerTitle {
+        display: flex;
+        align-items: center;
+        column-gap: 4px;
+    }
+
+    .selectedInfo {
+        flex-shrink: 0;
+        color: rgb(0 0 0 / 45%);
+    }
+
+    .selInfoItemsContWrapper {
+        display: flex;
+        flex: 1;
+        flex-wrap: nowrap;
+        column-gap: 4px;
+    }
+
+    .selInfoItem {
+        display: flex;
+        max-width: 176px;
+        height: 26px;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 8px;
+        background: #f0f0f0;
+        border-radius: 4px;
+
+        .selFieldInfo {
+            display: flex;
+            overflow: hidden;
+            flex: 1;
+            align-items: center;
+        }
+
+        .selInfoItemName {
+            color: rgb(0 0 0 / 65%);
+            .ellipsis-mixin();
+        }
+
+        .selInfoItemDelBtn {
+            flex-shrink: 0;
+            margin-left: 4px;
+            color: rgb(0 0 0 / 45%);
+            cursor: pointer;
+            font-size: 12px;
+
+            &:hover {
+                color: rgb(0 0 0 / 65%);
+            }
+        }
+    }
+
+    .selInfoItemsMore {
+        display: flex;
+        height: 26px;
+        align-items: center;
+        padding: 0 8px;
+        background: #f0f0f0;
+        border-radius: 4px;
+        color: rgb(0 0 0 / 65%);
+        cursor: pointer;
+        transition: background 0.3s ease-in-out;
+
+        &.moreOpen {
+            background: #dbe1f4;
+        }
+    }
+
+    .clearAllBtn {
+        flex-shrink: 0;
+        color: rgb(0 0 0 / 65%);
+        cursor: pointer;
+    }
+}
+
+.innerItemDelWrap {
+    display: flex;
+    width: 24px;
+    height: 32px;
+    align-items: center;
+
+    .innerItemDel {
+        display: flex;
+        width: 24px;
+        height: 24px;
+        align-items: center;
+        justify-content: center;
+        color: rgb(0 0 0 / 65%);
+        cursor: pointer;
+
+        &:hover {
+            background: rgb(0 0 0 / 5%);
+        }
+    }
+}
+
+.tableDetailViewContent {
+    display: flex;
+    flex-direction: column;
+    row-gap: 16px;
+
+    .titleNameWrapper {
+        display: flex;
+        overflow: hidden;
+        align-items: center;
+        column-gap: 8px;
+
+        .nameWrapper {
+            flex: 0 1 auto;
+            .ellipsis-mixin();
+        }
+    }
+
+    .removeTableBtn {
+        flex-shrink: 0;
+    }
+}

@@ -1,0 +1,1865 @@
+basePath: /api/basic-search/v1
+definitions:
+  github_com_kweaver-ai_dsg_services_apps_basic-search_adapter_driven_es_common.BusinessObjectEntity:
+    properties:
+      id:
+        description: 业务对象id
+        type: string
+      name:
+        description: 业务对象名称
+        type: string
+      path:
+        description: 业务对象路径
+        type: string
+      path_id:
+        description: 业务对象路径 ID
+        type: string
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_basic-search_adapter_driven_es_common.BusinessProcess:
+    properties:
+      business_process_path:
+        description: 业务流程路径名称
+        type: string
+      business_process_path_id:
+        description: 业务流程路径id
+        type: string
+      id:
+        description: 业务流程uuid
+        type: string
+      name:
+        description: 业务流程名称
+        type: string
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_basic-search_adapter_driven_es_common.CateInfo:
+    properties:
+      cate_id:
+        type: string
+      node_id:
+        type: string
+      node_name:
+        type: string
+      node_path:
+        type: string
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_basic-search_adapter_driven_es_common.CateInfoR:
+    properties:
+      cate_id:
+        type: string
+      node_ids:
+        items:
+          type: string
+        type: array
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_basic-search_adapter_driven_es_common.Field:
+    properties:
+      field_name_en:
+        type: string
+      field_name_zh:
+        type: string
+      hit:
+        type: boolean
+      raw_field_name_en:
+        type: string
+      raw_field_name_zh:
+        type: string
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_basic-search_adapter_driven_es_common.MountDataResources:
+    properties:
+      data_resources_ids:
+        items:
+          type: string
+        type: array
+      data_resources_type:
+        type: string
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_basic-search_adapter_driven_es_common.Reference:
+    properties:
+      id:
+        description: 资源 ID
+        type: string
+      name:
+        description: 资源名称
+        type: string
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_catalog.Order:
+    properties:
+      direction:
+        description: 排序方向，枚举：asc：正序；desc：倒序。默认倒序
+        enum:
+        - asc
+        - desc
+        example: desc
+        type: string
+      sort:
+        description: 排序类型，枚举：_score：按算分排序；data_updated_at：按数据更新时间排序；table_rows：按数据量排序；apply_num：按申请量排序。默认按算分排序
+        enum:
+        - _score
+        - updated_at
+        - online_at
+        - published_at
+        - apply_num
+        - data_updated_at
+        example: _score
+        type: string
+    required:
+    - direction
+    - sort
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_catalog.SearchReqBodyParam:
+    properties:
+      business_object_ids:
+        items:
+          type: string
+        type: array
+      cate_info:
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_adapter_driven_es_common.CateInfoR'
+        type: array
+      data_range:
+        description: 数据范围
+        example:
+        - 4
+        items:
+          type: integer
+        maxItems: 10
+        type: array
+        uniqueItems: true
+      data_resource_type:
+        items:
+          type: string
+        type: array
+      fields:
+        description: 字段列表。如果非空，关键字仅匹配指定字段
+        items:
+          type: string
+        type: array
+        uniqueItems: true
+      ids:
+        description: 资源目录的ID
+        items:
+          type: string
+        type: array
+        uniqueItems: true
+      is_online:
+        example: false
+        type: boolean
+      is_publish:
+        description: 是否发布，如果为 nil 则不根据发布状态过滤搜索结果
+        example: false
+        type: boolean
+      keyword:
+        description: 关键字查询，字符无限制
+        example: keyword
+        minLength: 1
+        type: string
+      next_flag:
+        description: 从该flag标志后获取数据，该flag标志由上次的搜索请求返回，若本次与上次的搜索参数存在变动，则该参数不能传入，否则结果不准确
+        example:
+        - "1"
+        - abc
+        items:
+          type: string
+        maxItems: 3
+        minItems: 2
+        type: array
+      online_at:
+        allOf:
+        - $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_catalog.TimeRange'
+        description: 上线时间
+      online_status:
+        items:
+          type: string
+        type: array
+      orders:
+        description: 排序，没有keyword时默认以data_updated_at desc & table_rows desc排序，有keyword时默认以_score
+          desc排序
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_catalog.Order'
+        type: array
+      published_at:
+        allOf:
+        - $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_catalog.TimeRange'
+        description: 发布时间
+      published_status:
+        items:
+          type: string
+        type: array
+      shared_type:
+        description: 共享条件
+        example:
+        - 2
+        items:
+          type: integer
+        maxItems: 10
+        type: array
+        uniqueItems: true
+      size:
+        default: 20
+        description: 要获取到的记录条数
+        example: 20
+        type: integer
+      update_cycle:
+        description: 更新频率
+        example:
+        - 3
+        - 7
+        items:
+          type: integer
+        maxItems: 10
+        type: array
+        uniqueItems: true
+      updated_at:
+        allOf:
+        - $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_catalog.TimeRange'
+        description: 更新时间
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_catalog.SearchRespParam:
+    properties:
+      entries:
+        description: 对象列表
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_catalog.SummaryInfo'
+        type: array
+      next_flag:
+        description: 获取下一页数据的请求中，需携带本参数，若本参数为空，则数据已全部获取，没有下一页了
+        example:
+        - "0.987"
+        - abc
+        items:
+          type: string
+        type: array
+      statistics:
+        allOf:
+        - $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_catalog.statisticsInfo'
+        description: 统计信息
+      total_count:
+        description: 当前筛选条件下的对象数量
+        example: 3
+        minimum: 0
+        type: integer
+    required:
+    - entries
+    - total_count
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_catalog.StatisticsReqBodyParam:
+    properties:
+      business_object_ids:
+        items:
+          type: string
+        type: array
+      cate_info:
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_adapter_driven_es_common.CateInfoR'
+        type: array
+      data_range:
+        description: 数据范围
+        example:
+        - 4
+        items:
+          type: integer
+        maxItems: 10
+        type: array
+        uniqueItems: true
+      data_resource_type:
+        items:
+          type: string
+        type: array
+      fields:
+        description: 字段列表。如果非空，关键字仅匹配指定字段
+        items:
+          type: string
+        type: array
+        uniqueItems: true
+      ids:
+        description: 资源目录的ID
+        items:
+          type: string
+        type: array
+        uniqueItems: true
+      is_online:
+        example: false
+        type: boolean
+      is_publish:
+        description: 是否发布，如果为 nil 则不根据发布状态过滤搜索结果
+        example: false
+        type: boolean
+      keyword:
+        description: 关键字查询，字符无限制
+        example: keyword
+        minLength: 1
+        type: string
+      online_at:
+        allOf:
+        - $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_catalog.TimeRange'
+        description: 上线时间
+      online_status:
+        items:
+          type: string
+        type: array
+      published_at:
+        allOf:
+        - $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_catalog.TimeRange'
+        description: 发布时间
+      published_status:
+        items:
+          type: string
+        type: array
+      shared_type:
+        description: 共享条件
+        example:
+        - 2
+        items:
+          type: integer
+        maxItems: 10
+        type: array
+        uniqueItems: true
+      update_cycle:
+        description: 更新频率
+        example:
+        - 3
+        - 7
+        items:
+          type: integer
+        maxItems: 10
+        type: array
+        uniqueItems: true
+      updated_at:
+        allOf:
+        - $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_catalog.TimeRange'
+        description: 更新时间
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_catalog.StatisticsRespParam:
+    properties:
+      statistics:
+        allOf:
+        - $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_catalog.statisticsInfo'
+        description: 统计信息
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_catalog.SummaryInfo:
+    properties:
+      apply_num:
+        description: 申请量
+        type: integer
+      business_objects:
+        description: 业务对象ID数组，里面ID用于左侧树业务域选中节点筛选
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_adapter_driven_es_common.BusinessObjectEntity'
+        type: array
+      cate_info:
+        description: 类目的信息
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_adapter_driven_es_common.CateInfo'
+        type: array
+      code:
+        description: 数据目录编码
+        type: string
+      data_range:
+        description: 数据范围
+        type: integer
+      data_updated_at:
+        description: 数据更新时间
+        type: string
+      description:
+        description: 数据目录描述，可能存在高亮标签
+        type: string
+      fields:
+        description: 字段列表，有匹配字段的排在前面
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_adapter_driven_es_common.Field'
+        type: array
+      id:
+        description: 数据目录ID
+        type: string
+      is_online:
+        type: boolean
+      is_publish:
+        type: boolean
+      mount_data_resources:
+        description: 挂接的数据资源
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_adapter_driven_es_common.MountDataResources'
+        type: array
+      name:
+        description: 数据目录名称，可能存在高亮标签
+        type: string
+      online_at:
+        description: 上线时间
+        type: integer
+      online_status:
+        description: 上线状态
+        type: string
+      published_at:
+        description: 发布时间
+        type: integer
+      published_status:
+        description: 发布状态
+        type: string
+      raw_code:
+        description: 数据目录编码
+        type: string
+      raw_description:
+        description: 数据目录描述，不会存在高亮标签
+        type: string
+      raw_name:
+        description: 数据目录名称，不会存在高亮标签
+        type: string
+      shared_type:
+        description: 共享条件
+        type: integer
+      update_cycle:
+        description: 更新频率
+        type: integer
+      updated_at:
+        description: 更新时间
+        type: integer
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_catalog.TimeRange:
+    properties:
+      end_time:
+        description: 结束时间，毫秒时间戳
+        example: 1682586655000
+        minimum: 0
+        type: integer
+      start_time:
+        description: 开始时间，毫秒时间戳
+        example: 1682586655000
+        minimum: 0
+        type: integer
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_catalog.statisticsInfo:
+    properties:
+      data_kind_count:
+        additionalProperties:
+          type: integer
+        description: 基础信息分类各个类别对应的数量
+        example:
+          "1": 11
+          "2": 22
+        type: object
+      data_range_count:
+        additionalProperties:
+          type: integer
+        description: 数据范围分类各个类别对应的数量
+        example:
+          "1": 11
+          "2": 22
+        type: object
+      shared_type_count:
+        additionalProperties:
+          type: integer
+        description: 共享条件分类各个类别对应的数量
+        example:
+          "1": 11
+          "2": 22
+        type: object
+      update_cycle_count:
+        additionalProperties:
+          type: integer
+        description: 更新频率分类各个类别对应的数量
+        example:
+          "1": 11
+          "2": 22
+        type: object
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_search_all.CateInfoEntity:
+    properties:
+      cate_id:
+        type: string
+      node_id:
+        type: string
+      node_name:
+        type: string
+      node_path:
+        type: string
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_search_all.ExtSummaryInfo:
+    properties:
+      api_type:
+        description: 接口类型
+        type: string
+      cate_info:
+        description: 类目的信息
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_search_all.CateInfoEntity'
+        type: array
+      code:
+        description: 编码，可能存在高亮标签
+        type: string
+      description:
+        description: 描述，可能存在高亮标签
+        type: string
+      fields:
+        description: 字段列表，有匹配字段的排在前面
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_search_all.FieldEntity'
+        type: array
+      id:
+        description: ID
+        type: string
+      indicator_type:
+        description: 指标类型
+        type: string
+      is_online:
+        description: 是否已经上线
+        type: boolean
+      is_publish:
+        description: 是否已经发布
+        type: boolean
+      name:
+        description: 名称，可能存在高亮标签
+        type: string
+      name_en:
+        description: 技术名称
+        type: string
+      online_at:
+        description: 上线时间
+        type: integer
+      owner_id:
+        description: 数据OwnerID
+        type: string
+      owner_name:
+        description: 数据Owner名称
+        type: string
+      published_at:
+        description: 发布时间
+        type: integer
+      published_status:
+        description: 发布状态
+        type: string
+      raw_code:
+        description: 编码，不会存在高亮标签
+        type: string
+      raw_description:
+        description: 描述，不会存在高亮标签
+        type: string
+      raw_name:
+        description: 名称，不会存在高亮标签
+        type: string
+      type:
+        type: string
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_search_all.FieldEntity:
+    properties:
+      field_name_en:
+        type: string
+      field_name_zh:
+        type: string
+      raw_field_name_en:
+        type: string
+      raw_field_name_zh:
+        type: string
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_search_all.Order:
+    properties:
+      direction:
+        description: 排序方向，枚举：asc：正序；desc：倒序。默认倒序
+        enum:
+        - asc
+        - desc
+        example: desc
+        type: string
+      sort:
+        description: 排序类型，枚举：_score：按算分排序；data_updated_at：按数据更新时间排序；table_rows：按数据量排序；online_at：按数据上线时间排序。默认按算分排序
+        enum:
+        - _score
+        - data_updated_at
+        - table_rows
+        - published_at
+        - online_at
+        example: _score
+        type: string
+    required:
+    - direction
+    - sort
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_search_all.SearchAllRespParam:
+    properties:
+      entries:
+        description: 对象列表
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_search_all.ExtSummaryInfo'
+        type: array
+      next_flag:
+        description: 获取下一页数据的请求中，需携带本参数，若本参数为空，则数据已全部获取，没有下一页了
+        example:
+        - "0.987"
+        - abc
+        items:
+          type: string
+        type: array
+      total_count:
+        description: 当前筛选条件下的对象数量
+        example: 3
+        minimum: 0
+        type: integer
+    required:
+    - entries
+    - total_count
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_search_all.SearchReqBodyParam:
+    properties:
+      api_type:
+        description: 接口服务类型
+        type: string
+      cate_info:
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_adapter_driven_es_common.CateInfoR'
+        type: array
+      data_owner_id:
+        description: 数据资源的 Owner ID。非空时搜索 Owner 是这个用户的数据资源
+        example: 664c3791-297e-44da-bfbb-2f1b82f3b672
+        type: string
+      data_updated_at:
+        allOf:
+        - $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_search_all.TimeRange'
+        description: 数据更新时间
+      fields:
+        description: 字段列表。如果非空，关键字仅匹配指定字段
+        items:
+          type: string
+        type: array
+        uniqueItems: true
+      ids:
+        description: 资源的ID
+        items:
+          type: string
+        type: array
+        uniqueItems: true
+      is_online:
+        example: false
+        type: boolean
+      is_publish:
+        description: 是否发布，如果为 nil 则不根据发布状态过滤搜索结果
+        example: false
+        type: boolean
+      keyword:
+        description: 关键字查询，字符无限制
+        example: keyword
+        minLength: 1
+        type: string
+      next_flag:
+        description: 从该flag标志后获取数据，该flag标志由上次的搜索请求返回，若本次与上次的搜索参数存在变动，则该参数不能传入，否则结果不准确
+        example:
+        - "1"
+        - abc
+        items:
+          type: string
+        maxItems: 3
+        minItems: 2
+        type: array
+      online_at:
+        allOf:
+        - $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_search_all.TimeRange'
+        description: 上线时间
+      orders:
+        description: 排序，没有keyword时默认以data_published_at desc  排序，有keyword时默认以_score
+          desc排序
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_search_all.Order'
+        type: array
+      published_at:
+        allOf:
+        - $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_search_all.TimeRange'
+        description: 发布时间
+      published_status:
+        items:
+          type: string
+        type: array
+      size:
+        default: 20
+        description: 要获取到的记录条数
+        example: 20
+        type: integer
+      type:
+        description: 资源
+        example:
+        - data-view
+        - svc
+        items:
+          type: string
+        type: array
+        uniqueItems: true
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_search_all.TimeRange:
+    properties:
+      end_time:
+        description: 结束时间，毫秒时间戳
+        example: 1682586655000
+        minimum: 0
+        type: integer
+      start_time:
+        description: 开始时间，毫秒时间戳
+        example: 1682586655000
+        minimum: 0
+        type: integer
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_view.DataViewBaseInfo:
+    properties:
+      description:
+        description: 逻辑视图描述，可能存在高亮标签
+        type: string
+      fields:
+        description: 字段列表
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_adapter_driven_es_common.Field'
+        type: array
+      id:
+        description: 逻辑视图id
+        type: string
+      is_publish:
+        type: boolean
+      name:
+        description: 逻辑视图名称，可能存在高亮标签
+        type: string
+      orgcode:
+        description: 逻辑视图所属组织架构ID
+        type: string
+      orgname:
+        description: 所属组织架构ID
+        type: string
+      owner_id:
+        description: data owner id
+        type: string
+      owner_name:
+        description: data owner 名称
+        type: string
+      published_at:
+        type: integer
+      raw_description:
+        description: 逻辑视图描述，不会存在高亮标签
+        type: string
+      raw_name:
+        description: 逻辑视图名称，不会存在高亮标签
+        type: string
+      raw_orgname:
+        type: string
+      raw_owner_name:
+        description: data owner 名称
+        type: string
+      updated_at:
+        description: 逻辑视图更新时间
+        type: integer
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_view.Order:
+    properties:
+      direction:
+        description: 排序方向，枚举 asc正序，desc倒序
+        enum:
+        - asc
+        - desc
+        example: desc
+        type: string
+      sort:
+        description: 排序类型，枚举 updated_at更新时间 online_at上线时间
+        enum:
+        - updated_at
+        - online_at
+        example: online_at
+        type: string
+    required:
+    - direction
+    - sort
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_view.SearchReqBodyParam:
+    properties:
+      keyword:
+        description: 搜索关键词，支持字段：接口名称，接口说明
+        example: keyword
+        minLength: 1
+        type: string
+      next_flag:
+        description: 从该flag标志后获取数据，该flag标志由上次的搜索请求返回，若本次与上次的搜索参数存在变动，则该参数不能传入，否则结果不准确
+        example:
+        - "1"
+        - abc
+        items:
+          type: string
+        maxItems: 3
+        minItems: 2
+        type: array
+      orders:
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_view.Order'
+        type: array
+      orgcodes:
+        description: 所属组织架构ID
+        example:
+        - 664c3791-297e-44da-bfbb-2f1b82f3b672
+        items:
+          type: string
+        type: array
+      published_at:
+        $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_view.TimeRange'
+      size:
+        default: 20
+        description: 要获取到的记录条数
+        example: 20
+        type: integer
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_view.SearchResp:
+    properties:
+      entries:
+        description: 对象列表
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_view.DataViewBaseInfo'
+        type: array
+      next_flag:
+        description: 获取下一页数据的请求中，需携带本参数，若本参数为空，则数据已全部获取，没有下一页了
+        example:
+        - "0.987"
+        - abc
+        items:
+          type: string
+        type: array
+      total_count:
+        description: 当前筛选条件下的对象数量
+        example: 3
+        minimum: 0
+        type: integer
+    required:
+    - entries
+    - total_count
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_view.TimeRange:
+    properties:
+      end_time:
+        description: 结束时间，毫秒时间戳
+        example: 1682586655000
+        minimum: 0
+        type: integer
+      start_time:
+        description: 开始时间，毫秒时间戳
+        example: 1682586655000
+        minimum: 0
+        type: integer
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_basic-search_domain_elec_license.Order:
+    properties:
+      direction:
+        description: 排序方向，枚举：asc：正序；desc：倒序。默认倒序
+        enum:
+        - asc
+        - desc
+        example: desc
+        type: string
+      sort:
+        description: 排序类型，枚举：_score：按算分排序；data_updated_at：按数据更新时间排序；table_rows：按数据量排序。默认按算分排序
+        enum:
+        - _score
+        - updated_at
+        - online_at
+        - published_at
+        example: _score
+        type: string
+    required:
+    - direction
+    - sort
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_basic-search_domain_elec_license.SearchReqBodyParam:
+    properties:
+      data_updated_at:
+        allOf:
+        - $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_elec_license.TimeRange'
+        description: 更新时间
+      fields:
+        description: 字段列表。如果非空，关键字仅匹配指定字段
+        items:
+          type: string
+        type: array
+        uniqueItems: true
+      ids:
+        description: 资源目录的ID
+        items:
+          type: string
+        type: array
+        uniqueItems: true
+      industry_department_ids:
+        items:
+          type: string
+        type: array
+      industry_departments:
+        items:
+          type: string
+        type: array
+      is_online:
+        type: boolean
+      keyword:
+        description: 关键字查询，字符无限制
+        minLength: 1
+        type: string
+      next_flag:
+        description: 从该flag标志后获取数据，该flag标志由上次的搜索请求返回，若本次与上次的搜索参数存在变动，则该参数不能传入，否则结果不准确
+        example:
+        - "1"
+        - abc
+        items:
+          type: string
+        maxItems: 3
+        minItems: 2
+        type: array
+      online_at:
+        allOf:
+        - $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_elec_license.TimeRange'
+        description: 上线时间
+      online_status:
+        items:
+          type: string
+        type: array
+      orders:
+        description: 排序，没有keyword时默认以data_updated_at desc & table_rows desc排序，有keyword时默认以_score
+          desc排序
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_elec_license.Order'
+        type: array
+      size:
+        default: 20
+        description: 要获取到的记录条数
+        example: 20
+        type: integer
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_basic-search_domain_elec_license.SearchRespParam:
+    properties:
+      entries:
+        description: 对象列表
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_elec_license.SummaryInfo'
+        type: array
+      next_flag:
+        description: 获取下一页数据的请求中，需携带本参数，若本参数为空，则数据已全部获取，没有下一页了
+        example:
+        - "0.987"
+        - abc
+        items:
+          type: string
+        type: array
+      statistics:
+        allOf:
+        - $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_elec_license.statisticsInfo'
+        description: 统计信息
+      total_count:
+        description: 当前筛选条件下的对象数量
+        example: 3
+        minimum: 0
+        type: integer
+    required:
+    - entries
+    - total_count
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_basic-search_domain_elec_license.StatisticsReqBodyParam:
+    properties:
+      data_updated_at:
+        allOf:
+        - $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_elec_license.TimeRange'
+        description: 更新时间
+      fields:
+        description: 字段列表。如果非空，关键字仅匹配指定字段
+        items:
+          type: string
+        type: array
+        uniqueItems: true
+      ids:
+        description: 资源目录的ID
+        items:
+          type: string
+        type: array
+        uniqueItems: true
+      industry_department_ids:
+        items:
+          type: string
+        type: array
+      industry_departments:
+        items:
+          type: string
+        type: array
+      is_online:
+        type: boolean
+      keyword:
+        description: 关键字查询，字符无限制
+        minLength: 1
+        type: string
+      online_at:
+        allOf:
+        - $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_elec_license.TimeRange'
+        description: 上线时间
+      online_status:
+        items:
+          type: string
+        type: array
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_basic-search_domain_elec_license.StatisticsRespParam:
+    properties:
+      statistics:
+        allOf:
+        - $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_elec_license.statisticsInfo'
+        description: 统计信息
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_basic-search_domain_elec_license.SummaryInfo:
+    properties:
+      certification_level:
+        description: 发证级别
+        type: string
+      code:
+        description: 电子证照目录编码
+        type: string
+      department:
+        description: 管理部门:xx市数据资源管理局
+        type: string
+      expire:
+        description: 有效期
+        type: string
+      fields:
+        description: 字段列表，有匹配字段的排在前面
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_adapter_driven_es_common.Field'
+        type: array
+      holder_type:
+        description: 证照主体
+        type: string
+      id:
+        description: 电子证照目录ID
+        type: string
+      industry_department:
+        description: 行业类别:市场监督
+        type: string
+      industry_department_id:
+        description: 行业类别id
+        type: string
+      is_online:
+        type: boolean
+      license_type:
+        description: 证件类型:证照
+        type: string
+      name:
+        description: 电子证照目录名称，可能存在高亮标签
+        type: string
+      online_at:
+        description: 上线时间
+        type: integer
+      online_status:
+        description: 上线状态
+        type: string
+      raw_code:
+        description: 电子证照目录编码
+        type: string
+      raw_name:
+        description: 电子证照目录名称，不会存在高亮标签
+        type: string
+      updated_at:
+        description: 更新时间
+        type: integer
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_basic-search_domain_elec_license.TimeRange:
+    properties:
+      end_time:
+        description: 结束时间，毫秒时间戳
+        example: 1682586655000
+        minimum: 0
+        type: integer
+      start_time:
+        description: 开始时间，毫秒时间戳
+        example: 1682586655000
+        minimum: 0
+        type: integer
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_basic-search_domain_elec_license.statisticsInfo:
+    properties:
+      data_kind_count:
+        additionalProperties:
+          type: integer
+        description: 基础信息分类各个类别对应的数量
+        example:
+          "1": 11
+          "2": 22
+        type: object
+      data_range_count:
+        additionalProperties:
+          type: integer
+        description: 数据范围分类各个类别对应的数量
+        example:
+          "1": 11
+          "2": 22
+        type: object
+      shared_type_count:
+        additionalProperties:
+          type: integer
+        description: 共享条件分类各个类别对应的数量
+        example:
+          "1": 11
+          "2": 22
+        type: object
+      update_cycle_count:
+        additionalProperties:
+          type: integer
+        description: 更新频率分类各个类别对应的数量
+        example:
+          "1": 11
+          "2": 22
+        type: object
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_basic-search_domain_info_catalog.Order:
+    properties:
+      direction:
+        description: 排序方向，枚举：asc：正序；desc：倒序。默认倒序
+        enum:
+        - asc
+        - desc
+        example: desc
+        type: string
+      sort:
+        description: 排序类型，枚举：_score：按算分排序；data_updated_at：按数据更新时间排序；table_rows：按数据量排序。默认按算分排序
+        enum:
+        - _score
+        - updated_at
+        - online_at
+        - published_at
+        example: _score
+        type: string
+    required:
+    - direction
+    - sort
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_basic-search_domain_info_catalog.SearchReqBodyParam:
+    properties:
+      business_object_ids:
+        items:
+          type: string
+        type: array
+      business_process_ids:
+        description: 业务流程id, 用户筛选的多个业务流程id
+        items:
+          type: string
+        type: array
+      cate_info:
+        description: 用户筛选的多个类目列表
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_adapter_driven_es_common.CateInfoR'
+        type: array
+      data_range:
+        description: 数据范围
+        example:
+        - 4
+        items:
+          type: integer
+        maxItems: 10
+        type: array
+        uniqueItems: true
+      data_resource_type:
+        items:
+          type: string
+        type: array
+      data_updated_at:
+        allOf:
+        - $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_info_catalog.TimeRange'
+        description: 更新时间
+      fields:
+        description: 字段列表。如果非空，关键字仅匹配指定字段
+        items:
+          type: string
+        type: array
+        uniqueItems: true
+      ids:
+        description: 资源目录的ID
+        items:
+          type: string
+        type: array
+        uniqueItems: true
+      is_online:
+        type: boolean
+      is_publish:
+        description: 是否发布，如果为 nil 则不根据发布状态过滤搜索结果
+        type: boolean
+      keyword:
+        description: 关键字查询，字符无限制
+        minLength: 1
+        type: string
+      next_flag:
+        description: 从该flag标志后获取数据，该flag标志由上次的搜索请求返回，若本次与上次的搜索参数存在变动，则该参数不能传入，否则结果不准确
+        example:
+        - "1"
+        - abc
+        items:
+          type: string
+        maxItems: 3
+        minItems: 2
+        type: array
+      online_at:
+        allOf:
+        - $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_info_catalog.TimeRange'
+        description: 上线时间
+      online_status:
+        items:
+          type: string
+        type: array
+      orders:
+        description: 排序，没有keyword时默认以data_updated_at desc & table_rows desc排序，有keyword时默认以_score
+          desc排序
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_info_catalog.Order'
+        type: array
+      published_at:
+        allOf:
+        - $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_info_catalog.TimeRange'
+        description: 发布时间
+      published_status:
+        items:
+          type: string
+        type: array
+      shared_type:
+        description: 共享条件
+        example:
+        - 2
+        items:
+          type: integer
+        maxItems: 10
+        type: array
+        uniqueItems: true
+      size:
+        default: 20
+        description: 要获取到的记录条数
+        example: 20
+        type: integer
+      update_cycle:
+        description: 更新频率
+        example:
+        - 3
+        - 7
+        items:
+          type: integer
+        maxItems: 10
+        type: array
+        uniqueItems: true
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_basic-search_domain_info_catalog.SearchRespParam:
+    properties:
+      entries:
+        description: 对象列表
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_info_catalog.SummaryInfo'
+        type: array
+      next_flag:
+        description: 获取下一页数据的请求中，需携带本参数，若本参数为空，则数据已全部获取，没有下一页了
+        example:
+        - "0.987"
+        - abc
+        items:
+          type: string
+        type: array
+      statistics:
+        allOf:
+        - $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_info_catalog.statisticsInfo'
+        description: 统计信息
+      total_count:
+        description: 当前筛选条件下的对象数量
+        example: 3
+        minimum: 0
+        type: integer
+    required:
+    - entries
+    - total_count
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_basic-search_domain_info_catalog.StatisticsReqBodyParam:
+    properties:
+      business_object_ids:
+        items:
+          type: string
+        type: array
+      business_process_ids:
+        description: 业务流程id, 用户筛选的多个业务流程id
+        items:
+          type: string
+        type: array
+      cate_info:
+        description: 用户筛选的多个类目列表
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_adapter_driven_es_common.CateInfoR'
+        type: array
+      data_range:
+        description: 数据范围
+        example:
+        - 4
+        items:
+          type: integer
+        maxItems: 10
+        type: array
+        uniqueItems: true
+      data_resource_type:
+        items:
+          type: string
+        type: array
+      data_updated_at:
+        allOf:
+        - $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_info_catalog.TimeRange'
+        description: 更新时间
+      fields:
+        description: 字段列表。如果非空，关键字仅匹配指定字段
+        items:
+          type: string
+        type: array
+        uniqueItems: true
+      ids:
+        description: 资源目录的ID
+        items:
+          type: string
+        type: array
+        uniqueItems: true
+      is_online:
+        type: boolean
+      is_publish:
+        description: 是否发布，如果为 nil 则不根据发布状态过滤搜索结果
+        type: boolean
+      keyword:
+        description: 关键字查询，字符无限制
+        minLength: 1
+        type: string
+      online_at:
+        allOf:
+        - $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_info_catalog.TimeRange'
+        description: 上线时间
+      online_status:
+        items:
+          type: string
+        type: array
+      published_at:
+        allOf:
+        - $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_info_catalog.TimeRange'
+        description: 发布时间
+      published_status:
+        items:
+          type: string
+        type: array
+      shared_type:
+        description: 共享条件
+        example:
+        - 2
+        items:
+          type: integer
+        maxItems: 10
+        type: array
+        uniqueItems: true
+      update_cycle:
+        description: 更新频率
+        example:
+        - 3
+        - 7
+        items:
+          type: integer
+        maxItems: 10
+        type: array
+        uniqueItems: true
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_basic-search_domain_info_catalog.StatisticsRespParam:
+    properties:
+      statistics:
+        allOf:
+        - $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_info_catalog.statisticsInfo'
+        description: 统计信息
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_basic-search_domain_info_catalog.SummaryInfo:
+    properties:
+      business_domain:
+        allOf:
+        - $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_adapter_driven_es_common.Reference'
+        description: 信息资源目录 - 业务表 - 业务模型 - 主干业务 - 业务领域
+      business_form:
+        allOf:
+        - $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_adapter_driven_es_common.Reference'
+        description: 信息资源目录 - 业务表
+      business_model:
+        allOf:
+        - $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_adapter_driven_es_common.Reference'
+        description: 信息资源目录 - 业务表 - 业务模型
+      business_processes:
+        description: 业务流程
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_adapter_driven_es_common.BusinessProcess'
+        type: array
+      cate_info:
+        description: 类目的信息
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_adapter_driven_es_common.CateInfo'
+        type: array
+      code:
+        description: 数据目录编码
+        type: string
+      data_resource_catalogs:
+        description: 信息资源目录 - 数据资源目录
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_adapter_driven_es_common.Reference'
+        type: array
+      description:
+        description: 数据目录描述，可能存在高亮标签
+        type: string
+      fields:
+        description: 字段列表，有匹配字段的排在前面
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_adapter_driven_es_common.Field'
+        type: array
+      id:
+        description: 数据目录ID
+        type: string
+      label_list_resp:
+        items:
+          $ref: '#/definitions/label.LabelResp'
+        type: array
+      main_business_departments:
+        description: 信息资源目录 - 业务表 - 业务模型 - 主干业务 - 部门及其上级部门，为从顶级部门开始
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_adapter_driven_es_common.Reference'
+        type: array
+      name:
+        description: 数据目录名称，可能存在高亮标签
+        type: string
+      online_at:
+        description: 上线时间
+        type: integer
+      online_status:
+        description: 上线状态
+        type: string
+      published_at:
+        description: 发布时间
+        type: integer
+      published_status:
+        description: |-
+          IsPublish         bool                         `json:"is_publish"`
+          IsOnline          bool                         `json:"is_online"`
+        type: string
+      raw_code:
+        description: 数据目录编码
+        type: string
+      raw_description:
+        description: 数据目录描述，不会存在高亮标签
+        type: string
+      raw_name:
+        description: 数据目录名称，不会存在高亮标签
+        type: string
+      shared_type:
+        description: 共享条件
+        type: integer
+      update_cycle:
+        description: DataRange         int8                         `json:"data_range"`      //
+          数据范围
+        type: integer
+      updated_at:
+        description: 更新时间
+        type: integer
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_basic-search_domain_info_catalog.TimeRange:
+    properties:
+      end_time:
+        description: 结束时间，毫秒时间戳
+        example: 1682586655000
+        minimum: 0
+        type: integer
+      start_time:
+        description: 开始时间，毫秒时间戳
+        example: 1682586655000
+        minimum: 0
+        type: integer
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_basic-search_domain_info_catalog.statisticsInfo:
+    properties:
+      data_kind_count:
+        additionalProperties:
+          type: integer
+        description: 基础信息分类各个类别对应的数量
+        example:
+          "1": 11
+          "2": 22
+        type: object
+      data_range_count:
+        additionalProperties:
+          type: integer
+        description: 数据范围分类各个类别对应的数量
+        example:
+          "1": 11
+          "2": 22
+        type: object
+      shared_type_count:
+        additionalProperties:
+          type: integer
+        description: 共享条件分类各个类别对应的数量
+        example:
+          "1": 11
+          "2": 22
+        type: object
+      update_cycle_count:
+        additionalProperties:
+          type: integer
+        description: 更新频率分类各个类别对应的数量
+        example:
+          "1": 11
+          "2": 22
+        type: object
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_basic-search_domain_interface_svc.InterfaceSvcBaseInfo:
+    properties:
+      description:
+        description: 接口服务描述，可能存在高亮标签
+        type: string
+      id:
+        description: 接口服务id
+        type: string
+      name:
+        description: 接口服务名称，可能存在高亮标签
+        type: string
+      online_at:
+        description: 接口服务发布时间
+        type: integer
+      owner_id:
+        description: data owner id
+        type: string
+      owner_name:
+        description: data owner 名称
+        type: string
+      published_at:
+        type: integer
+      raw_description:
+        description: 接口服务描述，不会存在高亮标签
+        type: string
+      raw_name:
+        description: 接口服务名称，不会存在高亮标签
+        type: string
+      raw_owner_name:
+        description: data owner 名称
+        type: string
+      updated_at:
+        description: 接口服务更新时间
+        type: integer
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_basic-search_domain_interface_svc.Order:
+    properties:
+      direction:
+        description: 排序方向，枚举 asc正序，desc倒序
+        enum:
+        - asc
+        - desc
+        example: desc
+        type: string
+      sort:
+        description: 排序类型，枚举 updated_at更新时间 online_at上线时间
+        enum:
+        - updated_at
+        - online_at
+        example: online_at
+        type: string
+    required:
+    - direction
+    - sort
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_basic-search_domain_interface_svc.SearchReqBodyParam:
+    properties:
+      keyword:
+        description: 搜索关键词，支持字段：接口名称，接口说明
+        example: keyword
+        minLength: 1
+        type: string
+      next_flag:
+        description: 从该flag标志后获取数据，该flag标志由上次的搜索请求返回，若本次与上次的搜索参数存在变动，则该参数不能传入，否则结果不准确
+        example:
+        - "1"
+        - abc
+        items:
+          type: string
+        maxItems: 3
+        minItems: 2
+        type: array
+      online_at:
+        $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_interface_svc.TimeRange'
+      orders:
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_interface_svc.Order'
+        type: array
+      orgcodes:
+        description: 接口服务所属组织架构ID
+        example:
+        - 664c3791-297e-44da-bfbb-2f1b82f3b672
+        items:
+          type: string
+        type: array
+      size:
+        default: 20
+        description: 要获取到的记录条数
+        example: 20
+        type: integer
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_basic-search_domain_interface_svc.SearchResp:
+    properties:
+      entries:
+        description: 对象列表
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_interface_svc.InterfaceSvcBaseInfo'
+        type: array
+      next_flag:
+        description: 获取下一页数据的请求中，需携带本参数，若本参数为空，则数据已全部获取，没有下一页了
+        example:
+        - "0.987"
+        - abc
+        items:
+          type: string
+        type: array
+      total_count:
+        description: 当前筛选条件下的对象数量
+        example: 3
+        minimum: 0
+        type: integer
+    required:
+    - entries
+    - total_count
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_basic-search_domain_interface_svc.TimeRange:
+    properties:
+      end_time:
+        description: 结束时间，毫秒时间戳
+        example: 1682586655000
+        minimum: 0
+        type: integer
+      start_time:
+        description: 开始时间，毫秒时间戳
+        example: 1682586655000
+        minimum: 0
+        type: integer
+    type: object
+  label.LabelResp:
+    properties:
+      id:
+        description: 唯一id
+        example: "1"
+        maxLength: 20
+        type: string
+      name:
+        description: 标签名称
+        example: "1"
+        maxLength: 30
+        type: string
+      path:
+        description: 标签路径
+        example: a/b/c
+        maxLength: 2000
+        type: string
+    required:
+    - id
+    - name
+    type: object
+  rest.HttpError:
+    properties:
+      cause:
+        description: 错误原因
+        example: 错误原因
+        type: string
+        x-omitempty: false
+      code:
+        description: '返回错误码，格式: 服务名.模块.错误'
+        example: task-center.Public.InternalError
+        type: string
+      description:
+        description: 错误描述
+        example: 内部错误
+        type: string
+      detail:
+        description: 错误详情, 一般是json对象
+        x-omitempty: false
+      solution:
+        description: 错误处理办法
+        example: 请联系内部人员
+        type: string
+        x-omitempty: false
+    type: object
+info:
+  contact: {}
+  description: AnyFabric basic search
+  title: basic-search
+  version: "0.0"
+paths:
+  /api/basic-search/v1/data-catalog/search:
+    post:
+      consumes:
+      - application/json
+      description: 搜索数据目录
+      parameters:
+      - description: 是否返回统计信息，若body参数中next_flag存在，则该参数无效（不会返回统计信息）
+        example: true
+        in: query
+        name: statistics
+        type: boolean
+      - description: 请求参数
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_catalog.SearchReqBodyParam'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_catalog.SearchRespParam'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 搜索数据目录
+      tags:
+      - 数据目录
+  /api/basic-search/v1/data-catalog/statistics:
+    post:
+      consumes:
+      - application/json
+      description: 获取统计信息
+      parameters:
+      - description: 请求参数
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_catalog.StatisticsReqBodyParam'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_catalog.StatisticsRespParam'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 获取统计信息
+      tags:
+      - 数据目录
+  /api/basic-search/v1/data-resource/search:
+    post:
+      consumes:
+      - application/json
+      description: 搜索数据视图和接口服务
+      parameters:
+      - description: 请求参数
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_search_all.SearchReqBodyParam'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_search_all.SearchAllRespParam'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 搜索数据视图和接口服务
+      tags:
+      - 数据资源
+  /api/basic-search/v1/data-view/search:
+    post:
+      consumes:
+      - application/json
+      description: 获取逻辑视图列表，支持关键字搜索、组织架构过滤
+      parameters:
+      - description: 请求参数
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_view.SearchReqBodyParam'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_data_view.SearchResp'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 获取逻辑视图列表
+      tags:
+      - 逻辑视图搜索
+  /api/basic-search/v1/info-catalog/search:
+    post:
+      consumes:
+      - application/json
+      description: 搜索信息资源目录
+      parameters:
+      - description: 是否返回统计信息，若body参数中next_flag存在，则该参数无效（不会返回统计信息）
+        example: true
+        in: query
+        name: statistics
+        type: boolean
+      - description: 请求参数
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_info_catalog.SearchReqBodyParam'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_info_catalog.SearchRespParam'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 搜索信息资源目录
+      tags:
+      - 信息资源目录
+  /api/basic-search/v1/info-catalog/statistics:
+    post:
+      consumes:
+      - application/json
+      description: 获取统计信息
+      parameters:
+      - description: 请求参数
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_info_catalog.StatisticsReqBodyParam'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_info_catalog.StatisticsRespParam'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 获取统计信息
+      tags:
+      - 信息资源目录
+  /api/basic-search/v1/interface-svc/search:
+    post:
+      consumes:
+      - application/json
+      description: 获取接口服务列表，支持关键字搜索、组织架构过滤
+      parameters:
+      - description: 请求参数
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_interface_svc.SearchReqBodyParam'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_basic-search_domain_interface_svc.SearchResp'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 获取接口服务列表
+      tags:
+      - 接口服务搜索
+swagger: "2.0"

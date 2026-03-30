@@ -1,0 +1,26 @@
+{{- $fullNameBackend := print (include "standardization.fullname" .) "" -}}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ include "standardization.fullname" . }}
+  namespace: {{.Values.namespace}}
+  labels:
+    {{- include "standardization.labels" . | nindent 4 }}
+  annotations:
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/cors-allow-origin: "*"
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      if ($request_uri ~* "/internal/")  { return 404; }
+
+spec:
+  ingressClassName: {{ index .Values.depServices "class-443" "ingressClass" }}
+  rules:
+    - http:
+        paths:
+        - path: /api/standardization
+          pathType: ImplementationSpecific
+          backend:
+            service:
+              name: {{ $fullNameBackend }}
+              port: 
+                name: http

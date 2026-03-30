@@ -1,0 +1,308 @@
+.expandFilterConditionWrapper {
+    .expandPanel {
+        overflow: hidden auto;
+        max-height: 364px;
+        padding-top: 6px;
+        background: #fff;
+        border-radius: 4px;
+        box-shadow: 0 2px 4px 0 rgb(0 0 0 / 8%);
+        // margin-bottom: 12px;
+
+        .filterItem {
+            display: flex;
+            align-items: flex-start;
+            padding: 10px 16px;
+            gap: 16px;
+
+            & + .filterItem {
+                border-top: 1px solid rgb(0 0 0 / 5%);
+            }
+
+            .filterLabel {
+                min-width: 84px;
+                padding: 4px 0;
+                color: rgb(0 0 0 / 45%);
+                line-height: 20px;
+            }
+
+            .filterOptions {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 8px;
+
+                .filterOptionItem {
+                    .ellipsis-mixin();
+
+                    min-width: 52px;
+                    max-width: 94px;
+                    height: 28px;
+                    // display: flex;
+                    // align-items: center;
+                    // justify-content: center;
+                    padding: 4px 12px;
+                    // background: rgb(18 110 227 / 6%);
+                    background: rgb(233 233 237 / 40%);
+                    border-radius: 3px;
+                    color: rgb(0 0 0 / 85%);
+
+                    &:hover,
+                    &.active {
+                        background: rgb(22 156 227 / 10%);
+                        border-radius: 4px;
+                        color: #126ee3;
+                        cursor: pointer;
+                    }
+                }
+            }
+        }
+
+        .filterSearchItem {
+            display: flex;
+            align-items: center;
+            margin-left: 44px;
+
+            .filterLabel {
+                min-width: unset;
+            }
+        }
+
+        .resetBtn {
+            display: flex;
+            flex: 1;
+            justify-content: flex-end;
+
+            :global {
+                .any-fabric-ant-btn {
+                    color: rgb(0 0 0 / 65%);
+                }
+            }
+        }
+
+        .dropdownFilters {
+            // min-width: 200px;
+            // padding: 16px;
+            // background: #fff;
+
+            :global {
+                .any-fabric-ant-checkbox-wrapper {
+                    width: calc((100% - 8px) / 3);
+                    height: 32px;
+                    line-height: 32px;
+                }
+            }
+
+            .dropdownFilterItem {
+                &:not(:last-child) {
+                    margin-bottom: 16px;
+                }
+
+                // 确保下拉菜单中的过滤器样式正确
+                :global {
+                    .ant-dropdown-trigger {
+                        width: 100%;
+                    }
+
+                    .ant-space {
+                        width: 100%;
+                    }
+                }
+            }
+        }
+    }
+
+    .catlgListHeader {
+        display: flex;
+        height: 48px;
+        flex-shrink: 0;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 16px;
+        background: #fff;
+        border-radius: 4px;
+        box-shadow: 0 2px 4px 0 rgb(0 0 0 / 8%);
+    }
+
+    .filterConditionLayout {
+        display: flex;
+        width: 100%;
+        height: 22px;
+        align-items: center;
+        justify-content: space-between;
+        line-height: 22px;
+
+        .filterItemWrapper {
+            color: @title-color-secondary;
+        }
+
+        .filterItem {
+            .selectShowContent {
+                color: @title-color-secondary;
+            }
+
+            // :global {
+            //     .any-fabric-ant-select-selector {
+            //         border: none;
+            //         box-shadow: none !important;
+            //         cursor: pointer;
+
+            //         .any-fabric-ant-select-selection-search-input {
+            //             cursor: pointer;
+            //         }
+            //     }
+            // }
+        }
+
+        .clearBtn {
+            display: flex;
+            height: 20px;
+            align-items: center;
+            color: rgb(0 0 0 / 85%);
+            font-size: 14px;
+            line-height: 20px;
+
+            .clearIcon {
+                display: inline-flex;
+                align-items: center;
+                // margin-right: 8px;
+                // color: #2c2c2c;
+                font-size: 12px;
+            }
+
+            &:hover {
+                color: @link-color;
+                transition: none;
+
+                .clearIcon {
+                    color: @link-color;
+                }
+            }
+        }
+
+        .dropDownLabel {
+            cursor: pointer;
+
+            .mutilpleContent {
+                max-width: 112px;
+                .ellipsis-mixin();
+            }
+        }
+
+        // 过滤条件-多选-DropDown
+        .filterDropDown {
+            width: 240px;
+            border: 1px solid rgb(0 0 0 / 5%);
+            border-radius: 4px;
+            box-shadow: 0 2px 9px 1px rgb(0 0 0 / 10%);
+
+            // 过滤条件-多选-清空筛选条件
+            .clearFilterItem {
+                display: flex;
+                height: 40px;
+                align-items: center;
+                justify-content: space-between;
+                padding: 0 10px;
+                border-bottom: 1px solid rgb(0 0 0 / 8%);
+                background: #fff;
+
+                .filterBtn {
+                    color: #126ee3;
+                    font-size: 14px;
+                }
+
+                :global {
+                    .any-fabric-ant-dropdown-menu {
+                        border-radius: 0;
+                    }
+                }
+            }
+
+            :global {
+                .any-fabric-ant-dropdown-menu {
+                    box-shadow: none;
+                }
+            }
+        }
+
+        // 过滤条件-选择时间
+        .dateBoxWrapper {
+            :global {
+                .any-fabric-ant-dropdown-menu {
+                    padding: 0;
+
+                    .any-fabric-ant-dropdown-menu-item {
+                        padding: 0;
+                        background: #fff;
+                    }
+                }
+            }
+        }
+
+        .filterDatePicker {
+            width: 240px;
+            margin: 16px 10px;
+            background: #fff;
+        }
+
+        .dropdownFilters {
+            // min-width: 200px;
+            // padding: 16px;
+            // background: #fff;
+
+            :global {
+                .any-fabric-ant-checkbox-wrapper {
+                    width: calc((100% - 8px) / 3);
+                    height: 32px;
+                    line-height: 32px;
+                }
+            }
+
+            .dropdownFilterItem {
+                &:not(:last-child) {
+                    margin-bottom: 16px;
+                }
+
+                // 确保下拉菜单中的过滤器样式正确
+                :global {
+                    .ant-dropdown-trigger {
+                        width: 100%;
+                    }
+
+                    .ant-space {
+                        width: 100%;
+                    }
+                }
+            }
+        }
+
+        // 调整更多筛选按钮样式
+        // .filterItemWrapper {
+        //     :global {
+        //         .ant-btn {
+        //             display: inline-flex;
+        //             align-items: center;
+
+        //             .anticon {
+        //                 margin-left: 4px;
+        //             }
+        //         }
+        //     }
+        // }
+    }
+
+    .expandSwitch {
+        position: absolute;
+        z-index: 100;
+        top: -6px;
+        left: calc(50% - 20px);
+        display: flex;
+        width: 40px;
+        height: 12px;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid rgb(0 0 0 / 15%);
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 0 2px 0 rgb(0 0 0 / 16%);
+        cursor: pointer;
+    }
+}

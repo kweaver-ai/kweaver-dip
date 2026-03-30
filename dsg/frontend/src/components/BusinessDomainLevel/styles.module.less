@@ -1,0 +1,86 @@
+.business-domain-level-wrapper {
+    padding: 24px;
+    padding-top: 22px;
+
+    .title {
+        font-weight: 550;
+    }
+
+    .content {
+        display: flex;
+        margin-top: 16px;
+
+        .left {
+            flex: 1;
+
+            .icon-type-container {
+                display: flex;
+
+                .business-domain-level-icon {
+                    margin-right: 6px;
+                    font-size: 20px;
+                }
+            }
+
+            .level {
+                margin-right: 14px;
+            }
+        }
+
+        .right {
+            width: fit-content;
+            flex-shrink: 0;
+            margin-left: 24px;
+        }
+    }
+}
+
+.setting-instructions-container {
+    .setting-instructions {
+        width: 408px;
+        padding: 20px;
+        border: 1px solid rgb(0 0 0 / 10%);
+        border-radius: 10px;
+
+        .setting-instructions-title {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            font-weight: 550;
+
+            .shrink-icon {
+                cursor: pointer;
+                font-size: 20px;
+            }
+        }
+
+        .instruction {
+            margin-top: 16px;
+            color: rgb(0 0 0 / 85%);
+        }
+    }
+
+    .expand-setting-instructions {
+        display: flex;
+        width: 44px;
+        height: 44px;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid rgb(0 0 0 / 8%);
+        border-radius: 50%;
+        box-shadow: 0 0 6px 0 rgb(0 0 0 / 10%);
+        cursor: pointer;
+
+        .expand-setting-instructions-icon {
+            font-size: 18px;
+        }
+
+        &:hover {
+            border-color: rgb(18 110 227 / 100%);
+
+            .expand-setting-instructions-icon {
+                color: rgb(18 110 227 / 100%);
+            }
+        }
+    }
+}

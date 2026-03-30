@@ -1,0 +1,179 @@
+.itemOtherInfo {
+    display: flex;
+    height: 16px;
+    align-items: center;
+    margin-top: 10px;
+    color: rgb(0 0 0 / 45%);
+    font-size: 12px;
+    line-height: 16px;
+
+    .itemDetailInfo {
+        position: relative;
+        display: flex;
+        height: 24px;
+        align-items: center;
+        padding: 0;
+        margin-right: 8px;
+        border-radius: 3px;
+
+        &:hover {
+            background: rgb(233 233 237 / 40%);
+            cursor: pointer;
+        }
+
+        .itemDetailInfoValue {
+            .ellipsis-mixin();
+
+            display: inline-block;
+            flex-shrink: 1;
+            align-items: center;
+            margin-left: 6px;
+        }
+
+        .itemOrgName {
+            max-width: 300px;
+            line-height: 20px;
+            .ellipsis-mixin();
+        }
+
+        .commonIcon {
+            padding: 3px 0;
+        }
+
+        :global {
+            .any-fabric-anticon {
+                margin-right: 6px;
+
+                svg {
+                    width: auto;
+                    height: auto;
+                    fill: rgb(107 121 141 / 80%);
+                }
+            }
+        }
+    }
+}
+
+.unitTooltip {
+    display: flex;
+    align-items: flex-start;
+    color: #fff;
+    white-space: normal;
+    word-break: break-all;
+
+    > div:first-child {
+        flex-shrink: 0;
+        white-space: pre;
+    }
+
+    .commonIcon {
+        display: flex;
+        height: 22px;
+        align-items: center;
+        font-size: 16px;
+        line-height: 22px;
+
+        svg {
+            fill: #fff !important;
+        }
+    }
+}
+
+.infoItemWrapper {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    font-size: 12px;
+
+    .label {
+        color: rgb(0 0 0 / 45%);
+    }
+
+    .right {
+        display: flex;
+        width: calc(100% - 60px);
+        align-items: center;
+        justify-content: space-between;
+
+        .infoItemBox {
+            display: flex;
+            width: calc(100% - 50px);
+            align-items: center;
+        }
+
+        .item {
+            max-width: 20%;
+            padding: 2px 8px;
+            margin-right: 8px;
+            background: rgb(230 245 255 / 40%);
+            border-radius: 3px;
+            color: #6b798d;
+            font-size: 12px;
+            .ellipsis-mixin();
+        }
+    }
+}
+
+.catalogCard {
+    height: 100%;
+
+    :global {
+        .any-fabric-ant-drawer-close {
+            color: rgb(0 0 0 / 85%);
+        }
+    }
+}
+
+.drawerTitle {
+    display: flex;
+    align-items: center;
+    margin-right: 4px;
+    color: rgb(0 0 0 / 85%);
+
+    .title {
+        display: inline-block;
+        flex: 1;
+        .ellipsis-line(1);
+    }
+
+    .icon {
+        display: inline-flex;
+        width: 24px;
+        height: 24px;
+        flex-shrink: 0;
+        align-items: center;
+        justify-content: center;
+        margin-left: 4px;
+        cursor: pointer;
+        font-size: 16px;
+        text-align: center;
+    }
+
+    .disableIcon {
+        color: rgb(0 0 0 / 25%);
+        cursor: not-allowed;
+    }
+
+    .showIcon {
+        display: inline-flex;
+    }
+}
+
+.oprIcon {
+    display: flex;
+    align-items: center;
+    margin-top: 4px;
+}
+
+.drawerWrapper {
+    .mountNameBtn {
+        .ellipsis-mixin();
+
+        height: 22px;
+
+        &.mountNameBtnDisable {
+            color: rgb(18 110 227 / 40%) !important;
+            cursor: not-allowed;
+        }
+    }
+}

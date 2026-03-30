@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "data-semantic.fullname" . }}-api
+  namespace: {{ include "data-semantic.namespace" . }}
+  labels:
+    {{- include "data-semantic.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.api.replicaCount | default 1 }}
+  selector:
+    matchLabels:
+      {{- include "data-semantic.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: api
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        {{- include "data-semantic.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: api
+    spec:
+      serviceAccountName: {{ include "data-semantic.serviceAccountName" . }}
+      containers:
+      - name: api
+        image: "{{ .Values.image.api.repository }}:{{ .Values.image.api.tag | default .Chart.AppVersion }}"
+        imagePullPolicy: {{ .Values.image.api.pullPolicy }}
+        ports:
+        - name: http
+          containerPort: 8888
+          protocol: TCP
+        env:
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        livenessProbe:
+          httpGet:
+            path: /api/data-semantic/v1/health
+            port: http
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /api/data-semantic/v1/health
+            port: http
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          timeoutSeconds: 3
+          successThreshold: 1
+          failureThreshold: 3
+        resources:
+          {{- toYaml .Values.api.resources | nindent 10 }}
+        volumeMounts:
+        - name: config
+          mountPath: /app/etc
+          readOnly: true
+        - name: logs
+          mountPath: /app/logs
+      volumes:
+      - name: config
+        configMap:
+          name: {{ include "data-semantic.fullname" . }}-api
+      - name: logs
+        emptyDir: {}

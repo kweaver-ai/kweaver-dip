@@ -1,0 +1,99 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+parameters:
+    - name: name
+      default: ''
+    - name: displayName
+      default: ''
+    - name: registry
+      default: ''
+    - name: imageName
+      default: ''
+    - name: artifactName
+      default: ''
+    - name: version
+      default: '1.0.0'
+    - name: versionBuild
+      default: ''
+    - name: harborAccount
+      default: ''
+    - name: harborSecret
+      default: ''
+    - name: chartName
+      default: ''
+    - name: chartDisplayName
+      default: ''
+    - name: sourcesDirectory
+      default: ''
+    - name: pool
+      default: ''
+    - name: tagVersion
+      default: '1.0.0'
+    - name: container
+      default: 'builder'
+
+jobs:
+    - job: ${{ parameters.name }}_push
+      displayName: ${{ parameters.name }}-推送镜像
+      dependsOn: build
+      pool:
+          name: ${{ parameters.pool }}
+      steps:
+          # 主意修改对应的变量，下面的 image.registry 以及 image.repository.backend 均来自变量组 global-config
+          # 可以每个服务建立一个变量组管理这类公用变量
+          - task: DownloadBuildArtifacts@0
+            inputs:
+                artifactName: ${{parameters.artifactName}}
+                downloadPath: $(Build.BinariesDirectory)
+          - task: Docker@2
+            inputs:
+                command: login
+                containerRegistry: ${{ parameters.registry }}
+          - script: |
+                imageTagProd=${{ parameters.registry }}/${{ parameters.imageName }}:${{ parameters.tagVersion }}
+                imageTag=$imageTagProd.$(Build.BuildNumber)
+
+                docker build -f ./ci/Dockerfile -t $imageTag $(Build.BinariesDirectory)/${{parameters.artifactName}}
+                docker tag $imageTag $imageTagProd
+
+                docker login ${{ parameters.registry }} -u ${{ parameters.harborAccount }} -p ${{ parameters.harborSecret }}
+                docker push $imageTagProd
+                docker push $imageTag
+                docker rmi $imageTagProd
+                docker rmi $imageTag
+
+    # - job: ${{ parameters.name }}_chart
+    #   displayName: ${{ parameters.chartDisplayName }}-chart
+    #   dependsOn: ${{ parameters.name }}_push
+    #   pool:
+    #       name: ${{ parameters.pool }}
+    #   workspace:
+    #       clean: all
+    #   steps:
+    #       - checkout: self
+    #         fetchDepth: 1
+
+    #       - script: |
+    #             echo 分支全称 $(Build.SourceBranch)
+    #             echo version ${{ parameters.tagVersion }}
+    #             echo versionBuild ${{ parameters.versionBuild }}
+
+    #             sed -i '/registry/s|registry: .*|registry: ${{ parameters.registry }}|g' ${{ parameters.chartName }}/values.yaml
+    #             sed -i '/version/s|version: .*|version: ${{ parameters.versionBuild }}|g' ${{ parameters.chartName }}/Chart.yaml
+    #             sed -i '/tag/s|tag: .*|tag: ${{ parameters.tagVersion }}|g' ${{ parameters.chartName }}/values.yaml
+    #             docker run --rm -v ${{ parameters.sourcesDirectory }}:/apps -v ~/.kube:/root/.kube -v ~/.helm:/root/.helm acr.aishu.cn/public/alpine-helm-2.16.6:universal package ./${{ parameters.chartName }} || echo
+    #             sed -i '/version/s|version: .*|version: ${{ parameters.tagVersion }}|g' ${{ parameters.chartName }}/Chart.yaml
+    #             docker run --rm -v ${{ parameters.sourcesDirectory }}:/apps -v ~/.kube:/root/.kube -v ~/.helm:/root/.helm acr.aishu.cn/public/alpine-helm-2.16.6:universal package ./${{ parameters.chartName }} || echo
+
+    #             curl -s -u '${{ parameters.harborAccount }}:${{ parameters.harborSecret }}' -H 'Content-Type: multipart/form-data' -F 'chart=@${{ parameters.sourcesDirectory }}/${{ parameters.chartName }}-${{ parameters.versionBuild }}.tgz;type=application/x-compressed-tar' -X POST https://${{ parameters.registry }}/api/chartrepo/as/charts
+    #             curl -s -u '${{ parameters.harborAccount }}:${{ parameters.harborSecret }}' -H 'Content-Type: multipart/form-data' -F 'chart=@${{ parameters.sourcesDirectory }}/${{ parameters.chartName }}-${{ parameters.tagVersion }}.tgz;type=application/x-compressed-tar' -X POST https://${{ parameters.registry }}/api/chartrepo/as/charts
+    #         displayName: ${{ parameters.chartDisplayName }}
+
+    #       - script: |
+    #             rm -rf ./**
+    #             rm -rf .git
+    #         displayName: 'remove source'
+    #         condition: always()

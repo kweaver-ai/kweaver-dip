@@ -1,0 +1,69 @@
+.audit-info-wrapper {
+    position: relative;
+    height: 100%;
+
+    .info-container {
+        height: calc(100% - 320px);
+        overflow-y: auto;
+    }
+
+    .audit-info-title {
+        padding: 0 20px;
+        margin-bottom: 16px;
+    }
+
+    .audit-info-item {
+        display: flex;
+        align-items: center;
+        padding: 0 20px;
+        margin-bottom: 16px;
+
+        .audit-info-label {
+            width: 114px;
+            color: rgba(0 0 0 / 45%);
+        }
+
+        .audit-info-value {
+            flex: 1;
+            color: rgba(0 0 0 / 85%);
+        }
+    }
+
+    .audit-form-container {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 310px;
+        padding: 0 32px;
+        border-top: 1px solid rgba(0 0 0 / 10%);
+        overflow-y: auto;
+    }
+
+    .apply-info-container,
+    .analysis-info-container {
+        height: calc(100% - 230px);
+    }
+
+    .apply-audit-form-container,
+    .analysis-audit-form-container {
+        height: 230px;
+        overflow-y: hidden;
+    }
+
+    .catalog-table {
+        padding: 0 24px;
+    }
+}
+
+.audit-footer {
+    margin-right: 16px;
+    float: right;
+
+    :global {
+        .any-fabric-ant-btn {
+            width: 80px;
+            height: 32px;
+        }
+    }
+}

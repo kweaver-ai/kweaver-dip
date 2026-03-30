@@ -1,0 +1,86 @@
+{
+    "conponentDefineType": "helm/service",
+    "name": "data-application-service",
+    "version": "1.0.0",
+    "configSchema": {
+        "title": "data-application-service",
+        "description": "组件配置定义",
+        "type": "object",
+        "properties": { 
+            "resources": {
+                "type": "object",
+                "title": "容器资源控制",
+                "properties": {
+                    "requests": {
+                        "type": "object",
+                        "description": "容器运行需要的最小资源分配",
+                        "properties": {
+                            "memory": {
+                                "type": "string",
+                                "title": "内存"
+                            },
+                            "cpu": {
+                                "type": "string",
+                                "title": "cpu"
+                            }
+                        }
+                    },
+                    "limits": {
+                        "type": "object",
+                        "description": "容器运行最大资源限制",
+                        "properties": {
+                            "memory": {
+                                "type": "string",
+                                "title": "内存"
+                            },
+                            "cpu": {
+                                "type": "string",
+                                "title": "cpu"
+                            }
+                        }
+                    }
+                }
+            },
+            "replicaCount": {
+                "type": "number",
+                "title": "服务副本数"
+            },
+            "callback": {
+                "type": "object",
+                "title": "回调配置",
+                "properties": {
+                    "enabled": {
+                        "type": "boolean",
+                        "title": "是否启用回调"
+                    },
+                    "address": {
+                        "type": "string",
+                        "title": "回调地址",
+                        "description": "通过这个地址调用回调接口"
+                    },
+                    "pre_path": {
+                        "type": "string",
+                        "title": "第三方网关前缀"
+                    }
+                }
+            }
+        }
+    },
+    "dependence": [
+        {
+            "name": "af-dbo-dm-pre"
+        },
+        {
+            "name": "rds"
+        },
+        {
+            "name": "mq"
+        },
+        {
+            "name": "redis"
+        },
+        {
+            "name": "class-443"
+        }
+    ]
+}

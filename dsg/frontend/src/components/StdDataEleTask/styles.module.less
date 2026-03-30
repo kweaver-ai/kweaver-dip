@@ -1,0 +1,640 @@
+// 执行新建标准任务
+.fieldStandardWrapper {
+    overflow: hidden;
+    height: 100%;
+
+    :global {
+        .any-fabric-ant-tabs-tab {
+            height: 100%;
+            padding: 16px 0;
+            line-height: 20px;
+        }
+
+        .any-fabric-ant-tabs,
+        .any-fabric-ant-tabs-content,
+        .any-fabric-ant-tabs-tabpane {
+            height: 100%;
+        }
+    }
+
+    // tabContent-周围有间距
+    .tabContentWrapper {
+        display: flex;
+        overflow: hidden;
+        height: calc(100% - 40px);
+        flex-direction: column;
+        // padding: 20px 0;
+        margin: 24px;
+        background: #fff;
+        border-radius: 4px;
+
+        // .tabContentTitle {
+        //     display: flex;
+        //     width: 100%;
+        //     height: 44px;
+        //     align-items: center;
+        //     justify-content: space-between;
+        //     padding: 12px 20px;
+        //     border-bottom: 1px solid rgb(0 0 0 / 6%);
+        //     font-size: 14px;
+        //     font-weight: 550;
+        //     line-height: 20px;
+
+        //     .newStdheader {
+        //         display: flex;
+        //         justify-content: flex-end;
+
+        //         .createStd {
+        //             height: 22px;
+        //             line-height: 22px;
+        //         }
+        //     }
+        // }
+    }
+
+    // tab-content里面标题下的内容
+    .tabContent {
+        overflow: hidden;
+        height: 100%;
+        flex: auto;
+        // padding: 20px;
+        overflow-y: auto;
+    }
+}
+
+// 顶部tab通用样式
+// .headerTabs {
+//     width: 100%;
+//     height: 100%;
+
+//     .topCenterTab {
+//         height: 100%;
+//         margin: 0 auto;
+
+//         .top {
+//             position: relative;
+//             z-index: 1000;
+//             display: flex;
+//             height: 52px;
+//             align-items: center;
+//             justify-content: space-between;
+//             // padding: 0 24px;
+//             // border-bottom: 1px solid rgb(0 0 0 / 10%);
+//             background: #fff;
+
+//             &.shadowTop {
+//                 box-shadow: 0 2px 10px 6px rgb(0 0 0 / 5%);
+//             }
+
+//             .leftWrapper {
+//                 display: flex;
+//                 height: 52px;
+//                 flex: none;
+//                 align-items: center;
+//                 justify-content: space-between;
+//                 // border-bottom: 1px solid rgb(0 0 0 / 10%);
+//                 background-color: #fff;
+
+//                 .titleWrapper {
+//                     display: flex;
+//                     align-items: center;
+
+//                     .downIcon {
+//                         display: flex;
+//                         width: 22px;
+//                         height: 22px;
+//                         align-items: center;
+//                         color: #333;
+//                     }
+
+//                     .taskIcon {
+//                         margin-right: 8px;
+//                     }
+
+//                     .name {
+//                         overflow: hidden;
+//                         max-width: 244px;
+//                         margin-right: 8px;
+//                         font-weight: 550;
+//                         text-overflow: ellipsis;
+//                         white-space: nowrap;
+//                     }
+//                 }
+
+//                 .iconWrapper {
+//                     display: flex;
+//                     width: 24px;
+//                     height: 24px;
+//                     align-items: center;
+//                     justify-content: center;
+//                     margin-right: 12px;
+//                     border-radius: 3px;
+
+//                     &:hover {
+//                         background-color: rgb(245 245 245);
+//                     }
+
+//                     .detailIcon {
+//                         color: rgb(0 0 0 / 65%);
+//                         font-size: 16px;
+//                     }
+
+//                     &:active {
+//                         background-color: rgb(240 242 245);
+//                     }
+//                 }
+
+//                 .arrowIcon {
+//                     border-color: #333;
+//                     margin-right: 12px;
+//                     color: #333;
+//                 }
+
+//                 .dd_wrapper {
+//                     display: flex;
+//                     width: 100%;
+//                     flex-direction: column;
+//                     background-color: #fff;
+//                     border-radius: 3px;
+//                     box-shadow: 0 2px 8px 0 rgb(0 0 0 / 15%);
+//                     cursor: default;
+
+//                     .dd_titleWrapper {
+//                         display: flex;
+//                         width: 100%;
+//                         height: 40px;
+//                         align-items: center;
+//                         justify-content: space-between;
+//                         padding: 12px 8px 6px 16px;
+
+//                         .dd_title {
+//                             height: 22px;
+//                             color: rgb(0 0 0 / 85%);
+//                             font-size: 16px;
+//                             font-weight: 550;
+//                             line-height: 22px;
+//                         }
+
+//                         .dd_subTitle {
+//                             color: rgb(0 0 0 / 45%);
+//                             font-size: 12px;
+//                             line-height: 17px;
+//                         }
+//                     }
+
+//                     .dd_list {
+//                         overflow: overlay;
+//                         padding-bottom: 2px;
+
+//                         :global .any-fabric-ant-list-item {
+//                             padding: 0 !important;
+//                         }
+//                     }
+//                 }
+//             }
+
+//             .rightWrapper {
+//                 .buttonWrapper {
+//                     display: flex;
+//                     width: 200px;
+//                     justify-content: flex-end;
+
+//                     .button {
+//                         width: 80px;
+//                         padding-right: 12px;
+//                         padding-left: 12px;
+//                     }
+//                 }
+//             }
+//         }
+
+//         .tabNav {
+//             position: absolute;
+//             top: 50%;
+//             left: 50%;
+//             height: 51px;
+//             margin: 0 auto;
+//             background: #fff;
+//             transform: translate(-50%, -50%);
+
+//             &::before {
+//                 border: none;
+//             }
+
+//             .any-fabric-ant-tabs-nav-operations {
+//                 display: none;
+//             }
+
+//             :global {
+//                 .any-fabric-ant-tabs-tab {
+//                     padding: 15px 0;
+//                     font-size: 15px;
+//                     line-height: 22px;
+//                 }
+//             }
+//         }
+
+//         :global {
+//             .any-fabric-ant-tabs-content-holder {
+//                 // padding: 24px;
+//                 background-color: #e9e9ed;
+//             }
+
+//             .any-fabric-ant-tabs-content {
+//                 overflow: auto;
+//                 height: 100%;
+//                 // padding: 24px;
+//                 // background: #fff;
+//                 overflow-y: auto;
+
+//                 & > .any-fabric-ant-tabs-tabpane {
+//                     overflow: hidden;
+//                     height: 100%;
+//                 }
+//             }
+//         }
+
+//         // tabContent-周围有间距
+//         .tabContentWrapper {
+//             display: flex;
+//             overflow: hidden;
+//             height: calc(100% - 40px);
+//             flex-direction: column;
+//             // padding: 20px 0;
+//             margin: 24px;
+//             background: #fff;
+//             border-radius: 4px;
+//         }
+
+//         // tabContent-占满内容区
+//         .tabContentFullWrapper {
+//             height: 100%;
+//         }
+
+//         .tabContentTitle {
+//             display: flex;
+//             width: 100%;
+//             height: 44px;
+//             align-items: center;
+//             justify-content: space-between;
+//             padding: 12px 20px;
+//             border-bottom: 1px solid rgb(0 0 0 / 6%);
+//             font-size: 14px;
+//             font-weight: 550;
+//             line-height: 20px;
+//         }
+
+//         // tab-content里面标题下的内容
+//         .tabContent {
+//             overflow: hidden;
+//             height: 100%;
+//             flex: auto;
+//             padding: 20px;
+//             overflow-y: auto;
+//         }
+//     }
+// }
+
+.taskWrapper {
+    display: flex;
+    flex-direction: column;
+
+    .newStdheader {
+        display: flex;
+        justify-content: flex-end;
+
+        .createStd {
+            height: 22px;
+            line-height: 22px;
+        }
+    }
+
+    .newStdContent {
+        display: flex;
+        overflow: hidden;
+        height: calc(100% - 40px);
+        flex: 1 1;
+        flex-grow: 1;
+        margin: 24px;
+        background: #fff;
+        border-radius: 4px;
+
+        .formListWrapper {
+            overflow: hidden;
+            width: 280px;
+            flex-shrink: 0;
+
+            .formListTitle {
+                margin: 20px 0 0 20px;
+                color: #000;
+                font-size: 14px;
+                font-weight: 550;
+                line-height: 20px;
+            }
+
+            .formSearchInput {
+                width: calc(100% - 40px);
+                margin: 16px 20px 0;
+            }
+
+            .formList {
+                overflow: hidden overlay;
+                height: calc(100% - 108px);
+                margin-top: 16px;
+
+                .formListItem {
+                    display: flex;
+                    overflow: hidden;
+                    height: 62px;
+                    align-items: center;
+                    padding: 10px 20px;
+                    font-size: 14px;
+
+                    &.selectedFormItem {
+                        background: #f1f7fe;
+                    }
+
+                    .formTypeIconWrapper {
+                        display: flex;
+                        width: 36px;
+                        height: 36px;
+                        flex-shrink: 0;
+                        align-items: center;
+                        justify-content: center;
+                        margin-right: 8px;
+                        border-radius: 4px;
+                        font-size: 20px;
+                    }
+
+                    .blankFormIcon {
+                        background-color: rgb(18 110 227 / 6%);
+                    }
+
+                    .importFormIcon {
+                        background-color: rgb(255 134 0 / 6%);
+                    }
+
+                    .formInfoWrapper {
+                        overflow: hidden;
+                        margin-left: 10px;
+                        // font-weight: 400;
+                        color: @title-color-secondary;
+                        font-size: 14px;
+                        line-height: 20px;
+
+                        .formName {
+                            .ellipsis-mixin();
+                        }
+
+                        .progress {
+                            margin-top: 4px;
+                            color: @text-color-desc;
+                            font-size: 12px;
+                            line-height: 18px;
+                        }
+                    }
+                }
+            }
+        }
+
+        .fieldsListWrapper {
+            display: flex;
+            overflow: hidden;
+            flex: 1;
+            flex-direction: column;
+            padding: 10px 20px;
+
+            .fieldsTopWrapper {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                // justify-content: flex-end;
+
+                .deStdType {
+                    display: flex;
+                    align-items: center;
+
+                    .typeContent {
+                        margin-left: 8px;
+                        color: rgb(0 0 0 / 85%);
+                        font-size: 14px;
+                        line-height: 20px;
+                    }
+                }
+
+                .progressWrapper {
+                    display: flex;
+                    align-items: center;
+                    margin-right: 16px;
+                    white-space: nowrap;
+
+                    :global {
+                        .any-fabric-ant-progress-inner {
+                            width: 80px;
+                            margin-right: 6px;
+
+                            .any-fabric-ant-progress-bg {
+                                height: 10px !important;
+                            }
+                        }
+                    }
+                }
+
+                .filterWrapper {
+                    display: flex;
+                    justify-content: flex-end;
+
+                    .selectWrapper {
+                        margin-left: 8px;
+                    }
+
+                    .refreshBtn {
+                        margin-left: 12px;
+                        font-size: 14px;
+                    }
+                }
+            }
+
+            .fieldsTable {
+                overflow: hidden;
+                flex: 1;
+                margin-top: 10px;
+
+                .tableRow {
+                    &:hover {
+                        .dataEle {
+                            color: @link-color;
+                        }
+                    }
+
+                    .dataEle {
+                        width: fit-content;
+
+                        &:hover {
+                            cursor: pointer;
+                            text-decoration: underline;
+                        }
+                    }
+                }
+
+                .tipIcon {
+                    position: absolute;
+                    z-index: 2;
+                    top: 18px;
+                    right: 28px;
+                    color: #f5222d;
+                }
+
+                .selDEInput {
+                    :global {
+                        .any-fabric-ant-input {
+                            .ellipsis-mixin();
+                        }
+
+                        .any-fabric-ant-input-suffix {
+                            margin-left: 20px;
+                        }
+                    }
+                }
+
+                .dataEle {
+                    // cursor: pointer;
+                }
+            }
+
+            .pagination {
+                flex-shrink: 0;
+                margin-top: 24px;
+                float: right;
+            }
+        }
+    }
+
+    .tableItem {
+        & + .tableItem {
+            margin-top: 32px;
+        }
+
+        .tabelHeader {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            margin-bottom: 16px;
+
+            .tabelName {
+                margin-left: 12px;
+            }
+        }
+    }
+
+    .tableContent {
+        // margin-top: 32px;
+        // 如果需要动画效果,不能使用diaplay,要使用visibility+opacity(弊端:元素会在文档流中一直存在)
+        // display: block !important;
+        // visibility: visible;
+        // opacity: 1;
+        // transition: all 1s ease-in-out;
+        // -webkit-transition: all 1s ease-in-out;
+        // -moz-transition: all 1s ease-in-out;
+        // -o-transition: all 1s ease-in-out;
+        // -ms-transition: all 1s ease-in-out;
+    }
+
+    .empty {
+        display: flex;
+        overflow: hidden;
+        height: calc(100% - 40px);
+        flex: 1 1;
+        flex-grow: 1;
+        padding: 0;
+        margin: 24px;
+        background: #fff;
+        border-radius: 4px;
+
+        & > div {
+            margin: auto;
+        }
+    }
+}
+
+.taskToExecWrapper {
+    height: 100%;
+    overflow-y: scroll;
+}
+
+.tipPopover {
+    display: flex;
+    align-items: center;
+
+    :global {
+        .any-fabric-ant-popover-inner-content {
+            padding: 10px;
+        }
+    }
+
+    .divider {
+        width: 1px;
+        height: 16px;
+        margin: 0 8px;
+        background: #126ee3;
+    }
+}
+
+.tipIcon {
+    display: flex;
+    align-items: center;
+    margin-left: 6px;
+    cursor: pointer;
+}
+
+.stdOptionWrapper {
+    padding: 8px 16px 8px 12px;
+
+    .stdCNLabel {
+        display: flex;
+        align-items: center;
+
+        .name {
+            margin-left: 6px;
+            color: @title-color-secondary;
+            font-size: 14px;
+            line-height: 20px;
+
+            .ellipsis-line(1);
+        }
+
+        .basis {
+            height: 22px;
+            padding: 0 8px;
+            border: 1px solid #bae0ff;
+            background: #e6f4ff;
+            border-radius: 4px;
+            color: #1677ff;
+            line-height: 20px;
+        }
+    }
+
+    .stdENLabel {
+        margin-top: 4px;
+        color: @text-color-third;
+        font-size: 12px;
+        line-height: 16px;
+        .ellipsis-mixin();
+    }
+}
+
+.stdOptionWrapperDisabled {
+    cursor: not-allowed;
+
+    .disbled {
+        color: rgb(0 0 0 / 25%) !important;
+    }
+}
+
+.empty {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    padding-top: 112px;
+    text-align: center;
+}

@@ -1,0 +1,2937 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "AnyFabric data subject",
+        "title": "data-subject",
+        "contact": {},
+        "version": "1.0.0"
+    },
+    "basePath": "/api/data-subject/v1",
+    "paths": {
+        "/api/data-subject/v1/subject-domain/child": {
+            "get": {
+                "description": "获取对象详情以及子孙节点",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "open业务对象"
+                ],
+                "summary": "获取对象详情以及子孙节点",
+                "parameters": [
+                    {
+                        "enum": [
+                            "tree",
+                            "list"
+                        ],
+                        "type": "string",
+                        "description": "结果是tree还是列表, tree树结构，list数组结构",
+                        "name": "display",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "example": "88f78432-ee4e-43df-804c-4ccc4ff17f15",
+                        "description": "对象id",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.GetObjectChildDetailResp"
+                        }
+                    },
+                    "400": {
+                        "description": "失败响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/rest.HttpError"
+                        }
+                    }
+                }
+            }
+        },
+        "/business-object/context": {
+            "post": {
+                "description": "批量新建业务对象/活动 及其下面的逻辑实体及属性",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "业务对象定义"
+                ],
+                "summary": "批量新建业务对象/活动",
+                "parameters": [
+                    {
+                        "description": "请求参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.BatchCreateObjectContentReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功响应参数",
+                        "schema": {
+                            "type": "bool"
+                        }
+                    },
+                    "400": {
+                        "description": "失败响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/rest.HttpError"
+                        }
+                    }
+                }
+            }
+        },
+        "/classification": {
+            "get": {
+                "description": "分类分级统计详情",
+                "consumes": [
+                    "text/plain"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "open资产全景"
+                ],
+                "summary": "分类分级统计详情",
+                "parameters": [
+                    {
+                        "enum": [
+                            "tree",
+                            "list"
+                        ],
+                        "type": "string",
+                        "example": "list",
+                        "description": "结果是tree还是列表，默认给的是list",
+                        "name": "display",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "example": "88f78432-ee4e-43df-804c-4ccc4ff17f15",
+                        "description": "对象id, 如果不传，默认是全部的L1层级",
+                        "name": "id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "example": false,
+                        "description": "是否是开启分级状态，默认不开启分级功能",
+                        "name": "open_hierarchy",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.QueryClassificationResp"
+                        }
+                    },
+                    "400": {
+                        "description": "失败响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/rest.HttpError"
+                        }
+                    }
+                }
+            }
+        },
+        "/classification/field": {
+            "get": {
+                "description": "统计多个分级标签下面某节点视图数量",
+                "consumes": [
+                    "text/plain"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "资产全景"
+                ],
+                "summary": "统计多个分级标签下面某节点视图数量",
+                "parameters": [
+                    {
+                        "enum": [
+                            "asc",
+                            "desc"
+                        ],
+                        "type": "string",
+                        "description": "排序方向",
+                        "name": "direction",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "example": "3d8360f5-25f7-49ca-a7fa-ef24494d3890",
+                        "description": "视图的ID，传了代表是某个表的字段分业务",
+                        "name": "form_view_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "example": "88f78432-ee4e-43df-804c-4ccc4ff17f15",
+                        "description": "对象id",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "maximum": 2000,
+                        "minimum": 1,
+                        "type": "integer",
+                        "description": "每页大小",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "minimum": 1,
+                        "type": "integer",
+                        "description": "页码",
+                        "name": "offset",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "example": false,
+                        "description": "是否是开启分级状态，默认不开启分级功能",
+                        "name": "open_hierarchy",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            "created_at",
+                            "updated_at",
+                            "name"
+                        ],
+                        "type": "string",
+                        "description": "排序类型",
+                        "name": "sort",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.QueryHierarchyTotalInfoResp"
+                        }
+                    },
+                    "400": {
+                        "description": "失败响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/rest.HttpError"
+                        }
+                    }
+                }
+            }
+        },
+        "/classification/fields": {
+            "get": {
+                "description": "统计多个分级标签下面某节点视图数量",
+                "consumes": [
+                    "text/plain"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "open资产全景"
+                ],
+                "summary": "统计多个分级标签下面某节点视图数量",
+                "parameters": [
+                    {
+                        "enum": [
+                            "asc",
+                            "desc"
+                        ],
+                        "type": "string",
+                        "description": "排序方向",
+                        "name": "direction",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "example": "3d8360f5-25f7-49ca-a7fa-ef24494d3890",
+                        "description": "视图的ID，传了代表是某个表的字段分业务",
+                        "name": "form_view_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "example": "88f78432-ee4e-43df-804c-4ccc4ff17f15",
+                        "description": "对象id",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "maximum": 2000,
+                        "minimum": 1,
+                        "type": "integer",
+                        "description": "每页大小",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "minimum": 1,
+                        "type": "integer",
+                        "description": "页码",
+                        "name": "offset",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "example": false,
+                        "description": "是否是开启分级状态，默认不开启分级功能",
+                        "name": "open_hierarchy",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            "created_at",
+                            "updated_at",
+                            "name"
+                        ],
+                        "type": "string",
+                        "description": "排序类型",
+                        "name": "sort",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.QueryHierarchyTotalInfoResp"
+                        }
+                    },
+                    "400": {
+                        "description": "失败响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/rest.HttpError"
+                        }
+                    }
+                }
+            }
+        },
+        "/forms/glossary": {
+            "get": {
+                "description": "获取业务表关联业务对象",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "open业务对象"
+                ],
+                "summary": "获取业务表关联业务对象",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "业务表id,uuid",
+                        "name": "fid",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "业务对象id,uuid",
+                        "name": "oid",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.GetFormFiledRelevanceObjectRes"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/rest.HttpError"
+                        }
+                    }
+                }
+            }
+        },
+        "/forms/subjects": {
+            "put": {
+                "description": "批量删除修改业务表关业务对象，bg服务使用",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "BusinessForm",
+                    "glossary"
+                ],
+                "summary": "批量删除修改业务表关业务对象",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "业务表id",
+                        "name": "fid",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "删除业务表字段关联属性请求体",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.RemoveFormSubjectsReqParam"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功响应参数",
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/rest.HttpError"
+                        }
+                    }
+                }
+            }
+        },
+        "/subject-domain": {
+            "get": {
+                "description": "获取对象详情",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "open业务对象"
+                ],
+                "summary": "获取对象详情",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "example": "88f78432-ee4e-43df-804c-4ccc4ff17f15",
+                        "description": "对象id",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.GetObjectResp"
+                        }
+                    },
+                    "400": {
+                        "description": "失败响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/rest.HttpError"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "更新对象",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "业务对象定义"
+                ],
+                "summary": "更新对象",
+                "parameters": [
+                    {
+                        "description": "请求参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.UpdateObjectBodyReqParam"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.UpdateObjectResp"
+                        }
+                    },
+                    "400": {
+                        "description": "失败响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/rest.HttpError"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "新建对象",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "业务对象定义"
+                ],
+                "summary": "新建对象",
+                "parameters": [
+                    {
+                        "description": "请求参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.AddObjectReqBodyParam"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.AddObjectResp"
+                        }
+                    },
+                    "400": {
+                        "description": "失败响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/rest.HttpError"
+                        }
+                    }
+                }
+            }
+        },
+        "/subject-domain/attribute": {
+            "get": {
+                "description": "获取属性信息",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "open业务对象"
+                ],
+                "summary": "获取属性信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "字段id，推荐时候需要",
+                        "name": "field_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "example": "88f78432-ee4e-43df-804c-4ccc4ff17f15",
+                        "description": "属性id",
+                        "name": "id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "关键字查询，字符无限制",
+                        "name": "keyword",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "example": "88f78432-ee4e-43df-804c-4ccc4ff17f15",
+                        "description": "父对象id",
+                        "name": "parent_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "视图id，推荐时候需要",
+                        "name": "view_id",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.GetAttributRes"
+                        }
+                    },
+                    "400": {
+                        "description": "失败响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/rest.HttpError"
+                        }
+                    }
+                }
+            }
+        },
+        "/subject-domain/business-object/check-references": {
+            "get": {
+                "description": "循环引用校验",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "业务对象"
+                ],
+                "summary": "循环引用校验",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "example": "88f78432-ee4e-43df-804c-4ccc4ff17f15",
+                        "description": "业务对象/业务活动id",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "example": "e00a4e53-a5aa-4791-9c1a-f7e74fbadfd4,d95b5f36-0d24-4a10-8ddd-c1f537a49dab",
+                        "description": "引用的业务对象/业务活动id,逗号分隔",
+                        "name": "ref_id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.CheckReferencesResp"
+                        }
+                    },
+                    "400": {
+                        "description": "失败响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/rest.HttpError"
+                        }
+                    }
+                }
+            }
+        },
+        "/subject-domain/business-object/owner": {
+            "get": {
+                "description": "批量查看业务对象/业务活动关联数据owner详细信息",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "open业务对象"
+                ],
+                "summary": "批量查看业务对象/业务活动关联数据owner详细信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "example": "e00a4e53-a5aa-4791-9c1a-f7e74fbadfd4,d95b5f36-0d24-4a10-8ddd-c1f537a49dab",
+                        "description": "业务对象/业务活动id，uuid，逗号分隔",
+                        "name": "ids",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.GetBusinessObjectOwnerResp"
+                        }
+                    },
+                    "400": {
+                        "description": "失败响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/rest.HttpError"
+                        }
+                    }
+                }
+            }
+        },
+        "/subject-domain/business-object/path": {
+            "get": {
+                "description": "批量获取业务对象和逻辑实体的全路径",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "open业务对象"
+                ],
+                "summary": "批量获取业务对象和逻辑实体的全路径",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "example": "e00a4e53-a5aa-4791-9c1a-f7e74fbadfd4,d95b5f36-0d24-4a10-8ddd-c1f537a49dab",
+                        "description": "业务对象/业务活动id，uuid，逗号分隔",
+                        "name": "ids",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.GetPathResp"
+                        }
+                    },
+                    "400": {
+                        "description": "失败响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/rest.HttpError"
+                        }
+                    }
+                }
+            }
+        },
+        "/subject-domain/check": {
+            "post": {
+                "description": "名称重复校验",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "open业务对象"
+                ],
+                "summary": "名称重复校验",
+                "parameters": [
+                    {
+                        "description": "请求参数",
+                        "name": "_",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.CheckRepeatReqParamBody"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.CheckRepeatResp"
+                        }
+                    },
+                    "400": {
+                        "description": "失败响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/rest.HttpError"
+                        }
+                    }
+                }
+            }
+        },
+        "/subject-domain/count": {
+            "get": {
+                "description": "获取当前节点下的层级统计信息",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "open资产全景"
+                ],
+                "summary": "获取当前节点下的层级统计信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "example": "88f78432-ee4e-43df-804c-4ccc4ff17f15",
+                        "description": "对象id",
+                        "name": "id",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.GetLevelCountResp"
+                        }
+                    },
+                    "400": {
+                        "description": "失败响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/rest.HttpError"
+                        }
+                    }
+                }
+            }
+        },
+        "/subject-domain/logic-entity": {
+            "get": {
+                "description": "查看业务对象/业务活动定义",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "open业务对象"
+                ],
+                "summary": "查看业务对象/业务活动定义",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "example": "88f78432-ee4e-43df-804c-4ccc4ff17f15",
+                        "description": "对象id",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.GetBusinessObjectResp"
+                        }
+                    },
+                    "400": {
+                        "description": "失败响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/rest.HttpError"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "编辑业务对象/业务活动定义",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "业务对象定义"
+                ],
+                "summary": "编辑业务对象/业务活动定义",
+                "parameters": [
+                    {
+                        "description": "请求参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.AddBusinessObjectReqBodyParam"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.AddBusinessObjectResp"
+                        }
+                    },
+                    "400": {
+                        "description": "失败响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/rest.HttpError"
+                        }
+                    }
+                }
+            }
+        },
+        "/subject-domain/object-entity/path": {
+            "get": {
+                "description": "批量获取业务对象的全路径",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "open业务对象"
+                ],
+                "summary": "批量获取业务对象的全路径",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "example": "e00a4e53-a5aa-4791-9c1a-f7e74fbadfd4,d95b5f36-0d24-4a10-8ddd-c1f537a49dab",
+                        "description": "业务对象/业务活动id，uuid，逗号分隔",
+                        "name": "ids",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.GetPathResp"
+                        }
+                    },
+                    "400": {
+                        "description": "失败响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/rest.HttpError"
+                        }
+                    }
+                }
+            }
+        },
+        "/subject-domain/paths": {
+            "post": {
+                "description": "根据业务对象Path批量获取业务对象详情",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "open业务对象"
+                ],
+                "summary": "根据业务对象Path批量获取业务对象详情",
+                "parameters": [
+                    {
+                        "description": "查询参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.GetSubjectDomainByPathsReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "400": {
+                        "description": "失败响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/rest.HttpError"
+                        }
+                    }
+                }
+            }
+        },
+        "/subject-domain/precision": {
+            "get": {
+                "description": "根据id列表批量获取业务对象详情",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "open业务对象"
+                ],
+                "summary": "根据id列表批量获取业务对象详情",
+                "parameters": [
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "collectionFormat": "csv",
+                        "example": [
+                            "88f78432-ee4e-43df-804c-4ccc4ff17f15"
+                        ],
+                        "name": "object_id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.GetObjectPrecisionRes"
+                        }
+                    },
+                    "400": {
+                        "description": "失败响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/rest.HttpError"
+                        }
+                    }
+                }
+            }
+        },
+        "/subject-domain/query-business-rec-list": {
+            "post": {
+                "description": "业务对象识别业务标准表字段推荐",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "open业务对象"
+                ],
+                "summary": "业务对象识别业务标准表字段推荐",
+                "parameters": [
+                    {
+                        "description": "批量获取业务属性关联业务标准关系列表",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/af_sailor.SailorSubjectRecReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/af_sailor.SailorSubjectRecResp"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/rest.HttpError"
+                        }
+                    }
+                }
+            }
+        },
+        "/subject-domain/{did}": {
+            "delete": {
+                "description": "删除对象",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "业务对象定义"
+                ],
+                "summary": "删除对象",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "对象ID",
+                        "name": "did",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.DelObjectResp"
+                        }
+                    },
+                    "400": {
+                        "description": "失败响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/rest.HttpError"
+                        }
+                    }
+                }
+            }
+        },
+        "/subject-domains": {
+            "get": {
+                "description": "获取业务对象定义列表",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "open业务对象"
+                ],
+                "summary": "获取业务对象定义列表",
+                "parameters": [
+                    {
+                        "enum": [
+                            "asc",
+                            "desc"
+                        ],
+                        "type": "string",
+                        "description": "排序方向，枚举：asc：正序；desc：倒序。默认倒序",
+                        "name": "direction",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "是否获取全部层级对象",
+                        "name": "is_all",
+                        "in": "query"
+                    },
+                    {
+                        "maxLength": 128,
+                        "type": "string",
+                        "description": "关键字查询，字符无限制",
+                        "name": "keyword",
+                        "in": "query"
+                    },
+                    {
+                        "maximum": 2000,
+                        "minimum": 1,
+                        "type": "integer",
+                        "description": "每页大小，默认10",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "是否计数",
+                        "name": "need_count",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "在查询所有L1的时候是否需要总数",
+                        "name": "need_total",
+                        "in": "query"
+                    },
+                    {
+                        "minimum": 1,
+                        "type": "integer",
+                        "description": "页码，默认1",
+                        "name": "offset",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "父对象id",
+                        "name": "parent_id",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            "created_at",
+                            "updated_at",
+                            "name"
+                        ],
+                        "type": "string",
+                        "description": "排序类型，枚举：created_at：按创建时间排序；updated_at：按更新时间排序；name：按名称排序。默认名称排序",
+                        "name": "sort",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "对象类型 ，subject_domain_group业务对象分组，subject_domain业务对象，business_object业务对象，business_activity业务活动，logic_entity逻辑实体，attribute属性",
+                        "name": "type",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.ListObjectsResp"
+                        }
+                    },
+                    "400": {
+                        "description": "失败响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/rest.HttpError"
+                        }
+                    }
+                }
+            }
+        },
+        "/subject-domains/export": {
+            "post": {
+                "description": "导出业务对象",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "导入导出"
+                ],
+                "summary": "导出业务对象",
+                "parameters": [
+                    {
+                        "description": "请求参数",
+                        "name": "req",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.ExportObjectIdsReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "失败响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/rest.HttpError"
+                        }
+                    }
+                }
+            }
+        },
+        "/subject-domains/import": {
+            "post": {
+                "description": "导入业务对象",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "导入导出"
+                ],
+                "summary": "导入业务对象",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "上传的文件",
+                        "name": "file",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "失败响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/rest.HttpError"
+                        }
+                    }
+                }
+            }
+        },
+        "/subject-domains/template": {
+            "get": {
+                "description": "下载业务对象模板",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "导入导出"
+                ],
+                "summary": "下载业务对象模板",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "失败响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/rest.HttpError"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "af_sailor.SailorBusinessSubjectFieldsRecResp": {
+            "type": "object",
+            "required": [
+                "field_id",
+                "field_name",
+                "subject_id",
+                "subject_name"
+            ],
+            "properties": {
+                "field_id": {
+                    "description": "字段ID",
+                    "type": "string",
+                    "example": "1"
+                },
+                "field_name": {
+                    "description": "字段名称",
+                    "type": "string",
+                    "example": "字段名称"
+                },
+                "subject_id": {
+                    "description": "逻辑实体属性ID",
+                    "type": "string",
+                    "example": "1"
+                },
+                "subject_name": {
+                    "description": "逻辑实体属性名称",
+                    "type": "string",
+                    "example": "逻辑实体属性名称"
+                }
+            }
+        },
+        "af_sailor.SailorBusinessSubjectRecReq": {
+            "type": "object",
+            "required": [
+                "fields",
+                "subjects"
+            ],
+            "properties": {
+                "field_desc": {
+                    "description": "业务表描述",
+                    "type": "string"
+                },
+                "fields": {
+                    "description": "字段列表",
+                    "type": "array",
+                    "minItems": 0,
+                    "items": {
+                        "$ref": "#/definitions/af_sailor.SailorTableFieldsRecReq"
+                    }
+                },
+                "subjects": {
+                    "description": "逻辑实体属性列表",
+                    "type": "array",
+                    "minItems": 0,
+                    "items": {
+                        "$ref": "#/definitions/af_sailor.SailorSubjectsFieldsRecReq"
+                    }
+                },
+                "table_id": {
+                    "description": "业务表ID",
+                    "type": "string"
+                },
+                "table_name": {
+                    "description": "业务表名称",
+                    "type": "string"
+                }
+            }
+        },
+        "af_sailor.SailorBusinessSubjectRecResp": {
+            "type": "object",
+            "required": [
+                "table_name"
+            ],
+            "properties": {
+                "rec": {
+                    "description": "字段与逻辑实体属性的对齐列表",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/af_sailor.SailorBusinessSubjectFieldsRecResp"
+                    }
+                },
+                "table_name": {
+                    "description": "业务标准表名称",
+                    "type": "string",
+                    "example": "业务表名称"
+                }
+            }
+        },
+        "af_sailor.SailorSubjectRecReq": {
+            "type": "object",
+            "required": [
+                "query"
+            ],
+            "properties": {
+                "query": {
+                    "description": "业务对象识别请求参数",
+                    "type": "array",
+                    "minItems": 0,
+                    "items": {
+                        "$ref": "#/definitions/af_sailor.SailorBusinessSubjectRecReq"
+                    }
+                }
+            }
+        },
+        "af_sailor.SailorSubjectRecResp": {
+            "type": "object",
+            "properties": {
+                "items": {
+                    "description": "字段与逻辑实体属性的对齐列表",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/af_sailor.SailorBusinessSubjectRecResp"
+                    }
+                }
+            }
+        },
+        "af_sailor.SailorSubjectsFieldsRecReq": {
+            "type": "object",
+            "required": [
+                "subject_id",
+                "subject_name"
+            ],
+            "properties": {
+                "subject_id": {
+                    "description": "属性ID",
+                    "type": "string",
+                    "example": "1"
+                },
+                "subject_name": {
+                    "description": "属性名称",
+                    "type": "string",
+                    "example": "属性名称"
+                },
+                "subject_path": {
+                    "description": "主题域层级信息",
+                    "type": "string",
+                    "example": "主题域层级信息"
+                }
+            }
+        },
+        "af_sailor.SailorTableFieldsRecReq": {
+            "type": "object",
+            "required": [
+                "field_id",
+                "field_name"
+            ],
+            "properties": {
+                "field_desc": {
+                    "description": "字段描述",
+                    "type": "string",
+                    "example": "字段描述"
+                },
+                "field_id": {
+                    "description": "字段ID",
+                    "type": "string",
+                    "example": "1"
+                },
+                "field_name": {
+                    "description": "字段名称",
+                    "type": "string",
+                    "example": "字段名称"
+                },
+                "standard_id": {
+                    "description": "标准ID",
+                    "type": "string",
+                    "example": "1"
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_data-subject_adapter_driven_gorm_subject_domain.SubjectDomainGroupCount": {
+            "type": "object",
+            "required": [
+                "count",
+                "id",
+                "name"
+            ],
+            "properties": {
+                "count": {
+                    "description": "逻辑实体数量",
+                    "type": "integer",
+                    "minimum": 0,
+                    "example": 3
+                },
+                "id": {
+                    "description": "业务域分组的ID",
+                    "type": "string",
+                    "example": "065dd8cb-d3bc-4cc1-b7ae-245d29d1682d"
+                },
+                "name": {
+                    "description": "业务域分组名称",
+                    "type": "string",
+                    "example": "业务域分组名称"
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.AddBusinessObjectReqBodyParam": {
+            "type": "object",
+            "required": [
+                "id"
+            ],
+            "properties": {
+                "id": {
+                    "description": "业务对象/业务活动id",
+                    "type": "string",
+                    "example": "88f78432-ee4e-43df-804c-4ccc4ff17f15"
+                },
+                "logic_entities": {
+                    "description": "业务逻辑实体信息",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.LogicEntity"
+                    }
+                },
+                "ref_id": {
+                    "description": "引用业务对象/业务活动id数组",
+                    "type": "array",
+                    "uniqueItems": true,
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.AddBusinessObjectResp": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "对象id",
+                    "type": "string",
+                    "example": "88f78432-ee4e-43df-804c-4ccc4ff17f15"
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.AddObjectReqBodyParam": {
+            "type": "object",
+            "required": [
+                "name",
+                "type"
+            ],
+            "properties": {
+                "description": {
+                    "description": "描述，非必填",
+                    "type": "string",
+                    "maxLength": 255,
+                    "minLength": 0
+                },
+                "name": {
+                    "description": "对象名称，仅支持中英文数字中划线下划线",
+                    "type": "string",
+                    "maxLength": 128,
+                    "minLength": 0
+                },
+                "owners": {
+                    "description": "用户id数组，最大长度为1",
+                    "type": "array",
+                    "maxItems": 1,
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "parent_id": {
+                    "description": "父对象id",
+                    "type": "string"
+                },
+                "type": {
+                    "description": "对象类型",
+                    "type": "string",
+                    "enum": [
+                        "subject_domain_group",
+                        "subject_domain",
+                        "business_object",
+                        "business_activity"
+                    ]
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.AddObjectResp": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "对象ID",
+                    "type": "string",
+                    "example": "d1529799-e8a1-4815-a7a3-533a9dbea8\tbd"
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.Attribute": {
+            "type": "object",
+            "required": [
+                "id",
+                "name"
+            ],
+            "properties": {
+                "id": {
+                    "description": "业务属性id,uuid",
+                    "type": "string"
+                },
+                "label_id": {
+                    "description": "标签id",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "业务属性名称",
+                    "type": "string"
+                },
+                "standard_id": {
+                    "description": "数据标准id",
+                    "type": "string"
+                },
+                "unique": {
+                    "description": "唯一标识",
+                    "type": "boolean"
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.AttributeInfo": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "业务属性id",
+                    "type": "string"
+                },
+                "label_icon": {
+                    "description": "标签颜色",
+                    "type": "string"
+                },
+                "label_id": {
+                    "description": "标签id",
+                    "type": "string"
+                },
+                "label_name": {
+                    "description": "标签名称",
+                    "type": "string"
+                },
+                "label_path": {
+                    "description": "标签路径",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "业务属性名称",
+                    "type": "string"
+                },
+                "path": {
+                    "description": "路径",
+                    "type": "string"
+                },
+                "standard_info": {
+                    "description": "StandardStatus string        `json:\"standard_status\" swagger:ignore` //标准状态",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.StandardInfo"
+                        }
+                    ]
+                },
+                "unique": {
+                    "description": "唯一标识",
+                    "type": "boolean"
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.AttributeWithField": {
+            "type": "object",
+            "properties": {
+                "field_id": {
+                    "description": "关联字段id",
+                    "type": "string"
+                },
+                "field_name": {
+                    "description": "关联字段名称",
+                    "type": "string"
+                },
+                "field_standard_info": {
+                    "description": "StandardStatus    string        `json:\"standard_status\" binding:\"omitempty,oneof=normal modified deleted\" swagger:ignore` //标准化状态：\"\"，\"normal\"，\"modified\"，\"deleted\"",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.StandardInfo"
+                        }
+                    ]
+                },
+                "id": {
+                    "description": "属性id",
+                    "type": "string"
+                },
+                "label_icon": {
+                    "description": "标签颜色",
+                    "type": "string"
+                },
+                "label_id": {
+                    "description": "标签id",
+                    "type": "string"
+                },
+                "label_name": {
+                    "description": "标签名称",
+                    "type": "string"
+                },
+                "label_path": {
+                    "description": "标签路径",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "属性名称",
+                    "type": "string"
+                },
+                "standard_info": {
+                    "description": "数据标准信息",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.StandardInfo"
+                        }
+                    ]
+                },
+                "unique": {
+                    "description": "唯一标识",
+                    "type": "boolean"
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.BatchCreateObjectContentReq": {
+            "type": "object",
+            "required": [
+                "contents",
+                "form_id"
+            ],
+            "properties": {
+                "contents": {
+                    "description": "需要创建的业务对象、业务活动及内容",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.Content"
+                    }
+                },
+                "form_id": {
+                    "description": "业务表ID, 传空表示清除所有的关系",
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.CheckReferencesResp": {
+            "type": "object",
+            "properties": {
+                "circular_reference": {
+                    "description": "是否循环引用",
+                    "type": "boolean",
+                    "example": false
+                },
+                "id": {
+                    "description": "业务对象/业务活动id",
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.CheckRepeatReqParamBody": {
+            "type": "object",
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "id": {
+                    "description": "对象id",
+                    "type": "string",
+                    "example": "2ece555c-9095-41d9-9936-0163ae7453a7"
+                },
+                "name": {
+                    "description": "对象名，必填，仅支持中英文数字中划线下划线",
+                    "type": "string"
+                },
+                "parent_id": {
+                    "description": "父节点id",
+                    "type": "string",
+                    "example": "88f78432-ee4e-43df-804c-4ccc4ff17f15"
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.CheckRepeatResp": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "description": "被检测的对象名称",
+                    "type": "string",
+                    "example": "obj_name"
+                },
+                "repeat": {
+                    "description": "是否重复",
+                    "type": "boolean",
+                    "example": false
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.Content": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "业务对象/业务活动id 新建时不传，仅编辑属性时传入",
+                    "type": "string"
+                },
+                "logic_entities": {
+                    "description": "业务逻辑实体信息",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.LogicEntity"
+                    }
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.DelObjectResp": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "对象ID",
+                    "type": "string",
+                    "example": "d1529799-e8a1-4815-a7a3-533a9dbea8bd"
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.Department": {
+            "type": "object",
+            "properties": {
+                "department_id": {
+                    "description": "所属部门id",
+                    "type": "string"
+                },
+                "department_name": {
+                    "description": "所属部门名称",
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.ExportObjectIdsReq": {
+            "type": "object",
+            "required": [
+                "ids"
+            ],
+            "properties": {
+                "ids": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "88f78432-ee4e-43df-804c-4ccc4ff17f15"
+                    ]
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.FormRelevanceObject": {
+            "type": "object",
+            "required": [
+                "object_id"
+            ],
+            "properties": {
+                "logical_entity": {
+                    "description": "关联属性",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.UpdateLogicalEntity"
+                    }
+                },
+                "object_id": {
+                    "description": "业务对象/业务活动 id",
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.FormSubjectDetail": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "业务对象/业务活动id",
+                    "type": "string"
+                },
+                "logical_entity": {
+                    "description": "逻辑实体",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.LogicalEntity"
+                    }
+                },
+                "name": {
+                    "description": "业务对象/业务活动名称",
+                    "type": "string"
+                },
+                "type": {
+                    "description": "业务对象/业务活动类型",
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.GetAttributRes": {
+            "type": "object",
+            "properties": {
+                "attributes": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.GetAttributResp"
+                    }
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.GetAttributResp": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "description": "描述",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "对象id",
+                    "type": "string"
+                },
+                "label_icon": {
+                    "description": "标签颜色",
+                    "type": "string"
+                },
+                "label_id": {
+                    "description": "标签ID",
+                    "type": "string"
+                },
+                "label_name": {
+                    "description": "标签名称",
+                    "type": "string"
+                },
+                "label_path": {
+                    "description": "标签路径",
+                    "type": "string"
+                },
+                "ls_recommend": {
+                    "description": "是否推荐",
+                    "type": "boolean"
+                },
+                "name": {
+                    "description": "对象名称",
+                    "type": "string"
+                },
+                "path_id": {
+                    "description": "路径id",
+                    "type": "string"
+                },
+                "path_name": {
+                    "description": "路径名称",
+                    "type": "string"
+                },
+                "type": {
+                    "description": "对象类型",
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.GetBusinessObjectOwnerResp": {
+            "type": "object",
+            "properties": {
+                "owner_info": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.OwnerInfo"
+                    }
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.GetBusinessObjectResp": {
+            "type": "object",
+            "properties": {
+                "logic_entities": {
+                    "description": "业务逻辑实体信息",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.LogicEntityInfo"
+                    }
+                },
+                "ref_info": {
+                    "description": "引用的业务对象/业务活动信息",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.RefInfo"
+                    }
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.GetFormFiledRelevanceObjectRes": {
+            "type": "object",
+            "properties": {
+                "form_id": {
+                    "type": "string"
+                },
+                "subject_infos": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.FormSubjectDetail"
+                    }
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.GetLevelCountResp": {
+            "type": "object",
+            "properties": {
+                "level_attributes": {
+                    "description": "第5级对象个数，即 属性",
+                    "type": "integer"
+                },
+                "level_business_act": {
+                    "description": "第3级对象个数，即 业务活动",
+                    "type": "integer"
+                },
+                "level_business_domain": {
+                    "description": "第1级对象个数，即 业务域",
+                    "type": "integer"
+                },
+                "level_business_obj": {
+                    "description": "第3级对象个数，即 业务对象",
+                    "type": "integer"
+                },
+                "level_business_object": {
+                    "description": "第3级对象个数，即 业务对象/业务活动",
+                    "type": "integer"
+                },
+                "level_logic_entities": {
+                    "description": "第4级对象个数，即 逻辑实体",
+                    "type": "integer"
+                },
+                "level_subject_domain": {
+                    "description": "第2级对象个数，即 业务对象",
+                    "type": "integer"
+                },
+                "subject_domain_group_count": {
+                    "description": "业务对象中逻辑实体分布",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_adapter_driven_gorm_subject_domain.SubjectDomainGroupCount"
+                    }
+                },
+                "total_indicator": {
+                    "description": "所有绑定主体域的技术指标的数量",
+                    "type": "integer"
+                },
+                "total_interface_service": {
+                    "description": "所有绑定主体域的接口服务的数量",
+                    "type": "integer"
+                },
+                "total_logical_view": {
+                    "description": "所有业务对象关联的逻辑实体的数量",
+                    "type": "integer"
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.GetObjectChildDetailResp": {
+            "type": "object",
+            "properties": {
+                "display": {
+                    "type": "string"
+                },
+                "entries": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.GetObjectInfo"
+                    }
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.GetObjectInfo": {
+            "type": "object",
+            "properties": {
+                "child": {
+                    "description": "子节点",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.GetObjectInfo"
+                    }
+                },
+                "id": {
+                    "description": "对象id",
+                    "type": "string",
+                    "maxLength": 36,
+                    "example": "3821e024-e218-43c0-9931-e82afc32dbb1"
+                },
+                "indicator_count": {
+                    "description": "指标的数量",
+                    "type": "integer",
+                    "example": 3
+                },
+                "interface_count": {
+                    "description": "接口服务的数量",
+                    "type": "integer",
+                    "example": 4
+                },
+                "logic_view_count": {
+                    "description": "视图的数量",
+                    "type": "integer",
+                    "example": 2
+                },
+                "name": {
+                    "description": "对象名称",
+                    "type": "string",
+                    "maxLength": 128,
+                    "example": "用户"
+                },
+                "parent_id": {
+                    "description": "父级的ID",
+                    "type": "string",
+                    "maxLength": 36,
+                    "example": "4821e024-e218-43c0-9931-e82afc32dbb1"
+                },
+                "path_id": {
+                    "description": "路径id",
+                    "type": "string",
+                    "example": "0251c03c-2123-4041-845b-27613bcb9904/2446beb9-8059-48e8-9307-e922c5bc9bbd"
+                },
+                "path_name": {
+                    "description": "路径名称",
+                    "type": "string",
+                    "example": "数据治理/业务梳理"
+                },
+                "type": {
+                    "description": "对象类型,，subject_domain_group业务对象分组，subject_domain业务对象，business_object业务对象，business_activity业务活动，logic_entity逻辑实体，attribute属性",
+                    "type": "string",
+                    "maxLength": 20,
+                    "example": "subject_domain_group"
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.GetObjectPrecisionRes": {
+            "type": "object",
+            "properties": {
+                "object": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.GetObjectResp"
+                    }
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.GetObjectResp": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "description": "创建时间，秒",
+                    "type": "integer"
+                },
+                "created_by": {
+                    "description": "创建人名称",
+                    "type": "string",
+                    "maxLength": 128,
+                    "example": "af"
+                },
+                "description": {
+                    "description": "描述",
+                    "type": "string",
+                    "maxLength": 255,
+                    "example": "用户业务域分组"
+                },
+                "id": {
+                    "description": "对象id",
+                    "type": "string",
+                    "maxLength": 36,
+                    "example": "3821e024-e218-43c0-9931-e82afc32dbb1"
+                },
+                "name": {
+                    "description": "对象名称",
+                    "type": "string",
+                    "maxLength": 128,
+                    "example": "用户"
+                },
+                "owners": {
+                    "description": "拥有者",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.UserInfoResp"
+                        }
+                    ]
+                },
+                "path_id": {
+                    "description": "路径id",
+                    "type": "string",
+                    "example": "0251c03c-2123-4041-845b-27613bcb9904/2446beb9-8059-48e8-9307-e922c5bc9bbd"
+                },
+                "path_name": {
+                    "description": "路径名称",
+                    "type": "string",
+                    "example": "数据治理/业务梳理"
+                },
+                "type": {
+                    "description": "对象类型，subject_domain_group业务对象分组，subject_domain业务对象，business_object业务对象，business_activity业务活动，logic_entity逻辑实体，attribute属性",
+                    "type": "string"
+                },
+                "updated_at": {
+                    "description": "修改时间，秒",
+                    "type": "integer"
+                },
+                "updated_by": {
+                    "description": "修改人名称",
+                    "type": "string",
+                    "maxLength": 128,
+                    "example": "af"
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.GetPathResp": {
+            "type": "object",
+            "properties": {
+                "path_info": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.PathInfo"
+                    }
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.GetSubjectDomainByPathsReq": {
+            "type": "object",
+            "required": [
+                "paths"
+            ],
+            "properties": {
+                "paths": {
+                    "type": "array",
+                    "uniqueItems": true,
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.HierarchyTag": {
+            "type": "object",
+            "required": [
+                "count",
+                "id",
+                "name"
+            ],
+            "properties": {
+                "color": {
+                    "description": "分级标签配置的背景色",
+                    "type": "string",
+                    "maxLength": 100,
+                    "example": "#445566"
+                },
+                "count": {
+                    "description": "该分级的字段总数",
+                    "type": "integer",
+                    "minimum": 0,
+                    "example": 23
+                },
+                "id": {
+                    "description": "分级标签的ID,雪花ID，最大长度19个字符",
+                    "type": "string",
+                    "maxLength": 20,
+                    "example": "539415387041697226"
+                },
+                "name": {
+                    "description": "分级标签的名称",
+                    "type": "string",
+                    "maxLength": 255,
+                    "example": "一般数据"
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.ListObjectsResp": {
+            "type": "object",
+            "required": [
+                "entries",
+                "total_count"
+            ],
+            "properties": {
+                "entries": {
+                    "description": "对象列表",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.ObjectInfo"
+                    }
+                },
+                "total_count": {
+                    "description": "当前筛选条件下的对象数量",
+                    "type": "integer",
+                    "minimum": 0,
+                    "example": 3
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.LogicEntity": {
+            "type": "object",
+            "required": [
+                "id",
+                "name"
+            ],
+            "properties": {
+                "attributes": {
+                    "description": "业务属性信息",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.Attribute"
+                    }
+                },
+                "id": {
+                    "description": "业务逻辑实体id,uuid",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "业务逻辑实体名称",
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.LogicEntityInfo": {
+            "type": "object",
+            "properties": {
+                "attributes": {
+                    "description": "业务属性信息",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.AttributeInfo"
+                    }
+                },
+                "id": {
+                    "description": "业务逻辑实体id",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "业务逻辑实体名称",
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.LogicalEntity": {
+            "type": "object",
+            "properties": {
+                "attributes": {
+                    "description": "逻辑实体属性",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.AttributeWithField"
+                    }
+                },
+                "id": {
+                    "description": "逻辑实体id",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "逻辑实体名称",
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.ObjectInfo": {
+            "type": "object",
+            "properties": {
+                "child_count": {
+                    "description": "子对象数量",
+                    "type": "integer",
+                    "example": 10
+                },
+                "created_at": {
+                    "description": "创建时间，秒",
+                    "type": "integer"
+                },
+                "created_by": {
+                    "description": "创建人名称",
+                    "type": "string",
+                    "maxLength": 128,
+                    "example": "af"
+                },
+                "description": {
+                    "description": "描述",
+                    "type": "string",
+                    "maxLength": 255,
+                    "example": "用户业务域分组"
+                },
+                "has_child": {
+                    "description": "是否有子节点",
+                    "type": "boolean",
+                    "example": false
+                },
+                "id": {
+                    "description": "对象id",
+                    "type": "string",
+                    "maxLength": 36,
+                    "example": "3821e024-e218-43c0-9931-e82afc32dbb1"
+                },
+                "indicator_count": {
+                    "description": "指标的数量",
+                    "type": "integer",
+                    "example": 3
+                },
+                "interface_count": {
+                    "description": "接口服务的数量",
+                    "type": "integer",
+                    "example": 3
+                },
+                "logic_view_count": {
+                    "description": "视图的数量",
+                    "type": "integer",
+                    "example": 2
+                },
+                "name": {
+                    "description": "对象名称",
+                    "type": "string",
+                    "maxLength": 128,
+                    "example": "用户"
+                },
+                "owners": {
+                    "description": "拥有者数组",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "path_id": {
+                    "description": "路径id",
+                    "type": "string",
+                    "example": "0251c03c-2123-4041-845b-27613bcb9904/2446beb9-8059-48e8-9307-e922c5bc9bbd"
+                },
+                "path_name": {
+                    "description": "路径名称",
+                    "type": "string",
+                    "example": "数据治理/业务梳理"
+                },
+                "second_child_count": {
+                    "description": "第二层子对象数量 only for BusinessObject and BusinessActivity",
+                    "type": "integer",
+                    "example": 8
+                },
+                "type": {
+                    "description": "对象类型,，subject_domain_group业务对象分组，subject_domain业务对象，business_object业务对象，business_activity业务活动，logic_entity逻辑实体，attribute属性",
+                    "type": "string",
+                    "maxLength": 20,
+                    "example": "subject_domain_group"
+                },
+                "updated_at": {
+                    "description": "修改时间，秒",
+                    "type": "integer"
+                },
+                "updated_by": {
+                    "description": "修改人名称",
+                    "type": "string",
+                    "maxLength": 128,
+                    "example": "af"
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.OwnerInfo": {
+            "type": "object",
+            "properties": {
+                "business_object_id": {
+                    "description": "业务对象/业务活动id",
+                    "type": "string"
+                },
+                "departments": {
+                    "description": "部门",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.Department"
+                    }
+                },
+                "user_id": {
+                    "description": "用户id",
+                    "type": "string"
+                },
+                "user_name": {
+                    "description": "用户名称",
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.PathInfo": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "对象id",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "获取的对象的名称",
+                    "type": "string"
+                },
+                "path_id": {
+                    "description": "路径id",
+                    "type": "string"
+                },
+                "path_name": {
+                    "description": "路径名称",
+                    "type": "string"
+                },
+                "type": {
+                    "description": "对象类型",
+                    "type": "integer"
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.QueryClassificationResp": {
+            "type": "object",
+            "required": [
+                "display",
+                "entries"
+            ],
+            "properties": {
+                "display": {
+                    "description": "结果是tree还是列表，默认给的是list",
+                    "type": "string",
+                    "enum": [
+                        "tree",
+                        "list"
+                    ],
+                    "example": "list"
+                },
+                "entries": {
+                    "description": "返回的各级的视图，字段的统计信息",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.SubjectNode"
+                    }
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.QueryHierarchyTotalInfoResp": {
+            "type": "object",
+            "properties": {
+                "entries": {
+                    "description": "逻辑视图字段详情",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.RelatedFormView"
+                    }
+                },
+                "total": {
+                    "description": "该业务架构对象及其子对象下关联的逻辑视图字段数量",
+                    "type": "integer",
+                    "minimum": 0,
+                    "example": 3
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.RefInfo": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "对象ID",
+                    "type": "string",
+                    "example": "88f78432-ee4e-43df-804c-4ccc4ff17f15"
+                },
+                "name": {
+                    "description": "对象名称",
+                    "type": "string",
+                    "example": "obj_name"
+                },
+                "path_id": {
+                    "description": "路径id",
+                    "type": "string"
+                },
+                "path_name": {
+                    "description": "路径名称",
+                    "type": "string"
+                },
+                "type": {
+                    "description": "对象类型",
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.RelatedFormView": {
+            "type": "object",
+            "required": [
+                "business_name",
+                "catalog_name",
+                "form_view_id",
+                "schema",
+                "technical_name"
+            ],
+            "properties": {
+                "business_name": {
+                    "description": "逻辑视图的显示名称",
+                    "type": "string",
+                    "maxLength": 255,
+                    "example": "用户表"
+                },
+                "catalog_name": {
+                    "description": "逻辑视图的数据源catalog名称",
+                    "type": "string",
+                    "maxLength": 255,
+                    "example": "mysql_9bg6mfbi"
+                },
+                "fields": {
+                    "description": "字段信息",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.ViewField"
+                    }
+                },
+                "form_view_id": {
+                    "description": "逻辑视图的ID",
+                    "type": "string",
+                    "example": "6c710258-cc80-4e61-993d-b4fc970db1dc"
+                },
+                "schema": {
+                    "description": "逻辑视图的数据源schema名称",
+                    "type": "string",
+                    "maxLength": 128,
+                    "example": "af_main"
+                },
+                "technical_name": {
+                    "description": "逻辑视图在数据库中的技术名称",
+                    "type": "string",
+                    "maxLength": 255,
+                    "example": "user"
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.RemoveFormSubjectsReqParam": {
+            "type": "object",
+            "properties": {
+                "form_id_slice": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.StandardInfo": {
+            "type": "object",
+            "properties": {
+                "data_type": {
+                    "description": "数据类型",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "标准id",
+                    "type": "string"
+                },
+                "label_icon": {
+                    "description": "标签颜色",
+                    "type": "string"
+                },
+                "label_id": {
+                    "description": "标签id",
+                    "type": "string"
+                },
+                "label_name": {
+                    "description": "标签名称",
+                    "type": "string"
+                },
+                "label_path": {
+                    "description": "标签路径",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "标准中文名",
+                    "type": "string"
+                },
+                "name_en": {
+                    "description": "标准英文名",
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.SubjectNode": {
+            "type": "object",
+            "required": [
+                "id",
+                "name",
+                "type"
+            ],
+            "properties": {
+                "child": {
+                    "description": "子节点",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.SubjectNode"
+                    }
+                },
+                "classified_num": {
+                    "description": "字段分类的总数",
+                    "type": "integer",
+                    "minimum": 0,
+                    "example": 2
+                },
+                "hierarchy_info": {
+                    "description": "该主题层级分类统计信息",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.HierarchyTag"
+                    }
+                },
+                "id": {
+                    "description": "主题对象的ID",
+                    "type": "string",
+                    "example": "26491ca6-b3bc-4032-8da3-80f23369d23a"
+                },
+                "name": {
+                    "description": "主题对象的名称",
+                    "type": "string",
+                    "maxLength": 300,
+                    "example": "用户"
+                },
+                "parent_id": {
+                    "description": "主题对象的父节点ID",
+                    "type": "string",
+                    "example": "26491ca6-b3bc-4032-8da3-80f23369d23a"
+                },
+                "type": {
+                    "description": "业务架构对象类型，subject_domain_group业务对象分组, subject_domain业务对象, business_object业务对象, business_activity业务活动, logic_entity逻辑实体, attribute属性,",
+                    "type": "string",
+                    "maxLength": 64,
+                    "example": "subject_domain_group"
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.SubjectProp": {
+            "type": "object",
+            "required": [
+                "id",
+                "name",
+                "path_id",
+                "path_name"
+            ],
+            "properties": {
+                "id": {
+                    "description": "属性ID",
+                    "type": "string",
+                    "example": "8c710389-fc09-4fdb-b0f3-8984cbaf437a"
+                },
+                "name": {
+                    "description": "属性的名称",
+                    "type": "string",
+                    "maxLength": 300,
+                    "example": "用户"
+                },
+                "path_id": {
+                    "description": "ID的路径",
+                    "type": "string",
+                    "maxLength": 512,
+                    "example": "8c710389-fc09-4fdb-b0f3-8984cbaf437a/8c720389-fc09-4fdb-b0f3-8984cbaf437a"
+                },
+                "path_name": {
+                    "description": "属性的名称路径",
+                    "type": "string",
+                    "maxLength": 2048,
+                    "example": "分组/业务域"
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.UpdateAttributes": {
+            "type": "object",
+            "required": [
+                "field_id",
+                "id"
+            ],
+            "properties": {
+                "field_id": {
+                    "description": "关联字段id",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "属性id",
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.UpdateFormSubjectsReqParam": {
+            "type": "object",
+            "required": [
+                "form_id"
+            ],
+            "properties": {
+                "form_id": {
+                    "description": "业务表ID, 传空表示清除所有的关系",
+                    "type": "string"
+                },
+                "form_relevance_objects": {
+                    "description": "业务对象ID",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.FormRelevanceObject"
+                    }
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.UpdateLogicalEntity": {
+            "type": "object",
+            "required": [
+                "attributes",
+                "id"
+            ],
+            "properties": {
+                "attributes": {
+                    "description": "逻辑实体属性, 不继续下去校验了，允许传空的属性和字段对",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.UpdateAttributes"
+                    }
+                },
+                "id": {
+                    "description": "逻辑实体id",
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.UpdateObjectBodyReqParam": {
+            "type": "object",
+            "required": [
+                "id",
+                "name"
+            ],
+            "properties": {
+                "description": {
+                    "description": "描述，非必填",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "对象id",
+                    "type": "string",
+                    "example": "88f78432-ee4e-43df-804c-4ccc4ff17f15"
+                },
+                "name": {
+                    "description": "Object名称，仅支持中英文数字中划线下划线",
+                    "type": "string"
+                },
+                "owners": {
+                    "description": "用户id数组，最大长度为1",
+                    "type": "array",
+                    "maxItems": 1,
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "type": {
+                    "description": "对象类型",
+                    "type": "string",
+                    "enum": [
+                        "subject_domain_group",
+                        "subject_domain",
+                        "business_object",
+                        "business_activity"
+                    ]
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.UpdateObjectResp": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "对象ID",
+                    "type": "string",
+                    "example": "d1529799-e8a1-4815-a7a3-533a9dbea8bd"
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.UserInfoResp": {
+            "type": "object",
+            "properties": {
+                "user_id": {
+                    "description": "用户id，uuid",
+                    "type": "string",
+                    "example": "3821e024-e218-43c0-9931-e82afc32dbb1"
+                },
+                "user_name": {
+                    "description": "用户名",
+                    "type": "string",
+                    "example": "af"
+                }
+            }
+        },
+        "github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.ViewField": {
+            "type": "object",
+            "required": [
+                "business_name",
+                "data_type",
+                "id",
+                "is_primary",
+                "subject_id",
+                "technical_name"
+            ],
+            "properties": {
+                "business_name": {
+                    "description": "逻辑视图的显示名称",
+                    "type": "string",
+                    "maxLength": 255,
+                    "example": "用户表"
+                },
+                "data_type": {
+                    "description": "字段数据类型, 目前有：numbe,char,date,datetime,timestamp,bool,binary",
+                    "type": "string",
+                    "maxLength": 64,
+                    "example": "char"
+                },
+                "hierarchy_tag": {
+                    "description": "字段对应的标签信息，可能为空",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.HierarchyTag"
+                        }
+                    ]
+                },
+                "id": {
+                    "description": "逻辑视图的ID",
+                    "type": "string",
+                    "example": "8c710389-fc09-4fdb-b0f3-8984cbaf437a"
+                },
+                "is_primary": {
+                    "description": "是否时主键",
+                    "type": "boolean",
+                    "example": false
+                },
+                "property": {
+                    "description": "业务架构对象属性ID",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.SubjectProp"
+                        }
+                    ]
+                },
+                "subject_id": {
+                    "description": "字段关联的业务架构对象ID",
+                    "type": "string",
+                    "maxLength": 36,
+                    "example": "6969dd42-22a6-4c80-bbec-6be7ea01c097"
+                },
+                "technical_name": {
+                    "description": "逻辑视图在数据库中的技术名称",
+                    "type": "string",
+                    "maxLength": 255,
+                    "example": "user"
+                }
+            }
+        },
+        "rest.HttpError": {
+            "type": "object",
+            "properties": {
+                "cause": {
+                    "description": "错误原因",
+                    "type": "string",
+                    "x-omitempty": false,
+                    "example": "错误原因"
+                },
+                "code": {
+                    "description": "返回错误码，格式: 服务名.模块.错误",
+                    "type": "string",
+                    "example": "task-center.Public.InternalError"
+                },
+                "description": {
+                    "description": "错误描述",
+                    "type": "string",
+                    "example": "内部错误"
+                },
+                "detail": {
+                    "description": "错误详情, 一般是json对象",
+                    "x-omitempty": false
+                },
+                "solution": {
+                    "description": "错误处理办法",
+                    "type": "string",
+                    "x-omitempty": false,
+                    "example": "请联系内部人员"
+                }
+            }
+        }
+    }
+}

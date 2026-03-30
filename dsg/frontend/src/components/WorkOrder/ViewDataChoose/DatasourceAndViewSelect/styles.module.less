@@ -1,0 +1,114 @@
+.search-wrapper {
+    overflow-y: auto;
+
+    .selected {
+        .search-item-wrapper {
+            background-color: #ecf5ff !important;
+        }
+    }
+
+    :global {
+        .any-fabric-ant-collapse-header {
+            position: relative;
+            padding: 8px 20px !important;
+            color: #666 !important;
+
+            &::after {
+                position: absolute;
+                bottom: 0;
+                left: 16px;
+                width: calc(100% - 32px);
+                height: 1px;
+                background-color: #eee;
+                content: '';
+            }
+        }
+
+        .any-fabric-ant-collapse-content-box {
+            padding: 0 !important;
+        }
+    }
+
+    .search-item-wrapper {
+        padding: 10px 16px 10px 38px;
+        cursor: pointer;
+
+        &:hover {
+            background-color: #eff0f3;
+        }
+    }
+
+    .search-item {
+        display: flex;
+        align-items: center;
+        font-size: 14px;
+        gap: 8px;
+
+        &-icon {
+            padding-right: 6px;
+        }
+
+        &-right {
+            display: flex;
+            width: calc(100% - 48px);
+            min-width: calc(100% - 48px);
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        &-content {
+            width: 100%;
+            flex: 1;
+            .ellipsis-mixin();
+
+            &-name {
+                overflow: hidden;
+                font-weight: 500;
+                text-overflow: ellipsis;
+            }
+
+            &-path {
+                overflow: hidden;
+                margin-top: 2px;
+                color: #999;
+                font-size: 12px;
+                text-overflow: ellipsis;
+            }
+        }
+
+        &-opt {
+            padding: 2px 4px;
+        }
+
+        :global {
+            .any-fabric-ant-badge-dot {
+                margin-top: 16px !important;
+            }
+
+            .any-fabric-anticon {
+                font-size: 16px;
+            }
+
+            .any-fabric-ant-collapse-arrow {
+                margin-right: 10px;
+            }
+        }
+    }
+
+    .search-path {
+        max-width: 100%;
+        color: rgb(0 0 0 / 45%);
+        font-size: 12px;
+        .ellipsis-mixin();
+    }
+}
+
+.custom-tree-list {
+    border: unset;
+
+    :global {
+        .any-fabric-ant-tree-title {
+            .ellipsis-mixin();
+        }
+    }
+}

@@ -1,0 +1,131 @@
+server:
+  http:
+    host: 0.0.0.0:8153
+  doc:
+    host: "${DOC_HOST}"
+    version: "1.0"
+
+telemetry:
+  traceUrl: "${TRACE_URL}"
+  logLevel: "${LOG_LEVEL}"
+  logUrl: "${LOG_URL}"
+  serverName: "${SERVER_NAME}"
+  serverVersion: "${SERVER_VERSION}"
+  traceEnabled: "${TRACE_ENABLED}"
+
+log:
+  logPath: "${LOG_PATH}"
+
+database:
+  dbtype: "${DB_TYPE}"
+  host: "${DB_HOST}"
+  port: "${DB_PORT}"
+  username: "${DB_USERNAME}"
+  password: "${DB_PASSWORD}"
+  database: "${DB_NAME}"
+  max-idle-connections: 5
+  max-open-connections: 50
+  max-connection-idle-time: 300
+  max-connection-life-time: 900
+  log-level: 2
+  isdebug: true
+  tableprefix: t_
+
+redis:
+  host: "${REDIS_HOST}"
+  password: "${REDIS_PASSWORD}"
+  database: ${REDIS_DB}
+  minIdleConns: ${REDIS_MIN_IDLE_CONNS}
+
+db-migrate:
+  source: "${MIGRATION_PATH}"
+
+oauth:
+  hydraAdmin: "${HYDRA_HOST}"
+  hydraPublic: "${HYDRA_PUBLIC_HOST}"
+
+depServices:
+  userMgmPrivateHost: "${USER_MANAGE_HOST}"
+  configCenterHost: "${CONFIGURATION_CENTER_HOST}"
+  dataCatalogHost: "${DATA_CATALOG_HOST}"
+  anyRobotTraceUrl: "${ANYROBOT_TRACE_URL}"
+  metaDataMgmHost: "${META_DATA_MANAGE_HOST}"
+  taskCenterHost: "${TASK_CENTER_HOST}"
+  virtualizationEngineUrl: "${VIRTUALIZATION_ENGINE_URL}"
+  afSailorServiceHost: "${AF_SAILOR_SERVICE_HOST}"
+  dataMaskingHost: "${DATA_MASKING_HOST}"
+  anyDataAlgServer: "${ANYDATA_ALG_SERVER}"
+  businessGroomingHost: "${BUSINESS_GROOMING_HOST}"
+  workflowRestHost: "${WORKFLOW_REST_HOST}"
+  docAuditRestHost: "${DOC_AUDIT_REST_HOST}"
+  workflowTenantID: "${WORKFLOW_TENANT_ID}"
+  workflowMQType: "${WORKFLOW_MQ_TYPE}"
+  basicSearchHost: "${BASIC_SEARCH_HOST}"
+  interfaceSvcHost: "${INTERFACE_SVC_HOST}"
+  dataSubjectHost: "${DATA_SUBJECT_HOST}"
+  dataExploreHost: "${DATA_EXPLORE_HOST}"
+  dataViewHost: "${DATA_VIEW_HOST}"
+  authServiceHost: "${AUTH_SERVICE_HOST}"
+  demandManagementHost: "${DEMAND_MANAGEMENT_HOST}"
+  departmentID: "${DEPARTMENT_ID}"
+
+adKgConf:
+  lineageKgId: "${ANYDATA_ALG_LINEAGE_KG_ID}"
+  graphKgId: "${ANYDATA_ALG_GRAPH_KG_ID}"
+  email: "${ANYDATA_ALG_EMAIL}"
+  password: "${ANYDATA_ALG_PASSWORD}"
+  cacheExpireMinutes: "${LINEAGE_CACHE_EXPIRE_MINUTES}"
+
+mq:
+  connConfs:
+    - mqType: kafka
+      host: "${KAFKA_MQ_HOST}"
+      auth:
+        username: "${KAFKA_MQ_USENAME}"
+        password: "${KAFKA_MQ_PASSWORD}"
+        mechanism: PLAIN
+        version: 2.3.1
+    - mqType: nsq
+      host: "${NSQ_MQ_HOST}"
+      httpHost: "${NSQ_MQ_HTTP_HOST}"
+      lookupdHost: "${NSQ_LOOKUPD_HOST}"
+  channel: af.data-catalog
+  clientId: af.data-catalog
+  sendBufSize: 1024
+  recvBufSize: 1024
+
+# 资产目录编码(CATALOG_CODE_TYPE目前设置为1或2)，其中1为旧的以/斜线分隔的编码，如aaaaaaa/000260；
+# 2为形如2023070718000012345001（20230707180000为年月日时分秒，12345为机器码，001为自增的数字序列）
+#variables:
+#  catalogCodeType: ${CATALOG_CODE_TYPE}
+#  sampleData:
+#    virtualizationCacheEnable: ${SAMPLE_VIRTUALIZATION_CACHE_ENABLE}
+#    dataMaskingEnable: ${SAMPLE_DATA_MASKING_ENABLE}
+#    bigModelSwitch: ${SAMPLE_BIG_MODEL_SWITCH}
+#    bigModelCacheEnable: ${SAMPLE_BIG_MODEL_CACHE_ENABLE}
+#    haveDataExpireHour: ${SAMPLE_HAVE_DATA_EXPIRE_HOUR}
+#    emptyDataExpireMinute: ${SAMPLE_EMPTY_DATA_EXPIRE_MINUTE}
+
+openAI:
+  apiKey: "${OPENAI_API_KEY}"
+  url: "${OPENAI_URL}"
+  apiVersion: "${OPENAI_API_VERSION}"
+  apiType: "${OPENAI_API_TYPE}"
+
+anyDataConf:
+  url: "${ANYDATA_URL}"
+  accountType: "${ANYDATA_ACCOUNT_TYPE}"
+  user: "${ANYDATA_USER}"
+  password: "${ANYDATA_PASSWORD}"
+
+cogSearch:
+  highlight:
+    prefix: <span style="color:#FF6304;">
+    suffix: </span>
+
+# 回调配置
+callback:
+  # 是否启用回调
+  enabled: ${CALLBACK_ENABLED}
+  # 通过这个地址调用回调接口
+  address: ${CALLBACK_ADDRESS}

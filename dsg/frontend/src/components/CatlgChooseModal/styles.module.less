@@ -1,0 +1,248 @@
+.catlgInfoModalContent {
+    display: flex;
+    overflow: hidden;
+    height: 100%;
+    border: 1px solid rgb(0 0 0 / 5%);
+    border-radius: 4px;
+
+    .leftTreeWrapper {
+        width: 216px;
+
+        :global {
+            .any-fabric-ant-tree {
+                max-height: 304px;
+            }
+        }
+    }
+
+    & > div {
+        height: 100%;
+
+        &:nth-child(1) {
+            width: 216px;
+            min-width: 216px;
+        }
+
+        &:nth-child(2) {
+            display: flex;
+            width: calc(100% - 216px);
+            height: 100%;
+        }
+    }
+
+    .boxTitle {
+        padding: 12px 20px 0;
+        color: rgb(0 0 0 / 85%);
+        font-weight: bold;
+    }
+
+    .catlgListWrapper {
+        display: flex;
+        overflow: hidden overlay;
+        height: 100%;
+        flex: 1;
+        flex-direction: column;
+        border-right: 1px solid rgb(0 0 0 / 5%);
+        border-left: 1px solid rgb(0 0 0 / 5%);
+
+        .caltgSearchInput {
+            width: calc(100% - 32px);
+            flex-shrink: 0;
+            margin: 12px 16px;
+            margin-top: 12px;
+        }
+
+        .catlgListContent {
+            overflow: hidden auto;
+            flex: 1;
+            padding: 0 8px;
+        }
+
+        .catlgInfo {
+            display: flex;
+            flex: 1;
+            align-items: center;
+            padding: 8px;
+            gap: 8px;
+
+            &.selCatlgInfo {
+                background-color: #ecf5ff;
+            }
+
+            .icon {
+                margin: 0 8px 0 16px;
+                font-size: 30px;
+            }
+
+            .viewNames {
+                overflow: hidden;
+                // width: 200px;
+                margin-left: 8px;
+                color: #000;
+                font-size: 14px;
+
+                .top {
+                    .ellipsis-mixin();
+
+                    line-height: 20px;
+                }
+
+                .bottom {
+                    .ellipsis-mixin();
+
+                    margin-top: 4px;
+                    color: rgb(0 0 0 / 45%);
+                    line-height: 16px;
+                }
+            }
+        }
+    }
+
+    .selectedInfoWrapper {
+        display: flex;
+        width: 307px;
+        min-width: 225px;
+        height: 100%;
+        flex-direction: column;
+        padding: 16px;
+
+        .selectedTopInfo {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            .selectedTitle {
+                color: #000;
+                font-size: 14px;
+                font-weight: 550;
+            }
+
+            .clearAllBtn {
+                color: rgb(0 0 0 / 85%);
+                font-size: 14px;
+            }
+        }
+
+        .selectedListWrapper {
+            overflow: hidden auto;
+            flex: 1;
+        }
+
+        .catlgInfo {
+            display: flex;
+            align-items: center;
+            padding: 7px 16px 7px 8px;
+            gap: 8px;
+
+            & + .catlgInfo {
+                margin-top: 8px;
+            }
+
+            .fieldNameWrapper {
+                overflow: hidden;
+                flex: 1;
+                color: rgb(0 0 0 / 85%);
+                font-size: 14px;
+                line-height: 22px;
+
+                .top {
+                    .ellipsis-mixin();
+                }
+
+                .bottom {
+                    .ellipsis-mixin();
+
+                    color: rgb(0 0 0 / 45%);
+                }
+            }
+        }
+    }
+
+    .addedTag {
+        height: 20px;
+        background: rgb(0 0 0 / 7%);
+        border-radius: 4px;
+        color: rgb(0 0 0 / 65%);
+        font-size: 12px;
+        // line-height: 18px;
+    }
+}
+
+.selFieldList {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 20px;
+
+    .selectedInfo {
+        //         font-size: 14px;
+        // color: #000000;
+        // line-height: 20px;
+        height: 32px;
+        line-height: 32px;
+    }
+
+    .selInfoItemsContWrapper {
+        display: flex;
+        overflow: hidden auto;
+        max-height: 112px;
+        flex: 1;
+        flex-wrap: wrap;
+        padding: 0 0 12px;
+        gap: 8px;
+    }
+
+    .selInfoItem {
+        display: flex;
+        max-width: 150px;
+        height: 32px;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 6px;
+        background: rgb(214 221 237 / 25%);
+        border-radius: 4px;
+
+        .selInfoItemName {
+            .ellipsis-mixin();
+
+            flex: 1;
+            // margin-left: 16px;
+            // display: flex;
+            // align-items: center;
+        }
+    }
+
+    .selInfoItemDelBtn {
+        flex-shrink: 0;
+        margin-left: 4px;
+        color: rgb(0 0 0 / 65%);
+        font-size: 14px;
+    }
+}
+
+.empty {
+    display: grid;
+    height: 100%;
+    place-content: center;
+}
+
+.catlgChooseModalWrapper {
+    .modalFooter {
+        display: flex;
+        width: 100%;
+        justify-content: flex-end;
+        gap: 16px;
+
+        :global {
+            .any-fabric-ant-btn {
+                min-width: 80px;
+            }
+        }
+    }
+
+    :global {
+        .any-fabric-ant-modal-body {
+            display: flex;
+            flex-direction: column;
+        }
+    }
+}

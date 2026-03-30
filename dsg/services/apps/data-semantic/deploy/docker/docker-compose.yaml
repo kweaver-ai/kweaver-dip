@@ -1,0 +1,150 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: ../..
+      dockerfile: deploy/docker/Dockerfile
+    container_name: data-semantic-api
+    ports:
+      - "${API_PORT:-8888}:8888"
+    environment:
+      - TZ=${TZ:-Asia/Shanghai}
+      - ENVIRONMENT=${ENVIRONMENT:-dev}
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+      # Telemetry 配置
+      - SERVICE_VERSION=${SERVICE_VERSION:-1.0.0}
+      - LOG_MODE=${LOG_MODE:-console}
+      - LOG_REMOTE_URL=${LOG_REMOTE_URL}
+      - TRACE_ENABLED=${TRACE_ENABLED:-false}
+      - TRACE_ENDPOINT=${TRACE_ENDPOINT}
+      - AUDIT_ENABLED=${AUDIT_ENABLED:-false}
+      - AUDIT_URL=${AUDIT_URL}
+      # 数据库配置
+      - DB_HOST=${DB_HOST:-mysql}
+      - DB_PORT=${DB_PORT:-3306}
+      - DB_NAME=data-semantic
+      - DB_USER=${DB_USER:-root}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_MAX_IDLE_CONNS=${DB_MAX_IDLE_CONNS:-10}
+      - DB_MAX_OPEN_CONNS=${DB_MAX_OPEN_CONNS:-100}
+      - DB_LOG_LEVEL=${DB_LOG_LEVEL:-warn}
+      # Redis 配置
+      - REDIS_HOST=${REDIS_HOST:-redis}
+      - REDIS_PORT=${REDIS_PORT:-6379}
+      - REDIS_DB=${REDIS_DB:-0}
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      # 认证配置
+      - ACCESS_SECRET=${ACCESS_SECRET}
+      - ACCESS_EXPIRE=${ACCESS_EXPIRE:-7200}
+    volumes:
+      - ./logs:/app/logs
+    restart: unless-stopped
+    networks:
+      - data-semantic-network
+    depends_on:
+      - mysql
+
+  mysql:
+    image: mysql:8.0
+    container_name: data-semantic-mysql
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+      - MYSQL_DATABASE=data-semantic
+      - TZ=Asia/Shanghai
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    restart: unless-stopped
+    networks:
+      - data-semantic-network
+
+  # Redis (可选)
+  redis:
+    image: redis:7-alpine
+    container_name: data-semantic-redis
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes
+    volumes:
+      - redis-data:/data
+    restart: unless-stopped
+    networks:
+      - data-semantic-network
+    profiles:
+      - with-redis
+
+  # Zookeeper (Kafka 依赖)
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.5.0
+    container_name: data-semantic-zookeeper
+    ports:
+      - "2181:2181"
+    environment:
+      - ZOOKEEPER_CLIENT_PORT=2181
+      - ZOOKEEPER_TICK_TIME=2000
+    volumes:
+      - zookeeper-data:/var/lib/zookeeper/data
+      - zookeeper-logs:/var/lib/zookeeper/log
+    restart: unless-stopped
+    networks:
+      - data-semantic-network
+    profiles:
+      - with-kafka
+
+  # Kafka
+  kafka:
+    image: confluentinc/cp-kafka:7.5.0
+    container_name: data-semantic-kafka
+    ports:
+      - "9092:9092"
+      - "9093:9093"
+    depends_on:
+      - zookeeper
+    environment:
+      - KAFKA_BROKER_ID=1
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+      - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
+      - KAFKA_TRANSACTION_STATE_LOG_MIN_ISR=1
+      - KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR=1
+      - KAFKA_AUTO_CREATE_TOPICS_ENABLE=true
+    volumes:
+      - kafka-data:/var/lib/kafka/data
+    restart: unless-stopped
+    networks:
+      - data-semantic-network
+    profiles:
+      - with-kafka
+
+  # Kafka UI (可选，方便管理)
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    container_name: data-semantic-kafka-ui
+    ports:
+      - "8080:8080"
+    depends_on:
+      - kafka
+    environment:
+      - KAFKA_CLUSTERS_0_NAME=local
+      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:29092
+      - KAFKA_CLUSTERS_0_ZOOKEEPER=zookeeper:2181
+    restart: unless-stopped
+    networks:
+      - data-semantic-network
+    profiles:
+      - with-kafka
+
+networks:
+  data-semantic-network:
+    driver: bridge
+
+volumes:
+  mysql-data:
+  redis-data:
+  zookeeper-data:
+  zookeeper-logs:
+  kafka-data:

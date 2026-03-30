@@ -1,0 +1,66 @@
+templates:
+  - name: subject_domain_list
+    sheet_name: 业务对象或活动清单
+    type: 6
+    components:
+      - label: 业务对象分组名称
+        name: subject_domain_group
+        required: true
+      - label: 业务对象分组描述
+        name: subject_domain_group_description
+        required: true
+      - label: 业务对象名称
+        name: subject_domain
+        required: false
+      - label: 业务对象Owner
+        name: subject_domain_owners
+        required: false
+      - label: 业务对象描述
+        name: subject_domain_description
+        required: false
+      - label: 业务对象/活动名称
+        name: business_object_or_activity
+        required: false
+      - label: 业务对象/活动类型
+        name: update_cycle
+        required: false
+      - label: 业务对象/活动Owner
+        name: business_object_or_activity_owners
+        required: false
+      - label: 业务对象/活动描述
+        name: business_object_or_activity_description
+        required: false
+      - label: 逻辑实体名称
+        name: logic_entity
+        required: true
+      - label: 属性名称
+        name: attribute
+        required: true
+      - label: 唯一标识
+        name: is_primary_key
+        required: false
+      - label: 分级标签
+        name: label_name
+        required: false
+
+  # - name: subject_domain_field
+  #   sheet_name: 业务对象或活动字段
+  #   type: 7
+  #   components:
+  #     - label: 业务对象/活动名称
+  #       name: business_object_or_activity
+  #       required: true
+  #     - label: 逻辑实体名称
+  #       name: logic_entity
+  #       required: true
+  #     - label: 属性名称
+  #       name: attribute
+  #       required: true
+  #     - label: 唯一标识
+  #       name: is_primary_key
+  #       required: false
+  #     - label: 分级标签
+  #       name: label_name
+  #       required: false
+
+

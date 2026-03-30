@@ -1,0 +1,28 @@
+.return-wrapper {
+    display: flex;
+    align-items: center;
+
+    .return-info {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+
+        .arrow {
+            margin-right: 12px;
+            color: rgb(0 0 0 / 85%);
+        }
+    }
+
+    .divider {
+        width: 1px;
+        height: 20px;
+        margin: 0 16px 0 12px;
+        background-color: rgb(0 0 0 / 35%);
+    }
+
+    .title {
+        max-width: 154px;
+        font-weight: 550;
+        .ellipsis-mixin();
+    }
+}

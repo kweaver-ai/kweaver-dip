@@ -1,0 +1,153 @@
+version: '3.8'
+
+# ============================================================================
+# 开发环境专用的 docker-compose 配置
+# ============================================================================
+# 使用方式: docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
+# 或者: ./docker-start.sh up
+#
+# 此文件会覆盖 docker-compose.yml 中的配置，用于开发环境优化：
+# - 使用 dev-config 目录的配置文件（如果存在）
+# - 设置 DEBUG 模式和 debug 日志级别
+# - 减少资源使用（内存限制等）
+# - 支持热重载（可选）
+# ============================================================================
+
+services:
+  # ============================================================================
+  # 基础搜索服务
+  # ============================================================================
+  basic-search:
+    # 开发环境可以挂载源代码，支持热重载
+    volumes:
+      - ../services/apps/basic-search/dev-config:/opt/basic-search/config:ro
+      - basic-search-logs:/opt/basic-search/logs
+      # 如果需要热重载，可以挂载源代码（需要调整 Dockerfile）
+      # - ../services/apps/basic-search:/app:ro
+    environment:
+      - DEBUG=true
+      - LOG_LEVEL=debug
+      # 强制使用 Docker 环境配置（连接其他容器服务名，而非 localhost）
+      - CONFIG_PATH=/opt/basic-search/config/config.docker.yaml
+
+  # ============================================================================
+  # OpenSearch - 开发环境优化
+  # ============================================================================
+  opensearch:
+    environment:
+      - "OPENSEARCH_JAVA_OPTS=-Xms256m -Xmx256m" # 开发环境使用更少内存
+
+  # ============================================================================
+  # Kafka - 开发环境优化
+  # ============================================================================
+  kafka:
+    environment:
+      KAFKA_NUM_PARTITIONS: 1 # 开发环境减少分区数
+      KAFKA_ZOOKEEPER_CONNECTION_TIMEOUT_MS: 60000 # 增加连接超时
+      KAFKA_ZOOKEEPER_SESSION_TIMEOUT_MS: 60000 # 增加会话超时
+      KAFKA_CUB_ZK_TIMEOUT: 120 # 增加预检查超时
+      KAFKA_HEAP_OPTS: "-Xmx512m -Xms512m" # 限制内存
+      KAFKA_OPTS: "-Djava.security.auth.login.config=/etc/kafka/kafka_server_jaas.conf -Dzookeeper.sasl.client=false -Dzookeeper.session.timeout.ms=60000 -Dzookeeper.connection.timeout.ms=60000"
+    command: "bash -c '/etc/confluent/docker/configure && /etc/confluent/docker/launch'"
+
+  # ============================================================================
+  # MariaDB - 开发环境优化
+  # ============================================================================
+  mariadb:
+    environment:
+      # 开发环境可以使用默认配置，或减少缓存
+      - MYSQL_INNODB_BUFFER_POOL_SIZE=128M
+
+  # ============================================================================
+  # 配置中心服务
+  # ============================================================================
+  configuration-center:
+    environment:
+      - DEBUG=true
+      - LOG_LEVEL=debug
+      - TRACE_ENABLED=false
+      - AUDIT_ENABLED=false
+
+  # ============================================================================
+  # 数据目录服务
+  # ============================================================================
+  data-catalog:
+    environment:
+      - DEBUG=true
+      - LOG_LEVEL=debug
+      - TRACE_ENABLED=false
+
+  # ============================================================================
+  # 数据探索服务
+  # ============================================================================
+  data-exploration-service:
+    environment:
+      - DEBUG=true
+      - LOG_LEVEL=debug
+      - TRACE_ENABLED=false
+
+  # ============================================================================
+  # 认证授权服务
+  # ============================================================================
+  auth-service:
+    environment:
+      - DEBUG=true
+      - LOG_LEVEL=debug
+      - TRACE_ENABLED=false
+
+  # ============================================================================
+  # 数据主体服务
+  # ============================================================================
+  data-subject:
+    environment:
+      - DEBUG=true
+      - LOG_LEVEL=debug
+      - TRACE_ENABLED=false
+
+  # ============================================================================
+  # 数据视图服务
+  # ============================================================================
+  data-view:
+    environment:
+      - DEBUG=true
+      - LOG_LEVEL=debug
+      - TRACE_ENABLED=false
+      - AUDIT_ENABLED=false
+
+  # ============================================================================
+  # 会话服务
+  # ============================================================================
+  session:
+    environment:
+      - DEBUG=true
+      - LOG_LEVEL=debug
+      - TRACE_ENABLED=false
+      - SESSION_EXPIRE_SECOND=7200
+      - HTTP_EXPIRE_SECOND=60
+
+  # ============================================================================
+  # 任务中心服务
+  # ============================================================================
+  task-center:
+    environment:
+      - DEBUG=true
+      - LOG_LEVEL=debug
+      - TRACE_ENABLED=false
+
+  # ============================================================================
+  # 数据应用服务
+  # ============================================================================
+  data-application-service:
+    environment:
+      - DEBUG=true
+      - LOG_LEVEL=debug
+      - TRACE_ENABLED=false
+
+  # ============================================================================
+  # 数据应用网关服务
+  # ============================================================================
+  data-application-gateway:
+    environment:
+      - DEBUG=true
+      - LOG_LEVEL=debug
+      - TRACE_ENABLED=false

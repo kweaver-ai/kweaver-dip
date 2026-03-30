@@ -1,0 +1,124 @@
+server:
+  http:
+    addr: 0.0.0.0:8281
+    timeout: 10s
+  doc:
+    host: "${DOC_HOST}"
+    version: "1.0"
+
+sys:
+  mode: debug
+  selfIP: "${POD_IP}"
+
+logs:
+  - name: data_explore
+    default: true
+    enable_caller: true
+    stacktrace_level: error
+    development: false
+    cores:
+      - destination: logs/info.log        #日志输出地址
+        rotate_size: 100MB                      #文件分割尺寸
+        core_type: file                         #core类型，file, stdout两种
+        enable_color: false                     #是否开启输出颜色
+        output_format: json                     #日志输出的格式, json, console
+        log_level: info                         #该日志流的等级
+      - destination: logs/error.log
+        rotate_size: 100MB
+        core_type: file
+        output_format: json
+        log_level: error
+      - destination: console
+        core_type: stdout
+        output_format: console
+        enable_color: true
+        log_level: info
+  - name: data_explore_request
+    default: false
+    enable_caller: true
+    development: false
+    cores:
+      - destination: logs/http_request.log
+        rotate_size: 100MB
+        core_type: file
+        output_format: json
+        log_level: info
+      - destination: console
+        core_type: stdout
+        output_format: console
+        enable_color: true
+        log_level: info
+
+telemetry:
+  traceUrl: "${TRACE_URL}"
+  logLevel: "${LOG_LEVEL}"
+  logUrl: "${LOG_URL}"
+  serverName: "${SERVER_NAME}"
+  serverVersion: "${SERVER_VERSION}"
+  traceEnabled: "${TRACE_ENABLED}"
+
+database:
+  dbtype: "${DB_TYPE}"
+  host: "${DB_HOST}"
+  port: "${DB_PORT}"
+  username: "${DB_USERNAME}"
+  password: "${DB_PASSWORD}"
+  database: "${DB_NAME}"
+  max-idle-connections: 5
+  max-open-connections: 50
+  max-connection-idle-time: 300
+  max-connection-life-time: 900
+  loglevel: 2
+  isdebug: true
+  tableprefix: t_
+
+depServices:
+  configCenterHost: "${CONFIGURATION_CENTER_HOST}"
+  virtualizationEngineUrl: "${VIRTUALIZATION_ENGINE_URL}"
+  userMgmPrivateHost: "${USER_MANAGE_HOST}"
+  standardizationHost: "${STANDARDIZATION_HOST}"
+
+oauth:
+  hydraAdmin: "${HYDRA_HOST_PRIVATE}"
+  hydraPublic: "${HYDRA_HOST_PUBLIC}"
+
+redis:
+  addr: ${REDIS_HOST}
+  clientName: af.data-exploration-service
+  DB: ${REDIS_DB}
+  password: ${REDIS_PASSWORD}
+  sentinelPassword: ${REDIS_SENTINEL_PASSWORD}
+  maxRetries: 3
+  minRetryBackoff: 8
+  maxRetryBackoff: 512
+  dialTimeout: 5000
+  readTimeout: 3000
+  writeTimeout: 3000
+  poolSize: 10
+  poolTimeout: 4000
+  minIdleConns: 3
+  maxIdleConns: 10
+  connMaxIdleTime: 10
+  connMaxLifetime: 60
+  masterName: mymaster
+
+kafka:
+  addr: ${KAFKA_URI}
+  mechanism: ${KAFKA_MECHANISM}
+  password: ${KAFKA_PASSWORD}
+  username: ${KAFKA_USERNAME}
+  groupId: ${KAFKA_CONSUMER_GROUP}
+
+exploration:
+  cacheExpireTime: ${EXPLORE_CACHE_EXPIRE_TIME}
+  groupLimit: ${EXPLORE_GROUP_LIMIT}
+  reportDefaultOvertime: ${REPORT_DEFAULT_OVER_TIME}
+  virtualQueryResultTopic: ${VIRTUAL_QUERY_RESULT_TOPIC}
+  virtualEngineTimeout: ${VIRTUAL_ENGINE_TIMEOUT}
+  concurrency_enable: ${concurrency_enable}
+  concurrency_limit: ${concurrency_limit}
+  concurrency_task_limit: ${concurrency_task_limit}
+  retry_count: ${retry_count}
+  retry_wait_time: ${retry_wait_time}
+  retry_time_out: ${retry_time_out}
+  mdl_uni_query_client_time_out: ${mdl_uni_query_client_time_out}

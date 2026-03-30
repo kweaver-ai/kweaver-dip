@@ -1,0 +1,143 @@
+.dir-report {
+    height: 100%;
+
+    &-tabs {
+        :global {
+            .any-fabric-ant-tabs-nav {
+                margin-bottom: 0;
+
+                .any-fabric-ant-tabs-nav-wrap {
+                    padding-left: 20px;
+                }
+            }
+        }
+
+        .sync-btn {
+            padding-right: 20px;
+        }
+    }
+
+    &-left {
+        overflow: auto;
+        max-height: 100%;
+
+        .title {
+            padding: 24px 0 24px 10px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        > div {
+            & > div:first-child {
+                padding-top: 16px;
+            }
+        }
+    }
+
+    &-right {
+        height: 100%;
+        padding: 18px 0;
+        padding-top: 22px;
+
+        .serachBox {
+            display: flex;
+            justify-content: end;
+            margin-bottom: 16px;
+        }
+
+        .bottom {
+            display: flex;
+            height: 100%;
+            justify-content: space-between;
+
+            .catlgTitle,
+            .catlgCode,
+            .orgCode {
+                .ellipsis-mixin();
+            }
+
+            .tableRow {
+                &:hover {
+                    .primaryColor {
+                        color: @primary-color;
+                    }
+                }
+            }
+
+            .dataTypeList,
+            .labelList {
+                display: flex;
+                height: 24px;
+                align-items: center;
+
+                & > span {
+                    overflow: hidden;
+                    // max-width: 78px;
+                    padding: 0 4px;
+                    border: none;
+                    margin-right: 8px;
+                    background: rgb(214 221 237 / 25%);
+                    border-radius: 2px;
+                    color: #6b798d;
+                    line-height: 24px;
+                    .ellipsis-mixin();
+
+                    .labelDot {
+                        margin-left: 5px;
+                    }
+                }
+
+                .any-fabric-ant-table-row-selected {
+                    .any-fabric-ant-table-cell {
+                        background-color: rgb(18 110 227 / 6%);
+                    }
+                }
+            }
+
+            .dataTypeList {
+                > span {
+                    flex-shrink: 0;
+                }
+            }
+
+            .oprColumn {
+                :global {
+                    .any-fabric-ant-btn {
+                        height: 30px;
+                        padding: 0;
+                    }
+                }
+            }
+
+            .emptyWrapper {
+                width: 100%;
+                margin-top: 100px;
+            }
+
+            :global {
+                .any-fabric-ant-table-wrapper {
+                    width: 100%;
+                }
+            }
+
+            .isExpansion :global {
+                .any-fabric-ant-table-pagination.any-fabric-ant-pagination {
+                    margin-top: 18px;
+                }
+            }
+        }
+    }
+}
+
+.reportMsg {
+    :global {
+        .any-fabric-ant-message-custom-content {
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .any-fabric-ant-message-custom-content .any-fabric-anticon {
+            top: 3px;
+        }
+    }
+}

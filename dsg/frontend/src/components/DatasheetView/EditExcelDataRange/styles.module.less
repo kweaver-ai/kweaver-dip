@@ -1,0 +1,115 @@
+.cellRangeContainer {
+    position: relative;
+    display: flex;
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    align-items: center;
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+    transition: all 0.3s;
+
+    :global {
+        .any-fabric-ant-input {
+            border: none;
+        }
+
+        .any-fabric-ant-input:focus,
+        .any-fabric-ant-input-focused {
+            box-shadow: none;
+        }
+
+        .any-fabric-ant-input-status-error:not(
+                .any-fabric-ant-input-disabled,
+                .any-fabric-ant-input-borderless
+            ).any-fabric-ant-input:focus,
+        .any-fabric-ant-input-status-error:not(
+                .any-fabric-ant-input-disabled,
+                .any-fabric-ant-input-borderless
+            ).any-fabric-ant-input-focused {
+            border-color: transparent;
+            border-right-width: 0;
+            box-shadow: none;
+        }
+    }
+
+    .line {
+        color: rgb(0 0 0 / 25%);
+    }
+
+    .bottomLine {
+        position: absolute;
+        bottom: -1px;
+        height: 2px;
+        margin-left: 11px;
+        background: rgb(24 144 255);
+        opacity: 0;
+        pointer-events: none;
+        transition: all 0.3s ease-out;
+    }
+}
+
+.cellRangeContainerFocus {
+    border-color: #3a8ff0;
+    border-right-width: 1px;
+    box-shadow: 0 0 0 2px rgb(18 110 227 / 20%);
+    outline: 0;
+
+    .bottomLine {
+        width: 200px;
+        opacity: 1;
+        transition: all 0.3s ease-out;
+    }
+
+    .focusRightInput {
+        transform: translateX(251px);
+    }
+}
+
+.cellRangeContainerError {
+    border-color: #e60012 !important;
+    background-color: #fff;
+    box-shadow: 0 0 0 2px rgb(230 0 18 / 20%);
+}
+
+.dataRangeContainer {
+    .radioGroupContainer {
+        display: flex;
+        width: 100%;
+
+        .radioItemWrapper {
+            flex: 1;
+        }
+    }
+
+    .btnMinWidth {
+        min-width: 80px;
+    }
+}
+
+.dataRangeView {
+    display: flex;
+    flex-direction: column;
+    row-gap: 16px;
+
+    .sheetWrapper {
+        display: flex;
+        overflow: hidden;
+        flex-wrap: wrap;
+        column-gap: 8px;
+        row-gap: 8px;
+
+        .item {
+            display: flex;
+            flex: 0 1 auto;
+            padding: 0 8px;
+            background: rgb(240 242 246 / 45%);
+            border-radius: 3px;
+            column-gap: 4px;
+
+            .text {
+                .ellipsis-mixin();
+            }
+        }
+    }
+}

@@ -1,0 +1,193 @@
+@primary-color: #126ee3; // 全局主色
+@link-color: #126ee3; // 链接色
+@link-hover-color: #1890ff; // 链接悬停
+@link-active-color: #1890ff; // 链接点击
+@success-color: #52c41b; // 成功色
+@warning-color: #faac14; // 警告色
+@error-color: #e60012; // 错误色
+@font-size-base: 14px; // 主字号
+@heading-color: rgba(0, 0, 0); // 标题色
+@text-color: rgba(0, 0, 0); // 主文本色
+@text-color-secondary: rgba(0, 0, 0, 0.4); // 次文本色
+@disabled-color: rgba(0, 0, 0, 0.3); // 失效色
+@text-color-desc: rgba(0, 0, 0, 0.65); // 描述文本色
+@title-color-secondary: rgba(0, 0, 0, 0.85); // 次标题色
+@text-color-third: rgba(0, 0, 0, 0.45);
+@border-radius-base: 4px; // 组件/浮层圆角
+@font-family:-apple-system, BlinkMacSystemFont, 'Helvetica Neue', 'PingFang SC', 'Microsoft YaHei', 'sans-serif'; // 字体
+@ant-prefix: any-fabric-ant; // 样式前缀
+@ant-icon-prefix: any-fabric-anticon;
+@iconfont-css-prefix: any-fabric-anticon;
+@select-dropdown-height: 40px;
+@select-dropdown-line-height: 30px;
+@cascader-dropdown-height: 40px;
+@cascader-dropdown-line-height: 30px;
+@table-selected-row-bg: #ecf5ff;
+@table-padding-vertical: 9px;
+@table-padding-horizontal: 16px;
+@layout-header-background: #0a0744; // header 颜色
+@layout-header-height: 52px;
+@layout-header-padding: 0 24px;
+@layout-sider-background: #f4f4f4;
+@layout-trigger-background: #f4f4f4;
+@layout-trigger-color: rgb(0, 0, 0);
+@input-color: rgba(0, 0, 0, 0.65);
+@input-placeholder-color: rgba(0, 0, 0, 0.25);
+@modal-header-title-font-size: 16px;
+@label-color: rgba(0, 0, 0, 0.85);
+// @badge-height: 16px;
+
+.center {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+.ellipsis-mixin() {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.ellipsis-line(@line: 2) {
+    /* stylelint-disable-next-line value-no-vendor-prefix */
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: @line;
+    text-overflow: ellipsis;
+    white-space: normal;
+    word-break: break-all;
+}
+
+// 通用ant样式
+:global {
+    // 修改下拉多选框-超出四行滚动
+    .any-fabric-ant-select-multiple {
+        .any-fabric-ant-select-selector {
+            max-height: 116px;
+            overflow-y: auto;
+        }
+    }
+}
+
+// 数据标准-启用状态
+.showStatus() {
+    .status {
+        display: flex;
+        align-items: center;
+        color: rgb(0 0 0 / 65%);
+        // font-size: 12px;
+        // line-height: 20px;
+
+        &::before {
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            margin: 8px 8px 8px 0;
+            background: #52c41a;
+            border-radius: 50%;
+            content: ' ';
+        }
+    }
+
+    .disableStatus {
+        &::before {
+            background: #ff5e60;
+        }
+    }
+}
+
+.icon-container() {
+    display: flex;
+    width: 24px;
+    height: 24px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 3px;
+
+    &:hover {
+        background-color: rgb(240 240 240 / 100%);
+        cursor: pointer;
+    }
+}
+// 通用错误提示框
+.commonInfoModalError {
+    color: @title-color-secondary;
+
+    .any-fabric-ant-modal-confirm-body {
+        > .any-fabric-anticon {
+            font-size: 24px;
+        }
+
+        .any-fabric-anticon-exclamation-circle {
+            color: @primary-color;
+        }
+
+        .any-fabric-ant-modal-confirm-title {
+            font-size: 16px;
+            font-weight: bold;
+            line-height: 24px;
+        }
+
+        .any-fabric-ant-modal-confirm-content {
+            color: @title-color-secondary !important;
+            font-size: 14px;
+            line-height: 20px;
+        }
+    }
+}
+// 滚动条悬浮显示
+.scollbarHoverDisplay {
+    overflow: hidden;
+    scrollbar-gutter: stable;
+
+    &:hover {
+        overflow: auto;
+    }
+}
+
+.showCount {
+    border-radius: 4px;
+
+    &::after {
+        position: absolute;
+        right: 12px;
+        bottom: 8px;
+        margin-bottom: 0 !important;
+    }
+
+    :global {
+        .any-fabric-ant-input {
+            height: calc(100% - 30px);
+            // border: 1px solid #d9d9d9;
+            resize: none;
+
+            &:focus {
+                box-shadow: none !important;
+            }
+        }
+    }
+}
+
+.editorTable {
+    table {
+        border-collapse: collapse;
+
+        td,
+        th {
+            min-width: 30px;
+            padding: 4px 10px;
+            border: 1px solid #ccc;
+            line-height: 1.5;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f5f2f0;
+            font-weight: 700;
+            text-align: center;
+        }
+    }
+}

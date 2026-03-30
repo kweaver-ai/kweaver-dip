@@ -1,0 +1,462 @@
+.domainContentWrapper {
+    margin: 20px;
+}
+
+.notFoundWraper {
+    .center();
+
+    .errorTitle {
+        color: @text-color-desc;
+        font-size: 16px;
+    }
+}
+
+.personalCenterPage {
+    overflow: hidden;
+    height: 100%;
+}
+
+.loginWrapper {
+    .center();
+
+    background-color: rgb(236 241 247 / 100%);
+}
+
+.template {
+    .center();
+}
+
+.bussinessModal {
+    display: flex;
+    height: 100%;
+
+    .empty {
+        width: 100%;
+        margin-top: 124px;
+
+        .operateDesc {
+            text-align: center;
+        }
+    }
+}
+
+.homePgWrapper {
+    // height: 100%;
+    min-width: 1280px;
+    font-family: 'HarmonyOS Sans SC-Regular, HarmonyOS Sans SC', sans-serif;
+}
+
+.serviceSupermarketPgWrapper {
+    position: relative;
+    height: 100%;
+}
+
+.domianWrapper,
+.projectWrapper {
+    overflow: hidden;
+    height: 100%;
+    padding: 24px;
+    padding-top: 22px;
+
+    .domianTitle,
+    .projectTitle {
+        font-weight: 550;
+    }
+}
+
+.orderTemplateWrapper {
+    overflow: hidden;
+    height: 100%;
+    padding: 20px 24px;
+
+    .pageTitle {
+        padding-bottom: 16px;
+        font-weight: 550;
+    }
+}
+.orderSignatureWrapper,
+// .orderTemplateWrapper,
+.orderProcessingWrapper,
+.orderAuditWrapper,
+.orderManageWrapper {
+    overflow: hidden;
+    height: 100%;
+    padding: 10px 24px 20px;
+
+    .pageTitle {
+        padding-bottom: 16px;
+        font-weight: 550;
+    }
+}
+
+.investigationReportWrapper,
+.dataPlanWrapper {
+    overflow: hidden;
+    height: 100%;
+    padding: 24px;
+
+    .pageTitle {
+        padding-bottom: 16px;
+        font-weight: 550;
+    }
+}
+
+.pComprehensionTemplateWrap,
+.pComprehensionReportAuditWrap {
+    overflow: hidden;
+    height: 100%;
+    padding: 24px;
+
+    .pageTitle {
+        padding-bottom: 16px;
+        font-weight: 550;
+    }
+}
+
+.orderTaskWrapper,
+.myTaskMgtWrapper {
+    overflow: hidden;
+    height: calc(100vh - 52px);
+    padding: 10px 24px 20px;
+}
+
+.useRoleWrapper,
+.architectureWrapper,
+.infoSystemWrapper,
+.rescDirMgnWrapper,
+.rescDirReportWrapper,
+.provinceDemandWrapper,
+.pDatacatalogUndsWrap,
+.caFileManageWrapper,
+.configCenterWrapper {
+    overflow: hidden;
+    height: calc(100vh - 52px);
+
+    .title {
+        height: 52px;
+        padding-left: 24px;
+        color: #000;
+        font-size: 16px;
+        font-weight: 550;
+        line-height: 52px;
+    }
+}
+
+.openCatlgWrapper {
+    height: 100%;
+}
+
+.provinceDemandWrapper {
+    padding: 0 24px 24px;
+}
+
+.objectionMgt {
+    overflow: hidden;
+    height: 100%;
+}
+
+.pSceneGraphWrap {
+    overflow: hidden;
+    min-width: 1280px;
+    height: 100%;
+}
+
+.DimensionPageWrapper {
+    overflow: hidden;
+    // min-width: 1280px;
+    height: 100%;
+}
+
+.projectContentWrapper {
+    overflow: hidden;
+    height: 100vh;
+}
+
+.completeTaskWrpper {
+    display: flex;
+    width: 100%;
+    // min-width: 1232px;
+    height: 100%;
+    flex-direction: column;
+    // margin: 24px;
+    // background-color: #fff;
+}
+
+.developingWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 200px;
+
+    .developingImage {
+        margin-bottom: 24px;
+        font-size: 16px;
+    }
+}
+
+.loginSuccess {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+
+    .loadingContainer {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 24px;
+    }
+
+    .loadingText {
+        color: #000;
+        font-size: 16px;
+        font-weight: 500;
+        opacity: 0.85;
+    }
+
+    .loadingSteps {
+        display: flex;
+        flex-direction: column;
+        margin-top: 16px;
+        gap: 12px;
+    }
+
+    .step,
+    .activeStep {
+        display: flex;
+        align-items: center;
+        padding: 8px 16px;
+        border-radius: 6px;
+        font-size: 14px;
+        gap: 12px;
+        transition: all 0.3s ease;
+    }
+
+    .step {
+        color: #000;
+        opacity: 0.45;
+    }
+
+    .activeStep {
+        background-color: rgb(24 144 255 / 6%);
+        color: #1890ff;
+        font-weight: 500;
+    }
+
+    .stepIcon {
+        display: inline-flex;
+        width: 20px;
+        height: 20px;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+    }
+}
+
+.initConfig {
+    overflow: auto;
+    height: 100%;
+
+    .content {
+        display: flex;
+        min-width: 1280px;
+        height: 100%;
+        min-height: 768px;
+        justify-content: center;
+        margin-top: 120px;
+    }
+}
+
+.loginFailed {
+    position: relative;
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    .logo {
+        position: absolute;
+        top: 24px;
+        left: 24px;
+        cursor: pointer;
+    }
+
+    .tips {
+        margin: 16px 0;
+        color: #000;
+        font-size: 16px;
+        font-weight: 550;
+        opacity: 0.55;
+    }
+
+    .button {
+        width: 200px;
+    }
+}
+
+.needSiderBarPage {
+    height: 100%;
+
+    .header {
+        height: 52px;
+        border: 1px solid rgb(0 0 0 / 10%);
+    }
+
+    .container {
+        display: flex;
+        height: calc(100vh - 52px);
+
+        & > div:first-child {
+            margin-top: 16px;
+            background: #fafafa;
+
+            & > div:first-child > div:first-child {
+                height: 100%;
+
+                & > div:first-child {
+                    height: calc(100% - 56px);
+                    border-right: 0;
+                    overflow-x: hidden;
+                    overflow-y: auto;
+                    scrollbar-width: none;
+                    user-select: none;
+                }
+
+                & > div:nth-child(2) {
+                    margin-right: 12px;
+                    color: @title-color-secondary;
+                    cursor: pointer;
+                    text-align: right;
+                }
+            }
+        }
+    }
+
+    .indicatorContainer {
+        width: 100%;
+        height: calc(100vh - 52px);
+        padding: 24px;
+        background: #e9e9ed;
+
+        .indicatorContent {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background-color: #fff;
+        }
+    }
+}
+
+#workflow-manage-front {
+    padding: 24px;
+
+    & > div {
+        width: 100%;
+        height: 100%;
+    }
+}
+
+.appTemplate {
+    width: 100%;
+    height: 100%;
+    padding: 24px;
+    padding-top: 20px;
+
+    .container & > div {
+        width: 100%;
+        height: 100%;
+    }
+}
+
+.standardsAppTemplate {
+    width: 100%;
+    height: 100%;
+
+    .container & > div {
+        width: 100%;
+        height: 100%;
+    }
+}
+
+.aduitTemplate {
+    overflow: hidden;
+    padding-top: 20px;
+    .center();
+}
+
+.dialogPageWrapper {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        #f1f6ff 0%,
+        #edf4ff 34%,
+        #f0f7ff 68%,
+        #f2f6fe 100%
+    );
+}
+
+.caseDetailWrapper {
+    width: 100%;
+    height: 100%;
+
+    .caseTitle {
+        display: flex;
+        height: 52px;
+        align-items: center;
+        padding-left: 20px;
+        background: #fff;
+        line-height: 52px;
+
+        .returnInfo {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+
+            .returnArrow {
+                margin-right: 12px;
+                color: rgb(0 0 0 / 85%);
+            }
+
+            .returnText {
+                margin-right: 12px;
+            }
+        }
+
+        .divider {
+            width: 1px;
+            height: 20px;
+            border: 1px solid rgb(0 0 0 / 35%);
+            margin-right: 15px;
+        }
+
+        .titleText {
+            font-weight: 550;
+        }
+    }
+
+    .contentWrapper {
+        width: 100%;
+        height: calc(100vh - 52px);
+        padding: 24px;
+        background: #eff2f5;
+    }
+}
+
+.indicatorGraphWrap {
+    overflow: hidden;
+    min-width: 1280px;
+    height: 100%;
+}
+
+.authorizationPageWrapper {
+    height: 100%;
+}
+
+.serviceMonitorPage,
+.systemAccessPage {
+    overflow: hidden;
+    height: 100%;
+    padding: 24px;
+}

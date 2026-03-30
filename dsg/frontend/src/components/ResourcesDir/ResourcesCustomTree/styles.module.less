@@ -1,0 +1,295 @@
+.selectedFilter {
+    display: flex;
+    // min-width: 270px;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    overflow-y: hidden;
+
+    .filterTab {
+        display: flex;
+        width: 100%;
+        padding-top: 12px;
+        padding-left: 20px;
+
+        .viewWrapper {
+            display: flex;
+            width: 100%;
+            align-items: center;
+
+            .viewSelect {
+                min-width: 64px;
+                max-width: calc(100% - 64px);
+            }
+        }
+    }
+
+    .bussinessDomain {
+        height: 0;
+        flex: 1;
+        overflow-y: hidden;
+    }
+
+    .empty {
+        display: flex;
+        width: 100%;
+        justify-content: center;
+        margin-top: 120px;
+    }
+
+    .modelAll {
+        display: flex;
+        overflow: hidden;
+        height: 38px;
+        flex: 1;
+        align-items: center;
+        justify-content: space-between;
+        padding-left: 20px;
+        color: rgb(0 0 0 / 85%);
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: bold;
+
+        &:hover {
+            background-color: #eff0f3;
+        }
+
+        &.checked {
+            background-color: #ecf5ff;
+        }
+    }
+
+    .modelContainer {
+        overflow: hidden;
+        height: calc(100% - 68px);
+        margin-top: 8px;
+
+        .searchInput {
+            padding: 12px 20px;
+        }
+
+        .modelList {
+            height: calc(100% - 94px);
+            overflow-y: auto;
+
+            .modelItem {
+                display: flex;
+                overflow: hidden;
+                width: 100%;
+                height: 38px;
+                flex: 1;
+                align-items: center;
+                justify-content: flex-start;
+                padding-left: 20px;
+                color: rgb(0 0 0 / 85%);
+                cursor: pointer;
+                font-size: 14px;
+
+                &:hover {
+                    background-color: #eff0f3;
+                }
+
+                &.checked {
+                    background-color: #ecf5ff;
+                }
+
+                .icon {
+                    flex-shrink: 0;
+                    padding-right: 8px;
+                    color: rgb(0 0 0 / 65%);
+                    font-size: 16px;
+                }
+
+                .name {
+                    .ellipsis-mixin();
+
+                    padding-right: 12px;
+                }
+            }
+        }
+    }
+}
+
+.infoSys {
+    overflow: hidden auto;
+    height: 100%;
+
+    .sysItem {
+        padding: 8px 20px;
+        margin: 0 auto;
+
+        // &:hover {
+        //     background: #eff0f3;
+        // }
+
+        .name {
+            height: 22px;
+            color: rgb(0 0 0 / 85%);
+            line-height: 22px;
+            .ellipsis-mixin();
+
+            .nameInfo {
+                margin-left: 8px;
+            }
+        }
+
+        .dep {
+            height: 20px;
+            padding-left: 20px;
+            color: rgb(0 0 0 / 45%);
+            font-size: 12px;
+            line-height: 20px;
+            .ellipsis-mixin();
+        }
+    }
+}
+
+.search-wrapper {
+    overflow-y: auto;
+
+    .checked {
+        .search-item {
+            background-color: #ecf5ff !important;
+        }
+    }
+
+    :global {
+        .any-fabric-ant-collapse-header {
+            position: relative;
+            padding: 8px 20px !important;
+            color: #666 !important;
+
+            &::after {
+                position: absolute;
+                bottom: 0;
+                left: 16px;
+                width: calc(100% - 32px);
+                height: 1px;
+                background-color: #eee;
+                content: '';
+            }
+        }
+
+        .any-fabric-ant-collapse-content-box {
+            padding: 0 !important;
+        }
+    }
+
+    .search-item-wrapper {
+        padding: 10px 16px 10px 38px;
+        cursor: pointer;
+
+        &:hover {
+            background-color: #eff0f3;
+        }
+    }
+
+    .search-item {
+        display: flex;
+        align-items: flex-start;
+        font-size: 14px;
+
+        &-icon {
+            padding-right: 6px;
+        }
+
+        &-right {
+            display: flex;
+            width: calc(100% - 24px);
+            min-width: calc(100% - 24px);
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        &-content {
+            width: 100%;
+            flex: 1;
+            .ellipsis-mixin();
+
+            &-name {
+                overflow: hidden;
+                font-weight: 500;
+                text-overflow: ellipsis;
+            }
+
+            &-path {
+                overflow: hidden;
+                margin-top: 2px;
+                color: #999;
+                font-size: 12px;
+                text-overflow: ellipsis;
+            }
+        }
+
+        &-opt {
+            padding: 2px 4px;
+        }
+
+        :global {
+            .any-fabric-ant-badge-dot {
+                margin-top: 16px !important;
+            }
+
+            .any-fabric-anticon {
+                font-size: 16px;
+            }
+
+            .any-fabric-ant-collapse-arrow {
+                margin-right: 10px;
+            }
+        }
+    }
+
+    .search-path {
+        max-width: 100%;
+        color: rgb(0 0 0 / 45%);
+        font-size: 12px;
+        .ellipsis-mixin();
+    }
+}
+
+.custom-tree-list {
+    border: unset;
+
+    :global {
+        .any-fabric-ant-tree-title {
+            .ellipsis-mixin();
+        }
+    }
+}
+
+.infoSystemWrapper {
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+
+    .search {
+        width: calc(100% - 40px);
+        margin: 8px 20px 12px;
+    }
+
+    .treeItem {
+        display: flex;
+        height: 37px;
+        align-items: center;
+        padding-left: 48px;
+        cursor: pointer;
+
+        &.active {
+            background-color: #ecf5ff;
+        }
+
+        &:hover {
+            background-color: #eff0f3;
+        }
+
+        &.allNode {
+            padding-left: 20px;
+        }
+
+        .name {
+            width: 100%;
+            .ellipsis-mixin();
+        }
+    }
+}

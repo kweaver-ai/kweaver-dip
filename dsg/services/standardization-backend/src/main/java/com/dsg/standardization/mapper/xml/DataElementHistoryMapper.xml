@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsg.standardization.mapper.DataElementHistoryMapper">
+
+    <select id="queryUsedDictCode" resultType="java.lang.Long">
+        select distinct(f_dict_code) from t_data_element_his where f_dict_code in
+        <foreach collection="dictCodes" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+</mapper>

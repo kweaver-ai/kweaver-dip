@@ -1,0 +1,64 @@
+.relative-order {
+    .table {
+        .ellipsisTitle {
+            .ellipsis-mixin();
+        }
+
+        .titleBox {
+            display: flex;
+            flex-direction: column;
+
+            .planTitle {
+                display: flex;
+                align-items: center;
+                line-height: 19px;
+
+                div {
+                    &:nth-child(1) {
+                        .ellipsis-mixin();
+
+                        &:hover {
+                            color: @primary-color;
+                            cursor: pointer;
+                            text-decoration-line: underline;
+                        }
+                    }
+
+                    &:nth-child(2) {
+                        padding: 1px 8px;
+                        margin-left: 8px;
+                        background: rgb(24 144 255 / 7%);
+                        border-radius: 12px;
+                        color: rgb(24 144 255 / 100%);
+                        font-size: 12px;
+                    }
+                }
+            }
+
+            .planContent {
+                color: rgb(0 0 0 / 45%);
+                line-height: 19px;
+                .ellipsis-mixin();
+            }
+        }
+
+        .tableRow {
+            &:hover {
+                .primaryColor {
+                    color: @primary-color;
+                }
+            }
+        }
+
+        .emptyWrapper {
+            width: 100%;
+            padding-bottom: 32px;
+        }
+
+        :global {
+            .any-fabric-ant-table-wrapper {
+                width: 100%;
+            }
+        }
+    }
+}

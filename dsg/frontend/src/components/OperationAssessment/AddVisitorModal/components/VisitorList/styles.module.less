@@ -1,0 +1,66 @@
+.visitor-item {
+    display: flex;
+    height: 36px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+
+    &:hover {
+        background: #eff0f3;
+    }
+
+    &-close {
+        color: rgba(0 0 0 / 65%);
+        cursor: pointer;
+        font-size: 12px;
+
+        &:hover {
+            color: rgba(0 0 0 / 85%);
+        }
+    }
+
+    > *:first-child {
+        max-width: calc(100% - 16px);
+    }
+}
+
+.visitor-list {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+
+    .no-select {
+        color: rgba(0 0 0 / 45%);
+        cursor: default;
+    }
+
+    &-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px 16px 14px;
+
+        div {
+            &:nth-child(1) {
+                color: rgba(0 0 0 / 85%);
+                font-weight: bold;
+            }
+
+            &:nth-child(2) {
+                color: rgb(18 110 227);
+                cursor: pointer;
+            }
+        }
+    }
+
+    &-visitors {
+        flex: 1;
+        overflow-y: auto;
+
+        &.is-scroll {
+            .visitor-item {
+                padding-right: 8px;
+            }
+        }
+    }
+}

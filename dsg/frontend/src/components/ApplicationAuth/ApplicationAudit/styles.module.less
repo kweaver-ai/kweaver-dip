@@ -1,0 +1,88 @@
+.auditContainer {
+    width: 100%;
+    height: 100%;
+
+    .listWrapper {
+        width: 100%;
+        padding: 0 24px;
+
+        .toolBar {
+            display: flex;
+            width: 100%;
+            justify-content: space-between;
+        }
+
+        .table {
+            margin-top: 24px;
+        }
+    }
+
+    .rawContainer {
+        display: flex;
+        overflow: hidden;
+        align-items: center;
+        column-gap: 8px;
+
+        .text {
+            flex: 0 1 auto;
+            .ellipsis-mixin();
+
+            cursor: pointer;
+        }
+    }
+
+    .tableRow {
+        &:hover {
+            .text {
+                color: @primary-color;
+            }
+        }
+    }
+}
+
+.drawerFootWrapper {
+    display: flex;
+    justify-content: flex-end;
+
+    .btn {
+        min-width: 80px;
+    }
+}
+
+.auditingContainer {
+    .rawContainer {
+        padding: 0 16px;
+
+        .detailLabel {
+            color: rgb(0 0 0 / 45%);
+        }
+    }
+}
+
+.auditDetailContainer {
+    .auditStatus {
+        font-weight: 400;
+    }
+
+    .auditInfo {
+        color: rgb(0 0 0 / 45%);
+        font-size: 12px;
+    }
+
+    .auditIdea {
+        display: flex;
+        color: rgb(0 0 0 / 45%);
+        font-size: 12px;
+
+        .label {
+            flex-shrink: 0;
+        }
+    }
+}
+
+.auditDetailLoading {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+}

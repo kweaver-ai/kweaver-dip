@@ -1,0 +1,382 @@
+.interface-service-overview {
+    // height: 100%;
+    padding: 24px;
+    background-color: #f0f2f6;
+
+    .top-container {
+        display: flex;
+        width: 100%;
+        gap: 16px;
+
+        .top-left,
+        .top-right {
+            width: 50%;
+        }
+    }
+
+    .mid-container {
+        margin-top: 20px;
+    }
+
+    .bottom-container {
+        margin-top: 20px;
+    }
+}
+
+.status-statistics,
+.department-statistics {
+    width: 100%;
+    height: 480px;
+    padding: 16px 20px;
+    background-color: #fff;
+    border-radius: 4px;
+}
+
+.status-statistics {
+    .title {
+        margin-bottom: 16px;
+        color: rgba(0 0 0 / 85%);
+        font-weight: 550;
+    }
+
+    .count-container {
+        display: flex;
+        align-items: flex-end;
+        padding-right: 16px;
+        margin-bottom: 25px;
+
+        .count-item {
+            display: flex;
+            align-items: center;
+
+            .count-item-title {
+                margin-bottom: 6px;
+                color: rgba(0 0 0 / 45%);
+            }
+
+            .count-item-title-small {
+                margin-bottom: 6px;
+                color: #858d9d;
+            }
+
+            .count-item-count {
+                height: 34px;
+                color: #404040;
+                font-size: 28px;
+            }
+
+            .count-item-count-small {
+                height: 22px;
+                color: #333843;
+                font-size: 16px;
+            }
+        }
+    }
+
+    .chart-container {
+        position: relative;
+        width: 100%;
+        height: 280px;
+
+        .chart-title {
+            position: absolute;
+            top: 0;
+            left: 0;
+            color: #858d9d;
+        }
+    }
+}
+
+.department-statistics {
+    .top-info {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .title {
+            color: rgba(0 0 0 / 85%);
+
+            .help-icon {
+                margin-left: 4px;
+            }
+        }
+
+        .dep-count-container {
+            color: rgba(0 0 0 / 45%);
+            gap: 8;
+
+            .dep-count {
+                margin-left: 8px;
+                color: #000;
+            }
+        }
+    }
+
+    .title-container {
+        display: flex;
+        align-items: center;
+        margin-top: 24px;
+        margin-bottom: 16px;
+
+        .common-title {
+            color: rgba(0 0 0 / 65%);
+            font-size: 12px;
+        }
+
+        .order {
+            width: 24px;
+            margin-right: 16px;
+        }
+
+        .dep-name {
+            flex: 1;
+        }
+
+        .interface-count {
+            width: 50px;
+            margin: 0 16px;
+        }
+
+        .finish-rate {
+            width: 45px;
+        }
+    }
+
+    .items-container {
+        height: 374px;
+        padding-right: 24px;
+        margin-right: -24px;
+        overflow-y: auto;
+
+        .item-container {
+            display: flex;
+            width: 100%; // 确保容器有明确的宽度
+            min-width: 0; // 允许 flex 子元素收缩
+            height: 38px;
+            align-items: center;
+            margin-bottom: 24px;
+
+            .order {
+                width: 40px;
+                flex-shrink: 0; // 防止收缩
+            }
+
+            .item-info {
+                min-width: 0; // 允许收缩，防止超出父容器
+                // width: 100%;
+                height: 100%;
+                flex: 1;
+                // padding-left: 30px;
+                // margin-bottom: 8px;  // 移除这个可能导致超出父容器的 margin
+
+                .top-info {
+                    display: flex;
+                    width: 100%;
+                    min-width: 0; // 允许收缩
+                    color: rgba(0 0 0 / 65%);
+
+                    .dep-name {
+                        min-width: 0; // 允许收缩
+                        flex: 1;
+                        .ellipsis-mixin();
+                    }
+
+                    .interface-count {
+                        width: 50px;
+                        flex-shrink: 0; // 防止收缩
+                        margin: 0 16px;
+                        text-align: center;
+                    }
+
+                    .finish-rate {
+                        width: 60px;
+                        flex-shrink: 0; // 防止收缩
+                        text-align: center;
+                    }
+                }
+
+                // 确保 Progress 组件不会超出容器
+                :global {
+                    .ant-progress {
+                        width: 100%;
+                        max-width: 100%;
+                    }
+                }
+            }
+        }
+    }
+
+    .empty-container {
+        display: flex;
+        width: 100%;
+        height: 100%;
+        justify-content: center;
+        margin-top: 80px;
+    }
+}
+
+.type-statistics {
+    width: 100%;
+    height: 366px;
+    padding: 16px 20px;
+    background-color: #fff;
+    border-radius: 4px;
+
+    .title {
+        margin-bottom: 42px;
+        color: rgba(0 0 0 / 85%);
+        font-weight: 550;
+    }
+
+    .content {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .left-container,
+    .right-container {
+        display: flex;
+        width: 50%;
+        align-items: center;
+
+        .pie-container {
+            width: 240px;
+            height: 240px;
+        }
+    }
+}
+
+.call-statistics {
+    width: 100%;
+    height: 469px;
+    padding: 16px 20px;
+    background-color: #fff;
+    border-radius: 4px;
+
+    .top-info {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .title {
+            color: rgba(0 0 0 / 85%);
+            font-weight: 550;
+        }
+
+        .search-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+    }
+
+    .bottom-container {
+        display: flex;
+
+        .left {
+            flex: 1;
+            margin-right: 24px;
+
+            .left-title {
+                margin-bottom: 24px;
+                color: rgba(0 0 0 / 85%);
+            }
+
+            .line-container {
+                height: 300px;
+            }
+        }
+
+        .right {
+            width: 414px;
+            flex-shrink: 0;
+
+            .right-title {
+                margin-bottom: 24px;
+                color: rgba(0 0 0 / 85%);
+            }
+
+            .right-content-container {
+                display: flex;
+                align-items: center;
+                margin-top: 70px;
+
+                .pie-container {
+                    width: 240px;
+                    height: 240px;
+                }
+            }
+        }
+    }
+
+    .bottom-empty-container {
+        overflow: hidden;
+        height: 0;
+    }
+
+    .empty-container {
+        display: flex;
+        width: 100%;
+        height: 100%;
+        justify-content: center;
+        margin-top: 80px;
+    }
+}
+
+.data-info {
+    margin-left: 42px;
+
+    .data-item {
+        display: flex;
+        align-items: center;
+
+        .data-label {
+            margin-left: 8px;
+            color: #282d32;
+            font-size: 16px;
+        }
+
+        .data-value {
+            margin-left: 10px;
+            color: #666;
+        }
+
+        .data-percent {
+            margin-left: 8px;
+            color: #666;
+        }
+
+        :global {
+            .ant-badge-status-dot {
+                width: 12px;
+                height: 12px;
+            }
+        }
+    }
+
+    .tag-container {
+        margin-top: 16px;
+        margin-bottom: 24px;
+
+        .tag-item {
+            display: flex;
+            width: 111px;
+            height: 46px;
+            align-items: center;
+            justify-content: center;
+            background-color: #f6f7fb;
+            border-radius: 4px;
+
+            .tag-label {
+                margin-right: 8px;
+                color: rgba(0 0 0 / 45%);
+            }
+
+            .tag-value {
+                color: rgba(0 0 0 / 85%);
+                font-size: 16px;
+            }
+        }
+    }
+}

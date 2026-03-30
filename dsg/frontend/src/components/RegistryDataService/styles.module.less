@@ -1,0 +1,604 @@
+.configService {
+    height: 100vh;
+
+    .configServiceTitle {
+        display: flex;
+        height: 52px;
+        align-items: center;
+
+        .returnContainer {
+            display: flex;
+            height: 100%;
+            align-items: center;
+            padding-left: 20px;
+            background: #fff;
+
+            .backBtn {
+                padding-left: 0;
+            }
+
+            .title {
+                font-weight: 550;
+            }
+
+            .titleLine {
+                display: inline-block;
+                width: 1px;
+                height: 20px;
+                margin-right: 10px;
+                background: rgb(0 0 0 / 35%);
+            }
+
+            .titleIcon {
+                display: flex;
+                width: 32px;
+                height: 32px;
+                align-items: center;
+                justify-content: center;
+                margin-right: 10px;
+                background: rgb(18 110 227 / 6%);
+                color: #126ee3;
+            }
+        }
+
+        .stepsBox {
+            :global {
+                .any-fabric-ant-steps-item-wait
+                    .any-fabric-ant-steps-item-icon {
+                    border-color: transparent;
+                    background-color: rgb(0 0 0 / 6%);
+                }
+
+                .any-fabric-ant-steps-item-wait
+                    .any-fabric-ant-steps-item-icon
+                    > .any-fabric-ant-steps-icon {
+                    color: rgb(0 0 0 / 45%);
+                }
+
+                .any-fabric-ant-steps-item-wait
+                    > .any-fabric-ant-steps-item-container
+                    > .any-fabric-ant-steps-item-content
+                    > .any-fabric-ant-steps-item-title {
+                    color: rgb(0 0 0 / 85%);
+                }
+
+                .any-fabric-ant-steps-item-process
+                    > .any-fabric-ant-steps-item-container
+                    > .any-fabric-ant-steps-item-content
+                    > .any-fabric-ant-steps-item-title {
+                    color: rgb(0 0 0 / 85%);
+                }
+            }
+        }
+    }
+
+    .configServiceContiner {
+        width: 100%;
+        min-width: 1200px;
+        height: 100%;
+        padding: 24px;
+        background-color: #e9e9ed;
+
+        .textErrorContainer {
+            display: flex;
+            height: 48px;
+            align-items: center;
+            padding: 0 24px;
+            border: 1px solid rgb(230 0 18 / 71%);
+            margin-top: -8px;
+            margin-bottom: 16px;
+            background: #ffeff0;
+            column-gap: 12px;
+
+            .errorIcon {
+                color: rgb(230 0 18 / 70%);
+                font-size: 20px;
+            }
+
+            .errorContent {
+                display: inline-flex;
+                overflow: hidden;
+                align-items: center;
+
+                .textLabel {
+                    flex-shrink: 0;
+                    font-weight: 550;
+                }
+
+                .text {
+                    flex: 1;
+                    .ellipsis-mixin();
+                }
+            }
+        }
+
+        .textNormalContainer {
+            display: flex;
+            height: 48px;
+            align-items: center;
+            padding: 0 24px;
+            border: 1px solid rgb(24 144 255 / 71%);
+            margin-top: -8px;
+            margin-bottom: 16px;
+            background: rgb(24 144 255 / 7%);
+            border-radius: 4px;
+            column-gap: 12px;
+
+            .normalIcon {
+                color: #1890ff;
+                font-size: 20px;
+            }
+
+            .textLabel {
+                font-weight: 550;
+            }
+        }
+
+        .configServiceBody {
+            width: 100%;
+            // margin: 24px;
+            padding-top: 24px;
+            background-color: #fff;
+
+            .configServiceContent {
+                display: flex;
+                overflow: auto;
+                width: 100%;
+                height: calc(100% - 68px);
+                flex-direction: column;
+                align-items: center;
+                padding-bottom: 24px;
+
+                .formBody {
+                    width: 1096px;
+                    margin-top: 44px;
+                }
+            }
+
+            .footer {
+                display: flex;
+                height: 68px;
+                align-items: center;
+                justify-content: flex-end;
+                padding: 16px;
+                border-top: 1px solid rgb(0 0 0 / 10%);
+
+                .upBtn {
+                    width: 80px;
+                    height: 32px;
+                    border: 1px solid #126ee3;
+                }
+
+                .btn {
+                    width: 80px;
+                    height: 32px;
+                }
+            }
+
+            .optionBox {
+                padding-top: 24px;
+                border-top: 1px solid rgb(0 0 0 / 10%);
+                // margin: 24px 0;
+                text-align: right;
+
+                .optionsBtn {
+                    margin-right: 24px;
+
+                    .prevBtn {
+                        padding: 4px 13px;
+                        border: 1px solid #126ee3;
+                        margin: 0 8px;
+                        color: #126ee3;
+                    }
+
+                    .nextBtn {
+                        padding: 4px 18px;
+                    }
+                }
+            }
+        }
+
+        .configServiceNormalHeight {
+            height: calc(100% - 48px);
+        }
+
+        .configServiceErrorHeight {
+            height: calc(100% - 104px);
+        }
+    }
+}
+
+.resultContainer {
+    .resultTitle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .resultTitleInfo {
+        display: flex;
+        justify-content: center;
+        margin-top: 24px;
+        font-size: 20px;
+        font-weight: 550;
+    }
+
+    .resultContent {
+        margin: 20px 0 30px;
+
+        .content {
+            display: flex;
+            justify-content: center;
+            color: @text-color-desc;
+        }
+    }
+
+    .resultbButton {
+        display: flex;
+        justify-content: center;
+        margin: 10px 0;
+    }
+}
+
+.titleBarBody {
+    display: flex;
+    height: 46px;
+    align-items: center;
+    background: rgb(0 55 150 / 2%);
+    border-radius: 4px;
+
+    .titleBarContent {
+        display: flex;
+        height: 20px;
+        align-items: center;
+        padding-left: 18px;
+        border-left: 2px solid #126ee3;
+        font-size: 16px;
+        font-weight: 550;
+    }
+}
+
+.basicContent {
+    .formInfoContent {
+        position: relative;
+        padding: 0 16px;
+        margin-top: 24px;
+
+        .serverPathSwitchTitle {
+            position: absolute;
+            z-index: 99;
+            right: 24px;
+            display: flex;
+            height: 22px;
+            align-items: center;
+            color: rgb(0 0 0 / 65%);
+
+            .titleText {
+                margin-right: 4px;
+                font-size: 12px;
+            }
+
+            .titleHelper {
+                margin-right: 4px;
+                font-size: 14px;
+            }
+        }
+    }
+}
+
+.serverMarket {
+    .labelText {
+        margin-right: 32px;
+    }
+}
+
+.paramsConfig {
+    .formInfoContent {
+        position: relative;
+        padding: 0 16px;
+        margin-top: 24px;
+
+        .selectedTableToolBar {
+            display: flex;
+            height: 32px;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+
+            .title {
+                font-size: 16px;
+                font-weight: 550;
+            }
+
+            .tools {
+                display: flex;
+                width: 316px;
+                justify-content: space-between;
+
+                .searchInput {
+                    width: 272px;
+                }
+
+                .switchBtn {
+                    display: flex;
+                    width: 32px;
+                    height: 32px;
+                    align-items: center;
+                    justify-content: center;
+                    border: 1px solid #d9d9d9;
+                    border-radius: 3px;
+                    font-size: 18px;
+
+                    &:hover {
+                        background-color: rgb(0 0 0 / 4%);
+                    }
+                }
+            }
+
+            .sqlTools {
+                display: flex;
+                justify-content: space-between;
+
+                .switchBtn {
+                    display: flex;
+                    width: 32px;
+                    height: 32px;
+                    align-items: center;
+                    justify-content: center;
+                    border: 1px solid #d9d9d9;
+                    border-radius: 3px;
+                    font-size: 18px;
+
+                    &:hover {
+                        background-color: rgb(0 0 0 / 4%);
+                    }
+                }
+            }
+        }
+
+        .tableTop {
+            margin-top: 16px;
+        }
+
+        .descriptimnTitle {
+            margin-bottom: 24px;
+        }
+
+        .addTitle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .sqlEditorContiner {
+            position: relative;
+            height: 250px;
+            min-height: 0;
+            flex: 1 1 0%;
+            border: 1px solid rgb(0 0 0 / 15%);
+        }
+
+        .sqlBottomToolBar {
+            display: flex;
+            width: 100%;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 24px;
+
+            .leftBar {
+                display: flex;
+                width: calc(100% - 80px);
+                align-items: center;
+
+                .btn {
+                    width: 80px;
+                    height: 32px;
+                    border: 1px solid #126ee3;
+                }
+
+                .errorInfo {
+                    padding-right: 24px;
+                    margin-left: 24px;
+                    color: rgb(255 77 79 / 100%);
+                }
+            }
+
+            .rightBar {
+                display: flex;
+                align-items: center;
+                color: rgb(0 0 0 / 65%);
+
+                .label {
+                    margin-right: 8px;
+                }
+            }
+        }
+
+        .dataSourceTable {
+            display: flex;
+
+            .label {
+                margin-right: 16px;
+            }
+        }
+    }
+}
+
+.responseResult {
+    .formInfoContent {
+        position: relative;
+        padding: 0 16px;
+        margin-top: 24px;
+
+        .pageConfigTitle {
+            margin-bottom: 24px;
+            font-size: 16px;
+        }
+
+        .pageConfigInfo {
+            margin-bottom: 56px;
+            font-size: 16px;
+
+            .label {
+                margin-right: 12px;
+            }
+
+            .unit {
+                margin-left: 12px;
+            }
+        }
+
+        .pageRulerInfo {
+            .rulerTypeRadio {
+                color: rgb(0 0 0 / 65%);
+                font-size: 14px;
+
+                .label {
+                    margin-right: 24px;
+                }
+
+                :global {
+                    .any-fabric-ant-radio-wrapper {
+                        color: rgb(0 0 0 / 65%);
+                    }
+                }
+            }
+
+            .rulersConfig {
+                margin-top: 24px;
+
+                .rulerBottomToolBar {
+                    display: flex;
+                    width: 100%;
+                    align-items: center;
+                    justify-content: space-between;
+                    margin-top: 24px;
+
+                    .leftBar {
+                        display: flex;
+                        align-items: center;
+
+                        .errorInfo {
+                            color: rgb(255 77 79 / 100%);
+                        }
+                    }
+
+                    .rightBar {
+                        display: flex;
+                        align-items: center;
+                        color: rgb(0 0 0 / 65%);
+
+                        .label {
+                            margin-right: 8px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.formFilterList {
+    :global {
+        .any-fabric-ant-form-item {
+            margin-bottom: 24px;
+        }
+    }
+}
+
+.formCustomerInput {
+    height: 250px !important;
+    resize: none;
+}
+
+.serviceTest {
+    .formInfoContent {
+        position: relative;
+        padding: 0 16px;
+        margin-top: 24px;
+
+        .label {
+            color: rgb(0 0 0 / 65%);
+        }
+
+        .itemInfo {
+            display: flex;
+            margin: 16px 0 24px;
+
+            .itemRight {
+                margin-left: 40px;
+            }
+        }
+
+        .title {
+            margin-bottom: 24px;
+            font-size: 16px;
+            font-weight: 550;
+        }
+
+        .JsonContainer {
+            margin-bottom: 24px;
+
+            .successTip {
+                margin-right: 8px;
+                color: rgb(86 196 26 / 100%);
+            }
+
+            .errorTip {
+                margin-right: 8px;
+                color: rgb(255 77 79 / 100%);
+            }
+        }
+
+        .btn {
+            width: 80px;
+            height: 32px;
+            border: 1px solid #126ee3;
+            margin-top: 16px;
+        }
+
+        :global {
+            .any-fabric-ant-form-item {
+                margin-bottom: 0;
+            }
+        }
+    }
+}
+
+.jsonPreviewContainer {
+    width: 508px;
+    height: 200px;
+    padding: 16px;
+    border: 1px solid rgb(0 0 0 / 15%);
+    border-radius: 2px;
+
+    .previewEmpty {
+        margin-top: -30px;
+    }
+
+    .emptyText {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+.dataSchemaSelect {
+    .schemaName {
+        height: 22px;
+    }
+
+    .catalogName {
+        height: 22px;
+        color: rgb(0 0 0 / 45%);
+        font-size: 12px;
+    }
+}
+
+.paramTable {
+    :global {
+        .any-fabric-ant-form-item {
+            margin-bottom: 0;
+        }
+    }
+}

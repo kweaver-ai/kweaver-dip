@@ -1,0 +1,62 @@
+.wrapper {
+    display: block;
+    padding: 6px 10px 10px;
+
+    .text {
+        display: table;
+        width: 100%;
+        padding: 6px 0;
+        margin: 0;
+        cursor: inherit;
+        line-height: 23px;
+        table-layout: fixed;
+
+        .clums {
+            display: table-cell;
+            width: 110px;
+            color: rgb(0 0 0 / 50%);
+            font-size: 15px;
+            vertical-align: middle;
+        }
+
+        .texts {
+            display: table-cell;
+            overflow: hidden;
+            color: rgb(0 0 0);
+            font-size: 15px;
+            text-overflow: ellipsis;
+            vertical-align: middle;
+            white-space: nowrap;
+        }
+
+        .link {
+            color: @primary-color;
+            cursor: pointer;
+        }
+    }
+}
+
+.modalContent {
+    .row {
+        display: flex;
+        margin: 20px 0 24px;
+    }
+
+    .label {
+        width: 98px;
+        flex-shrink: 0;
+        margin-right: 16px;
+    }
+
+    .value {
+        flex: 1;
+        word-break: break-all;
+    }
+}
+
+.emptyBox {
+    display: flex;
+    height: 90%;
+    align-items: center;
+    justify-content: center;
+}

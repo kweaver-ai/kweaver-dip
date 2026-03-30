@@ -1,0 +1,71 @@
+.organizationMgmtWrapper {
+    height: 100%;
+
+    .left {
+        height: 100%;
+        padding-top: 14px;
+        overflow-y: auto;
+
+        :global {
+            .any-fabric-ant-tree-node-content-wrapper {
+                width: calc(100% - 40px);
+            }
+
+            .any-fabric-ant-tree .any-fabric-ant-tree-treenode {
+                padding-right: 6px !important;
+            }
+
+            .any-fabric-ant-tree {
+                height: calc(100vh - 160px);
+            }
+        }
+    }
+}
+// 表头【扫描结果】提示
+:global .orgDeptTitleTipsWrapper {
+    .any-fabric-ant-tooltip-inner {
+        width: fit-content;
+        padding: 6px 0;
+        color: #000;
+
+        .roleTipsWrapper {
+            width: 520px;
+            padding: 8px;
+            background: #fff;
+            border-radius: 4px;
+
+            .roleName {
+                margin-bottom: 8px;
+                color: rgb(0 0 0 / 100%);
+                font-weight: 550;
+            }
+
+            .definition {
+                margin-bottom: 10px;
+            }
+
+            .scopeWrapper {
+                color: rgb(0 0 0 / 45%);
+
+                .scopeItems {
+                    .item {
+                        margin-bottom: 12px;
+                        font-weight: 400;
+
+                        .tipText {
+                            flex: 1 1;
+                        }
+                    }
+                }
+
+                .secondItems {
+                    margin-left: 22px;
+                }
+            }
+        }
+    }
+}
+
+.titleTipIcon {
+    margin-left: 8px;
+}

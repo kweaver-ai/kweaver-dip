@@ -1,0 +1,675 @@
+.infoCatlgWrapper {
+    height: 100%;
+
+    .infoCatlgTitle {
+        display: flex;
+        height: 52px;
+        align-items: center;
+        padding-left: 20px;
+        background: #fff;
+
+        .titleLeft {
+            display: flex;
+            align-items: center;
+        }
+
+        .backBtn {
+            padding-left: 0;
+        }
+
+        .title {
+            font-weight: 550;
+        }
+
+        .titleLine {
+            display: inline-block;
+            width: 1px;
+            height: 20px;
+            margin-right: 10px;
+            background: rgb(0 0 0 / 35%);
+        }
+
+        .titleIcon {
+            display: flex;
+            width: 32px;
+            height: 32px;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            background: rgb(18 110 227 / 6%);
+            border-radius: 4px;
+            color: #126ee3;
+            font-size: 20px;
+        }
+
+        .stepsBox {
+            :global {
+                .any-fabric-ant-steps-item-wait
+                    .any-fabric-ant-steps-item-icon {
+                    border-color: transparent;
+                    background-color: rgb(0 0 0 / 6%);
+                }
+
+                .any-fabric-ant-steps-item-wait
+                    .any-fabric-ant-steps-item-icon
+                    > .any-fabric-ant-steps-icon {
+                    color: rgb(0 0 0 / 45%);
+                }
+
+                .any-fabric-ant-steps-item-wait
+                    > .any-fabric-ant-steps-item-container
+                    > .any-fabric-ant-steps-item-content
+                    > .any-fabric-ant-steps-item-title {
+                    color: rgb(0 0 0 / 85%);
+                }
+
+                .any-fabric-ant-steps-item-process
+                    > .any-fabric-ant-steps-item-container
+                    > .any-fabric-ant-steps-item-content
+                    > .any-fabric-ant-steps-item-title {
+                    color: rgb(0 0 0 / 85%);
+                }
+            }
+        }
+    }
+
+    .infoCatlgContainer {
+        display: flex;
+        width: 100%;
+        height: calc(100vh - 52px);
+        flex-direction: column;
+        padding: 24px;
+        background-color: #e9e9ed;
+    }
+
+    .infoCatlgTip {
+        margin-bottom: 20px;
+    }
+
+    .infoCatlgBox {
+        width: 100%;
+        flex: 1;
+        overflow-y: auto;
+    }
+
+    .infoCatlgBody {
+        width: 100%;
+        height: calc(100% - 56px);
+        padding: 20px 0;
+        background-color: #fff;
+
+        &.selectBusinStandTableWrapper {
+            overflow: hidden;
+            padding: 0;
+        }
+    }
+
+    .infoCatlgBodyWithoutFooter {
+        height: 100%;
+        padding-top: 0;
+    }
+
+    .optionBox {
+        display: flex;
+        height: 56px;
+        align-items: center;
+        justify-content: flex-end;
+        border-top: 1px solid rgb(0 0 0 / 10%);
+        background: #fff;
+
+        .optionsBtn {
+            margin-right: 24px;
+
+            .prevBtn {
+                padding: 4px 13px;
+                border: 1px solid #126ee3;
+                margin-right: 16px;
+                color: #126ee3;
+            }
+
+            // .nextBtn {
+            //     padding: 4px 18px;
+            // }
+        }
+    }
+}
+
+// 编目-第一步-选择业务表————————start
+.selectBusinStandTable {
+    display: flex;
+    height: 100%;
+
+    .leftBusinDomain {
+        width: 256px;
+        flex-shrink: 0;
+        // padding-top: 24px;
+        border-right: 1px solid #f0f0f0;
+    }
+
+    .rightTableWrapper {
+        display: flex;
+        overflow: hidden;
+        flex: 1;
+        flex-direction: column;
+        padding: 24px;
+
+        .filterWrapper {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            margin-bottom: 18px;
+        }
+
+        .rightTableWrapper {
+            overflow: hidden;
+            flex: 1;
+        }
+
+        .tableContentWrap {
+            flex: 1;
+        }
+
+        .catlgNameCont {
+            .catlgName {
+                .ellipsis-mixin();
+
+                display: block;
+                color: #000;
+                cursor: pointer;
+                font-size: 14px;
+                line-height: 22px;
+
+                &:hover {
+                    color: #126ee3;
+                    text-decoration: underline;
+                }
+            }
+
+            .catlgDesc {
+                .ellipsis-mixin();
+
+                color: #000;
+                font-size: 12px;
+                font-weight: 400;
+                line-height: 18px;
+            }
+        }
+    }
+}
+// 编目-第一步-选择业务表————————end
+
+// 编目-第二步-基本信息————————start
+.check-title {
+    display: inline-flex;
+    align-items: center;
+    column-gap: 8px;
+}
+
+.infoCatlgTip {
+    :global {
+        .any-fabric-ant-alert-icon {
+            font-size: 20px;
+        }
+    }
+
+    a {
+        margin-left: 16px;
+    }
+}
+
+.basicInfoBox {
+    height: 100%;
+    padding: 0 24px;
+    overflow-y: auto;
+}
+
+.basicInfoWrapper {
+    position: relative;
+    display: flex;
+    // padding: 0 20%;
+    // overflow-y: auto;
+    // height: 100%;
+    justify-content: center;
+    overflow-x: auto;
+
+    .basicInfoForm {
+        :global {
+            .any-fabric-ant-form-item {
+                flex: 1;
+                padding: 0 20px;
+                // overflow: hidden;
+            }
+
+            // .any-fabric-ant-col {
+            //     // display: flex;
+            // }
+        }
+
+        .setNullBtn {
+            flex-shrink: 0;
+            margin-top: 5px;
+            color: rgb(0 0 0 / 85%);
+        }
+
+        .basicInfoRow {
+            width: 1106px;
+            margin: auto;
+
+            .relateInfoFormItem {
+                // width: calc(100% - 124px);
+                flex-shrink: 0;
+            }
+
+            .selBtn {
+                cursor: pointer;
+            }
+
+            .textArea::after {
+                position: absolute;
+                right: 8px;
+                bottom: 4px;
+                margin-bottom: 0;
+            }
+
+            .ownerItem {
+                display: flex;
+                align-items: center;
+                color: @text-color-desc;
+
+                .avatarWrapper {
+                    display: flex;
+                    width: 24px;
+                    height: 24px;
+                    flex-shrink: 0;
+                    align-items: center;
+                    justify-content: center;
+                    border: 1px solid rgb(0 0 0 / 45%);
+                    margin-right: 8px;
+                    background-color: white;
+                    border-radius: 50%;
+                }
+
+                .ownerName {
+                    // max-width: 300px;
+                    .ellipsis-mixin();
+                }
+            }
+
+            .error {
+                margin-top: -22px;
+                margin-left: 20px;
+                color: #e60012;
+            }
+
+            .orgTreeSelect {
+                :global {
+                    .any-fabric-ant-select-tree-node-content-wrapper {
+                        white-space: nowrap;
+                    }
+                }
+            }
+
+            // :global {
+            //     .any-fabric-ant-select-clear {
+            //         right: 44px;
+            //     }
+            // }
+        }
+
+        .tagSpace {
+            width: 100%;
+            justify-content: space-between;
+
+            :nth-child(2) {
+                align-self: flex-start;
+            }
+
+            :global {
+                .any-fabric-ant-form-item {
+                    margin-bottom: 0;
+                }
+            }
+        }
+
+        .spaceItem {
+            align-self: flex-start;
+        }
+    }
+
+    .menuContainer {
+        // position: relative;
+        // height: calc(100% - 24px);
+        position: absolute;
+        right: 0;
+        height: 100%;
+        flex-shrink: 0;
+        margin: 0 24px;
+
+        .anchorWrapper {
+            // margin-top: 24px;
+        }
+    }
+
+    .tagWrapper {
+        display: flex;
+        max-width: 129px;
+        height: 24px;
+        align-items: center;
+        border: 1px solid rgb(0 0 0 / 6%);
+        background: #f5f5f5;
+        border-radius: 4px;
+
+        &.delTag {
+            border: 1px solid rgb(255 77 79 / 6%);
+            background: rgb(255 77 79 / 7%);
+            border-radius: 4px;
+            color: #e60012;
+
+            .delStatus {
+                flex-shrink: 0;
+            }
+
+            :global {
+                .any-fabric-anticon-close {
+                    flex-shrink: 0;
+                    color: #e60012;
+                }
+            }
+        }
+
+        .tagSpan {
+            .ellipsis-mixin();
+
+            display: inline-block;
+            overflow: hidden;
+            max-width: calc(100% - 14px); // 减去关闭按钮的宽度
+            flex: 1;
+            text-overflow: ellipsis;
+            vertical-align: bottom;
+            white-space: nowrap;
+        }
+    }
+}
+
+:global .delTagWrapper {
+    max-width: none;
+    padding: 0;
+    padding-top: 4px;
+    color: rgb(0 0 0 / 45%);
+
+    .any-fabric-ant-tooltip-inner {
+        overflow: hidden;
+        width: 100%;
+        max-width: 250px;
+        color: rgb(0 0 0 / 85%);
+    }
+}
+// 编目-第二步-基本信息————————end
+
+// 编目-第三步-信息项————————start
+
+.editFormTableWrapper {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    padding: 0 24px;
+
+    .editTableTool {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 16px;
+
+        .relativeBizForm {
+            display: flex;
+            align-items: center;
+            column-gap: 8px;
+
+            .relativeBizFormTitle {
+                display: flex;
+                align-items: center;
+                column-gap: 8px;
+
+                a {
+                    max-width: 180px;
+                    .ellipsis-mixin();
+
+                    &:hover {
+                        text-decoration: underline;
+                    }
+                }
+            }
+        }
+
+        .searchField {
+            width: 272px;
+            margin-right: 12px;
+        }
+
+        .errorTips {
+            display: flex;
+            align-items: center;
+            margin-left: 16px;
+            color: @error-color;
+
+            .errorBar {
+                margin: 0 16px;
+                color: rgb(0 0 0 / 85%);
+            }
+        }
+    }
+
+    .top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    :global {
+        .any-fabric-ant-form-item {
+            margin-bottom: 0;
+        }
+    }
+
+    .tableContiner {
+        position: relative;
+        overflow: hidden;
+        height: 0;
+        flex: 1;
+
+        .addBtn {
+            width: 100%;
+            margin-top: 16px;
+        }
+    }
+}
+
+.fieldsTableWrapper {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+
+    .editTableTool {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .searchField {
+            width: 272px;
+            margin-right: 12px;
+        }
+
+        .errorTips {
+            display: flex;
+            align-items: center;
+            margin-left: 16px;
+            color: @error-color;
+
+            .errorBar {
+                margin: 0 16px;
+                color: rgb(0 0 0 / 85%);
+            }
+        }
+    }
+
+    .configBtnWrapper {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .title {
+        display: flex;
+        align-content: center;
+        justify-content: space-between;
+        margin-bottom: 16px;
+
+        .errorTips {
+            display: flex;
+            align-items: center;
+            color: @error-color;
+
+            .errorBar {
+                margin: 0 16px;
+                color: rgb(0 0 0 / 85%);
+            }
+        }
+    }
+
+    :global {
+        .any-fabric-ant-form-item {
+            margin-bottom: 0;
+        }
+    }
+
+    .tableContiner {
+        position: relative;
+        overflow: hidden;
+        height: 0;
+        flex: 1;
+        padding: 0 24px;
+        margin-right: -24px;
+        margin-left: -24px;
+
+        .addBtn {
+            width: 100%;
+            margin-top: 16px;
+        }
+    }
+}
+
+.viewTableTool {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-bottom: 16px;
+
+    .searchField {
+        width: 272px;
+        margin-right: 12px;
+    }
+}
+
+.tableTitleContainer {
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+
+    .tips {
+        height: 32px;
+        color: rgb(0 0 0 / 25%);
+        font-weight: 400;
+        line-height: 32px;
+    }
+}
+
+.fieldLabel {
+    &::before {
+        color: rgb(240 89 100);
+        content: '*';
+    }
+
+    &.errorColor {
+        color: rgb(240 89 100);
+    }
+}
+
+.radioBox {
+    .checked {
+        color: #52c41b;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    .unchecked {
+        width: 16px;
+        height: 16px;
+        border: 1px solid rgb(0 0 0 / 15%);
+        background: transparent;
+        background-color: #fff;
+        border-radius: 8px;
+        cursor: pointer;
+    }
+
+    .checkedDisabled {
+        width: 16px;
+        height: 16px;
+        border-color: 1px solid #d9d9d9;
+        border-radius: 8px;
+        color: rgba(82 196 27 / 35%);
+        cursor: not-allowed;
+    }
+
+    .uncheckedDisabled {
+        border-color: #d9d9d9;
+        background-color: #f5f5f5;
+        cursor: not-allowed;
+    }
+}
+
+.holdingComponent {
+    height: 32px;
+    padding: 4px 11px;
+    border: 1px solid #d9d9d9;
+    background-color: #f5f5f5;
+    border-radius: 4px;
+    color: rgb(0 0 0 / 40%);
+}
+
+.rowDragging {
+    border: 1px solid #ccc;
+    background: #fafafa;
+}
+
+.rowDragging td {
+    padding: 11px 16px;
+}
+
+.rowDragging .drag-visible {
+    visibility: visible;
+}
+
+:global {
+    .rowDragging {
+        border: 1px solid #ccc;
+        background: #fafafa;
+    }
+
+    .rowDragging td {
+        padding: 11px 16px;
+    }
+
+    .rowDragging .drag-visible {
+        visibility: visible;
+    }
+}
+
+// 编目-第三步-信息项————————end
+
+.whiteTooltip {
+    :global {
+        .any-fabric-ant-tooltip-inner {
+            color: rgb(0 0 0 / 85%);
+        }
+    }
+}

@@ -1,0 +1,628 @@
+{
+    "smart_data_find": [
+        {
+            "label": "接口服务",
+            "key": "interfaceServiceMgt",
+            "layoutElement": "IndexRouterLayout",
+            "module": [
+                "work-center",
+                "serviceManageGroup"
+            ],
+            "attribute": {
+                "iconFont": "icon-jiekou-xian"
+            },
+            "children": [
+                {
+                    "label": "接口服务概览",
+                    "key": "dataServiceOverview",
+                    "path": "dataService/interfaceServiceOverview",
+                    "element": "dataServiceMgmt/InterfaceServiceOverview"
+                },
+                {
+                    "label": "接口服务开发",
+                    "key": "dataServiceList",
+                    "path": "dataService/interfaceService",
+                    "element": "dataServiceMgmt/DataServiceList"
+                },
+                {
+                    "label": "接口服务日志",
+                    "key": "interfaceServiceLog",
+                    "path": "dataService/interfaceServiceLog",
+                    "element": "dataServiceMgmt/InterfaceServiceLog"
+                },
+                {
+                    "label": "接口服务反馈",
+                    "key": "interfaceServiceFeedback",
+                    "path": "dataService/interfaceServiceFeedback",
+                    "element": "dataServiceMgmt/InterfaceServiceFeedback"
+                },
+                {
+                    "label": "接口服务授权",
+                    "path": "dataService/assetAccess",
+                    "key": "assetAccess",
+                    "element": "assetAccess"
+                }
+            ]
+        },
+        {
+            "label": "服务详情",
+            "key": "apiServiceDetail",
+            "path": "dataService/interfaceService/api-service-detail",
+            "element": "dataServiceMgmt/ApiServiceDetail",
+            "belong": [
+                "resource",
+                "catalog"
+            ],
+            "module": [
+                "interfaceServiceMgt"
+            ],
+            "hide": true
+        },
+        {
+            "label": "服务生成",
+            "key": "createDataService",
+            "path": "dataService/interfaceService/create",
+            "element": "dataServiceMgmt/CreateDataService",
+            "belong": [
+                "resource",
+                "catalog"
+            ],
+            "module": [
+                "interfaceServiceMgt"
+            ],
+            "hide": true
+        },
+        {
+            "label": "服务注册",
+            "key": "createDataServiceRegistry",
+            "path": "dataService/interfaceService/registry",
+            "element": "dataServiceMgmt/RegistryDataService",
+            "belong": [
+                "resource",
+                "catalog"
+            ],
+            "module": [
+                "interfaceServiceMgt"
+            ],
+            "hide": true
+        },
+        {
+            "label": "数据资源目录",
+            "key": "dataContent",
+            "layoutElement": "IndexRouterLayout",
+            "module": [
+                "work-center",
+                "dataAssetManageGroup"
+            ],
+            "belong": [
+                "catalog"
+            ],
+            "attribute": {
+                "iconFont": "icon-shujuziyuanmulu-xian"
+            },
+            "children": [
+                {
+                    "label": "目录管理",
+                    "key": "resourceDirList",
+                    "path": "dataService/dataContent",
+                    "element": "dataCatalog/ResourcesDirList"
+                },
+                {
+                    "label": "目录审核",
+                    "key": "resourceDirAudit",
+                    "path": "dataService/resourceDirAudit",
+                    "element": "dataCatalog/ResourceDirAudit"
+                },
+                {
+                    "label": "目录反馈",
+                    "key": "dataCatalogFeedback",
+                    "path": "dataService/dataCatalogFeedback",
+                    "element": "dataCatalog/Feedback"
+                },
+                {
+                    "label": "业务事项",
+                    "key": "businessMatters",
+                    "path": "systemConfig/businessMatters",
+                    "element": "BusinessMattersPage"
+                },
+                {
+                    "label": "目录内容",
+                    "key": "dirContent",
+                    "path": "dataService/dirContent",
+                    "element": "dataCatalog/DirContent",
+                    "hide": true
+                },
+                {
+                    "label": "新增目录",
+                    "key": "addResourcesDirList",
+                    "path": "dataService/AddResourcesDirList",
+                    "element": "dataCatalog/AddResourcesDirList",
+                    "hide": true
+                },
+                {
+                    "label": "导入",
+                    "key": "importResourcesDir",
+                    "path": "dataService/importResourcesDir",
+                    "element": "dataCatalog/ImportResourcesDir",
+                    "hide": true
+                }
+            ]
+        },
+        {
+            "label": "数据理解",
+            "key": "dataComprehension",
+            "layoutElement": "IndexRouterLayout",
+            "module": [
+                "work-center",
+                "dataAssetManageGroup"
+            ],
+            "belong": [
+                "catalog"
+            ],
+            "attribute": {
+                "iconFont": "icon-shujulijie"
+            },
+            "children": [
+                {
+                    "label": "数据理解报告",
+                    "key": "dataComprehensionReport",
+                    "path": "comprehensionManage/dataComprehensionReport",
+                    "element": "dataUnderstanding/PDataComprehension"
+                },
+                {
+                    "label": "理解报告详情",
+                    "path": "dataComprehensionContent",
+                    "element": "dataUnderstanding/PComprehensionContent",
+                    "key": "dataComprehensionContent",
+                    "layoutElement": "DataUnderstandingLayout",
+                    "hide": true
+                },
+                {
+                    "label": "理解报告审核",
+                    "key": "comprehensionReportAudit",
+                    "path": "comprehensionManage/comprehensionReportAudit",
+                    "element": "dataUnderstanding/PComprehensionReportAudit"
+                }
+            ]
+        },
+        {
+            "label": "样例数据配置",
+            "key": "sampleDataConfig",
+            "path": "systemConfig/GeneralConfig",
+            "layoutElement": "IndexRouterLayout",
+            "module": [
+                "work-center",
+                "dataAssetManageGroup"
+            ],
+            "belong": [
+                "catalog"
+            ],
+            "attribute": {
+                "iconFont": "icon-yanglishuju"
+            },
+            "element": "GeneralConfigPage"
+        },
+        {
+            "label": "库表",
+            "key": "datasheetView",
+            "layoutElement": "IndexRouterLayout",
+            "belong": [
+                "resource"
+            ],
+            "module": [
+                "work-center",
+                "dataSheetGroup"
+            ],
+            "attribute": {
+                "iconFont": "icon-kubiaoshangxian"
+            },
+            "children": [
+                {
+                    "label": "库表上线",
+                    "path": "datasheet-view",
+                    "key": "datasheetViewIndex",
+                    "element": "dataServiceMgmt/DatasheetViewPage"
+                },
+                {
+                    "label": "库表反馈",
+                    "path": "dataService/datasheetViewFeedback",
+                    "key": "datasheetViewFeedback",
+                    "element": "dataServiceMgmt/DatasheetViewFeedback",
+                    "belong": [
+                        "resource"
+                    ]
+                }
+            ]
+        },
+        {
+            "label": "库表详情",
+            "key": "datatViewDetail",
+            "path": "datasheet-view/detail",
+            "element": "dataServiceMgmt/DatasheetViewDetail",
+            "module": [
+                "datasheetView"
+            ],
+            "hide": true
+        },
+        {
+            "label": "厂商名录管理",
+            "key": "firmList",
+            "path": "systemConfig/firmList",
+            "layoutElement": "IndexRouterLayout",
+            "module": [
+                "config-center"
+            ],
+            "children": [
+                {
+                    "index": true,
+                    "key": "firmListIndex",
+                    "element": "FirmListPage"
+                }
+            ],
+            "attribute": {
+                "iconFont": "icon-changshangminglu"
+            }
+        },
+        {
+            "label": "数据字典",
+            "key": "dataDictionary",
+            "path": "systemConfig/dataDictionary",
+            "layoutElement": "IndexRouterLayout",
+            "module": [
+                "config-center"
+            ],
+            "belong": [
+                "catalog"
+            ],
+            "children": [
+                {
+                    "index": true,
+                    "key": "dataDictionaryIndex",
+                    "element": "DataDictionaryPage"
+                }
+            ],
+            "attribute": {
+                "iconFont": "icon-zidianguanli"
+            }
+        },
+        {
+            "label": "类目管理",
+            "key": "categoryManage",
+            "path": "systemConfig/categoryManage",
+            "layoutElement": "IndexRouterLayout",
+            "module": [
+                "config-center"
+            ],
+            "attribute": {
+                "iconFont": "icon-leixing"
+            },
+            "children": [
+                {
+                    "index": true,
+                    "key": "categoryManageIndex",
+                    "element": "CategoryManage"
+                }
+            ]
+        },
+        {
+            "label": "审核管理",
+            "key": "flowCenter",
+            "layoutElement": "IndexRouterLayout",
+            "module": [
+                "config-center"
+            ],
+            "attribute": {
+                "iconFont": "icon-a-shenhedaibanxianxing"
+            },
+            "children": [
+                {
+                    "label": "审核流程模板",
+                    "key": "workflowManage",
+                    "path": "workflow-manage-front",
+                    "element": "WorkflowManagePage"
+                },
+                {
+                    "label": "审核员匹配规则模板",
+                    "key": "workflowManageAuditor",
+                    "path": "workflow-manage-front-auditor",
+                    "element": "WorkflowManagePage"
+                },
+                {
+                    "label": "审核策略",
+                    "key": "policy",
+                    "path": "systemConfig/flowCenter/policy",
+                    "element": "AuditPolicyPage"
+                }
+            ]
+        }
+    ],
+    "idrm_menus": [
+        {
+            "label": "库表",
+            "key": "datasheetView",
+            "layoutElement": "IndexRouterLayout",
+            "module": [
+                "work-center",
+                "sheetViewManageGroup"
+            ],
+            "attribute": {
+                "iconFont": "icon-kubiao"
+            },
+            "path": "datasheet-view",
+            "element": "dataServiceMgmt/DatasheetViewPage"
+        },
+        {
+            "label": "库表详情",
+            "key": "datatViewDetail",
+            "path": "datasheet-view/detail",
+            "element": "dataServiceMgmt/DatasheetViewDetail",
+            "belong": [
+                "resource",
+                "catalog"
+            ],
+            "module": [
+                "datasheetView"
+            ],
+            "hide": true
+        },
+        {
+            "label": "质量概览",
+            "element": "DataQualityOverview",
+            "key": "dataQualityOverview",
+            "path": "dataQualityManage/dataQualityOverview",
+            "layoutElement": "IndexRouterLayout",
+            "module": [
+                "work-center",
+                "dataQualityManageGroup"
+            ],
+            "attribute": {
+                "iconFont": "icon-zhilianggailan"
+            }
+        },
+        {
+            "label": "质量规则",
+            "path": "processingManage/data-quality-template",
+            "element": "QualityRuleTemplate/QualityRuleTemplate",
+            "key": "dataQualityTemplate",
+            "module": [
+                "work-center",
+                "dataQualityManageGroup"
+            ],
+            "layoutElement": "IndexRouterLayout",
+            "attribute": {
+                "iconFont": "icon-zhiliangguize"
+            }
+        },
+        {
+            "key": "dataQualityExamine",
+            "label": "质量检测",
+            "module": [
+                "work-center",
+                "dataQualityManageGroup"
+            ],
+            "layoutElement": "IndexRouterLayout",
+            "attribute": {
+                "iconFont": "icon-tancha"
+            },
+            "children": [
+                {
+                    "label": "质量检测工单",
+                    "path": "dataQualityManage/qualityExamineOrder",
+                    "element": "workOrderMgmt/qualityExamine/OrderList",
+                    "key": "qualityExamineWorkOrder"
+                }
+            ]
+        },
+        {
+            "label": "质量报告",
+            "element": "workOrderMgmt/quality/OrderReport",
+            "key": "dataQualityReport",
+            "path": "dataQualityManage/dataQualityReport",
+            "module": [
+                "work-center",
+                "dataQualityManageGroup"
+            ],
+            "layoutElement": "IndexRouterLayout",
+            "attribute": {
+                "iconFont": "icon-zhiliangbaogao"
+            }
+        },
+        {
+            "key": "dataQualityImprovement",
+            "label": "质量整改",
+            "module": [
+                "work-center",
+                "dataQualityManageGroup"
+            ],
+            "layoutElement": "IndexRouterLayout",
+            "attribute": {
+                "iconFont": "icon-zhiliangzhenggai"
+            },
+            "children": [
+                {
+                    "label": "质量整改单",
+                    "element": "workOrderMgmt/quality/OrderList",
+                    "key": "dataQualityWorkOrder",
+                    "path": "dataQualityManage/dataQualityWorkOrder"
+                },
+                {
+                    "label": "整改处理",
+                    "element": "workOrderMgmt/quality/OrderProcessing",
+                    "key": "dataQualityWorkOrderProcessing",
+                    "path": "dataQualityManage/dataQualityWorkOrderProcessing"
+                }
+            ]
+        },
+        {
+            "label": "数据标准",
+            "key": "dataStandards",
+            "layoutElement": "IndexRouterLayout",
+            "module": [
+                "work-center",
+                "standardManageGroup"
+            ],
+            "attribute": {
+                "iconFont": "icon-shujubiaozhun"
+            },
+            "children": [
+                {
+                    "label": "数据元",
+                    "key": "dataelement",
+                    "path": "standards/dataelement",
+                    "element": "standards/DataElement"
+                },
+                {
+                    "label": "码表",
+                    "key": "codetable",
+                    "path": "standards/codetable",
+                    "element": "standards/CodeTable"
+                },
+                {
+                    "label": "编码规则",
+                    "key": "coderules",
+                    "path": "standards/coderules",
+                    "element": "standards/CodeRules"
+                },
+                {
+                    "label": "标准文件",
+                    "key": "file",
+                    "path": "standards/file",
+                    "element": "standards/StandardFile"
+                }
+            ]
+        },
+        {
+            "label": "业务标准",
+            "key": "businessDomain",
+            "layoutElement": "IndexRouterLayout",
+            "module": [
+                "work-center",
+                "standardManageGroup"
+            ],
+            "attribute": {
+                "iconFont": "icon-yewubiaozhun"
+            },
+            "children": [
+                {
+                    "index": true,
+                    "key": "businessDomainIndex",
+                    "path": "standards/business-domain",
+                    "element": "dataCatalog/BusinessDomain"
+                },
+                {
+                    "label": "编辑定义",
+                    "key": "defineObj",
+                    "path": "standards/define",
+                    "element": "DefineBusinessObj",
+                    "hide": true
+                }
+            ]
+        },
+
+        {
+            "label": "部门职责管理",
+            "key": "businessArchitecture",
+            "path": "systemConfig/businessArchitecture",
+            "layoutElement": "IndexRouterLayout",
+            "module": [
+                "config-center",
+                "extendedConfig"
+            ],
+            "attribute": {
+                "iconFont": "icon-zuzhijiagou-xianxing"
+            },
+            "children": [
+                {
+                    "index": true,
+                    "key": "businessArchitectureIndex",
+                    "element": "BusinessArchitecture"
+                }
+            ]
+        },
+        
+        {
+            "label": "信息系统",
+            "key": "businSystem",
+            "path": "systemConfig/infoSystem",
+            "layoutElement": "IndexRouterLayout",
+            "module": [
+                "config-center",
+                "extendedConfig"
+            ],
+            "children": [
+                {
+                    "index": true,
+                    "key": "businSystemIndex",
+                    "element": "InfoSystem"
+                }
+            ],
+            "attribute": {
+                "iconFont": "icon-yewuxitong1"
+            }
+        },
+        {
+            "label": "数据源信息",
+            "key": "DataSource",
+            "path": "systemConfig/DataSource",
+            "element": "DataSource",
+            "layoutElement": "IndexRouterLayout",
+            "module": [
+                "config-center",
+                "extendedConfig"
+            ],
+            "attribute": {
+                "iconFont": "icon-shujuyuanxinxi"
+            }
+        },
+        {
+            "label": "编码生成规则",
+            "key": "codingRuleConfig",
+            "path": "systemConfig/codingRuleConfig",
+            "layoutElement": "IndexRouterLayout",
+            "module": [
+                "config-center",
+                "extendedConfig"
+            ],
+            "children": [
+                {
+                    "index": true,
+                    "key": "codingRuleConfigIndex",
+                    "element": "CodingRuleConfig"
+                }
+            ],
+            "attribute": {
+                "iconFont": "icon-bianmashengchengguize"
+            }
+        },
+        {
+            "label": "数据密级",
+            "key": "dataClassificationTag",
+            "path": "systemConfig/dataClassificationTag",
+            "element": "DataClassificationTag",
+            "layoutElement": "IndexRouterLayout",
+            "module": [
+                "config-center",
+                "levelManageGroup"
+            ],
+            "attribute": {
+                "iconFont": "icon-shujufenji"
+            }
+        },
+        {
+            "label": "算法模版",
+            "key": "recognitionAlgorithmConfig",
+            "path": "dataLevelManage/recognition-algorithm-config",
+            "element": "RecognitionAlgorithmConfigPage",
+            "layoutElement": "IndexRouterLayout",
+            "module": [
+                "config-center",
+                "levelManageGroup"
+            ],
+            "attribute": {
+                "iconFont": "icon-suanfamoban"
+            }
+        }
+    ],
+    "smart_data_query": [
+    ]
+}

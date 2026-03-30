@@ -1,0 +1,57 @@
+# 构建阶段
+FROM golang:1.25-alpine AS builder
+
+WORKDIR /build
+
+# 安装依赖和工具
+RUN apk add --no-cache \
+    git \
+    ca-certificates \
+    tzdata \
+    make
+
+# 复制依赖文件
+COPY go.mod go.sum ./
+RUN go mod download
+
+# 复制源代码
+COPY . .
+
+# 编译 API 服务
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build \
+    -ldflags="-s -w" \
+    -o /app/api ./api/api.go
+
+# 运行阶段
+FROM alpine:3.20
+
+RUN apk --no-cache add \
+    ca-certificates \
+    tzdata \
+    curl
+
+WORKDIR /app
+
+# 创建非 root 用户
+RUN addgroup -g 1000 appuser && \
+    adduser -D -u 1000 -G appuser appuser
+
+# 从构建阶段复制
+COPY --from=builder /app/api .
+COPY --from=builder /build/api/etc ./etc
+COPY --from=builder /build/api/doc ./doc
+
+# 设置时区
+ENV TZ=Asia/Shanghai
+
+# 设置日志目录
+RUN mkdir -p logs && chown -R appuser:appuser /app
+
+USER appuser
+
+EXPOSE 8888
+
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
+    CMD curl -f http://localhost:8888/api/data-semantic/v1/health || exit 1
+
+CMD ["./api", "-f", "etc/api.yaml"]

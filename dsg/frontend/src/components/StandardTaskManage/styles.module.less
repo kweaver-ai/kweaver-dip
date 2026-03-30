@@ -1,0 +1,191 @@
+// 任务管理页面
+.taskManageWrapper {
+    padding: 16px 24px 0;
+    padding-top: 22px;
+
+    .baseContentLayout {
+        height: calc(100% - 44px);
+    }
+
+    .taskTitle {
+        height: auto;
+        padding-bottom: 16px;
+        border: none;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .taskHeader {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 16px;
+
+        .normalStyle {
+            min-width: 60px;
+            padding: 6px 12px;
+            margin-right: 12px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            color: rgb(0 0 0 / 85%);
+            cursor: pointer;
+            font-size: 14px;
+            line-height: 20px;
+        }
+
+        .highlightStyle {
+            background-color: #e7f0fc;
+            color: #126ee3;
+        }
+    }
+
+    .taskContent {
+        flex-grow: 1;
+
+        .tableEmpty {
+            margin-top: 80px;
+        }
+    }
+
+    .operate {
+        color: #126ee3;
+        cursor: pointer;
+        font-size: 14px;
+    }
+
+    .showTableInfo {
+        font-size: 14px;
+
+        .topInfo {
+            color: @title-color-secondary;
+            .ellipsis-mixin();
+        }
+
+        .bottomInfo {
+            color: @text-color-third;
+            .ellipsis-mixin();
+        }
+    }
+}
+
+.bodyShadow {
+    position: absolute;
+    top: -10px;
+    width: 100%;
+    height: 10px;
+    box-shadow: 0 2px 10px 6px rgb(0 0 0 / 5%);
+}
+// 任务详情
+.taskDetailWrapper {
+    position: absolute;
+    display: flex;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+
+    .lastItem {
+        color: #000;
+        font-size: 14px;
+        font-weight: bold;
+    }
+
+    .tableTop {
+        align-items: center;
+        margin-bottom: 24px;
+    }
+
+    .taskContent {
+        padding-bottom: 0;
+    }
+}
+// 处理任务/任务详情页面
+.taskContent {
+    display: flex;
+    height: calc(100% - 43px);
+    flex: 1;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 0 60px 24px;
+    margin-bottom: 0;
+    overflow-y: auto;
+
+    .basicTitle {
+        margin-top: 20px;
+        margin-bottom: 20px;
+        color: rgb(0 0 0 / 85%);
+        font-size: 16px;
+        font-weight: bold;
+        line-height: 24px;
+        text-align: left;
+    }
+
+    .rowWrapper {
+        display: flex;
+        margin-top: 16px;
+        margin-right: 10px;
+        font-size: 14px;
+
+        .label {
+            min-width: 121px;
+            flex-shrink: 0;
+            color: @title-color-secondary;
+            word-break: keep-all;
+        }
+
+        .value {
+            overflow: hidden;
+            // max-width: 1524px;
+            color: @text-color-desc;
+            text-align: justify;
+            word-break: break-all;
+            // .progress {
+
+            // }
+        }
+    }
+
+    .deletedData {
+        text-decoration: line-through;
+    }
+
+    .deletedDataCommend {
+        color: rgb(0 0 0 / 85%);
+        font-size: 14px;
+        font-weight: 400;
+    }
+
+    .tableTop {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        margin-bottom: 16px;
+
+        .basicTitle {
+            margin: 0;
+        }
+    }
+
+    .dataTipSpan {
+        cursor: pointer;
+
+        &:hover {
+            color: #126ee3;
+        }
+    }
+}
+
+.footer {
+    display: flex;
+    height: 65px;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 16px 24px;
+    border-top: 1px solid rgb(0 0 0 / 6%);
+
+    .btn {
+        width: 80px;
+        height: 36px;
+    }
+}

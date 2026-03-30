@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "data-semantic.fullname" . }}-consumer
+  namespace: {{ include "data-semantic.namespace" . }}
+  labels:
+    {{- include "data-semantic.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.consumer.replicaCount | default 1 }}
+  selector:
+    matchLabels:
+      {{- include "data-semantic.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: consumer
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        {{- include "data-semantic.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: consumer
+    spec:
+      serviceAccountName: {{ include "data-semantic.serviceAccountName" . }}
+      containers:
+      - name: consumer
+        image: "{{ .Values.image.consumer.repository }}:{{ .Values.image.consumer.tag | default .Chart.AppVersion }}"
+        imagePullPolicy: {{ .Values.image.consumer.pullPolicy }}
+        env:
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        resources:
+          {{- toYaml .Values.consumer.resources | nindent 10 }}
+        volumeMounts:
+        - name: config
+          mountPath: /app/etc
+          readOnly: true
+      volumes:
+      - name: config
+        configMap:
+          name: {{ include "data-semantic.fullname" . }}-consumer

@@ -1,0 +1,87 @@
+# 名称空间，服务都要在同一个空间。
+namespace: anyshare
+
+# 1 修改标签
+labels:
+  deployment:
+    name: basic-search-deployment
+  pod:
+    app: basic-search-pod
+  service:
+    app: basic-search-service
+
+# 2 修改仓库服务的镜像地址：不同的项目记得修改repository中af后的项目名和tag
+image:
+  registry: acr.xxx.cn
+  repository: af/basic-search
+  tag: "1.0.0-develop"
+  pullPolicy: IfNotPresent
+
+#3 修改容器副本数量
+replicaCount: 1
+
+#4 修改deployment的名称
+name: basic-search-deployment
+
+nodeSelector: []
+
+#需要暴露的端口号列表
+#containerPort容器需要监听的端口号
+#protocol端口协议，支持TCP和UDP，默认TCP
+ports:
+  name: server-port
+  containerPort: 8163
+
+# 修改service的名字、端口，nodePort是对外的端口。
+service:
+  name: basic-search
+  type: ClusterIP
+  port: 8163
+  version: "1.0"
+  telemetry:
+    log:
+      enabled: true
+      endpoint: "http://feed-ingester-service:13031/api/feed_ingester/v1/jobs/job-4d42d761dbf0ea95/events  "
+      level: "info"
+    trace:
+      enabled: true
+      endpoint: "http://feed-ingester-service:13031/api/feed_ingester/v1/jobs/job-a2491f67d02e482c/events"
+
+depServices:
+  class-443:
+    ingressClass: class-443
+  user-management:
+    publicHost: user-management-public
+    publicPort: 30980
+    privateHost: user-management-private
+    privatePort: 30980
+  hydra:
+    publicHost: hydra-public
+    publicPort: 4444
+    administrativeHost: hydra-admin
+    administrativePort: 4445
+  anyRobotTraceUrl: http://10.4.128.131/api/feed_ingester/v1/jobs/job-dd62796517d6dc66/events
+  opensearch:
+    readUri: http://opensearch-read.resource:9200
+    writeUri: http://opensearch-write.resource:9200
+    username: "admin"
+    password: "eisoo.com123"
+  kafka:
+    version: "2.3.1"
+    uri: kafka-headless.resource:9097
+    clientId: af.basic-search
+    username: "kafkaclient"
+    password: "eisoo.com123"
+    groupId: "af.basic-search"
+  configuration-center:
+    host: configuration-center
+    port: 8133
+
+# 修改pod资源限制：cpu示例:0.5/500m/1/1000m;memory示例:512Mi/1Gi
+resources:
+  requests:
+    cpu: 0.1
+    memory: 10Mi
+  limits:
+    cpu: 1
+    memory: 1024Mi

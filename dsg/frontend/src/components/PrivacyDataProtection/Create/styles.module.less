@@ -1,0 +1,63 @@
+.formWrapper {
+    max-height: 616px;
+    overflow-y: auto;
+
+    .selectView {
+        display: flex;
+        gap: 8px;
+    }
+
+    .configRow {
+        display: flex;
+        margin-bottom: 12px;
+    }
+
+    .privacyConfig {
+        .icon {
+            margin-right: 4px;
+            margin-bottom: 16px;
+        }
+    }
+}
+
+.requiredFlag {
+    margin-right: 4px;
+    color: #f5222d;
+}
+
+.tableTDContnet {
+    display: flex;
+    max-width: 500px;
+    align-items: center;
+
+    .ellipsis-mixin();
+
+    .nameIcon {
+        margin-right: 4px;
+    }
+
+    .subTableTDContnet {
+        margin-top: -2px;
+        color: rgb(0 0 0 / 45%);
+        font-size: 12px;
+        font-weight: normal;
+        .ellipsis-mixin();
+    }
+
+    .businessTitle {
+        .ellipsis-mixin();
+    }
+}
+
+.fieldSelectWrapper {
+    max-height: 500px;
+    overflow-y: auto;
+
+    .fieldBox {
+        :global {
+            .any-fabric-ant-list-item {
+                border: none;
+            }
+        }
+    }
+}

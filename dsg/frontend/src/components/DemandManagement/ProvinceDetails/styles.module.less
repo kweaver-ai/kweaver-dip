@@ -1,0 +1,114 @@
+.basic-info-wrapper {
+    .title-container {
+        margin-bottom: 20px;
+    }
+
+    .basic-info-item {
+        display: flex;
+        padding-left: 16px;
+        margin-bottom: 16px;
+
+        &-label {
+            width: 140px;
+            flex-shrink: 0;
+            margin-right: 16px;
+            color: rgb(0 0 0 / 45%);
+        }
+
+        &-value {
+            flex: 1;
+            color: rgb(0 0 0 / 85%);
+            word-break: break-all;
+
+            .file-container {
+                display: flex;
+                align-items: center;
+
+                .file-name {
+                    width: 0;
+                    max-width: fit-content;
+                    flex: 1;
+                    margin-left: 8px;
+                    .ellipsis-mixin();
+                }
+
+                .download-icon {
+                    margin-left: 8px;
+                    cursor: pointer;
+                    font-size: 16px;
+                }
+            }
+        }
+    }
+}
+
+.datasource-wrapper {
+    margin-bottom: 24px;
+
+    .title-container {
+        margin-bottom: 24px;
+    }
+
+    .datasource-table {
+        width: calc(100% - 45px);
+    }
+
+    .name-container {
+        display: flex;
+        align-items: center;
+
+        .name-info {
+            .ellipsis-mixin();
+        }
+
+        .status-flag {
+            display: flex;
+            width: 50px;
+            height: 20px;
+            flex-shrink: 0;
+            align-items: center;
+            justify-content: center;
+            margin-left: 4px;
+            background-color: rgba(245 137 13 / 7%);
+            border-radius: 10px;
+            color: rgba(245 137 13 / 100%);
+            font-size: 12px;
+        }
+    }
+
+    .icon {
+        margin-right: 8px;
+        font-size: 20px;
+    }
+}
+
+.related-datasource-wrapper {
+    .name-info-container {
+        display: flex;
+        align-items: center;
+
+        .icon {
+            margin-right: 8px;
+            font-size: 20px;
+        }
+
+        .names {
+            width: calc(100% - 60px);
+
+            .name {
+                .ellipsis-mixin();
+            }
+
+            .tech-name {
+                color: rgb(0 0 0 / 45%);
+                font-size: 12px;
+
+                .ellipsis-mixin();
+            }
+        }
+    }
+
+    .title-code {
+        color: rgb(0 0 0 / 45%);
+    }
+}

@@ -1,0 +1,50 @@
+.fl-ct-space-bt {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.modalWrapper {
+    :global {
+        .any-fabric-ant-modal-body {
+            padding: 0;
+        }
+    }
+
+    .modalContainer {
+        .title {
+            padding: 16px;
+        }
+
+        .tagBox {
+            display: flex;
+            max-height: 100px;
+            flex-wrap: wrap;
+            padding: 0 16px;
+            border-bottom: 1px solid #f0f0f0;
+            overflow-y: auto;
+
+            .tagItem {
+                display: flex;
+                max-width: 180px;
+                align-items: center;
+                margin-bottom: 8px;
+
+                .tagText {
+                    display: block;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                }
+            }
+        }
+    }
+
+    .tableBox {
+        padding: 16px;
+
+        .tableSearch {
+            margin-bottom: 16px;
+        }
+    }
+}

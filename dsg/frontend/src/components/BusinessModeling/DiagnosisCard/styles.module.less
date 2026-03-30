@@ -1,0 +1,71 @@
+.diagnosisCardWrapper {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    padding: 16px;
+    background-color: #fff;
+
+    .diagnosisBox {
+        height: 100%;
+
+        .title {
+            margin-bottom: 20px;
+            font-weight: 550;
+        }
+
+        &-search {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+
+            :global {
+                .any-fabric-ant-btn-default {
+                    &:focus {
+                        border: 1px solid #ccc;
+                        color: rgb(0 0 0 / 85%);
+                    }
+                }
+            }
+        }
+
+        .flagTableRow {
+            background: rgb(18 110 227 / 6%);
+        }
+
+        .nameWrapper {
+            display: flex;
+            align-items: center;
+
+            .tableName {
+                .ellipsis-mixin();
+            }
+
+            .tableNameOp {
+                &:hover {
+                    color: @primary-color;
+                    cursor: pointer;
+                    text-decoration-line: underline;
+                }
+            }
+        }
+
+        .optionsBox {
+            :global {
+                .any-fabric-ant-btn-link {
+                    height: 22px;
+                }
+            }
+        }
+    }
+
+    .indexEmptyBox {
+        text-align: center;
+    }
+}
+
+.opt-wrapper {
+    overflow: hidden;
+    height: 100%;
+    background-color: rgb(239 242 245 / 100%);
+}

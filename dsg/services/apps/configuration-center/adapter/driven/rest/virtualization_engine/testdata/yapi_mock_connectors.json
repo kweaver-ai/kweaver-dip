@@ -1,0 +1,40 @@
+{
+    "connectorNames": [
+        {
+            "olkConnectorName": "postgresql",
+            "showConnectorName": "PostgreSQL"
+        },
+        {
+            "olkConnectorName": "sqlserver",
+            "showConnectorName": "SQL Server"
+        },
+        {
+            "olkConnectorName": "mysql",
+            "showConnectorName": "MySQL"
+        },
+        {
+            "olkConnectorName": "maria",
+            "showConnectorName": "MariaDB"
+        },
+        {
+            "olkConnectorName": "oracle",
+            "showConnectorName": "Oracle"
+        },
+        {
+            "olkConnectorName": "hive-hadoop2",
+            "showConnectorName": "Apache Hive(hadoop2)"
+        },
+        {
+            "olkConnectorName": "hive-jdbc",
+            "showConnectorName": "Apache Hive"
+        },
+        {
+            "olkConnectorName": "clickhouse",
+            "showConnectorName": "ClickHouse"
+        },
+        {
+            "olkConnectorName": "doris",
+            "showConnectorName": "Apache Doris"
+        }
+    ]
+}

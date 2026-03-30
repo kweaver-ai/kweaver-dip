@@ -1,0 +1,254 @@
+.selectRescCatlgWrapper {
+    .selectRescCatlgContent {
+        display: flex;
+        height: 100%;
+
+        .leftContent {
+            overflow: hidden auto;
+            width: 340px;
+            height: 100%;
+            flex-shrink: 0;
+            padding: 20px;
+            border: 1px solid rgb(0 0 0 / 6%);
+
+            .infoCatlgItem {
+                display: flex;
+                width: 100%;
+                height: 52px;
+                align-items: center;
+                padding: 6px 16px;
+
+                &.selectedInfoCatlgItem {
+                    background-color: #ecf5ff;
+                }
+
+                .itemContent {
+                    display: flex;
+                    align-items: center;
+
+                    // .icon {
+                    //     margin: 0 8px 0 16px;
+                    //     font-size: 30px;
+                    // }
+
+                    .itemNames {
+                        width: 200px;
+                        margin-left: 12px;
+
+                        .top {
+                            .ellipsis-mixin();
+                        }
+
+                        .bottom {
+                            color: rgb(0 0 0 / 45%);
+                            .ellipsis-mixin();
+                        }
+                    }
+                }
+            }
+        }
+
+        .midContent {
+            width: 390px;
+            // height: 100%;
+            border: 1px solid rgb(0 0 0 / 6%);
+
+            .migTop {
+                padding: 20px 20px 12px;
+                margin-bottom: 16px;
+            }
+
+            .infoItems {
+                height: calc(100% - 60px);
+                // margin-top: 16px;
+                overflow-y: auto;
+            }
+
+            .infoItem {
+                display: flex;
+                height: 52px;
+                align-items: center;
+                padding: 4px 16px;
+                margin: 0 20px;
+
+                &.selectedInfoItem {
+                    background-color: #ecf5ff;
+                }
+
+                .itemContent {
+                    // display: flex;
+                    // align-items: center;
+
+                    // .icon {
+                    //     margin: 0 8px 0 16px;
+                    //     font-size: 30px;
+                    // }
+
+                    .itemNames {
+                        display: flex;
+                        width: 200px;
+                        align-items: center;
+                        margin-left: 12px;
+
+                        .top {
+                            .ellipsis-mixin();
+
+                            margin-left: 8px;
+                        }
+
+                        .bottom {
+                            color: rgb(0 0 0 / 45%);
+                            .ellipsis-mixin();
+                        }
+                    }
+                }
+            }
+        }
+
+        .rightContent {
+            display: flex;
+            overflow: hidden;
+            flex: 1;
+            flex-direction: column;
+            // padding: 0;
+            // display: flex;
+            // justify-content: space-between;
+            // align-items: center;
+            color: #000;
+
+            .selectedInfo {
+                display: flex;
+                flex-shrink: 0;
+                align-items: center;
+                justify-content: space-between;
+                padding: 20px 20px 36px;
+                font-size: 14px;
+                line-height: 20px;
+
+                .clearAllBtn {
+                    color: #126ee3;
+                }
+            }
+
+            .selInfoItemsContWrapper {
+                display: flex;
+                overflow: hidden auto;
+                flex: 1;
+                flex-direction: column;
+                padding: 0 0 12px;
+                gap: 20px;
+            }
+
+            .selInfoItem {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 0 20px;
+
+                .selFieldInfo {
+                    display: flex;
+                    overflow: hidden;
+                    flex: 1;
+                    align-items: center;
+                }
+
+                .selInfoItemName {
+                    .ellipsis-mixin();
+
+                    flex: 1;
+                    margin-left: 16px;
+                    // display: flex;
+                    // align-items: center;
+                }
+            }
+
+            .selInfoItemDelBtn {
+                flex-shrink: 0;
+                margin-left: 16px;
+                color: #000;
+                font-size: 16px;
+            }
+
+            .fieldItem {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+
+                .filedLabel {
+                    overflow: hidden;
+                    flex: 1;
+
+                    .fieldTitle {
+                        .ellipsis-mixin();
+
+                        margin-left: 8px;
+                        color: rgb(0 0 0 / 85%);
+                        font-size: 14px;
+                        line-height: 20px;
+                    }
+                }
+
+                .fieldItemDelBtn {
+                    flex-shrink: 0;
+                }
+            }
+            // .titleRow {
+            //     display: flex;
+            //     align-items: center;
+            //     justify-content: space-between;
+            // }
+
+            // .fieldItemsContainer {
+            //     height: calc(100% - 60px);
+            //     margin-top: 24px;
+            //     overflow-y: auto;
+
+            //     .fieldItem {
+            //         display: flex;
+            //         height: 56px;
+            //         align-items: center;
+
+            //         .icon {
+            //             color: rgb(0 0 0 / 65%);
+            //         }
+
+            //         .names {
+            //             width: 560px;
+            //             margin-left: 8px;
+
+            //             .businessName {
+            //                 color: rgb(0 0 0 / 85%);
+            //                 .ellipsis-mixin();
+            //             }
+
+            //             .technicalName {
+            //                 color: rgb(0 0 0 / 45%);
+            //                 .ellipsis-mixin();
+            //             }
+            //         }
+            //     }
+            // }
+
+            // .exampleDataContainer {
+            //     width: 620px;
+            //     margin-top: 16px;
+            // }
+
+            // :global {
+            //     .any-fabric-ant-radio-button-wrapper {
+            //         width: 88px;
+            //         text-align: center;
+            //     }
+            // }
+        }
+    }
+
+    .selectRescCatlgFooter {
+        float: right;
+
+        .btn {
+            width: 80px;
+            height: 32px;
+        }
+    }
+}

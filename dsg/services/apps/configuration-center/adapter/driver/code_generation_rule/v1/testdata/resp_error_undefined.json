@@ -1,0 +1,5 @@
+{
+    "code": "ConfigurationCenter.Public.InternalError",
+    "description": "内部错误",
+    "detail": "something wrong"
+}

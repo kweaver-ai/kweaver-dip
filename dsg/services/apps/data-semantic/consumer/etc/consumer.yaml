@@ -1,0 +1,56 @@
+Name: data-semantic-consumer
+Mode: console
+
+# 日志配置
+Log:
+  ServiceName: data-semantic-consumer
+  Mode: console
+  Level: info
+
+# 链路追踪
+Telemetry:
+  Name: data-semantic-consumer
+  Endpoint: ""
+  Sampler: 1.0
+  Batcher: jaeger
+
+# 消息队列配置
+MQ:
+  # 类型：kafka, redis
+  Type: kafka
+
+  # Kafka 配置
+  Kafka:
+    Brokers:
+      - localhost:9092
+    Topic: data-understanding-responses
+    Group: data-semantic-consumer-group
+    Username: ""  # SASL 用户名（可选）
+    Password: ""  # SASL 密码（可选）
+
+  # Redis 配置 (当 Type=redis 时使用)
+  Redis:
+    Host: localhost
+    Port: 6379
+    Password: ""
+    Channel: messages
+
+# 数据库配置
+DB:
+  Default:
+    Host: localhost
+    Port: 3306
+    Database: data-semantic
+    Username: root
+    Password: root123456
+    Charset: utf8mb4
+    MaxIdleConns: 10
+    MaxOpenConns: 100
+    ConnMaxLifetime: 3600
+    LogLevel: warn
+    SlowThreshold: 200
+
+# 缓存配置
+Cache:
+  - Host: localhost:6379
+    Type: node

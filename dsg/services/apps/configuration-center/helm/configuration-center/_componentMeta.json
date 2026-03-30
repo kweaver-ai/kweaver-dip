@@ -1,0 +1,91 @@
+{
+    "conponentDefineType": "helm/service",
+    "name": "configuration-center",
+    "version": "1.0.0",
+    "configSchema": {
+        "title": "configuration-center",
+        "description": "组件配置定义",
+        "type": "object",
+        "properties": {
+            "resources": {
+                "type": "object",
+                "title": "容器资源控制",
+                "properties": {
+                    "requests": {
+                        "type": "object",
+                        "required": [
+                            "labelKey",
+                            "labelVal"
+                        ],
+                        "description": "容器运行需要的最小资源分配",
+                        "properties": {
+                            "memory": {
+                                "type": "string",
+                                "title": "内存"
+                            },
+                            "cpu": {
+                                "type": "string",
+                                "title": "cpu"
+                            }
+                        }
+                    },
+                    "limits": {
+                        "type": "object",
+                        "description": "容器运行最大资源限制",
+                        "properties": {
+                            "memory": {
+                                "type": "string",
+                                "title": "内存"
+                            },
+                            "cpu": {
+                                "type": "string",
+                                "title": "cpu"
+                            }
+                        }
+                    }
+                }
+            },
+            "replicaCount": {
+                "type": "number",
+                "title": "服务副本数"
+            },
+            "depServices": {
+                "type": "object",
+                "title": "网关参数配置",
+                "properties": {
+                    "data-adaptor":{
+                        "type": "object",
+                        "description": "网关的连接信息",
+                        "properties": {
+                            "host": {
+                                "type": "string",
+                                "description": "网关的主机"
+                            },
+                            "port": {
+                                "type": "integer",
+                                "description": "网关的地址端口"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "dependence": [
+        {
+            "name": "af-dbo-dm-pre"
+        },
+        {
+            "name": "rds"
+        },
+        {
+            "name": "mq"
+        },
+        {
+            "name": "redis"
+        },
+        {
+            "name": "class-443"
+        }
+    ]
+}

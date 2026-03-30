@@ -1,0 +1,45 @@
+.customRadioWrapper {
+    display: flex;
+    width: 100%;
+    align-items: center;
+
+    .radioItem {
+        display: flex;
+        align-items: center;
+        margin-right: 8px;
+        cursor: pointer;
+
+        .itemCircle {
+            display: flex;
+            width: 16px;
+            height: 16px;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #d9d9d9;
+            border-radius: 50%;
+            transition: all 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86);
+
+            &:hover {
+                border-color: #126ee3;
+            }
+
+            .icon {
+                width: 8px;
+                height: 8px;
+                border-radius: 50%;
+            }
+
+            &.checked {
+                border-color: #126ee3;
+
+                .icon {
+                    background: #126ee3;
+                }
+            }
+        }
+
+        .label {
+            padding: 0 8px;
+        }
+    }
+}

@@ -1,0 +1,85 @@
+{
+    "conponentDefineType": "helm/service",
+    "name": "session",
+    "version": "1.0.0",
+    "configSchema": {
+        "title": "session",
+        "description": "组件配置定义",
+        "type": "object",
+        "properties": {
+            "resources": {
+                "type": "object",
+                "title": "容器资源控制",
+                "properties": {
+                    "requests": {
+                        "type": "object",
+                        "description": "容器运行需要的最小资源分配",
+                        "properties": {
+                            "memory": {
+                                "type": "string",
+                                "title": "内存"
+                            },
+                            "cpu": {
+                                "type": "string",
+                                "title": "cpu"
+                            }
+                        }
+                    },
+                    "limits": {
+                        "type": "object",
+                        "description": "容器运行最大资源限制",
+                        "properties": {
+                            "memory": {
+                                "type": "string",
+                                "title": "内存"
+                            },
+                            "cpu": {
+                                "type": "string",
+                                "title": "cpu"
+                            }
+                        }
+                    }
+                }
+            },
+            "replicaCount": {
+                "type": "number",
+                "title": "服务副本数"
+            },
+            "optionalDepServices": {
+                "type": "object",
+                "title": "第三方依赖服务配置",
+                "properties": {
+                    "anyshare": {
+                        "type": "object",
+                        "title": "anyshare服务配置信息",
+                        "properties": {
+                            "host": {
+                                "type": "string",
+                                "title": "服务器地址",
+                                "description": "域名或IP地址"
+                            },
+                            "port": {
+                                "type": "string",
+                                "title": "服务器端口",
+                                "description": "默认端口443"
+                            },
+                            "protocol": {
+                                "type": "string",
+                                "title": "访问协议",
+                                "description": "https或http,默认https"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "dependence": [
+        {
+            "name": "redis"
+        },
+        {
+            "name": "mq"
+        }
+    ]
+}

@@ -1,0 +1,586 @@
+.applicationContainer {
+    width: 100%;
+    height: 100%;
+    padding: 24px;
+
+    .title {
+        font-weight: 550;
+    }
+}
+
+.applicationContent {
+    width: 100%;
+    height: 100%;
+    padding: 16px 0;
+
+    .toolBar {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .contentWrapper {
+        overflow: auto;
+        width: 100%;
+        padding: 8px 16px 16px;
+
+        .empty {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            justify-content: center;
+            margin-top: 120px;
+        }
+
+        .itemCard {
+            border-bottom: 1px solid rgb(0 0 0 / 10%);
+        }
+    }
+
+    .hasPagination {
+        height: calc(100% - 64px);
+    }
+
+    .contentWrapperHeight {
+        height: calc(100% - 32px);
+    }
+}
+
+.drawerFootWrapper {
+    display: flex;
+    justify-content: flex-end;
+
+    .btn {
+        min-width: 80px;
+    }
+}
+
+.configFormWrapper {
+    .textArea {
+        resize: none;
+    }
+
+    .formContentWrapper {
+        display: flex;
+        flex-direction: column;
+        row-gap: 8px;
+
+        .displayFormItemWrapper {
+            display: flex;
+
+            .descriptionText {
+                color: rgb(0 0 0 / 45%);
+                font-size: 12px;
+            }
+        }
+
+        .titleWrapper {
+            display: flex;
+            width: 100%;
+            justify-content: space-between;
+        }
+
+        .detailItemWrapper {
+            display: flex;
+            flex-direction: column;
+            row-gap: 8px;
+
+            .label {
+                color: rgb(0 0 0 / 45%);
+            }
+
+            .permissionWrapper {
+                display: flex;
+                flex-direction: column;
+                row-gap: 8px;
+
+                .description {
+                    color: rgb(0 0 0 / 45%);
+                    font-size: 12px;
+                }
+            }
+
+            .systemWrapper {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: flex-start;
+                gap: 8px;
+
+                .tagItem {
+                    max-width: 240px;
+                    height: 24px;
+                    padding: 0 8px;
+                    background: #f5f5f5;
+                    border-radius: 4px;
+                    line-height: 24px;
+                    .ellipsis-mixin();
+                }
+            }
+
+            .text {
+                width: 100%;
+                .ellipsis-mixin();
+            }
+        }
+
+        .ipAndPortItems {
+            :global {
+                .any-fabric-ant-space-item:last-child {
+                    margin-top: 5px;
+                }
+            }
+        }
+    }
+
+    .formItemWrapper {
+        position: relative;
+
+        .helper {
+            position: absolute;
+            top: 0;
+            right: 0;
+            display: flex;
+            height: 30px;
+            align-items: center;
+            color: rgb(0 0 0 / 65%);
+        }
+
+        .developerMessage {
+            color: #ff6304;
+        }
+    }
+
+    .accountIdWrapper {
+        overflow: hidden;
+        margin: 12px 0;
+
+        .create {
+            color: rgb(0 0 0 / 45%);
+        }
+
+        .name {
+            .ellipsis-mixin();
+        }
+    }
+
+    .developerWrapper {
+        display: flex;
+        overflow: hidden;
+        margin: 12px 0;
+
+        .label {
+            flex-shrink: 0;
+        }
+
+        .name {
+            flex: 0 1 auto;
+            .ellipsis-mixin();
+        }
+    }
+
+    :global {
+        .any-fabric-ant-select-item-option-selected:not(
+                .any-fabric-ant-select-item-option-disabled
+            )
+            .any-fabric-ant-select-item-option-state {
+            display: flex;
+            align-items: center;
+        }
+    }
+
+    .selectOption {
+        display: flex;
+        flex-direction: column;
+
+        .itemLabel {
+            height: 22px;
+            line-height: 22px;
+        }
+
+        .itemDescription {
+            height: 22px;
+            color: rgb(0 0 0 / 45%);
+            font-size: 12px;
+            line-height: 22px;
+        }
+    }
+}
+
+.passwordContainer {
+    width: 100%;
+
+    .passwordWrapper {
+        width: 100%;
+
+        .editPasswordWrapper {
+            display: flex;
+            width: 100%;
+            column-gap: 16px;
+
+            .passwordItem {
+                flex: 1;
+            }
+
+            .btn {
+                flex-shrink: 0;
+
+                .btnText {
+                    display: flex;
+                    height: 32px;
+                    align-items: center;
+                    margin-top: 30px;
+                }
+            }
+        }
+    }
+
+    .tips {
+        color: rgb(0 0 0 / 45%);
+        font-size: 12px;
+    }
+
+    .previewWrapper {
+        position: relative;
+
+        .buttonWrapper {
+            position: absolute;
+            top: 0;
+            right: 0;
+
+            .btn {
+                height: 22px;
+            }
+        }
+    }
+}
+
+.applicationCardWrapper {
+    display: flex;
+    width: 100%;
+    height: 170px;
+    padding: 16px;
+    column-gap: 8px;
+
+    .icon {
+        display: flex;
+        width: 32px;
+        height: 32px;
+        align-items: center;
+        justify-content: center;
+        background-color: #f2f6fe;
+        border-radius: 4px;
+
+        .iconImg {
+            color: #126ee3;
+        }
+    }
+
+    .content {
+        display: flex;
+        overflow: hidden;
+        width: 0;
+        height: 100%;
+        flex: 1;
+        flex-direction: column;
+        row-gap: 6px;
+
+        .titleWrapper {
+            display: flex;
+            height: 32px;
+            align-items: center;
+            column-gap: 8px;
+
+            .titleText {
+                color: #000;
+                font-weight: 550;
+                .ellipsis-mixin();
+
+                &-clickable {
+                    cursor: pointer;
+
+                    &:hover {
+                        color: #126ee3;
+                        text-decoration: underline;
+                    }
+                }
+            }
+
+            .auditLabelBase {
+                display: inline-flex;
+                width: 52px;
+                height: 24px;
+                align-items: center;
+                justify-content: center;
+                border-radius: 12px;
+            }
+
+            .auditing {
+                background: rgb(24 144 255 / 7%);
+                color: #1890ff;
+            }
+
+            .unAudit {
+                background: #f4f5f8;
+                color: rgb(0 0 0 / 65%);
+            }
+
+            .rejected {
+                background: rgb(255 77 79 / 7%);
+                color: #ff4d4f;
+            }
+        }
+
+        .itemInfoWrapper {
+            display: flex;
+            overflow: hidden;
+            width: 100%;
+            height: 24px;
+            align-items: center;
+            color: rgb(0 0 0 / 65%);
+            font-size: 14px;
+
+            .itemTagsWrapper {
+                display: flex;
+                align-items: center;
+            }
+
+            .text {
+                .ellipsis-mixin();
+            }
+
+            .label {
+                flex-shrink: 0;
+            }
+
+            .itemLeftChild {
+                max-width: 25%;
+                flex: 0 auto;
+                .ellipsis-mixin();
+            }
+
+            .itemFlexShrink {
+                flex-shrink: 0;
+                .ellipsis-mixin();
+            }
+
+            .itemChild {
+                .ellipsis-mixin();
+            }
+
+            .splitLine {
+                width: 1px;
+                height: 12px;
+                flex-shrink: 0;
+                margin: 0 12px;
+                background-color: rgb(0 0 0 / 45%);
+            }
+
+            .tagList {
+                display: flex;
+                column-gap: 8px;
+
+                .tag {
+                    display: flex;
+                    height: 24px;
+                    align-items: center;
+                    padding: 0 8px;
+                    border: 1px solid rgb(0 0 0 / 8%);
+                    background: #f5f5f5;
+                    border-radius: 4px;
+                    font-size: 12px;
+                }
+            }
+
+            .errorTip {
+                display: flex;
+                margin-left: 8px;
+                color: #ff4d4f;
+                column-gap: 4px;
+                font-size: 12px;
+            }
+        }
+
+        .atTime {
+            color: rgb(0 0 0 / 45%);
+        }
+    }
+
+    .operationWrap {
+        display: flex;
+        height: 100%;
+        flex-shrink: 0;
+        align-items: center;
+    }
+}
+
+.copyModalContainer {
+    display: flex;
+    overflow: hidden;
+    max-height: 600px;
+    flex-direction: column;
+
+    .contentContainer {
+        display: flex;
+        height: 0;
+        flex: 1;
+        flex-direction: column;
+        padding: 0 24px;
+        margin-bottom: 16px;
+        overflow-y: auto;
+        row-gap: 16px;
+
+        .contentWrapper {
+            display: flex;
+            height: 100%;
+            flex-direction: column;
+            row-gap: 12px;
+
+            .itemTitle {
+                font-weight: 550;
+            }
+
+            .itemContent {
+                display: flex;
+                width: 100%;
+                flex-direction: column;
+                row-gap: 8px;
+
+                .label {
+                    color: rgb(0 0 0 / 45%);
+                }
+
+                .permissionWrapper {
+                    display: flex;
+                    flex-direction: column;
+                    row-gap: 8px;
+
+                    .description {
+                        color: rgb(0 0 0 / 45%);
+                        font-size: 12px;
+                    }
+                }
+            }
+        }
+
+        .message {
+            display: flex;
+            height: 32px;
+            align-items: center;
+            margin-top: 8px;
+            color: #ff6304;
+            font-size: 12px;
+        }
+    }
+
+    .copyButton {
+        padding: 0 24px;
+    }
+}
+
+.blockContainer {
+    .titleBar {
+        display: flex;
+        width: 100%;
+        height: 40px;
+        align-items: center;
+        padding: 0 16px;
+        background: rgb(0 55 150 / 2%);
+        border-radius: 4px;
+        cursor: pointer;
+
+        &:hover {
+            background: rgb(0 55 150 / 5%);
+        }
+
+        // .left {
+        //     width: 3px;
+        //     height: 20px;
+        //     margin-right: 16px;
+        //     background: #126ee3;
+        // }
+        .expandBtn {
+            display: flex;
+            flex-shrink: 0;
+            justify-content: center;
+            margin: 0 8px 0 0;
+            color: #126ee3;
+            transition: 0.25s;
+        }
+
+        .expanded {
+            transform: rotate(0deg);
+        }
+
+        .unExpand {
+            transform: rotate(-90deg);
+        }
+
+        .titleContent {
+            width: 100%;
+        }
+    }
+
+    .contentWrapper {
+        padding: 16px 16px 0;
+    }
+
+    .contentUnExpanded {
+        overflow: hidden;
+        height: 0;
+        visibility: hidden;
+    }
+}
+
+.optionItem {
+    display: flex;
+    overflow: hidden;
+    align-items: center;
+    row-gap: 8px;
+
+    .userIcon {
+        display: flex;
+        width: 20px;
+        height: 20px;
+        flex-shrink: 0;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid @text-color-desc;
+        margin-right: 8px;
+        border-radius: 10px;
+        color: @text-color-desc;
+    }
+
+    .text {
+        .ellipsis-mixin();
+    }
+}
+
+.loadingContainer {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+.labelTitleWrapper {
+    display: flex;
+    width: 100%;
+    height: 40px;
+    align-items: center;
+    padding: 5px 0;
+    // margin: 10px 0;
+    margin: 20px 0;
+    background: rgb(0 55 150 / 2%);
+    color: @label-color;
+    font-size: 16px;
+    font-weight: 550;
+
+    .labelLine {
+        display: inline-block;
+        width: 2px;
+        height: 20px;
+        margin-right: 14px;
+        background: #126ee3;
+    }
+}

@@ -1,0 +1,23 @@
+.commonTableEmptyWrap {
+    .center();
+}
+
+.commonTableWrapper {
+    :global {
+        .any-fabric-ant-table .any-fabric-ant-table-expanded-row-fixed {
+            margin: 0;
+        }
+
+        td.any-fabric-ant-table-column-sort {
+            background: #fff;
+        }
+    }
+}
+
+.noDataTable {
+    :global {
+        .any-fabric-ant-table-body {
+            overflow: hidden !important;
+        }
+    }
+}

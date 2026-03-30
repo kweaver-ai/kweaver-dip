@@ -1,0 +1,159 @@
+.province-org-wrapper {
+    height: 100%;
+
+    .empty-container {
+        margin-top: 100px;
+        text-align: center;
+
+        .reload-btn {
+            margin-top: 12px;
+        }
+    }
+
+    .left {
+        height: 100%;
+        padding-top: 20px;
+        overflow-y: auto;
+    }
+
+    .right {
+        margin-top: 20px;
+    }
+}
+
+.province-org-tree {
+    .load-fail-container {
+        color: rgb(0 0 0 / 65%);
+        font-size: 12px;
+
+        .loading-icon {
+            color: @primary-color;
+        }
+    }
+
+    .title {
+        .ellipsis-mixin();
+    }
+
+    :global {
+        .any-fabric-ant-tree-treenode-selected {
+            background-color: #eaf4ff !important;
+        }
+
+        .any-fabric-ant-tree-node-selected {
+            background-color: transparent !important;
+        }
+
+        .any-fabric-ant-tree-node-content-wrapper {
+            .ellipsis-mixin();
+        }
+
+        .any-fabric-ant-tree .any-fabric-ant-tree-node-content-wrapper:hover {
+            background-color: transparent !important;
+        }
+
+        .any-fabric-ant-tree-treenode {
+            display: flex;
+            width: 100%;
+            height: 36px;
+            align-items: center !important;
+            padding-left: 10px;
+
+            &:hover {
+                background-color: #f5f5f5;
+            }
+        }
+
+        .any-fabric-ant-tree-switcher-icon {
+            margin-top: 12px;
+        }
+
+        .any-fabric-ant-tree-treenode-disabled {
+            height: 24px;
+
+            .any-fabric-ant-tree-switcher {
+                display: none;
+            }
+
+            .any-fabric-ant-tree-node-content-wrapper {
+                cursor: unset !important;
+            }
+
+            &:hover {
+                background-color: transparent;
+            }
+        }
+    }
+}
+
+.province-organ-table-empty {
+    margin-top: 78px;
+}
+
+.province-org-tree-select-wrapper {
+    .domain-type-icon {
+        margin-right: 6px;
+        font-size: 16px;
+    }
+
+    .common-tree-select {
+        :global {
+            .any-fabric-ant-select-tree
+                .any-fabric-ant-select-tree-node-content-wrapper,
+            .any-fabric-ant-select-tree-switcher {
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+
+            .any-fabric-ant-tree-select-dropdown {
+                padding: 0;
+            }
+
+            .any-fabric-ant-select-tree .any-fabric-ant-select-tree-treenode {
+                height: 32px;
+                align-items: center;
+            }
+
+            .any-fabric-ant-select-tree-switcher {
+                margin-top: 4px;
+                color: rgb(0 0 0 / 65%);
+            }
+
+            .any-fabric-ant-select-tree-treenode:hover {
+                background-color: rgb(245 245 245 / 100%);
+            }
+
+            .any-fabric-ant-select-tree-treenode-selected {
+                background-color: rgb(18 110 227 / 6%);
+
+                &:hover {
+                    background-color: rgb(18 110 227 / 6%);
+                }
+            }
+
+            .any-fabric-ant-select-tree
+                .any-fabric-ant-select-tree-node-content-wrapper.any-fabric-ant-select-tree-node-selected {
+                background-color: unset;
+            }
+
+            .any-fabric-ant-select-tree
+                .any-fabric-ant-select-tree-node-content-wrapper:hover {
+                background-color: unset;
+            }
+
+            .any-fabric-ant-select-tree-node-content-wrapper {
+                margin-top: 3px !important;
+            }
+
+            .any-fabric-ant-select-tree-title {
+                display: inline-block;
+                width: 100%;
+            }
+        }
+    }
+}
+
+.province-org-table-loading {
+    margin-top: 100px;
+}

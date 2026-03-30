@@ -1,0 +1,139 @@
+.favoriteMgt {
+    position: relative;
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+
+    .favoriteContent {
+        height: calc(100% - 24px);
+        padding: 0 20px;
+
+        :global {
+            .any-fabric-ant-table-cell.any-fabric-ant-table-cell-ellipsis.any-fabric-ant-table-cell-row-hover
+                > div
+                > div
+                > div:first-child
+                > span:not(
+                    .disabledValue,
+                    [class*='disabledValue'],
+                    .offlineTips,
+                    [class*='offlineTips']
+                ) {
+                color: #3a8ff0;
+            }
+        }
+    }
+
+    .favoriteOperation {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 16px 0;
+
+        .topLeft {
+            display: flex;
+            align-items: center;
+        }
+
+        .topRight {
+            display: flex;
+            justify-content: space-between;
+        }
+    }
+
+    :global {
+        .any-fabric-ant-tabs-nav {
+            height: 52px;
+            padding: 0 20px;
+            margin-bottom: 0;
+        }
+    }
+}
+
+.multiColumnWrapper {
+    display: flex;
+    align-items: center;
+
+    .icon {
+        margin-right: 8px;
+        font-size: 20px;
+    }
+
+    .contentWrapper {
+        display: flex;
+        flex-direction: column;
+        .ellipsis-mixin();
+
+        .valueWrapper {
+            display: flex;
+            overflow: hidden;
+            align-items: center;
+
+            .value {
+                min-width: 0;
+                color: rgb(0 0 0 / 85%);
+                cursor: pointer;
+                .ellipsis-mixin();
+
+                &:hover,
+                &:active {
+                    color: #3a8ff0;
+                }
+            }
+
+            .disabledValue {
+                color: rgb(0 0 0 / 45%);
+                cursor: default;
+
+                &:hover,
+                &:active {
+                    color: rgb(0 0 0 / 45%);
+                }
+            }
+        }
+
+        .subValue {
+            color: rgb(0 0 0 / 45%);
+            font-size: 12px;
+            .ellipsis-mixin();
+        }
+    }
+}
+
+.score {
+    padding: 2px 4px;
+    background-color: rgb(245 137 13 / 8%);
+    border-radius: 4px;
+    color: #f7a80a;
+}
+
+.subjectViewContainer {
+    display: inline-flex;
+    overflow: hidden;
+    max-width: 100%;
+    align-items: center;
+
+    .subjectText {
+        min-width: 0;
+        .ellipsis-mixin();
+    }
+}
+
+.offlineTips {
+    padding: 2px 4px;
+    margin-left: 4px;
+    background-color: rgb(255 77 79 / 8%);
+    border-radius: 4px;
+    color: rgb(255 77 79 / 100%);
+    font-size: 12px;
+    white-space: nowrap;
+
+    &:hover,
+    &:active {
+        color: rgb(255 77 79 / 100%);
+    }
+}
+
+.subTitle {
+    color: rgb(0 0 0 / 45%);
+}

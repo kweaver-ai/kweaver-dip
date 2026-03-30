@@ -1,0 +1,46 @@
+syntax = "v1"
+
+info(
+    title: "{{feature_name}} API"
+    desc: "{{description}}"
+    version: "v1"
+)
+
+// 引入通用类型
+import "base.api"
+
+type (
+    // === Request Types ===
+    // 使用 base.api 中的通用类型，如：
+    // ListXxxReq {
+    //     PageInfoWithKeyword
+    //     Status int `form:"status,optional"`
+    // }
+
+    // === Response Types ===
+    // XxxResp {
+    //     Id   int64  `json:"id"`
+    //     Name string `json:"name"`
+    // }
+)
+
+@server(
+    prefix: /api/v1
+    group: {{feature_group}}
+)
+service {{PROJECT_NAME}}-api {
+    // @handler ListXxx
+    // get /xxx (ListXxxReq) returns (PageResp)
+    
+    // @handler GetXxx
+    // get /xxx/:id (IdReq) returns (XxxResp)
+    
+    // @handler CreateXxx
+    // post /xxx (CreateXxxReq) returns (XxxResp)
+    
+    // @handler UpdateXxx
+    // put /xxx/:id (UpdateXxxReq) returns (XxxResp)
+    
+    // @handler DeleteXxx
+    // delete /xxx/:id (IdReq) returns (EmptyResp)
+}

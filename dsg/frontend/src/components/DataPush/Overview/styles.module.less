@@ -1,0 +1,95 @@
+.dataPushOverview {
+    padding: 20px 24px;
+
+    .dataPushOverviewContent {
+        display: flex;
+        flex-direction: column;
+        row-gap: 16px;
+    }
+
+    .title {
+        height: 22px;
+        color: rgb(0 0 0 / 85%);
+        font-weight: 550;
+    }
+
+    .subHeader {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .statisticsContainer {
+        display: flex;
+        flex-direction: column;
+        row-gap: 24px;
+
+        .cardContainer {
+            display: flex;
+            column-gap: 16px;
+        }
+
+        .chartContainer {
+            display: flex;
+            height: 404px;
+            flex-direction: column;
+            padding: 32px;
+            border: 1px solid #e8e8e8;
+            background: #fff;
+            border-radius: 2px;
+            row-gap: 28px;
+        }
+    }
+
+    .statisticsItem {
+        width: calc((80% - 80px) / 5);
+        height: 148px;
+        padding: 20px 24px;
+        border: 1px solid #e8e8e8;
+        background: #fff;
+        border-radius: 2px;
+
+        :global {
+            .any-fabric-ant-statistic-title {
+                color: rgb(0 0 0 / 45%);
+            }
+
+            .any-fabric-ant-statistic-content-value-int {
+                .ellipsis-line(1);
+            }
+
+            .any-fabric-ant-progress-inner {
+                border-radius: 2px;
+            }
+        }
+
+        .progressContainer {
+            position: relative;
+
+            .divider {
+                position: absolute;
+                top: 6px;
+                left: 0;
+                width: 1px;
+                height: 14px;
+            }
+        }
+    }
+
+    .statisticsTotal {
+        width: 20%;
+        flex: 1;
+
+        .auditPending {
+            display: flex;
+            align-items: center;
+            color: rgb(0 0 0 / 85%);
+            column-gap: 2px;
+
+            .auditPendingText {
+                margin-right: 6px;
+                color: rgb(0 0 0 / 65%);
+            }
+        }
+    }
+}

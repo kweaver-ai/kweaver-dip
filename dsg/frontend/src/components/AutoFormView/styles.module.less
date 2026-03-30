@@ -1,0 +1,99 @@
+.groupHeaderContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+
+    .groupTitle {
+        color: rgb(0 0 0 / 85%);
+        font-weight: 550;
+    }
+
+    .groupExpand {
+        color: #333;
+    }
+}
+
+.groupLine {
+    width: 100%;
+    height: 1px;
+    border-bottom: 1px solid rgb(0 0 0 / 6%);
+    margin-bottom: 16px;
+}
+
+.textView {
+    width: 100%;
+    .ellipsis-mixin();
+}
+
+.textAreaView {
+    position: relative;
+
+    :global {
+        div.any-fabric-ant-typography,
+        .any-fabric-ant-typography p {
+            margin-bottom: 0;
+        }
+    }
+
+    .btn {
+        display: flex;
+        justify-content: center;
+    }
+
+    .endExpand {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        display: inline-flex;
+        align-items: center;
+        line-height: 22px;
+    }
+
+    .expandBtn {
+        margin-left: 8px;
+        color: #126ee3;
+        cursor: pointer;
+        white-space: nowrap;
+    }
+}
+
+.main {
+    :global {
+        .any-fabric-ant-form-item-label > label {
+            align-items: flex-start;
+        }
+
+        .any-fabric-ant-form-item-control-input {
+            align-items: flex-start;
+        }
+
+        .any-fabric-ant-form-item {
+            margin-bottom: 0;
+        }
+    }
+}
+
+.groupTitleWrapper {
+    display: flex;
+    height: 32px;
+    align-items: center;
+    padding: 0 12px;
+    background: rgb(0 55 150 / 2%);
+    border-radius: 4px;
+    column-gap: 4px;
+
+    .groupExpand {
+        cursor: pointer;
+        transform: rotate(0deg);
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .groupExpand.unExpanded {
+        transform: rotate(-90deg);
+    }
+
+    .groupTitle {
+        font-weight: 550;
+    }
+}

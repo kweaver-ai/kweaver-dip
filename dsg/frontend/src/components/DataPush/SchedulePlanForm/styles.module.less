@@ -1,0 +1,85 @@
+.schedulePlanForm {
+    .planDateTip {
+        display: flex;
+        height: calc(100% - 24px);
+        align-items: flex-end;
+        padding-bottom: 6px;
+        margin-left: -32px;
+        color: rgb(0 0 0 / 45%);
+        font-size: 12px;
+    }
+}
+
+.crontabEditor {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid rgb(0 0 0 / 15%);
+    border-radius: 2px;
+
+    :global {
+        textarea.any-fabric-ant-input {
+            padding: 4px 16px;
+            border: none;
+            box-shadow: none !important;
+        }
+    }
+
+    .crontabEditorTitle {
+        display: flex;
+        height: auto;
+        min-height: 32px;
+        align-items: center;
+        border-bottom: 1px solid rgb(0 0 0 / 6%);
+        background: #fafafa;
+
+        .titleLeft {
+            width: 220px;
+            padding-left: 16px;
+            color: rgb(0 0 0 / 65%);
+
+            .exampleLink {
+                cursor: pointer;
+                text-decoration: underline;
+            }
+        }
+
+        .titleMiddle {
+            display: flex;
+            flex: 1;
+            align-items: center;
+            padding: 0 16px;
+
+            .errorTitle {
+                .ellipsis-mixin();
+            }
+
+            .errorInfo {
+                flex-shrink: 0;
+                color: #126ee3;
+                cursor: pointer;
+                text-decoration: underline;
+            }
+        }
+    }
+
+    .errorText {
+        color: #ff4d4f;
+        font-size: 12px;
+    }
+
+    .descriptionText {
+        color: rgb(0 0 0 / 45%);
+        font-size: 12px;
+    }
+}
+
+.schedulePlanModal {
+    .footer {
+        display: flex;
+        justify-content: flex-end;
+
+        > button {
+            min-width: 80px;
+        }
+    }
+}

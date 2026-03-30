@@ -8,7 +8,7 @@ import logging
 import sys
 
 # 1、创建一个专用于业务的 logger
-logger = logging.getLogger('logs/sailor-agent')
+logger = logging.getLogger('sailor-agent')
 # 业务 logger 保持 DEBUG，实际输出级别由 handler 控制
 logger.setLevel(logging.DEBUG)
 
@@ -25,7 +25,7 @@ if not logger.handlers:
 
     # 2、创建一个 handler，用于写入日志文件（显式 UTF-8）
     fh = logging.FileHandler(
-        'logs/sailor-agent.log',
+        'sailor-agent.log',
         encoding="utf-8",
         errors="replace"
     )

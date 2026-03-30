@@ -1,0 +1,103 @@
+.resources-audit {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    padding: 16px 24px 24px;
+    background: #fff;
+
+    &-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 16px;
+        font-weight: 550;
+    }
+
+    .nameBox {
+        display: flex;
+        width: 100%;
+        align-items: center;
+        gap: 8px;
+
+        .name {
+            // cursor: pointer;
+            .ellipsis-mixin();
+
+            // &:hover {
+            //     color: #126ee3;
+            //     text-decoration: underline;
+            // }
+        }
+    }
+
+    .link {
+        color: @link-color;
+        cursor: pointer;
+        text-decoration: none;
+        transition: color 0.3s;
+
+        &:hover {
+            color: @link-hover-color;
+        }
+
+        &:active {
+            color: @link-active-color;
+        }
+    }
+}
+
+.catlgName {
+    display: flex;
+    width: 100%;
+    align-items: center;
+
+    .nameIcon {
+        margin-right: 8px;
+        font-size: 16px;
+    }
+
+    .catlgNameCont {
+        width: calc(100% - 22px);
+
+        .names {
+            &:hover {
+                color: @primary-color;
+                cursor: pointer;
+                text-decoration-line: underline;
+            }
+            .ellipsis-mixin();
+        }
+
+        .code {
+            color: rgb(0 0 0 / 45%);
+            font-size: 12px;
+        }
+    }
+}
+
+.modalContent {
+    .basicBox {
+        padding: 0 24px;
+    }
+
+    .audit-content {
+        position: fixed;
+        bottom: 0;
+        width: calc(100vw - 220px);
+        height: 296px;
+        background: #fff;
+        box-shadow: 0 0 10px 0 rgb(15 32 68 / 10%);
+
+        &-form {
+            padding: 16px 24px 0;
+        }
+
+        &-footer {
+            width: 100%;
+            justify-content: end;
+            padding-top: 16px;
+            padding-right: 24px;
+            border-top: 1px solid rgb(0 0 0 / 10%);
+        }
+    }
+}

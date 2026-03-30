@@ -1,0 +1,201 @@
+server:
+  http:
+    addr: 0.0.0.0:8133
+    timeout: 1s
+  grpc:
+    addr: 0.0.0.0:9000
+    timeout: 1s
+data:
+  database:
+    driver: mysql
+    source:
+  redis:
+    addr: "${REDIS_HOST}"
+    password: "${REDIS_PASSWORD}"
+    read_timeout: 0.2s
+    write_timeout: 0.2s
+log:
+  outputPath: test_log
+  mode: file
+
+config:
+  logPath: logs
+  oauth:
+    oauthClientID: "${OAUTH_CLIENT_ID}"
+    oauthClientSecret: "${OAUTH_CLIENT_SECRET}"
+    oauthAdminHost: hydra-admin
+    oauthAdminPort: 4445
+  depServices:
+    UserMgmPublic: "user-management-public:30980"
+    userMgmPrivate: "user-management-private:30980"
+    workflowRestHost: "${WORKFLOW_REST_HOST}"
+    hydraAdmin: "hydra-admin:4445"
+    anyRobotTraceUrl: "${ANYROBOT_TRACE_URL}"
+    businessGroomingHost: "${BUSINESS_GROOMING_HOST}"
+    virtualizationEngineHost: "${VIRTUAL_ENGINE_HOST}"
+    virtualizationEngineProtocol: "${VIRTUAL_ENGINE_PROTOCOL}"
+    dataConnectionHost: "${DATA_CONNECTION_HOST}"
+    dataConnectionProtocol: "${DATA_CONNECTION_PROTOCOL}"
+    standardizationHost: "${STANDARDIZATION_HOST}"
+    dataSubjectHost: "${DATA_SUBJECT_HOST}"
+    shareMgnIp: "sharemgnt.anyshare.svc.cluster.local"
+    dataAdaptorHost: "${DATA_ADAPTOR_HOST}"
+    shareMgnPort: 9600
+    anyrobot:
+      enabled: "${ANYROBOT_ENABLED}"
+      server: "${ANYROBOT_SERVER}"
+      dataViewID: "${ANYROBOT_DATA_VIEW_ID}"
+    telemetry:
+      traceUrl: "${TRACE_URL}"
+      logLevel: "${LOG_LEVEL}"
+      logUrl: "${LOG_URL}"
+      serverName: "${SERVER_NAME}"
+      serverVersion: "${SERVER_VERSION}"
+      traceEnabled: "${TRACE_ENABLED}"
+      auditEnabled: "${AUDIT_ENABLED}"
+    # Proton 提供的消息队列访问配置
+    mq:
+      mqType: ${MQ_TYPE}
+      mqHost: ${MQ_HOST}
+      mqPort: ${MQ_PORT}
+      mqLookupdHost: ${MQ_LOOKUPD_HOST}
+      mqLookupdPort: ${MQ_LOOKUPD_PORT}
+      auth:
+        mechanism: ${MQ_AUTH_MECHANISM}
+        username: ${MQ_AUTH_USERNAME}
+        password: ${MQ_AUTH_PASSWORD}
+  mqType: "${MQ_TYPE}"
+  kafkaMQ:
+    host: "${KAFKA_MQ_HOST}"
+    clientID: "af.configuration-center"
+    groupID: "af.configuration-center"
+    sasl:
+      enabled: true
+      username: "${KAFKA_MQ_USENAME}"
+      password: "${KAFKA_MQ_PASSWORD}"
+    producer:
+      sendBufSize: 1024
+      recvBufSize: 1024
+  nsq:
+    host: "${NSQ_MQ_HOST}"
+    httpHost: "${NSQ_MQ_HTTP_HOST}"
+    lookupdHost: "${NSQ_LOOKUPD_HOST}"
+  productVersion: "${PRODUCT_VERSION}"
+  buildDate: "${BUILD_DATE}"
+  VEClientExpire: "${VECLIENTEXPIRE}"
+  using: "${USING}"
+  redis:
+    connectInfo:
+      masterGroupName: "${REDIS_MASTER_NAME}"
+      password: "${REDIS_PASSWORD}"
+      sentinelHost: "${REDIS_SENTINEL_HOST}"
+      sentinelPassword: "${REDIS_SENTINEL_PASSWORD}"
+      sentinelPort: "${REDIS_SENTINEL_PORT}"
+      sentinelUsername: "${REDIS_SENTINEL_USER_NAME}"
+      username: "${REDIS_USER_NAME}"
+    connectType: "${REDIS_CONNECT_TYPE}"
+    database: "${REDIS_DB}"
+    redisHost: "${REDIS_HOST}"
+    redisPassword: "${REDIS_PASSWORD}"
+doc:
+  host: "${DOC_HOST}"
+  version: "1.0"
+
+logs:
+  - name: configuration_center
+    default: true
+    enable_caller: true
+    stacktrace_level: error
+    development: false
+    cores:
+      - destination: logs/info.log #日志输出地址
+        rotate_size: 100MB #文件分割尺寸
+        core_type: file #core类型，file, stdout两种
+        enable_color: false #是否开启输出颜色
+        output_format: json #日志输出的格式, json, console
+        log_level: info #该日志流的等级
+      - destination: logs/error.log
+        rotate_size: 100MB
+        core_type: file
+        output_format: json
+        log_level: error
+      - destination: console
+        core_type: stdout
+        output_format: console
+        enable_color: true
+        log_level: info
+  - name: configuration_center_request
+    default: false
+    enable_caller: true
+    development: false
+    cores:
+      - destination: logs/http_request.log
+        rotate_size: 100MB
+        core_type: file
+        output_format: json
+        log_level: info
+      - destination: console
+        core_type: stdout
+        output_format: console
+        enable_color: true
+        log_level: info
+
+database:
+  default:
+    dbtype: "${DB_TYPE}"
+    host: "${DB_HOST}"
+    port: "${DB_PORT}"
+    username: "${DB_USERNAME}"
+    password: "${DB_PASSWORD}"
+    database: "${DB_NAME}"
+    max-idle-connections: 5
+    max-open-connections: 50
+    max-connection-idle-time: 300
+    max-connection-life-time: 900
+    loglevel: 2
+    isdebug: true
+    tableprefix: t_
+
+##  本地开发环境
+#database:
+#  default:
+#    dbtype: mysql
+#    host: 10.4.68.64
+#    username: root
+#    password: "123456"
+#    database: af_configuration
+#    maxa: 10
+#    maxb: 10
+#    maxc: 60
+#    loglevel: 2
+#    isdebug: true
+#    tableprefix: t_
+
+############## CDC Config ##############
+
+sourceConf:
+  broker: "${KAFKA_MQ_HOST}"
+  kafkaUser: "${KAFKA_MQ_USENAME}"
+  kafkaPassword: "${KAFKA_MQ_PASSWORD}"
+  clientId: af.configuration-center
+  mechanism: PLAIN
+  redisHost: "${REDIS_HOST}"
+  redisPassword: "${REDIS_PASSWORD}"
+  sources:
+    type: mysql
+    host: "${MYSQL_HOST}"
+    username: "${MYSQL_USERNAME}"
+    password: "${MYSQL_PASSWORD}"
+    db: "${MYSQL_DB}"
+    schema: "${MYSQL_DB}"
+    source:
+      - expression: "0 0/1 * * * ?"
+        table: "object"
+        column: "id,name,path_id,path,type,created_at,updated_at,deleted_at"
+        idColumnName: "id"
+        timestampColumnName: "updated_at"
+      - expression: "0 0/1 * * * ?"
+        table: "user"
+        column: "id,name,updated_at"
+        idColumnName: "id"
+        timestampColumnName: "updated_at"

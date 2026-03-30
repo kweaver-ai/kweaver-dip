@@ -1,0 +1,13 @@
+package af_configuration
+
+type Interface interface {
+	PermissionPermissionResourceBindingsGetter
+	PermissionResourcesGetter
+	RoleGroupRoleBindingsGetter
+	RolePermissionBindingsGetter
+	SystemRolesGetter
+	UserPermissionBindingsGetter
+	UserRoleBindingsGetter
+	UserRoleGroupBindingsGetter
+	UsersGetter
+}

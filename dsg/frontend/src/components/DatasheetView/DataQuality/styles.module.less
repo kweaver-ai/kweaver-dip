@@ -1,0 +1,694 @@
+.dataQualityWrapper {
+    width: calc(100% - 24px);
+    height: calc(100% - 100px);
+    padding-right: 24px;
+    margin: 24px;
+    margin-right: 0;
+    border-radius: 3px;
+    overflow-y: auto;
+
+    &.isEmpty {
+        width: calc(100% - 48px);
+        padding-right: 0;
+        margin-right: 24px;
+        background: #fff;
+    }
+
+    .emptyBox {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding-top: 120px;
+    }
+
+    &.market {
+        height: calc(100% - 48px);
+        margin: 0;
+        background: rgb(246 249 251);
+
+        .dataQualityViewWrapper {
+            background: rgb(246 249 251);
+
+            // .thirdLine {
+            // height: calc(100% - 264px);
+            // }
+        }
+    }
+
+    :global {
+        .any-fabric-ant-btn-default:focus {
+            border: 1px solid #ccc;
+            color: rgb(0 0 0 / 85%);
+        }
+    }
+
+    .fieldNames {
+        display: flex;
+        align-items: center;
+
+        .fieldIcon {
+            margin-right: 8px;
+        }
+
+        .fieldCnNames,
+        .fieldEnNames {
+            .ellipsis-mixin();
+        }
+
+        .fieldEnNames {
+            color: @text-color-third;
+        }
+    }
+}
+
+.isMarket {
+    margin-top: 8px;
+}
+
+.dataQualityViewWrapper {
+    width: 100%;
+    height: 100%;
+    background: #f0f2f6;
+
+    &.marketWrapper {
+        overflow-x: hidden;
+        overflow-y: auto;
+        // left: 0;
+        // max-width: 1216px;
+        // padding-left: 26px;
+        // margin: 0 auto;
+
+        // .plotWrapper {
+        //     padding: 12px 10px 16px;
+        // }
+    }
+
+    .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-bottom: 16px;
+        background: #f0f2f6;
+
+        .left {
+            color: title-color-secondary;
+            font-size: 16px;
+            font-weight: 550;
+        }
+
+        .right {
+            .time {
+                margin-right: 10px;
+                color: @text-color-desc;
+            }
+        }
+    }
+
+    .secondLine {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+    }
+
+    .plotWrapper {
+        height: 300px;
+        flex: 1;
+        padding: 5px 20px 16px;
+        background: #fff;
+        border-radius: 3px;
+
+        .plotTitle {
+            &.mb {
+                margin-bottom: 20px;
+            }
+
+            display: flex;
+            align-items: center;
+
+            .tipsIcon {
+                margin-left: 8px;
+            }
+        }
+
+        .fourth {
+            height: calc(100% - 32px);
+
+            .fourthProgress {
+                display: flex;
+                justify-content: center;
+                margin: 10px 0;
+
+                :global {
+                    .any-fabric-ant-progress-circle-trail {
+                        stroke: #f0f0f0;
+                    }
+                }
+            }
+
+            .fourthLegend {
+                display: flex;
+                align-items: center;
+                justify-content: space-around;
+                // margin-top: 20px;
+
+                .legendBox {
+                    display: flex;
+                    align-items: center;
+
+                    .legendDot {
+                        display: inline-block;
+                        width: 12px;
+                        height: 12px;
+                        margin-right: 5px;
+                        background: #59a4ff;
+                        border-radius: 50%;
+
+                        &.total {
+                            background: #f0f0f0;
+                        }
+                    }
+
+                    .legendLabel {
+                        // max-width: calc(100% - 30px);
+                        .ellipsis-mixin();
+                    }
+                }
+            }
+
+            :global {
+                .any-fabric-ant-progress-text {
+                    color: @text-color-desc;
+                    font-weight: 500;
+                }
+            }
+        }
+
+        .lineBox {
+            min-width: 296px;
+            padding-top: 15px;
+
+            :global {
+                .g2-tooltip {
+                    padding: 0;
+                    background: linear-gradient(
+                        180deg,
+                        rgb(67 67 67 / 70%) 0%,
+                        rgb(0 0 0 / 80%) 100%
+                    );
+                }
+            }
+        }
+
+        .timeBox {
+            min-width: 156px;
+            height: calc(100% - 38px);
+            padding: 16px;
+            margin-top: 6px;
+            background: #f4f5f8;
+            border-radius: 4px;
+
+            .year {
+                color: #3a8ff0;
+                font-size: 21px;
+                font-weight: 500;
+            }
+
+            .day {
+                font-size: 80px;
+            }
+
+            .unit {
+                font-size: 30px;
+            }
+
+            .hms {
+                display: flex;
+                align-items: center;
+                color: rgb(0 0 0 / 45%);
+                font-size: 24px;
+                font-weight: 400;
+
+                .icon {
+                    margin-left: 8px;
+                    color: rgb(0 0 0 / 45%);
+                    font-size: 16px;
+                }
+            }
+        }
+    }
+
+    .thirdLine {
+        // height: calc(100% - 350px);
+        padding: 16px;
+        margin-top: 16px;
+        background-color: #fff;
+        border-radius: 3px;
+
+        .thirdTitle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+
+            .thirdTitleText {
+                font-size: 16px;
+                font-weight: 550;
+            }
+        }
+
+        .thirdTable {
+            // height: calc(100% - 48px);
+            overflow-y: auto;
+        }
+    }
+}
+
+.fieldsDetailsModalWrapper {
+    :global {
+        .any-fabric-ant-modal-body {
+            padding-right: 11px;
+            background: #f0f2f6;
+        }
+    }
+
+    .modalBox {
+        // max-height: 600px;
+        // overflow-y: auto;
+        margin-top: -8px;
+
+        .modaltitle {
+            margin-bottom: 12px;
+            color: @title-color-secondary;
+
+            & > div {
+                width: 100%;
+                margin-bottom: 10px;
+                .ellipsis-mixin();
+            }
+
+            .titleLable {
+                color: @text-color-third;
+            }
+
+            .titleVal {
+                font-weight: 550;
+            }
+        }
+
+        .modalSecondLine {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0 12px;
+
+            .ruleBox {
+                display: flex;
+                width: calc(25% - 12px);
+                height: 95px;
+                padding: 0 20px;
+                border: 1px solid rgb(0 0 0 / 10%);
+                margin-bottom: 16px;
+                background: #fff;
+                border-radius: 4px;
+
+                .ruleItem {
+                    width: 100%;
+                }
+
+                .name {
+                    margin-top: 12px;
+                    margin-bottom: 5px;
+                    color: rgb(0 0 0 / 65%);
+
+                    .nameIcon {
+                        margin-right: 8px;
+                        color: #3e75ff;
+                        font-size: 16px;
+                        font-weight: normal;
+                    }
+                }
+
+                .description {
+                    margin-right: 8px;
+                    color: @text-color-desc;
+                }
+
+                .value {
+                    display: flex;
+                    width: 100%;
+                    align-items: flex-end;
+                    margin-top: 10px;
+                    font-weight: 550;
+
+                    &.quantileValue {
+                        align-items: center;
+                        margin-top: -10px;
+                    }
+
+                    .statisticBox {
+                        display: inline-block;
+                        font-size: 20px;
+                        .ellipsis-mixin();
+
+                        .statisticUnit {
+                            margin-left: 2px;
+                            color: @title-color-secondary;
+                            font-size: 12px;
+                            font-weight: 400;
+                        }
+                    }
+                }
+            }
+        }
+
+        .progressListBox {
+            display: flex;
+            width: calc(50% - 12px);
+            flex-wrap: wrap;
+            margin-left: -10px;
+
+            & > div {
+                width: 100%;
+            }
+
+            // & > div:nth-child(2) {
+            //     .enumBox {
+            //         margin-left: 2px;
+            //     }
+            // }
+
+            .enumBox {
+                width: 100%;
+                max-height: 314px;
+                padding-top: 10px;
+                padding-right: 8px;
+                margin: 0 10px 16px;
+
+                .progressList {
+                    max-height: 220px;
+                    overflow-y: auto;
+                }
+
+                .progressName {
+                    width: 120px;
+                    .ellipsis-mixin();
+                }
+            }
+        }
+
+        .dictCodeBox {
+            width: calc(50% - 12px);
+            margin-right: 12px;
+        }
+    }
+}
+
+.jobConfigWrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #f0f2f6;
+
+    &.isDrawer {
+        position: static;
+        max-height: calc(100% - 20px);
+        background: #fff;
+
+        .jobConfigBox {
+            padding: 0;
+            margin-top: 4px;
+
+            .tableBox {
+                height: calc(100% - 130px);
+            }
+        }
+    }
+
+    .titleBox {
+        display: flex;
+        height: 51px;
+        align-items: center;
+        padding-left: 20px;
+        background: #fff;
+
+        .titleBtn {
+            cursor: pointer;
+        }
+
+        .titleLine {
+            width: 1px;
+            height: 20px;
+            margin: 0 11px;
+            background: rgb(0 0 0 / 35%);
+        }
+
+        .titleText {
+            font-weight: 550;
+        }
+    }
+
+    .jobConfigBox {
+        width: calc(100% - 48px);
+        height: calc(100% - 96px);
+        padding: 20px;
+        margin: 24px;
+        margin-top: 20px;
+        background: #fff;
+
+        .jobConfigTitle {
+            margin-bottom: 16px;
+            font-weight: 550;
+
+            .titleDesc {
+                margin-left: 16px;
+                color: #e60012;
+                font-weight: normal;
+            }
+        }
+
+        .tableBox {
+            width: 100%;
+            height: calc(100% - 246px);
+
+            .ruleCheckbox {
+                // display: flex;
+                // flex-wrap: wrap;
+
+                :global {
+                    .any-fabric-ant-checkbox-wrapper {
+                        padding-left: 8px;
+                        margin-right: 8px;
+                        margin-bottom: 5px;
+                        margin-left: 0;
+                        background: rgb(214 221 237 / 25%);
+                        border-radius: 2px;
+                    }
+                }
+
+                & > div {
+                    display: flex;
+
+                    .moreRules {
+                        display: flex;
+                        flex-wrap: wrap;
+                    }
+                }
+
+                .ruleSwitch {
+                    margin-top: 2px;
+                    margin-right: 12px;
+                }
+            }
+        }
+
+        .ruleConfig {
+            margin-bottom: 16px;
+
+            .jobConfigRadio {
+                display: flex;
+                height: 32px;
+                align-items: center;
+
+                .jobConfigRadioLabel {
+                    margin-right: 16px;
+                }
+            }
+
+            .inpNumber {
+                margin: 0 8px;
+            }
+        }
+
+        .confirmTips {
+            padding: 12px 24px;
+            margin-top: 16px;
+            margin-bottom: 16px;
+            background: #fefde8;
+            border-radius: 2px;
+            font-size: 12px;
+
+            .confirmTipsIcon {
+                margin-top: 2px;
+                margin-right: 8px;
+                color: #fddd16;
+                font-size: 16px;
+            }
+        }
+    }
+
+    .jobConfigFooter {
+        width: calc(100% + 40px);
+        padding: 16px 0;
+        border-top: 1px solid rgb(0 0 0 / 10%);
+        margin-left: -20px;
+        background: #fff;
+        text-align: right;
+
+        & > div {
+            margin-right: 20px;
+        }
+    }
+}
+
+.fieldsToolTipsBox {
+    background: #fff;
+
+    .numberBox {
+        display: flex;
+        align-items: center;
+        margin: 5px 0;
+
+        .numberValue {
+            display: flex;
+            align-items: center;
+
+            .numberItem {
+                display: inline-block;
+                max-width: 140px;
+                .ellipsis-mixin();
+
+                margin: 0 5px;
+            }
+        }
+    }
+}
+
+.enumBox {
+    width: 384px;
+    padding: 16px;
+    border: 1px solid rgb(0 0 0 / 10%);
+    background: #fff;
+    border-radius: 4px;
+
+    .enumTitle {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-right: 2px;
+
+        &.enumTitleDict {
+            margin-right: 8px;
+        }
+
+        .titleSum {
+            margin: 0 5px;
+            color: #59a4ff;
+        }
+    }
+
+    .firstEnumUnit {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-right: 8px;
+        color: @text-color-third;
+    }
+
+    .progressBox {
+        display: flex;
+        height: 30px;
+        align-items: center;
+        margin-right: 10px;
+
+        .progressName {
+            width: 50px;
+        }
+
+        .sum {
+            color: #59a4ff;
+            text-align: right;
+        }
+
+        :global {
+            .any-fabric-ant-progress-show-info .any-fabric-ant-progress-outer {
+                padding-right: 20px;
+            }
+        }
+    }
+
+    .secondEnumUnit {
+        color: @text-color-third;
+        text-align: end;
+    }
+}
+
+.quantileBox {
+    position: relative;
+    width: 100%;
+
+    .flexCtSa {
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+    }
+
+    .quantileDot {
+        z-index: 9;
+        width: 7px;
+        height: 12px;
+        background: rgb(58 143 240 / 80%);
+        border-radius: 4px;
+    }
+
+    .quantileBar {
+        position: absolute;
+        top: 25px;
+        width: 100%;
+        height: 8px;
+        background: #f0f0f0;
+        border-radius: 14px;
+    }
+
+    .quantileValue {
+        display: inline-block;
+        max-width: 60px;
+        .ellipsis-mixin();
+    }
+}
+
+.qualityScoreTips {
+    .tipsbox {
+        margin-bottom: 8px;
+    }
+
+    .tipsLabel {
+        margin-bottom: 4px;
+        color: rgb(0 0 0 / 85%);
+        font-size: 14px;
+    }
+
+    .tipsText {
+        color: rgb(0 0 0 / 65%);
+        font-size: 12px;
+    }
+}
+
+:global .any-fabric-ant-tooltip.qualityScoreDimensionTipsBox {
+    max-width: 580px;
+    padding: 16px;
+
+    .any-fabric-ant-tooltip-inner {
+        padding: 12px 16px;
+    }
+}

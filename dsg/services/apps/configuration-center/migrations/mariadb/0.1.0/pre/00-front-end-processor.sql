@@ -1,0 +1,35 @@
+USE `af_configuration`;
+
+-- 前置机
+CREATE TABLE IF NOT EXISTS `front_end_processors` (
+    `id`                    CHAR(36)        NOT NULL                                    COMMENT 'ID',
+    `order_id`              VARCHAR(32)     NOT NULL                                    COMMENT '申请单号',
+    `creator_id`            CHAR(36)        NOT NULL                                    COMMENT '创建者 ID',
+    `updater_id`            CHAR(36)        NULL        DEFAULT NULL                    COMMENT '更新者 ID',
+    `requester_id`          CHAR(36)        NULL        DEFAULT NULL                    COMMENT '申请者 ID',
+    `recipient_id`          CHAR(36)        NULL        DEFAULT NULL                    COMMENT '签收者 ID',
+    `creation_timestamp`    DATETIME(3)     NOT NULL    DEFAULT current_timestamp(3)    COMMENT '创建时间',
+    `update_timestamp`      DATETIME(3)     NULL        DEFAULT NULL                    COMMENT '更新时间',
+    `request_timestamp`     DATETIME(3)     NULL        DEFAULT NULL                    COMMENT '申请时间',
+    `allocation_timestamp`  DATETIME(3)     NULL        DEFAULT NULL                    COMMENT '分配时间',
+    `receipt_timestamp`     DATETIME(3)     NULL        DEFAULT NULL                    COMMENT '签收时间',
+    `reclaim_timestamp`     DATETIME(3)     NULL        DEFAULT NULL                    COMMENT '回收时间',
+    `deletion_timestamp`    DATETIME(3)     NULL        DEFAULT NULL                    COMMENT '删除时间',
+    `department_id`         CHAR(36)        NOT NULL                                    COMMENT '所属部门 ID',
+    `department_address`    VARCHAR(300)    NOT NULL                                    COMMENT '所属部门地址',
+    `contact_name`          VARCHAR(128)    NOT NULL                                    COMMENT '联系人姓名',
+    `contact_phone`         VARCHAR(20)     NULL        DEFAULT NULL                    COMMENT '联系人电话',
+    `contact_mobile`        VARCHAR(20)     NULL        DEFAULT NULL                    COMMENT '联系人手机',
+    `contact_mail`          VARCHAR(128)    NULL        DEFAULT NULL                    COMMENT '联系人邮箱',
+    `comment`               VARCHAR(800)    NULL        DEFAULT NULL                    COMMENT '申请理由',
+	`is_draft`              TINYINT(4)      NOT NULL    DEFAULT 0                       COMMENT '是否为草稿、暂存',
+    `node_ip`               VARCHAR(256)    NULL        DEFAULT NULL                    COMMENT '节点 IP',
+    `node_port`             INT(11)         NULL        DEFAULT NULL                    COMMENT '节点端口号',
+    `node_name`             VARCHAR(128)    NULL        DEFAULT NULL                    COMMENT '节点名称',
+    `administrator_name`    VARCHAR(128)    NULL        DEFAULT NULL                    COMMENT '技术负责人姓名',
+    `administrator_phone`   VARCHAR(20)     NULL        DEFAULT NULL                    COMMENT '技术负责人电话',
+    `phase`                 INT(11)         NOT NULL                                    COMMENT '在生命周期所处阶段',
+    `apply_id`              CHAR(36)        NULL        DEFAULT NULL                    COMMENT 'workflow 审核 apply id',
+    PRIMARY KEY     (`id`)          USING BTREE,
+    UNIQUE INDEX    (`order_id`)    USING BTREE
+) COMMENT='前置机' COLLATE='utf8mb4_unicode_ci' ENGINE=InnoDB;

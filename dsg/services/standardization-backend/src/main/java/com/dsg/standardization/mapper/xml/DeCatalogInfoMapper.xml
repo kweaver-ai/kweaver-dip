@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsg.standardization.mapper.DeCatalogInfoMapper">
+    <!-- 树形结构 -->
+    <resultMap id="catalogInfoMap" type="com.dsg.standardization.entity.DeCatalogInfo">
+        <result column="f_id"  property="id"  jdbcType="BIGINT"/>
+        <result column="f_catalog_name" jdbcType="VARCHAR" property="catalogName" />
+        <result column="f_description" jdbcType="VARCHAR" property="description" />
+        <result column="f_level" jdbcType="TINYINT" property="level" />
+        <result column="f_parent_id" jdbcType="BIGINT" property="parentId" />
+        <result column="f_type" jdbcType="TINYINT" property="type" />
+        <result column="f_authority_id" jdbcType="BIGINT" property="authorityId" />
+        <collection property="children" ofType="com.dsg.standardization.entity.DeCatalogInfo" column="f_id" select="getChildren" fetchType="eager"/>
+    </resultMap>
+
+
+    <!--查询树形分组-->
+    <select id="getChildren" resultMap="catalogInfoMap">
+
+    SELECT
+           a.f_id,
+           a.f_catalog_name,
+           a.f_description,
+           a.f_level,
+           a.f_parent_id,
+           a.f_type,
+           a.f_authority_id
+    FROM t_de_catalog_info AS a
+    WHERE
+      a.f_parent_id = #{fParentId}
+  </select>
+
+
+</mapper>

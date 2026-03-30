@@ -1,0 +1,149 @@
+# 名称空间，服务都要在同一个空间。
+namespace: anyshare
+
+# 1 修改标签
+labels:
+  deployment:
+    name: configuration-center-deployment
+  pod:
+    app: configuration-center-pod
+  service:
+    app: configuration-center-service
+
+# 2 修改仓库服务的镜像地址：不同的项目记得修改repository中af后的项目名和tag
+image:
+  registry: acr.aishu.cn
+  repository: af/configuration-center
+  tag: "1.0.0-alpha"
+  pullPolicy: IfNotPresent
+
+
+#3 修改容器副本数量
+replicaCount: 1
+
+#4 修改deployment的名称
+name: configuration-center-deployment
+
+nodeSelector: []
+
+#需要暴露的端口号列表
+#containerPort容器需要监听的端口号
+#protocol端口协议，支持TCP和UDP，默认TCP
+ports:
+  name: server-port
+  containerPort: 8133
+
+
+# 修改service的名字、端口，nodePort是对外的端口。
+service:
+  name: configuration-center
+  type: ClusterIP
+  port: 8133
+  version: "1.0.0"
+  telemetry:
+    log:
+      enabled: true
+      endpoint: http://feed-ingester-service:13031/api/feed_ingester/v1/jobs/job-4d42d761dbf0ea95/events
+      level: info
+    trace:
+      enabled: true
+      endpoint: http://feed-ingester-service:13031/api/feed_ingester/v1/jobs/job-a2491f67d02e482c/events
+
+depServices:
+  class-443:
+    ingressClass: class-443
+  # AnyRobot 配置
+  anyrobot:
+    # 是否接入 AnyRobot
+    enabled: false
+    # AnyRobot 服务端地址
+    server: https://anyrobot.example.org
+    # AnyFabric 使用这个 DataView 记录审计日志
+    dataViewID: "514940169606948879"
+  rds:
+    type: mariadb
+    host: mariadb-mariadb-master.resource
+    port: 3330
+    user: anyshare
+    password: password
+    database: af_configuration
+  mq:
+    mqHost: kafka-external-31000.resource
+    mqPort: 9098
+    mqType: "kafka"
+    mqLookupdHost: proton-mq-nsq-nsqlookupd.resource
+    mqLookupdPort: 4161
+    auth:
+      username: kafkaclient
+      password: password
+      mechanism: "PLAIN"
+    kafkaHost: kafka-external-31000.resource
+    kafkaPort: 9098
+    nsqHost: proton-mq-nsq-nsqd.resource:4150
+    nsqHttpHost: proton-mq-nsq-nsqd.resource:4151
+    nsqLookupdHost: proton-mq-nsq-nsqlookupd.resource:4161
+  redis:
+    connectInfo:
+      masterGroupName: mymaster
+      host: proton-redis-proton-redis.resource
+      port: 6379
+      password: password
+      sentinelHost: proton-redis-proton-redis-sentinel.resource
+      sentinelPassword: password
+      sentinelPort: 26379
+      sentinelUsername: root
+      username: root
+    connectType: sentinel
+    database: 0
+  hydra:
+    publicHost: hydra-public
+    publicPort: 4444
+    administrativeHost: hydra-admin
+    administrativePort: 4445
+  user-management:
+    publicHost: user-management-public
+    publicPort: 30980
+    privateHost: user-management-private
+    privatePort: 30980
+  oss:
+    ossApp: af
+    ossHost: ossgatewaymanager-private:9002
+    ossProtocol: http
+    ossIsDefault: true
+    ossBucket: afstorage
+  business-grooming:
+    host: business-grooming
+    port: 8123
+  virtualizationEngine:
+    protocol: http
+    host: af-vega-gateway
+    port: 8099
+  dataConnection:
+    protocol: http
+    host: data-connection
+    port: 8098
+  standardization:
+    host: standardization
+    port: 80
+  data-subject:
+    host: data-subject
+    port: 8123
+  workflowRest:
+    host: flow-audit-config
+    port: 9800
+  data-adaptor:
+    host: 10.4.71.27
+    port: 1234
+env:
+  productVersion: "2.0.0.9"
+  buildDate: "20241111"
+  VEClientExpire: "70"
+
+# 修改pod资源限制：cpu示例:0.5/500m/1/1000m;memory示例:512Mi/1Gi
+resources:
+  requests:
+    cpu: 0.1
+    memory: 10Mi
+  limits:
+    cpu: 2
+    memory: 2048Mi

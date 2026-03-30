@@ -1,0 +1,98 @@
+.importWrapper {
+    .error {
+        display: flex;
+        width: 480px;
+        height: 32px;
+        padding-top: 8px;
+        background-color: rgba(245 34 45 / 6%);
+        color: @text-color-desc;
+        font-size: 12px;
+
+        .errorIcon {
+            margin-right: 7px;
+            margin-left: 17px;
+            color: #f5222d;
+            font-size: 14px;
+        }
+
+        .errorText {
+            display: inline-block;
+        }
+    }
+
+    .uploadBody {
+        padding: 0 32px;
+
+        .uploadTitle {
+            margin-top: 10px;
+            margin-bottom: 8px;
+            color: @title-color-secondary;
+            font-size: 14px;
+            font-weight: 550;
+        }
+
+        .fileDesc {
+            display: flex;
+            height: 22px;
+            color: @text-color-third;
+            font-size: 12px;
+            line-height: 22px;
+
+            .fileOrder {
+                margin-top: -1px;
+                margin-right: 3px;
+                font-size: 32px;
+            }
+        }
+
+        .uploadBtn {
+            width: 94px;
+            height: 34px;
+            padding: 0 12px;
+            margin-top: 12px;
+            margin-bottom: 16px;
+            font-size: 12px;
+
+            .uploadIcon {
+                font-size: 14px;
+                font-weight: bold;
+            }
+        }
+
+        .uploadedFile {
+            display: flex;
+            height: 34px;
+            justify-content: space-between;
+            padding: 0 16px 0 12px;
+            margin-bottom: 41px;
+            background-color: #f1f7fe;
+            color: @title-color-secondary;
+            font-size: 14px;
+            font-weight: bold;
+            line-height: 34px;
+
+            .fileInfo {
+                display: flex;
+                overflow: hidden;
+
+                .xlsIcon {
+                    display: flex;
+                    align-items: center;
+                    margin-right: 8px;
+                    font-size: 16px;
+                }
+
+                .fileName {
+                    width: 100%;
+                    .ellipsis-mixin();
+                }
+            }
+
+            .deleteIcon {
+                display: flex;
+                align-items: center;
+                color: rgb(0 0 0 / 25%);
+            }
+        }
+    }
+}

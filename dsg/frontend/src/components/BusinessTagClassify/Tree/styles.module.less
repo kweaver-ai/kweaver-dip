@@ -1,0 +1,281 @@
+.configTree {
+    position: relative;
+    // height: 100%;
+    padding: 16px 24px 24px;
+
+    &-top {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 12px;
+
+        &.not-edit {
+            pointer-events: none;
+        }
+    }
+
+    &-tips {
+        margin-bottom: 12px;
+        color: rgb(0 0 0 / 45%);
+    }
+
+    &-content {
+        overflow: hidden scroll;
+        height: calc(100% - 102px);
+    }
+
+    &-mask {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgb(0 0 0 / 10%);
+        cursor: not-allowed;
+        pointer-events: none;
+    }
+
+    &-load {
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: flex;
+        width: 100%;
+        height: 100%;
+        align-items: center;
+        justify-content: center;
+        background: rgb(255 255 255 / 75%);
+        cursor: default;
+    }
+}
+
+.treeItem {
+    position: relative;
+    display: flex;
+    height: 42px;
+    box-sizing: border-box;
+    align-items: center;
+    border-bottom: 1px solid #f4f4f4;
+    background: #fff;
+    list-style: none;
+
+    &:hover {
+        background: rgb(0 0 0 / 4%);
+
+        .drag {
+            visibility: visible;
+        }
+    }
+
+    &.editable {
+        z-index: 1001;
+        height: 68px;
+
+        &:hover {
+            background: #fff;
+        }
+    }
+
+    &.not-edit {
+        pointer-events: none;
+    }
+
+    &.clone {
+        width: 200px;
+        height: 32px;
+        padding-left: 8px;
+        border-bottom: 0;
+        background: #fff;
+        border-radius: 4px;
+        box-shadow: 0 5px 12px 4px rgb(0 0 0 / 5%);
+        opacity: 0.7;
+        pointer-events: none;
+    }
+
+    &.ghost {
+        position: relative;
+        z-index: 1;
+        height: 4px;
+        border-bottom: 0;
+        opacity: 1;
+
+        .content {
+            position: relative;
+            border-color: #126ee3;
+            background-color: #126ee3;
+
+            &::before {
+                position: absolute;
+                top: -2px;
+                left: -4px;
+                display: block;
+                width: 8px;
+                height: 8px;
+                border: 1px solid #126ee3;
+                background-color: #fff;
+                border-radius: 50%;
+                content: '';
+            }
+
+            > * {
+                height: 0;
+
+                /* Items are hidden using height and opacity to retain focus */
+                opacity: 0;
+            }
+        }
+    }
+
+    &.disableInteraction {
+        pointer-events: none;
+
+        &:hover {
+            background: #fff;
+        }
+    }
+
+    .drag {
+        display: flex;
+        width: 36px;
+        height: 100%;
+        flex-shrink: 0;
+        align-items: center;
+        justify-content: center;
+        color: rgb(0 0 0 / 65%);
+        cursor: move;
+        font-size: 16px;
+        visibility: hidden;
+    }
+
+    &-dragPlace {
+        width: 36px;
+        flex-shrink: 0;
+    }
+
+    .content {
+        position: relative;
+        display: flex;
+        width: 0;
+        height: 100%;
+        box-sizing: border-box;
+        flex: 1;
+        align-items: center;
+
+        &-collapse {
+            display: flex;
+            width: 16px;
+            height: 16px;
+            align-items: center;
+            justify-content: center;
+            // border: 1px solid #d9d9d9;
+            margin-right: 8px;
+            border-radius: 4px;
+            color: rgb(0 0 0 / 65%);
+            cursor: pointer;
+            font-size: 14px;
+
+            &:hover {
+                border-color: rgb(24 144 255);
+                color: rgb(24 144 255);
+            }
+
+            svg {
+                transition: transform 0.3s ease;
+            }
+        }
+
+        &-nameWrap {
+            display: flex;
+            width: 0;
+            flex: 1;
+            align-items: center;
+            padding-right: 8px;
+
+            &-box {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+
+            &-name {
+                border: 1px solid transparent;
+                color: rgb(0 0 0 / 85%);
+                line-height: 32px;
+                .ellipsis-line(1);
+            }
+
+            &-edit {
+                position: relative;
+                display: flex;
+                width: 0;
+                flex: 1;
+                flex-direction: column;
+                justify-content: space-between;
+
+                &-error {
+                    position: absolute;
+                    bottom: -16px;
+                    color: #f5222d;
+                    font-size: 12px;
+                    line-height: 16px;
+                    .ellipsis-line(1);
+                }
+            }
+        }
+
+        &-ownerWrap {
+            display: flex;
+            width: 278px;
+            flex-shrink: 0;
+            align-items: center;
+            padding-right: 8px;
+
+            &-name {
+                width: 0;
+                flex: 1;
+                border: 1px solid transparent;
+                color: rgb(0 0 0 / 85%);
+                line-height: 32px;
+                .ellipsis-mixin();
+            }
+
+            &-edit {
+                display: flex;
+                width: 0;
+                flex: 1;
+                flex-direction: column;
+                justify-content: space-between;
+            }
+        }
+
+        &-operateWrap {
+            display: flex;
+            width: 172px;
+            align-items: center;
+
+            &-item {
+                padding-right: 16px;
+            }
+
+            .item_disabled {
+                color: rgb(0 0 0 / 30%);
+                cursor: not-allowed;
+            }
+        }
+
+        &-count {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            display: flex;
+            width: 20px;
+            height: 20px;
+            align-items: center;
+            justify-content: center;
+            background-color: #126ee3;
+            border-radius: 50%;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 550;
+        }
+    }
+}

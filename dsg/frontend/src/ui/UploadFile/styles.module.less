@@ -1,0 +1,102 @@
+.uploadApplicationLetter {
+    .fileDesc {
+        display: flex;
+        height: 22px;
+        color: @text-color-third;
+        font-size: 12px;
+        line-height: 22px;
+
+        .fileOrder {
+            margin-top: -3px;
+            margin-right: 3px;
+            font-size: 32px;
+        }
+    }
+
+    .uploadWrapper {
+        margin-top: 12px;
+
+        .uploadBtn {
+            font-size: 12px;
+
+            .uploadIcon {
+                font-size: 14px;
+                font-weight: bold;
+            }
+        }
+    }
+
+    .uploadedFile {
+        display: flex;
+        height: 34px;
+        justify-content: space-between;
+        padding: 0 16px 0 12px;
+        margin-bottom: 41px;
+        background-color: #f1f7fe;
+        color: @title-color-secondary;
+        font-size: 14px;
+        font-weight: bold;
+        line-height: 34px;
+
+        .fileInfo {
+            display: flex;
+            overflow: hidden;
+
+            .xlsIcon {
+                display: flex;
+                align-items: center;
+                margin-right: 8px;
+                font-size: 16px;
+            }
+
+            .fileName {
+                width: 100%;
+                .ellipsis-mixin();
+            }
+        }
+
+        .deleteIcon {
+            display: flex;
+            align-items: center;
+            color: rgb(0 0 0 / 25%);
+        }
+    }
+
+    .filterWrapper {
+        display: flex;
+        width: 512px;
+        height: 36px;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8px 16px;
+        margin-top: 16px;
+        background-color: rgb(246 249 255);
+        border-radius: 4px;
+
+        .fileAndIcon {
+            display: flex;
+            align-items: center;
+
+            .fileIcon {
+                margin-right: 10px;
+                color: @primary-color;
+            }
+
+            .fileName {
+                width: 400px;
+                color: rgb(0 0 0 / 85%);
+                .ellipsis-mixin();
+
+                &:hover {
+                    color: @primary-color;
+                    cursor: pointer;
+                    text-decoration: underline;
+                }
+            }
+        }
+
+        .deleteIcon {
+            color: rgb(0 0 0 / 25%);
+        }
+    }
+}

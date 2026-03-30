@@ -1,0 +1,77 @@
+.visitor-card {
+    &-search {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 20px 0;
+
+        &-left {
+            display: flex;
+            align-items: center;
+            column-gap: 8px;
+
+            .label {
+                word-break: keep-all;
+            }
+
+            .search-label {
+                color: rgba(0 0 0 / 85%);
+            }
+        }
+
+        // &-right {
+        // }
+    }
+
+    .tooltip {
+        &-span {
+            padding-right: 6px;
+        }
+
+        > *:nth-child(2) {
+            cursor: pointer;
+        }
+    }
+}
+
+.tooltip-panel {
+    > div {
+        color: rgba(0 0 0 / 65%);
+        font-size: 12px;
+        white-space: nowrap;
+
+        &:nth-child(odd) {
+            &:first-child {
+                padding-top: 0;
+            }
+
+            padding-top: 6px;
+            color: rgba(0 0 0 / 85%);
+            font-size: 14px;
+            font-weight: bold;
+        }
+    }
+}
+
+:global {
+    .any-fabric-ant-tooltip-inner {
+        width: fit-content;
+        padding: 12px;
+    }
+
+    .any-fabric-ant-select-item {
+        min-height: 32px;
+    }
+}
+
+.search-select {
+    :global {
+        .any-fabric-ant-select-item {
+            padding: 0;
+        }
+    }
+}
+
+.permission-select {
+    width: 100%;
+}

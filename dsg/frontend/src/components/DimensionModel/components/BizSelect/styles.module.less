@@ -1,0 +1,98 @@
+.biz-select {
+    display: flex;
+    width: 100%;
+    height: 32px;
+    align-items: center;
+    padding: 4px 8px;
+    border: 1px dashed rgba(0 0 0 / 25%);
+    border-radius: 4px;
+    color: rgba(0 0 0 / 85%);
+    font-size: 14px;
+    line-height: 32px;
+    transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+
+    &:hover {
+        border-color: #3a8ff0;
+    }
+
+    &.hidden-border {
+        border: none;
+
+        .biz-select-btn::before {
+            display: none;
+        }
+    }
+
+    &-icon {
+        width: 16px;
+        margin-right: 4px;
+        font-size: 14px;
+    }
+
+    &-choose {
+        overflow: hidden;
+        flex: 1;
+        color: rgba(0 0 0 / 25%);
+        cursor: pointer;
+        font-size: 14px;
+        text-align: center;
+        text-overflow: ellipsis;
+        transition: color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+        white-space: nowrap;
+        word-break: keep-all;
+
+        &:hover {
+            color: #126ee3;
+        }
+    }
+
+    &-title {
+        overflow: hidden;
+        flex: 1;
+        color: rgb(0 0 0 / 65%);
+        cursor: pointer;
+        font-size: 14px;
+        text-overflow: ellipsis;
+        transition: color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+        white-space: nowrap;
+        word-break: keep-all;
+
+        &:hover {
+            color: #126ee3;
+            text-decoration: underline;
+        }
+
+        &.is-placeholder {
+            color: rgb(0 0 0 / 25%);
+
+            &:hover {
+                cursor: default;
+                text-decoration: none;
+            }
+        }
+    }
+
+    &-btn {
+        position: relative;
+        padding: 0 6px;
+        margin-left: 10px;
+        color: #126ee3;
+        cursor: pointer;
+        white-space: nowrap;
+        word-break: keep-all;
+
+        &:hover {
+            color: #3184fe;
+        }
+
+        &::before {
+            position: absolute;
+            top: 15%;
+            left: -6px;
+            width: 1px;
+            height: 70%;
+            background: #d9d9d9;
+            content: '';
+        }
+    }
+}

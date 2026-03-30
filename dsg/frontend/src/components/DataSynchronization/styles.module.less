@@ -1,0 +1,568 @@
+.container {
+    padding: 0 24px;
+
+    .title {
+        padding: 16px 0;
+        font-weight: 600;
+    }
+
+    .toolBar {
+        display: flex;
+        width: 100%;
+        height: 32px;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .tableContainer {
+        margin-top: 16px;
+
+        .pagination {
+            margin: 16px 0;
+            float: right;
+        }
+
+        .tableRow {
+            &:hover {
+                .textName {
+                    color: @primary-color;
+                }
+            }
+        }
+
+        .textName {
+            &:active,
+            &:focus,
+            &:hover {
+                color: #126ee3;
+                text-decoration: underline;
+            }
+        }
+    }
+
+    .empty {
+        margin-top: 120px;
+    }
+}
+
+.headerTitle {
+    display: flex;
+    align-items: center;
+
+    .headerModelInfo {
+        display: flex;
+        width: 193px;
+        align-items: center;
+
+        .iconWrapper {
+            display: flex;
+            width: 24px;
+            height: 24px;
+            align-items: center;
+            justify-content: center;
+            margin-left: 8px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 16px;
+
+            &:hover {
+                background-color: rgb(245 245 245);
+            }
+        }
+
+        .modelInfoWrap {
+            max-width: 168px;
+            font-weight: 550;
+            .ellipsis-mixin();
+        }
+    }
+
+    .headerTab {
+        margin-left: 52px;
+
+        :global {
+            .any-fabric-ant-tabs-top > .any-fabric-ant-tabs-nav,
+            .any-fabric-ant-tabs-bottom > .any-fabric-ant-tabs-nav,
+            .any-fabric-ant-tabs-top > div > .any-fabric-ant-tabs-nav,
+            .any-fabric-ant-tabs-bottom > div > .any-fabric-ant-tabs-nav {
+                border-bottom: 0;
+                margin-bottom: 0;
+            }
+
+            .any-fabric-ant-tabs-top > .any-fabric-ant-tabs-nav::before,
+            .any-fabric-ant-tabs-bottom > .any-fabric-ant-tabs-nav::before,
+            .any-fabric-ant-tabs-top > div > .any-fabric-ant-tabs-nav::before,
+            .any-fabric-ant-tabs-bottom
+                > div
+                > .any-fabric-ant-tabs-nav::before {
+                border-bottom: 0;
+            }
+        }
+    }
+}
+
+.headerRightBtn {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.ModelContainer {
+    width: 100%;
+    height: 100%;
+
+    .graphContainer {
+        width: 100%;
+        height: 100%;
+    }
+
+    .displayInfoWrap {
+        position: absolute;
+        bottom: 20px;
+        left: 24px;
+        background: transparent;
+        color: rgb(0 0 0 / 65%);
+        font-size: 12px;
+
+        .item {
+            display: flex;
+            height: 20px;
+            align-items: center;
+
+            .label {
+                margin-left: 4px;
+            }
+        }
+    }
+}
+
+.formNoData {
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    border-radius: 6px;
+
+    .emptyLine {
+        position: absolute;
+        top: 140px;
+        right: -132px;
+    }
+
+    .emptyIcon {
+        display: flex;
+        justify-content: center;
+        margin-top: 80px;
+        margin-bottom: 16px;
+    }
+
+    .textName {
+        display: flex;
+        justify-content: center;
+    }
+
+    .addFormTips {
+        display: flex;
+        justify-content: center;
+    }
+}
+
+.formNoDataSource {
+    border: 2px dashed rgb(167 209 234 / 100%);
+    background: rgb(167 209 234 / 2%);
+}
+
+.formNoDataTarget {
+    border: 2px dashed rgb(224 210 239 / 100%);
+    background: rgb(224 210 239 / 2%);
+}
+
+.formHasData {
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    border-radius: 6px;
+
+    .formContainer {
+        height: 100%;
+
+        .formTitle {
+            height: 42px;
+
+            .formTitleLine {
+                height: 8px;
+                background: #a7d1ea;
+                border-radius: 6px 6px 0 0;
+            }
+
+            .formTargetLine {
+                height: 8px;
+                background: rgb(224 210 239 / 100%);
+                border-radius: 6px 6px 0 0;
+            }
+
+            .formTitleContent {
+                display: flex;
+                height: 36px;
+                align-items: center;
+                justify-content: space-between;
+                padding: 12px;
+
+                .leftFormInfo {
+                    display: flex;
+                    align-items: center;
+
+                    .name {
+                        width: 150px;
+                        margin-left: 4px;
+                        color: #000;
+                        .ellipsis-mixin();
+                    }
+                }
+
+                .leftFormInfoEmpty {
+                    color: rgb(0 0 0 / 25%);
+                    font-size: 12px;
+                }
+
+                .rightFormTool {
+                    display: flex;
+                    align-items: center;
+                }
+
+                .formTitleBtn {
+                    display: flex;
+                    align-items: center;
+
+                    .iconBtn {
+                        display: flex;
+                        width: 20px;
+                        height: 20px;
+                        align-items: center;
+                        justify-content: center;
+                        cursor: pointer;
+
+                        &:hover,
+                        &:active,
+                        &:focus {
+                            background: rgb(0 0 0 / 4%);
+                        }
+                    }
+                }
+
+                .formSearch {
+                    display: flex;
+                    width: 100%;
+                    align-items: center;
+
+                    .formSearchInput {
+                        padding: 0 12px 0 0;
+                        border: 0;
+                        margin-left: 8px;
+                        background: transparent;
+                        border-radius: 0;
+                        color: rgb(0 0 0 / 85%);
+
+                        &:hover,
+                        &:active,
+                        &:focus {
+                            box-shadow: 0;
+                        }
+
+                        &::placeholder {
+                            color: rgb(0 0 0 / 25%);
+                        }
+                    }
+                }
+
+                .clearInput {
+                    position: relative;
+                    z-index: 999;
+                    margin-left: -12px;
+                    color: rgb(0 0 0 / 60%);
+                    cursor: pointer;
+                    font-size: 12px;
+                }
+            }
+
+            .formTargetTitleBoder {
+                border-bottom: 1px solid rgb(247 244 251 / 100%);
+            }
+
+            .formSourceTitleBoder {
+                border-bottom: 1px solid rgb(233 243 250 / 100%);
+            }
+        }
+
+        .formTitleError {
+            border: 1px solid #f5222d;
+            border-radius: 6px 6px 0 0;
+        }
+
+        .formList {
+            display: flex;
+            height: calc(100% - 42px);
+            flex-direction: column;
+            justify-content: space-between;
+
+            .formItem {
+                display: flex;
+                height: 30px;
+                align-items: center;
+                padding: 0 6px 0 12px;
+                margin: 0 2px;
+                border-radius: 3px;
+
+                .icon {
+                    margin-right: 4px;
+                }
+
+                .targetNameContent {
+                    display: flex;
+                    width: 240px;
+                    align-items: center;
+                    justify-content: space-between;
+
+                    .descriptionContent {
+                        position: relative;
+                        display: flex;
+                        width: 20px;
+                        height: 20px;
+                        flex-shrink: 0;
+                        align-items: center;
+                        justify-content: center;
+
+                        .dotTip {
+                            position: absolute;
+                            top: 0;
+                            right: 0;
+                            width: 6px;
+                            height: 6px;
+                            background: rgb(250 173 20 / 100%);
+                            border-radius: 6px;
+                        }
+
+                        &:active,
+                        &:focus,
+                        &:hover {
+                            background: rgb(0 0 0 / 8%);
+                        }
+                    }
+                }
+
+                .name {
+                    max-width: 230px;
+                    font-size: 12px;
+                    .ellipsis-mixin();
+                }
+
+                .romveDataName {
+                    text-decoration-line: line-through;
+                }
+
+                &:active,
+                &:focus,
+                &:hover {
+                    background: rgb(18 110 227 / 6%);
+                }
+            }
+
+            .romveDataItem {
+                color: rgb(0 0 0 / 25%);
+            }
+
+            .selectedField {
+                box-sizing: border-box;
+                border: 1px solid #126ee3;
+            }
+
+            .editErrorField {
+                box-sizing: border-box;
+                border: 1px solid #f5222d !important;
+            }
+
+            .connectSelectedField {
+                background: rgb(18 110 227 / 6%);
+            }
+
+            .formContentPageTurning {
+                display: flex;
+                height: 20px;
+                align-items: center;
+                justify-content: center;
+                color: rgb(0 0 0 / 85%);
+                cursor: pointer;
+                font-size: 12px;
+            }
+
+            .pasteFormPageTurning {
+                background: #e0d2ef;
+            }
+
+            .standardFormPageTurning {
+                background: rgb(18 110 227 / 25%);
+            }
+
+            .originFormPageTurning {
+                background: #fff;
+                border-radius: 0 0 6px 6px;
+            }
+        }
+
+        .notHasField {
+            display: flex;
+            width: 100%;
+            height: 320px;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 90px;
+            color: rgb(0 0 0 / 45%);
+            font-size: 12px;
+        }
+    }
+}
+
+.formHasDataSource {
+    border: 1px solid rgb(167 209 234 / 50%);
+}
+
+.formHasDataTarget {
+    border: 1px solid rgb(224 210 239 / 50%);
+}
+
+.selectedOptionIcons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.editDescripton {
+    padding: 0 8px 16px;
+
+    .titleBar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 12px;
+
+        .close {
+            display: flex;
+            justify-content: flex-end;
+            color: rgb(0 0 0 / 45%);
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .editDescriptonLabel {
+            display: flex;
+            color: #000;
+            font-size: 14px;
+        }
+    }
+
+    .inputText {
+        width: 204px;
+        height: 60px;
+        resize: none;
+    }
+
+    .textView {
+        width: 204px;
+        max-height: 73px;
+        color: rgb(0 0 0 / 65%);
+        overflow-y: auto;
+
+        .emptyText {
+            color: rgb(0 0 0 / 25%);
+        }
+    }
+}
+
+.resultContainer {
+    .close {
+        display: flex;
+        height: 20px;
+        justify-content: flex-end;
+        color: rgb(0 0 0 / 45%);
+        font-size: 14px;
+    }
+
+    .resultTitle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .resultTitleInfo {
+        display: flex;
+        justify-content: center;
+        margin-left: 12px;
+        font-size: 20px;
+        font-weight: 550;
+    }
+
+    .resultContent {
+        margin: 20px 0 30px;
+
+        .content {
+            display: flex;
+            justify-content: center;
+            color: @text-color-desc;
+        }
+    }
+
+    .resultbButton {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin: 10px 0;
+    }
+}
+
+.formNodeTootip {
+    display: flex;
+    min-width: 130px;
+    max-height: 120px;
+    flex-direction: column;
+    padding: 4px;
+    overflow-y: auto;
+
+    .systemInfo {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 4px;
+    }
+
+    .dataSource {
+        display: flex;
+        align-items: flex-start;
+    }
+
+    .displayName {
+        max-width: 180px;
+        flex-shrink: 0;
+        margin-left: 4px;
+        white-space: normal;
+    }
+}
+
+.dyncLogsContent {
+    height: 100%;
+    padding: 24px;
+    background: #f0f2f5;
+}
+
+.selectMetaOptions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    .name {
+        max-width: 406px;
+        margin-left: 8px;
+        .ellipsis-mixin();
+    }
+}

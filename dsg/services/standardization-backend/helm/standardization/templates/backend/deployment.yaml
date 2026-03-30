@@ -1,0 +1,105 @@
+{{- $fullName := print (include "standardization.fullname" .) "" -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $fullName }}
+  namespace: {{.Values.namespace}}
+  labels:
+    {{- include "standardization.labels.backend" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  strategy:
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 25%
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      {{- include "standardization.backend.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/backend/configmap.yaml") . | sha256sum }}
+      {{- with .Values.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "standardization.backend.selectorLabels" . | nindent 8 }}
+        app: {{ .Release.Name }}
+    spec:
+      {{- if .Values.config.backend.hostAliases -}}
+      hostAliases:
+        {{- range .Values.config.backend.hostAliases -}}
+        - {{- toYaml . | nindent 10 -}}
+        {{ end }}
+      {{ end }}
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "standardization.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ $fullName }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.config.backend.health }}
+              port: http
+            initialDelaySeconds: 60
+            periodSeconds: 60
+            timeoutSeconds: 60
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          env:
+            - name: TZ
+              value: Asia/Shanghai
+          envFrom:
+            - configMapRef:
+                name: {{ $fullName }}
+          volumeMounts:
+            - name: {{ $fullName }}
+              mountPath: /standardization/config/application.yml
+              readOnly: true
+              subPath: application.yml
+      volumes:
+        - name: {{ $fullName }}
+          configMap:
+            name: {{ $fullName }}
+            items:
+              - key: config-yml
+                path: application.yml
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+      {{- range .}}
+        {{ .labelKey | quote }}: {{ .labelVal | quote }}
+      {{- end }}
+    {{- end }} 
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                      - {{ .Release.Name }}
+              topologyKey: "kubernetes.io/hostname"
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

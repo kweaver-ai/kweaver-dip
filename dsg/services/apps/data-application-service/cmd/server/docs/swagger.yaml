@@ -1,0 +1,3958 @@
+definitions:
+  domain.DailyStatistics:
+    properties:
+      apply_count:
+        type: integer
+      fail_count:
+        type: integer
+      online_count:
+        type: integer
+      record_date:
+        type: string
+      success_count:
+        type: integer
+    type: object
+  domain.DepartmentStatistics:
+    properties:
+      department_id:
+        description: 部门ID
+        type: string
+      department_name:
+        description: 部门名称
+        type: string
+      published_count:
+        description: 已发布数量
+        type: integer
+      rate:
+        description: 已发布数量/总数量
+        type: number
+      total_count:
+        description: 总数量
+        type: integer
+    type: object
+  domain.GetDailyStatisticsRes:
+    properties:
+      daily_statistics:
+        items:
+          $ref: '#/definitions/domain.DailyStatistics'
+        type: array
+    type: object
+  domain.GetDepartmentStatisticsRes:
+    properties:
+      department_count:
+        type: integer
+      department_statistics:
+        items:
+          $ref: '#/definitions/domain.DepartmentStatistics'
+        type: array
+    type: object
+  domain.GetStatusStatisticsRes:
+    properties:
+      generate_statistics:
+        $ref: '#/definitions/domain.StatusStatistics'
+      register_statistics:
+        $ref: '#/definitions/domain.StatusStatistics'
+      total_statistics:
+        $ref: '#/definitions/domain.StatusStatistics'
+    type: object
+  domain.ServiceSyncCallbackRes:
+    properties:
+      msg:
+        type: string
+      result:
+        type: string
+    type: object
+  domain.StatusStatistics:
+    properties:
+      af_data_application_offline_auditing_count:
+        type: integer
+      af_data_application_offline_pass_count:
+        type: integer
+      af_data_application_offline_reject_count:
+        type: integer
+      af_data_application_online_auditing_count:
+        type: integer
+      af_data_application_online_pass_count:
+        type: integer
+      af_data_application_online_reject_count:
+        type: integer
+      af_data_application_publish_auditing_count:
+        type: integer
+      af_data_application_publish_pass_count:
+        type: integer
+      af_data_application_publish_reject_count:
+        type: integer
+      notline_count:
+        type: integer
+      offline_count:
+        type: integer
+      online_count:
+        type: integer
+      published_count:
+        type: integer
+      service_count:
+        type: integer
+      unpublished_count:
+        type: integer
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.App:
+    properties:
+      app_id:
+        description: AppId
+        type: string
+      app_secret:
+        description: AppSecret
+        type: string
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.AuditProcessBind:
+    properties:
+      audit_type:
+        description: 审核类型 af-data-application-publish 发布审核 af-data-application-change
+          变更审核 af-data-application-online 上线审核 af-data-application-offline 下线审核 af-data-application-request
+          调用审核
+        enum:
+        - af-data-application-publish
+        - af-data-application-change
+        - af-data-application-online
+        - af-data-application-offline
+        - af-data-application-request
+        type: string
+      bind_id:
+        description: 绑定id
+        type: string
+      proc_def_key:
+        description: 审核流程key
+        maxLength: 128
+        type: string
+    required:
+    - audit_type
+    - proc_def_key
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.AuditProcessBindCreateReq:
+    properties:
+      audit_type:
+        description: 审核类型 af-data-application-publish 发布审核 af-data-application-change
+          变更审核 af-data-application-online 上线审核 af-data-application-offline 下线审核 af-data-application-request
+          调用审核
+        enum:
+        - af-data-application-publish
+        - af-data-application-change
+        - af-data-application-online
+        - af-data-application-offline
+        - af-data-application-request
+        type: string
+      proc_def_key:
+        description: 审核流程key
+        maxLength: 128
+        type: string
+    required:
+    - audit_type
+    - proc_def_key
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.AuditProcessBindGetRes:
+    properties:
+      audit_type:
+        description: 审核类型 af-data-application-publish 发布审核 af-data-application-change
+          变更审核 af-data-application-online 上线审核 af-data-application-offline 下线审核 af-data-application-request
+          调用审核
+        enum:
+        - af-data-application-publish
+        - af-data-application-change
+        - af-data-application-online
+        - af-data-application-offline
+        - af-data-application-request
+        type: string
+      bind_id:
+        description: 绑定id
+        type: string
+      proc_def_key:
+        description: 审核流程key
+        maxLength: 128
+        type: string
+    required:
+    - audit_type
+    - proc_def_key
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.AuditProcessBindListRes:
+    properties:
+      entries:
+        description: 对象列表
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.AuditProcessBind'
+        type: array
+      total_count:
+        description: 总数量
+        type: integer
+    required:
+    - total_count
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.AuditProcessBindUpdateBodyReq:
+    properties:
+      audit_type:
+        description: 审核类型 af-data-application-publish 发布审核 af-data-application-change
+          变更审核 af-data-application-online 上线审核 af-data-application-offline 下线审核 af-data-application-request
+          调用审核
+        enum:
+        - af-data-application-publish
+        - af-data-application-change
+        - af-data-application-online
+        - af-data-application-offline
+        - af-data-application-request
+        type: string
+      proc_def_key:
+        description: 审核流程key
+        maxLength: 128
+        type: string
+    required:
+    - audit_type
+    - proc_def_key
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.AuditProcessInstanceCreateReq:
+    properties:
+      audit_type:
+        description: 审核类型 af-data-application-publish 发布审核
+        enum:
+        - af-data-application-publish
+        type: string
+      service_id:
+        description: 接口ID
+        type: string
+    required:
+    - audit_type
+    - service_id
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.AuditUser:
+    properties:
+      user_id:
+        description: 审核员用户id
+        type: string
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.AvailableAssets:
+    properties:
+      description:
+        description: 接口描述
+        type: string
+      online_time:
+        description: 发布时间
+        type: string
+      org_code:
+        description: 部门ID
+        type: string
+      org_name:
+        description: 部门名称
+        type: string
+      owner_id:
+        description: 数据owner用户ID
+        type: string
+      owner_name:
+        description: 数据owner用户名称
+        type: string
+      policies:
+        description: 逻辑视图及其子视图（行列规则）的权限规则
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.SubjectObjectsResEntity'
+        type: array
+      service_code:
+        description: 接口编码
+        type: string
+      service_id:
+        description: 接口ID
+        type: string
+      service_name:
+        description: 接口名称
+        type: string
+      subject_domain_id:
+        description: 主题域 ID
+        type: string
+      subject_domain_name:
+        description: 主题域名称
+        type: string
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.AvailableAssetsListRes:
+    properties:
+      entries:
+        description: 对象列表
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.AvailableAssets'
+        type: array
+      total_count:
+        description: 总数量
+        type: integer
+    required:
+    - total_count
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.CategoryInfo:
+    properties:
+      category_id:
+        example: 019407b6-c67b-7a4d-ad2a-dac2791d23b6
+        type: string
+      category_name:
+        example: 类目名称
+        type: string
+      category_node_id:
+        example: 019407b6-c67b-7a4d-ad2a-dac2791d23b6
+        type: string
+      category_node_name:
+        example: 类目节点名称
+        type: string
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.DataTableRequestParam:
+    properties:
+      cn_name:
+        description: 中文名称
+        example: 年龄
+        maxLength: 255
+        type: string
+      data_type:
+        description: 字段类型
+        enum:
+        - string
+        - int
+        - long
+        - float
+        - double
+        - boolean
+        type: string
+      default_value:
+        description: 默认值
+        maxLength: 128
+        type: string
+      description:
+        description: 描述
+        example: 过滤不超过此年龄的用户
+        maxLength: 255
+        type: string
+      en_name:
+        description: 英文名称
+        example: age
+        maxLength: 255
+        type: string
+      operator:
+        description: 运算逻辑 = 等于, != 不等于, > 大于, >= 大于等于, < 小于, <= 小于等于, like 模糊匹配, in
+          包含, not in 不包含
+        type: string
+      required:
+        description: 是否必填 yes 必填 no非必填
+        enum:
+        - "yes"
+        - "no"
+        type: string
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.DataTableResponseParam:
+    properties:
+      cn_name:
+        description: 中文名称
+        example: 年龄
+        maxLength: 255
+        type: string
+      data_type:
+        description: 字段类型
+        enum:
+        - string
+        - int
+        - long
+        - float
+        - double
+        - boolean
+        type: string
+      description:
+        description: 描述
+        example: 用户的年龄
+        maxLength: 255
+        type: string
+      en_name:
+        description: 英文名称
+        example: age
+        maxLength: 255
+        type: string
+      masking:
+        description: 脱敏规则 plaintext 不脱敏 hash 哈希 override 覆盖 replace 替换 默认 plaintext
+        enum:
+        - plaintext
+        - hash
+        - override
+        - replace
+        type: string
+      sequence:
+        description: 序号
+        minimum: 1
+        type: integer
+      sort:
+        description: 排序方式 unsorted 不排序 asc 升序 desc 降序 默认 unsorted
+        enum:
+        - unsorted
+        - asc
+        - desc
+        type: string
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.Department:
+    properties:
+      id:
+        description: 部门id
+        type: string
+      name:
+        description: 部门名称
+        type: string
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.Developer:
+    properties:
+      contact_info:
+        description: 联系方式
+        maxLength: 128
+        type: string
+      contact_person:
+        description: 联系人
+        maxLength: 128
+        type: string
+      create_time:
+        description: 创建时间
+        type: string
+      id:
+        description: 开发商id
+        type: string
+      name:
+        description: 开发商名称
+        maxLength: 128
+        type: string
+      update_time:
+        description: 更新时间
+        type: string
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.DeveloperCreateReq:
+    properties:
+      contact_info:
+        description: 联系方式
+        maxLength: 128
+        type: string
+      contact_person:
+        description: 联系人
+        maxLength: 128
+        type: string
+      create_time:
+        description: 创建时间
+        type: string
+      id:
+        description: 开发商id
+        type: string
+      name:
+        description: 开发商名称
+        maxLength: 128
+        type: string
+      update_time:
+        description: 更新时间
+        type: string
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.DeveloperGetRes:
+    properties:
+      contact_info:
+        description: 联系方式
+        maxLength: 128
+        type: string
+      contact_person:
+        description: 联系人
+        maxLength: 128
+        type: string
+      create_time:
+        description: 创建时间
+        type: string
+      id:
+        description: 开发商id
+        type: string
+      name:
+        description: 开发商名称
+        maxLength: 128
+        type: string
+      update_time:
+        description: 更新时间
+        type: string
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.DeveloperListRes:
+    properties:
+      entries:
+        description: 对象列表
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.Developer'
+        type: array
+      total_count:
+        description: 总数量
+        type: integer
+    required:
+    - total_count
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.DeveloperUpdateBodyReq:
+    properties:
+      contact_info:
+        description: 联系方式
+        maxLength: 128
+        type: string
+      contact_person:
+        description: 联系人
+        maxLength: 128
+        type: string
+      create_time:
+        description: 创建时间
+        type: string
+      id:
+        description: 开发商id
+        type: string
+      name:
+        description: 开发商名称
+        maxLength: 128
+        type: string
+      update_time:
+        description: 更新时间
+        type: string
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.DomainServiceRelation:
+    properties:
+      relation_service_num:
+        description: 该主题域ID下关联的Service的数量
+        type: integer
+      subject_domain_id:
+        description: 主题域ID
+        type: string
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ExampleCode:
+    properties:
+      go_example_code:
+        type: string
+      java_example_code:
+        type: string
+      python_example_code:
+        type: string
+      shell_example_code:
+        type: string
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ExportAPIDocReqBody:
+    properties:
+      app_id:
+        example: 019407b3-d158-7177-a0c8-0da2f2683c50
+        type: string
+      service_ids:
+        example:
+        - 019407b3-d158-7177-a0c8-0da2f2683c50
+        items:
+          type: string
+        type: array
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.File:
+    properties:
+      file_id:
+        description: 文件id
+        type: string
+      file_name:
+        description: 文件名称
+        type: string
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.FileUploadRes:
+    properties:
+      file_id:
+        description: 文件id
+        type: string
+      file_name:
+        description: 文件名称
+        type: string
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.MonitorListRes:
+    properties:
+      entries:
+        description: 对象列表
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.MonitorRecord'
+        type: array
+      total_count:
+        description: 总数量
+        type: integer
+    required:
+    - total_count
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.MonitorRecord:
+    properties:
+      call_app_id:
+        description: 调用应用ID
+        type: string
+      call_app_name:
+        description: 调用应用名称
+        type: string
+      call_average_call_duration:
+        description: 平均调用时长
+        type: integer
+      call_department_id:
+        description: 调用部门ID
+        type: string
+      call_department_name:
+        description: 调用部门名称
+        type: string
+      call_department_path:
+        description: 调用部门全路径
+        type: string
+      call_duration:
+        description: 调用时长
+        type: string
+      call_host_and_port:
+        description: 调用IP及端口
+        type: string
+      call_num:
+        description: 调用次数
+        type: integer
+      call_system_id:
+        description: 调用系统ID
+        type: string
+      call_system_name:
+        description: 调用系统名称
+        type: string
+      call_time:
+        description: 调用时间，格式为yyyy-MM-dd HH:mm:ss
+        type: string
+      service_department_id:
+        description: 服务所属部门ID
+        type: string
+      service_department_name:
+        description: 服务所属部门名称
+        type: string
+      service_department_path:
+        description: 服务所属部门全路径
+        type: string
+      service_id:
+        description: 服务ID
+        type: string
+      service_name:
+        description: 服务名称
+        type: string
+      status:
+        description: 状态 (success, fail)
+        type: string
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.OptionsInfo:
+    properties:
+      key:
+        type: string
+      text:
+        type: string
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.OptionsInfoRes:
+    properties:
+      publish_status:
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.OptionsInfo'
+        type: array
+      updown_status:
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.OptionsInfo'
+        type: array
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.Owners:
+    properties:
+      owner_id:
+        description: 数据owner用户id
+        example: 019407b6-c67b-7a4d-ad2a-dac2791d23b6
+        type: string
+      owner_name:
+        description: 数据owner用户名
+        example: 数据 Owner 用户名
+        type: string
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.PolicyStatusFilter:
+    enum:
+    - Active
+    - Expired
+    type: string
+    x-enum-varnames:
+    - PolicyActive
+    - PolicyExpired
+  github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.QueryDomainServicesResp:
+    properties:
+      relation_num:
+        description: 传参不为空，返回每个主题域关联的Service的数量
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.DomainServiceRelation'
+        type: array
+      total:
+        description: QueryDomainServiceArgs的ID数组为空，返回total
+        type: integer
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.Rule:
+    properties:
+      operator:
+        description: 运算逻辑 = 等于, != 不等于, > 大于, >= 大于等于, < 小于, <= 小于等于, like 模糊匹配, in
+          包含, not in 不包含
+        type: string
+      param:
+        description: 过滤字段
+        type: string
+      value:
+        description: 过滤值
+        maxLength: 128
+        type: string
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceApply:
+    properties:
+      apply_days:
+        description: 申请时长 0表示长期
+        type: integer
+      apply_id:
+        description: 申请编码
+        type: string
+      apply_reason:
+        description: 申请理由
+        type: string
+      audit_status:
+        description: 审核状态 auditing 审核中 pass 通过 reject 驳回
+        type: string
+      auth_time:
+        description: 授权时间
+        type: string
+      create_time:
+        description: 申请时间
+        type: string
+      expired_time:
+        description: 过期时间 空字符串表示长期
+        type: string
+      org_code:
+        description: 部门id
+        type: string
+      org_name:
+        description: 部门名称
+        type: string
+      owner_id:
+        description: 数据Owner用户ID
+        type: string
+      owner_name:
+        description: 数据Owner用户名称
+        type: string
+      service_id:
+        description: 接口ID
+        type: string
+      service_name:
+        description: 接口名称
+        type: string
+      service_status:
+        description: 接口状态 draft 草稿 publish 已发布
+        type: string
+      update_time:
+        description: 更新时间
+        type: string
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceApplyCreateReq:
+    properties:
+      apply_days:
+        description: 申请时长 0表示长期
+        enum:
+        - 0
+        type: integer
+      apply_reason:
+        description: 申请理由
+        maxLength: 800
+        type: string
+      service_id:
+        description: 接口ID
+        type: string
+    required:
+    - apply_days
+    - apply_reason
+    - service_id
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceApplyGetRes:
+    properties:
+      app:
+        allOf:
+        - $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.App'
+        description: 授权信息
+      service_apply:
+        allOf:
+        - $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceApply'
+        description: 申请详情
+      service_info:
+        allOf:
+        - $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceFrontendInfo'
+        description: 接口详情
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceApplyListRes:
+    properties:
+      entries:
+        description: 对象列表
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceApply'
+        type: array
+      total_count:
+        description: 总数量
+        type: integer
+    required:
+    - total_count
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceAssetCountRes:
+    properties:
+      auditing:
+        description: 申请中资产数量
+        type: integer
+      available:
+        description: 可用资产数量
+        type: integer
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceAuthInfoRes:
+    properties:
+      app_id:
+        description: AppId
+        type: string
+      app_secret:
+        description: AppSecret
+        type: string
+      audit_status:
+        description: 审核状态 auditing 审核中 pass 通过 reject 驳回
+        type: string
+      expired_time:
+        description: 过期时间 空字符串表示长期
+        type: string
+      service_address:
+        description: 接口地址
+        type: string
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceChangeReq:
+    properties:
+      is_temp:
+        default: false
+        type: boolean
+      service_id:
+        type: string
+      service_info:
+        allOf:
+        - $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceInfo'
+        description: 基本信息
+      service_param:
+        allOf:
+        - $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceParamWrite'
+        description: 参数配置
+      service_response:
+        allOf:
+        - $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceResponse'
+        description: 返回结果
+      service_test:
+        allOf:
+        - $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceTest'
+        description: 接口测试
+    required:
+    - service_id
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceCreateReq:
+    properties:
+      service_info:
+        allOf:
+        - $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceInfo'
+        description: 基本信息
+      service_param:
+        allOf:
+        - $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceParamWrite'
+        description: 参数配置
+      service_response:
+        allOf:
+        - $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceResponse'
+        description: 返回结果
+      service_test:
+        allOf:
+        - $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceTest'
+        description: 接口测试
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceCreateRes:
+    properties:
+      service_id:
+        description: 接口ID
+        type: string
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceFormToSqlReq:
+    properties:
+      data_table_request_params:
+        description: 请求参数
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.DataTableRequestParam'
+        type: array
+      data_table_response_params:
+        description: 返回参数
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.DataTableResponseParam'
+        type: array
+      data_view_id:
+        description: 数据视图Id
+        type: string
+      datasource_id:
+        description: 'Deprecated: 数据源通过逻辑视图关联'
+        type: string
+    required:
+    - data_table_request_params
+    - data_table_response_params
+    - data_view_id
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceFormToSqlRes:
+    properties:
+      sql:
+        type: string
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceFrontendInfo:
+    properties:
+      http_method:
+        description: 请求方式 post get
+        type: string
+      org_code:
+        description: 部门id
+        type: string
+      org_name:
+        description: 部门名称
+        type: string
+      service_address:
+        description: 接口地址
+        type: string
+      service_code:
+        description: 接口编码
+        type: string
+      service_id:
+        description: 接口ID
+        type: string
+      service_name:
+        description: 接口名称
+        type: string
+      service_type:
+        description: 接口类型 service_generate 接口生成 service_register 接口注册
+        type: string
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceGetFrontendRes:
+    properties:
+      category_info:
+        description: 类目信息集合
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.CategoryInfo'
+        type: array
+      service_apply:
+        allOf:
+        - $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceApply'
+        description: 申请详情
+      service_info:
+        allOf:
+        - $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceInfo'
+        description: 基本信息
+      service_param:
+        allOf:
+        - $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceParamRead'
+        description: 参数配置
+      service_response:
+        allOf:
+        - $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceResponse'
+        description: 返回结果
+      service_test:
+        allOf:
+        - $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceTest'
+        description: 接口测试
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceGetRes:
+    properties:
+      category_info:
+        description: 类目信息集合
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.CategoryInfo'
+        type: array
+      service_info:
+        allOf:
+        - $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceInfo'
+        description: 基本信息
+      service_param:
+        allOf:
+        - $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceParamRead'
+        description: 参数配置
+      service_response:
+        allOf:
+        - $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceResponse'
+        description: 返回结果
+      service_test:
+        allOf:
+        - $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceTest'
+        description: 接口测试
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceIdRes:
+    properties:
+      service_id:
+        description: 接口ID
+        type: string
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceInfo:
+    properties:
+      apply_num:
+        description: 申请数
+        example: 114514
+        type: integer
+      apps_id:
+        description: 应用id
+        example: 019407b5-1d1f-72ab-8b0a-5cd759737270
+        type: string
+      apps_name:
+        description: 应用名称
+        example: 应用名称
+        type: string
+      audit_advice:
+        description: 审核意见，仅驳回时有用
+        example: 拒绝
+        type: string
+      audit_status:
+        description: 审核状态 unpublished 未发布 auditing 审核中 pass 通过 reject 驳回
+        enum:
+        - unpublished
+        - auditing
+        - pass
+        - reject
+        type: string
+      audit_type:
+        description: 审核类型 unpublished 未发布 af-data-application-publish 发布审核
+        enum:
+        - unpublished
+        - af-data-application-publish
+        - af-data-application-online
+        - af-data-application-offline
+        - af-data-application-change
+        - af-data-application-request
+        type: string
+      backend_service_host:
+        description: 后台服务域名/IP
+        example: http://backend.example.org:8080
+        maxLength: 128
+        type: string
+      backend_service_path:
+        description: 后台服务路径
+        example: /api/backend/path
+        maxLength: 128
+        type: string
+      can_auth:
+        description: 是否可以授权给其他人
+        type: boolean
+      category_info:
+        description: 类目信息集合
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.CategoryInfo'
+        type: array
+      changed_service_id:
+        description: 发起变更的接口的service_id
+        example: 019407b9-4972-7f08-816e-657debee319a
+        type: string
+      create_time:
+        description: 创建时间
+        example: "2024-12-27 18:43:59"
+        type: string
+      created_by:
+        description: 创建者的用户 ID
+        example: 019407ba-74da-7e20-b4d3-44c4844cf666
+        type: string
+      department:
+        allOf:
+        - $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.Department'
+        description: 所属部门
+      description:
+        description: 接口说明
+        example: 接口说明
+        maxLength: 255
+        type: string
+      developer:
+        allOf:
+        - $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.Developer'
+        description: 开发商
+      favor_id:
+        description: 收藏项ID，仅已收藏时返回该字段
+        example: "0"
+        type: string
+      file:
+        allOf:
+        - $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.File'
+        description: 接口文档
+      gateway_url:
+        description: 网关地址
+        type: string
+      http_method:
+        description: 请求方式 post get
+        enum:
+        - post
+        - get
+        - put
+        - delete
+        type: string
+      info_system_id:
+        description: 信息系统id
+        example: 019407b5-1d1f-72ab-8b0a-5cd759737270
+        type: string
+      info_system_name:
+        description: 信息系统名称
+        example: 信息系统名称
+        type: string
+      is_changed:
+        description: 已变更1，未变更0，默认0,用于标记service是否已变更
+        example: "0"
+        type: string
+      is_favored:
+        description: 是否已收藏
+        type: boolean
+      online_audit_advice:
+        description: 上线审核意见
+        example: 拒绝
+        type: string
+      online_time:
+        description: 上线时间
+        type: string
+      owners:
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.Owners'
+        type: array
+      paas_id:
+        description: 授权id
+        example: 授权id
+        type: string
+      pre_path:
+        description: 网关路径前缀
+        example: 网关路径前缀
+        type: string
+      preview_num:
+        description: 预览数
+        example: 12450
+        type: integer
+      protocol:
+        description: 协议 http
+        enum:
+        - http
+        type: string
+      publish_status:
+        description: 发布状态
+        enum:
+        - unpublished
+        - pub-auditing
+        - published
+        - pub-reject
+        - change-auditing
+        - change-reject
+        type: string
+      publish_time:
+        description: 发布时间
+        type: string
+      rate_limiting:
+        description: 调用频次 次/秒
+        maximum: 100000
+        minimum: 0
+        type: integer
+      return_type:
+        description: 返回类型 json
+        enum:
+        - json
+        type: string
+      service_code:
+        description: 接口编码
+        example: jk20241227/000001
+        type: string
+      service_id:
+        description: 接口ID
+        example: 019407b3-d158-7177-a0c8-0da2f2683c50
+        type: string
+      service_name:
+        description: 接口名称
+        example: 接口名称
+        type: string
+      service_path:
+        description: 接口路径
+        example: /api/path
+        maxLength: 255
+        type: string
+      service_type:
+        description: 接口类型 service_generate 接口生成 service_register 接口注册
+        enum:
+        - service_generate
+        - service_register
+        type: string
+      source_type:
+        description: 来源类型(0原生，1迁移)
+        example: 0
+        type: integer
+      status:
+        description: 状态 draft 草稿 publish 已发布
+        enum:
+        - notline
+        - online
+        - offline
+        - up-auditing
+        - down-auditing
+        - up-reject
+        type: string
+      subject_domain_id:
+        description: 主题域id
+        example: 019407b5-1d1f-72ab-8b0a-5cd759737270
+        type: string
+      subject_domain_name:
+        description: |-
+          获取主题域名称
+
+          Deprecated: 通过 SubjectDomainId
+        example: 主题域名称
+        type: string
+      sync_flag:
+        description: 同步标识(success、fail)
+        example: success
+        type: string
+      sync_msg:
+        description: 同步消息
+        example: 同步消息
+        type: string
+      timeout:
+        description: 超时时间
+        maximum: 86400
+        minimum: 1
+        type: integer
+      update_by:
+        description: 更新者的用户 ID
+        example: 019407ba-74da-7e26-bf58-bbb44cc30cf9
+        type: string
+      update_flag:
+        description: 更新标识
+        example: success
+        type: string
+      update_msg:
+        description: 更新消息
+        example: 更新消息
+        type: string
+      update_time:
+        description: 更新时间
+        example: "2024-12-27 18:43:59"
+        type: string
+    required:
+    - service_name
+    - service_type
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceInfoAndDraftFlag:
+    properties:
+      apply_num:
+        description: 申请数
+        example: 114514
+        type: integer
+      apps_id:
+        description: 应用id
+        example: 019407b5-1d1f-72ab-8b0a-5cd759737270
+        type: string
+      apps_name:
+        description: 应用名称
+        example: 应用名称
+        type: string
+      audit_advice:
+        description: 审核意见，仅驳回时有用
+        example: 拒绝
+        type: string
+      audit_status:
+        description: 审核状态 unpublished 未发布 auditing 审核中 pass 通过 reject 驳回
+        enum:
+        - unpublished
+        - auditing
+        - pass
+        - reject
+        type: string
+      audit_type:
+        description: 审核类型 unpublished 未发布 af-data-application-publish 发布审核
+        enum:
+        - unpublished
+        - af-data-application-publish
+        - af-data-application-online
+        - af-data-application-offline
+        - af-data-application-change
+        - af-data-application-request
+        type: string
+      backend_service_host:
+        description: 后台服务域名/IP
+        example: http://backend.example.org:8080
+        maxLength: 128
+        type: string
+      backend_service_path:
+        description: 后台服务路径
+        example: /api/backend/path
+        maxLength: 128
+        type: string
+      can_auth:
+        description: 是否可以授权给其他人
+        type: boolean
+      catalog_provider:
+        description: 目录提供方
+        type: string
+      category_info:
+        description: 类目信息集合
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.CategoryInfo'
+        type: array
+      changed_service_id:
+        description: 发起变更的接口的service_id
+        example: 019407b9-4972-7f08-816e-657debee319a
+        type: string
+      create_time:
+        description: 创建时间
+        example: "2024-12-27 18:43:59"
+        type: string
+      created_by:
+        description: 创建者的用户 ID
+        example: 019407ba-74da-7e20-b4d3-44c4844cf666
+        type: string
+      data_catalog_id:
+        description: 所属目录ID
+        type: string
+      data_catalog_name:
+        description: 所属目录
+        type: string
+      department:
+        allOf:
+        - $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.Department'
+        description: 所属部门
+      description:
+        description: 接口说明
+        example: 接口说明
+        maxLength: 255
+        type: string
+      developer:
+        allOf:
+        - $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.Developer'
+        description: 开发商
+      favor_id:
+        description: 收藏项ID，仅已收藏时返回该字段
+        example: "0"
+        type: string
+      file:
+        allOf:
+        - $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.File'
+        description: 接口文档
+      gateway_url:
+        description: 网关地址
+        type: string
+      has_draft:
+        description: 是否拥有未发布的草稿
+        type: boolean
+      http_method:
+        description: 请求方式 post get
+        enum:
+        - post
+        - get
+        - put
+        - delete
+        type: string
+      info_system_id:
+        description: 信息系统id
+        example: 019407b5-1d1f-72ab-8b0a-5cd759737270
+        type: string
+      info_system_name:
+        description: 信息系统名称
+        example: 信息系统名称
+        type: string
+      invoke_num:
+        description: 调用次数
+        type: integer
+      is_changed:
+        description: 已变更1，未变更0，默认0,用于标记service是否已变更
+        example: "0"
+        type: string
+      is_favored:
+        description: 是否已收藏
+        type: boolean
+      online_audit_advice:
+        description: 上线审核意见
+        example: 拒绝
+        type: string
+      online_time:
+        description: 上线时间
+        type: string
+      owners:
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.Owners'
+        type: array
+      paas_id:
+        description: 授权id
+        example: 授权id
+        type: string
+      pre_path:
+        description: 网关路径前缀
+        example: 网关路径前缀
+        type: string
+      preview_num:
+        description: 预览数
+        example: 12450
+        type: integer
+      protocol:
+        description: 协议 http
+        enum:
+        - http
+        type: string
+      publish_status:
+        description: 发布状态
+        enum:
+        - unpublished
+        - pub-auditing
+        - published
+        - pub-reject
+        - change-auditing
+        - change-reject
+        type: string
+      publish_time:
+        description: 发布时间
+        type: string
+      rate_limiting:
+        description: 调用频次 次/秒
+        maximum: 100000
+        minimum: 0
+        type: integer
+      return_type:
+        description: 返回类型 json
+        enum:
+        - json
+        type: string
+      service_code:
+        description: 接口编码
+        example: jk20241227/000001
+        type: string
+      service_id:
+        description: 接口ID
+        example: 019407b3-d158-7177-a0c8-0da2f2683c50
+        type: string
+      service_name:
+        description: 接口名称
+        example: 接口名称
+        type: string
+      service_path:
+        description: 接口路径
+        example: /api/path
+        maxLength: 255
+        type: string
+      service_type:
+        description: 接口类型 service_generate 接口生成 service_register 接口注册
+        enum:
+        - service_generate
+        - service_register
+        type: string
+      source_type:
+        description: 来源类型(0原生，1迁移)
+        example: 0
+        type: integer
+      status:
+        description: 状态 draft 草稿 publish 已发布
+        enum:
+        - notline
+        - online
+        - offline
+        - up-auditing
+        - down-auditing
+        - up-reject
+        type: string
+      subject_domain_id:
+        description: 主题域id
+        example: 019407b5-1d1f-72ab-8b0a-5cd759737270
+        type: string
+      subject_domain_name:
+        description: |-
+          获取主题域名称
+
+          Deprecated: 通过 SubjectDomainId
+        example: 主题域名称
+        type: string
+      sync_flag:
+        description: 同步标识(success、fail)
+        example: success
+        type: string
+      sync_msg:
+        description: 同步消息
+        example: 同步消息
+        type: string
+      timeout:
+        description: 超时时间
+        maximum: 86400
+        minimum: 1
+        type: integer
+      update_by:
+        description: 更新者的用户 ID
+        example: 019407ba-74da-7e26-bf58-bbb44cc30cf9
+        type: string
+      update_flag:
+        description: 更新标识
+        example: success
+        type: string
+      update_msg:
+        description: 更新消息
+        example: 更新消息
+        type: string
+      update_time:
+        description: 更新时间
+        example: "2024-12-27 18:43:59"
+        type: string
+    required:
+    - service_name
+    - service_type
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceListRes:
+    properties:
+      entries:
+        description: 对象列表
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceInfoAndDraftFlag'
+        type: array
+      total_count:
+        description: 总数量
+        type: integer
+    required:
+    - total_count
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceParamRead:
+    properties:
+      create_model:
+        description: 创建模式 wizard 向导模式 script 脚本模式
+        enum:
+        - wizard
+        - script
+        type: string
+      data_table_request_params:
+        description: 请求参数
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.DataTableRequestParam'
+        type: array
+      data_table_response_params:
+        description: 返回参数
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.DataTableResponseParam'
+        type: array
+      data_view_id:
+        description: 数据视图Id
+        example: 019407bc-0475-7858-8251-a1297572f048
+        type: string
+      data_view_name:
+        description: 数据视图名称
+        example: 数据视图名称
+        type: string
+      datasource_id:
+        description: 数据源id
+        example: 019407bc-0475-7854-b93d-3bd8190d14af
+        type: string
+      datasource_name:
+        description: 数据源名称
+        example: 数据源名称
+        type: string
+      script:
+        description: 脚本（仅脚本模式需要此参数）
+        example: SELECT * FROM testing
+        type: string
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceParamWrite:
+    properties:
+      create_model:
+        description: 创建模式 wizard 向导模式 script 脚本模式
+        enum:
+        - wizard
+        - script
+        type: string
+      data_table_request_params:
+        description: 请求参数
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.DataTableRequestParam'
+        type: array
+      data_table_response_params:
+        description: 返回参数
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.DataTableResponseParam'
+        type: array
+      data_view_id:
+        description: 数据视图Id
+        type: string
+      data_view_name:
+        description: 数据视图名称
+        type: string
+      datasource_id:
+        description: |-
+          数据源 ID
+
+          Deprecated: 数据源通过逻辑视图关联
+        type: string
+      datasource_name:
+        description: |-
+          数据源名称
+
+          Deprecated: 数据源通过逻辑视图关联
+        type: string
+      script:
+        description: 脚本（仅脚本模式需要此参数）
+        type: string
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceResponse:
+    properties:
+      page:
+        description: 是否分页 yes 是 no 否
+        enum:
+        - "yes"
+        - "no"
+        type: string
+      page_size:
+        description: 分页大小
+        maximum: 1000
+        minimum: 1
+        type: integer
+      rules:
+        description: 过滤规则
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.Rule'
+        type: array
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceSearch:
+    properties:
+      audit_status:
+        description: 接口申请状态 auditing 审核中 pass 通过 reject 驳回
+        type: string
+      code:
+        description: 接口ID
+        type: string
+      data_owner_id:
+        description: 数据 owner id
+        type: string
+      data_owner_name:
+        description: 数据 owner 名称
+        type: string
+      description:
+        description: 接口描述，可能存在高亮标签
+        type: string
+      id:
+        description: 接口ID
+        type: string
+      name:
+        description: 接口名称，可能存在高亮标签
+        type: string
+      online_time:
+        description: 接口发布时间 时间戳
+        type: integer
+      orgcode:
+        description: 部门id
+        type: string
+      orgname:
+        description: 部门名称
+        type: string
+      owner_id:
+        description: 数据owner id
+        type: string
+      owner_name:
+        description: 数据owner name
+        type: string
+      published_at:
+        description: 接口发布时间 as PublishedAt
+        type: integer
+      raw_description:
+        description: 接口描述，不会存在高亮标签
+        type: string
+      raw_name:
+        description: 接口名称，不会存在高亮标签
+        type: string
+      raw_orgname:
+        type: string
+      raw_owner_name:
+        type: string
+      raw_title:
+        type: string
+      title:
+        description: 接口名称 as Name
+        type: string
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceSearchReq:
+    properties:
+      keyword:
+        description: 搜索关键词，支持字段：接口名称，接口说明
+        type: string
+      next_flag:
+        description: 从该flag标志后获取数据，该flag标志由上次的搜索请求返回，若本次与上次的搜索参数存在变动，则该参数不能传入，否则结果不准确
+        items:
+          type: string
+        type: array
+      org_code:
+        description: 部门id
+        type: string
+      published_at:
+        allOf:
+        - $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.TimeRange'
+        description: 发布时间
+      size:
+        default: 20
+        description: 要获取到的记录条数
+        example: 20
+        type: integer
+      subject_domain_id:
+        description: 主题域id
+        type: string
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceSearchRes:
+    properties:
+      entries:
+        description: 对象列表
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceSearch'
+        type: array
+      next_flag:
+        description: 获取下一页数据的请求中，需携带本参数，若本参数为空，则数据已全部获取，没有下一页了
+        example:
+        - "0.987"
+        - abc
+        items:
+          type: string
+        type: array
+      total_count:
+        description: 总数量
+        type: integer
+    required:
+    - total_count
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceSqlToFormReq:
+    properties:
+      data_view_id:
+        description: 数据视图Id
+        type: string
+      datasource_id:
+        description: 'Deprecated: 数据源通过逻辑视图关联'
+        type: string
+      sql:
+        description: sql
+        type: string
+    required:
+    - data_view_id
+    - sql
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceSqlToFormRes:
+    properties:
+      data_table_request_params:
+        description: 请求字段
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.DataTableRequestParam'
+        type: array
+      data_table_response_params:
+        description: 返回字段
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.DataTableResponseParam'
+        type: array
+      tables:
+        description: 表名
+        items:
+          type: string
+        type: array
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceTest:
+    properties:
+      request_example:
+        description: 请求示例
+        type: string
+      response_example:
+        description: 返回示例
+        type: string
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceTopData:
+    properties:
+      num:
+        description: 统计数量
+        type: integer
+      service_id:
+        description: 接口ID
+        type: string
+      service_name:
+        description: 接口名称
+        type: string
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceTopDataRes:
+    properties:
+      apply_num:
+        description: 申请量
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceTopData'
+        type: array
+      preview_num:
+        description: 访问量
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceTopData'
+        type: array
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceUpOrDownReq:
+    properties:
+      operate_type:
+        enum:
+        - up
+        - down
+        type: string
+      service_id:
+        description: 接口ID
+        type: string
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceUpdateBodyReq:
+    properties:
+      service_info:
+        allOf:
+        - $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceInfo'
+        description: 基本信息
+      service_param:
+        allOf:
+        - $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceParamWrite'
+        description: 参数配置
+      service_response:
+        allOf:
+        - $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceResponse'
+        description: 返回结果
+      service_test:
+        allOf:
+        - $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceTest'
+        description: 接口测试
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServicesGetByDataViewId:
+    properties:
+      service_code:
+        description: 接口编码
+        type: string
+      service_id:
+        description: 接口ID
+        type: string
+      service_name:
+        description: 接口名称
+        type: string
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServicesGetByDataViewIdRes:
+    properties:
+      entries:
+        description: 对象列表
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServicesGetByDataViewId'
+        type: array
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.SubjectDomain:
+    properties:
+      child_count:
+        description: 子对象数量
+        type: integer
+      created_at:
+        description: 创建时间
+        type: integer
+      created_by:
+        description: 创建人
+        type: string
+      description:
+        description: 描述
+        type: string
+      id:
+        description: 对象id
+        type: string
+      name:
+        description: 对象名称
+        type: string
+      owners:
+        description: 数据owner
+        items:
+          type: string
+        type: array
+      path_id:
+        description: 路径id
+        type: string
+      path_name:
+        description: 路径名称
+        type: string
+      second_child_count:
+        description: 第二层子对象数量 only for BusinessObject and BusinessActivity
+        type: integer
+      type:
+        description: 对象类型
+        type: string
+      updated_at:
+        description: 修改时间
+        type: integer
+      updated_by:
+        description: 修改人
+        type: string
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.SubjectDomainListRes:
+    properties:
+      entries:
+        description: 对象列表
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.SubjectDomain'
+        type: array
+      total_count:
+        description: 总数量
+        type: integer
+    required:
+    - total_count
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.SubjectObjectsResEntity:
+    properties:
+      expired_at:
+        description: 权限过期时间。nil 代表永久有效
+        type: string
+      object_id:
+        type: string
+      object_type:
+        type: string
+      permissions:
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.SubjectObjectsResEntityPermission'
+        type: array
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.SubjectObjectsResEntityPermission:
+    properties:
+      action:
+        type: string
+      effect:
+        type: string
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.TimeRange:
+    properties:
+      end_time:
+        description: 结束时间，毫秒时间戳
+        example: 1682586655000
+        minimum: 0
+        type: integer
+      start_time:
+        description: 开始时间，毫秒时间戳
+        example: 1682586655000
+        minimum: 0
+        type: integer
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.UndoAuditReq:
+    properties:
+      operate_type:
+        description: 撤回审核的类型
+        enum:
+        - publish-audit
+        - change-audit
+        - up-audit
+        - down-audit
+        type: string
+      service_id:
+        description: 接口ID
+        type: string
+    required:
+    - operate_type
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-service_domain_sub_service.SubService:
+    properties:
+      auth_scope_id:
+        description: 授权范围, 可能是视图ID，可能是行列规则
+        type: string
+      can_auth:
+        description: 当前用户是否有该子接口的授权权限
+        type: boolean
+      detail:
+        description: 行列配置详情，JSON 格式，与下载数据接口的过滤条件结构相同
+        type: string
+      id:
+        description: ID
+        type: string
+      name:
+        description: 名称
+        type: string
+      service_id:
+        description: 子视图所属逻辑视图的 ID
+        type: string
+    type: object
+  rest.HttpError:
+    properties:
+      cause:
+        description: 错误原因
+        example: 错误原因
+        type: string
+        x-omitempty: false
+      code:
+        description: '返回错误码，格式: 服务名.模块.错误'
+        example: task-center.Public.InternalError
+        type: string
+      description:
+        description: 错误描述
+        example: 内部错误
+        type: string
+      detail:
+        description: 错误详情, 一般是json对象
+        x-omitempty: false
+      solution:
+        description: 错误处理办法
+        example: 请联系内部人员
+        type: string
+        x-omitempty: false
+    type: object
+info:
+  contact: {}
+  description: AnyFabric data application service
+  title: data-application-service
+  version: "0.0"
+paths:
+  /api/data-application-service/frontend/v1/apply:
+    get:
+      consumes:
+      - application/json
+      description: 接口申请列表
+      parameters:
+      - description: 审核状态 auditing 审核中 pass 通过 reject 驳回, 多个以逗号分隔
+        in: query
+        name: audit_status
+        type: string
+      - default: desc
+        description: 排序方向 asc 正序 desc 倒序, 默认 desc
+        enum:
+        - asc
+        - desc
+        in: query
+        name: direction
+        type: string
+      - description: '结束时间 示例: 2006-01-02 15:04:05'
+        in: query
+        name: end_time
+        type: string
+      - description: 搜索关键词 接口ID/接口名称
+        in: query
+        name: keyword
+        type: string
+      - default: 10
+        description: 每页大小 默认 10
+        in: query
+        maximum: 100
+        minimum: 1
+        name: limit
+        type: integer
+      - default: 1
+        description: 页码 默认 1
+        in: query
+        minimum: 1
+        name: offset
+        type: integer
+      - default: create_time
+        description: 排序类型 create_time 创建时间 update_time 更新时间, 默认 create_time
+        enum:
+        - create_time
+        - update_time
+        in: query
+        name: sort
+        type: string
+      - description: '开始时间 示例: 2006-01-02 15:04:05'
+        in: query
+        name: start_time
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceApplyListRes'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 接口申请列表
+      tags:
+      - 接口申请
+    post:
+      consumes:
+      - application/json
+      description: 接口申请创建
+      parameters:
+      - description: 请求参数
+        in: body
+        name: _
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceApplyCreateReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 接口申请创建
+      tags:
+      - 接口申请
+  /api/data-application-service/frontend/v1/apply/{apply_id}:
+    get:
+      consumes:
+      - application/json
+      description: 接口申请详情
+      parameters:
+      - description: 申请id
+        in: path
+        name: apply_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceApplyGetRes'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 接口申请详情
+      tags:
+      - 接口申请
+  /api/data-application-service/frontend/v1/apply/available-assets:
+    get:
+      consumes:
+      - application/json
+      description: 可用接口列表
+      parameters:
+      - default: desc
+        description: 排序方向 asc 正序 desc 倒序, 默认 desc
+        enum:
+        - asc
+        - desc
+        in: query
+        name: direction
+        type: string
+      - description: 搜索关键词 接口编码/接口名称
+        in: query
+        name: keyword
+        type: string
+      - default: 10
+        description: 每页大小 默认 10 最大100
+        in: query
+        maximum: 100
+        minimum: 1
+        name: limit
+        type: integer
+      - default: 1
+        description: 页码 默认 1
+        in: query
+        minimum: 1
+        name: offset
+        type: integer
+      - description: 部门id
+        in: query
+        name: org_code
+        type: string
+      - description: |-
+          权限规则状态过滤器，非空时根据滤接口服务的权限规则状态过滤。
+
+           Active：返回规则处于有效期的接口服务
+           Expired：返回规则已过期的接口服务
+        enum:
+        - Active
+        - Expired
+        in: query
+        name: policy_status
+        type: string
+        x-enum-varnames:
+        - PolicyActive
+        - PolicyExpired
+      - default: online_time
+        description: 排序类型 online_time 发布时间
+        enum:
+        - online_time
+        - publish_time
+        in: query
+        name: sort
+        type: string
+      - description: |-
+          访问者，返回指定的访问者拥有 read 权限的接口列表，默认是当前用户
+
+          格式 `{type}:{id}``
+           指定访问者是某个用户 subject=user:00000000-0000-0000-0000-000000000000
+           指定访问者是某个应用 subject=app:00000000-0000-0000-0000-000000000000
+        in: query
+        name: subject
+        type: string
+      - description: |-
+          主题域 ID
+           - 过滤属于此主题域的资源
+           - 空字符串不过滤资源
+           - uncategory 过滤未分类的资源
+        in: query
+        name: subject_domain_id
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.AvailableAssetsListRes'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 可用接口列表
+      tags:
+      - 接口申请
+  /api/data-application-service/frontend/v1/data-view/{data_view_id}/services:
+    get:
+      consumes:
+      - application/json
+      description: 数据视图id关联的所有接口
+      parameters:
+      - description: 数据视图id
+        in: path
+        name: data_view_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServicesGetByDataViewIdRes'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 数据视图id关联的所有接口
+      tags:
+      - 接口
+  /api/data-application-service/frontend/v1/services:
+    get:
+      consumes:
+      - application/json
+      description: 接口列表 - 前台
+      parameters:
+      - description: 审核状态 unpublished 未发布 auditing 审核中 pass 通过 reject 驳回
+        enum:
+        - unpublished
+        - auditing
+        - pass
+        - reject
+        in: query
+        name: audit_status
+        type: string
+      - description: 审核类型 unpublished 未发布 af-data-application-publish 发布审核
+        enum:
+        - af-data-application-online
+        - af-data-application-publish
+        - af-data-application-offline
+        - af-data-application-change
+        - af-data-application-request
+        in: query
+        name: audit_type
+        type: string
+      - in: query
+        name: category_id
+        type: string
+      - in: query
+        name: category_node_id
+        type: string
+      - description: 数据owner过滤
+        in: query
+        name: data_owner
+        type: string
+      - description: 所属部门id uncategory 表示未分类
+        example: 019407c1-cf4e-7161-82cc-a97b906d1df0
+        in: query
+        name: department_id
+        type: string
+      - default: desc
+        description: 排序方向 asc 正序 desc 倒序, 默认 desc
+        enum:
+        - asc
+        - desc
+        in: query
+        name: direction
+        type: string
+      - description: '结束时间 示例: 2006-01-02 15:04:05'
+        example: "2006-01-02 15:04:05"
+        in: query
+        name: end_time
+        type: string
+      - in: query
+        name: info_system_id
+        type: string
+      - description: 是否查看部门/主题域的子节点 true 查看子节点 false 仅查看当前节点
+        enum:
+        - "true"
+        - "false"
+        in: query
+        name: is_all
+        type: string
+      - in: query
+        name: is_authed
+        type: boolean
+      - enum:
+        - "true"
+        - "false"
+        in: query
+        name: is_user_dep
+        type: string
+      - default: 10
+        description: 每页大小 默认 10
+        in: query
+        maximum: 100
+        minimum: 1
+        name: limit
+        type: integer
+      - description: 本部门资源
+        in: query
+        name: my_department_resource
+        type: boolean
+      - default: 1
+        description: 页码 默认 1
+        in: query
+        minimum: 1
+        name: offset
+        type: integer
+      - description: 上线状态（多值，支持逗号分隔，如：online,down-auditing,down-reject）
+        example: online,down-auditing,down-reject
+        in: query
+        name: online_statuses
+        type: string
+      - description: 数据owner用户id
+        example: 019407c2-325a-77c3-a781-e480ad89336f
+        in: query
+        name: owner_id
+        type: string
+      - description: |-
+          权限规则状态过滤器，非空时根据滤逻辑视图及其子视图的权限规则状态过滤。
+
+           Active：返回所有规则都处于有效期的逻辑视图
+           Expired：返回任意规则已过期的逻辑视图
+        enum:
+        - Active
+        - Expired
+        in: query
+        name: policy_status
+        type: string
+        x-enum-varnames:
+        - PolicyActive
+        - PolicyExpired
+      - description: |-
+          非空时返回指定 Status 的 Service，包括发布状态和上线状态
+
+          TODO: 使用 Status 过滤发布状态和上线状态，而不只是发布状态
+        example: online,down-auditing,down
+        in: query
+        name: publish_and_online_status
+        type: string
+      - description: 发布状态
+        enum:
+        - unpublished
+        - pub-auditing
+        - published
+        - pub-reject
+        - change-auditing
+        - change-reject
+        in: query
+        name: publish_status
+        type: string
+      - description: 接口名称/接口编码
+        in: query
+        name: service_keyword
+        type: string
+      - description: 接口类型 service_generate 接口生成 service_register 接口注册
+        enum:
+        - service_generate
+        - service_register
+        in: query
+        name: service_type
+        type: string
+      - default: create_time
+        description: 排序类型 create_time 创建时间 update_time 更新时间 接口名称 name 默认 create_time
+        enum:
+        - create_time
+        - update_time
+        - name
+        - online_time
+        - publish_time
+        in: query
+        name: sort
+        type: string
+      - description: '开始时间 示例: 2006-01-02 15:04:05'
+        example: "2006-01-02 15:04:05"
+        in: query
+        name: start_time
+        type: string
+      - description: 上线状态（单值，已废弃，建议使用 online_statuses）
+        enum:
+        - notline
+        - online
+        - offline
+        - up-auditing
+        - down-auditing
+        - up-reject
+        - down-reject
+        in: query
+        name: status
+        type: string
+      - description: 主题域id uncategory 表示未分类
+        example: 019407c1-f33a-7f39-83af-4647ac3967d3
+        in: query
+        name: subject_domain_id
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceListRes'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 接口列表 - 前台
+      tags:
+      - open接口列表
+  /api/data-application-service/frontend/v1/services/{service_id}:
+    get:
+      consumes:
+      - application/json
+      description: 接口详情 - 前台
+      parameters:
+      - description: 接口ID
+        in: path
+        name: service_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceGetFrontendRes'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 接口详情 - 前台
+      tags:
+      - open接口
+  /api/data-application-service/frontend/v1/services/{service_id}/auth_info:
+    get:
+      consumes:
+      - application/json
+      description: 接口授权信息
+      parameters:
+      - description: 接口ID
+        in: path
+        name: service_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceAuthInfoRes'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 接口授权信息
+      tags:
+      - 接口申请
+  /api/data-application-service/frontend/v1/services/{service_id}/data-view:
+    get:
+      consumes:
+      - application/json
+      description: 接口关联的视图
+      parameters:
+      - description: 接口id
+        in: path
+        name: service_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServicesGetByDataViewIdRes'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 接口关联的视图
+      tags:
+      - 接口
+  /api/data-application-service/frontend/v1/services/search:
+    post:
+      consumes:
+      - application/json
+      description: 服务超市 - 接口服务列表
+      parameters:
+      - description: 请求参数
+        in: body
+        name: _
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceSearchReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceSearchRes'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 服务超市 - 接口服务列表
+      tags:
+      - 接口
+  /api/data-application-service/frontend/v1/stats/asset-count:
+    get:
+      consumes:
+      - application/json
+      description: 接口资产统计数据
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceAssetCountRes'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 接口资产统计数据
+      tags:
+      - 接口统计
+  /api/data-application-service/frontend/v1/stats/department-statistics:
+    get:
+      consumes:
+      - application/json
+      description: 获取部门统计
+      parameters:
+      - description: 数量排序，不传则返回全部部门统计
+        in: query
+        name: top
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/domain.GetDepartmentStatisticsRes'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 获取部门统计
+      tags:
+      - 接口
+  /api/data-application-service/frontend/v1/stats/status-statistics:
+    get:
+      consumes:
+      - application/json
+      description: 获取接口服务状态统计
+      parameters:
+      - description: 服务类型，不传则返回全部统计
+        in: query
+        name: service_type
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/domain.GetStatusStatisticsRes'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 获取接口服务状态统计
+      tags:
+      - 接口
+  /api/data-application-service/frontend/v1/stats/top-data:
+    get:
+      consumes:
+      - application/json
+      description: 接口top数据
+      parameters:
+      - description: 要获取的top数据数量, 默认 5
+        in: query
+        maximum: 10
+        minimum: 1
+        name: top_num
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceTopDataRes'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 接口top数据
+      tags:
+      - 接口统计
+  /api/data-application-service/internal/v1/audits/{apply_id}/auditors:
+    get:
+      consumes:
+      - application/json
+      description: workflow 获取数据 owner 审核员
+      parameters:
+      - description: 审核申请ID
+        in: path
+        name: apply_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            items:
+              items:
+                $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.AuditUser'
+              type: array
+            type: array
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: workflow 获取数据 owner 审核员
+      tags:
+      - 接口申请
+  /api/data-application-service/internal/v1/batch/services:
+    post:
+      consumes:
+      - application/json
+      description: 通过接口ID列表获取接口列表
+      parameters:
+      - collectionFormat: csv
+        description: 接口ID列表
+        in: query
+        items:
+          type: string
+        name: ids
+        required: true
+        type: array
+      produces:
+      - application/json
+      responses:
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 通过接口ID列表获取接口列表
+      tags:
+      - 接口
+  /api/data-application-service/internal/v1/stats/subject-relation-count:
+    post:
+      consumes:
+      - application/json
+      description: 获取主题域关联的Service数量
+      parameters:
+      - description: 传all，返回所有主题域关联的Service数量；传count，只返回下面ID对应的主题域关联数量，传total，只返回已发布的Service总量
+        enum:
+        - all
+        - count
+        - total
+        in: query
+        name: flag
+        required: true
+        type: string
+      - collectionFormat: csv
+        description: 主题域ID
+        in: query
+        items:
+          type: string
+        name: id
+        type: array
+      - description: 如果为true，表示该用户是数据运营角色或者数据开发角色，这时展示所有的接口数据
+        in: query
+        name: is_operator
+        type: boolean
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.QueryDomainServicesResp'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 返回各个主题域ID所关联的Service数量
+      tags:
+      - 获取主题域关联的Service数量统计
+  /api/data-application-service/v1/audit-process:
+    get:
+      consumes:
+      - application/json
+      description: 审核流程绑定列表
+      parameters:
+      - description: 审核类型 af-data-application-publish 发布审核 af-data-application-change
+          变更审核 af-data-application-online 上线审核 af-data-application-offline 下线审核 af-data-application-request
+          调用审核
+        enum:
+        - af-data-application-publish
+        - af-data-application-change
+        - af-data-application-online
+        - af-data-application-offline
+        - af-data-application-request
+        in: query
+        name: audit_type
+        type: string
+      - default: desc
+        description: 排序方向 asc 正序 desc 倒序, 默认 desc
+        enum:
+        - asc
+        - desc
+        in: query
+        name: direction
+        type: string
+      - default: 10
+        description: 每页大小 默认 10
+        in: query
+        maximum: 100
+        minimum: 1
+        name: limit
+        type: integer
+      - default: 1
+        description: 页码 默认 1
+        in: query
+        minimum: 1
+        name: offset
+        type: integer
+      - default: create_time
+        description: 排序类型 create_time 创建时间 update_time 更新时间, 默认 create_time
+        enum:
+        - create_time
+        - update_time
+        in: query
+        name: sort
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.AuditProcessBindListRes'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 审核流程绑定列表
+      tags:
+      - 审核流程绑定
+    post:
+      consumes:
+      - application/json
+      description: 审核流程绑定创建
+      parameters:
+      - description: 请求参数
+        in: body
+        name: _
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.AuditProcessBindCreateReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 审核流程绑定创建
+      tags:
+      - 审核流程绑定
+  /api/data-application-service/v1/audit-process-instance:
+    post:
+      consumes:
+      - application/json
+      description: 审核流程实例创建
+      parameters:
+      - description: 请求参数
+        in: body
+        name: _
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.AuditProcessInstanceCreateReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 审核流程实例创建
+      tags:
+      - 审核流程实例
+  /api/data-application-service/v1/audit-process/{bind_id}:
+    delete:
+      consumes:
+      - application/json
+      description: 审核流程绑定删除
+      parameters:
+      - description: 绑定id
+        in: path
+        name: bind_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 审核流程绑定删除
+      tags:
+      - 审核流程绑定
+    get:
+      consumes:
+      - application/json
+      description: 审核流程绑定详情
+      parameters:
+      - description: 绑定id
+        in: path
+        name: bind_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.AuditProcessBindGetRes'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 审核流程绑定详情
+      tags:
+      - 审核流程绑定
+    put:
+      consumes:
+      - application/json
+      description: 审核流程绑定更新
+      parameters:
+      - description: 绑定id
+        in: path
+        name: bind_id
+        required: true
+        type: string
+      - description: 请求参数
+        in: body
+        name: _
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.AuditProcessBindUpdateBodyReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 审核流程绑定更新
+      tags:
+      - 审核流程绑定
+  /api/data-application-service/v1/daily-statistics:
+    get:
+      consumes:
+      - application/json
+      description: 获取每日统计数据
+      parameters:
+      - description: 部门ID
+        in: query
+        name: department_id
+        type: string
+      - description: 服务类型
+        in: query
+        name: service_type
+        type: string
+      - description: 匹配接口服务名称
+        in: query
+        name: key
+        type: string
+      - description: 开始时间，格式：2025-01-01
+        in: query
+        name: start_time
+        type: string
+      - description: 结束时间，格式：2025-01-01
+        in: query
+        name: end_time
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/domain.GetDailyStatisticsRes'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 获取每日统计数据
+      tags:
+      - 每日统计
+  /api/data-application-service/v1/developers:
+    get:
+      consumes:
+      - application/json
+      description: 开发商列表
+      parameters:
+      - default: desc
+        description: 排序方向 asc 正序 desc 倒序, 默认 desc
+        enum:
+        - asc
+        - desc
+        in: query
+        name: direction
+        type: string
+      - default: 10
+        description: 每页大小 默认 10
+        in: query
+        maximum: 100
+        minimum: 1
+        name: limit
+        type: integer
+      - in: query
+        name: name
+        type: string
+      - default: 1
+        description: 页码 默认 1
+        in: query
+        minimum: 1
+        name: offset
+        type: integer
+      - default: create_time
+        description: 排序类型 create_time 创建时间 update_time 更新时间, 默认 create_time
+        enum:
+        - create_time
+        - update_time
+        in: query
+        name: sort
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.DeveloperListRes'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 开发商列表
+      tags:
+      - 开发商
+    post:
+      consumes:
+      - application/json
+      description: 开发商创建
+      parameters:
+      - description: 请求参数
+        in: body
+        name: _
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.DeveloperCreateReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 开发商创建
+      tags:
+      - 开发商
+  /api/data-application-service/v1/developers/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: 开发商删除
+      parameters:
+      - description: 开发商id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 开发商删除
+      tags:
+      - 开发商
+    get:
+      consumes:
+      - application/json
+      description: 开发商详情
+      parameters:
+      - in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.DeveloperGetRes'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 开发商详情
+      tags:
+      - 开发商
+    put:
+      consumes:
+      - application/json
+      description: 开发商更新
+      parameters:
+      - description: 开发商id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: 请求参数
+        in: body
+        name: _
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.DeveloperUpdateBodyReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 开发商更新
+      tags:
+      - 开发商
+  /api/data-application-service/v1/files:
+    post:
+      description: 文件上传
+      parameters:
+      - description: 文件
+        in: formData
+        name: file
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.FileUploadRes'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 文件上传
+      tags:
+      - 文件
+  /api/data-application-service/v1/files/download/{file_id}:
+    get:
+      consumes:
+      - application/json
+      description: 文件下载
+      parameters:
+      - description: 文件
+        in: path
+        name: file_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 文件下载
+      tags:
+      - 文件
+  /api/data-application-service/v1/monitor/list:
+    get:
+      consumes:
+      - application/json
+      description: 获取服务调用记录监控列表
+      parameters:
+      - description: 接口ID
+        in: query
+        name: service_id
+        type: string
+      - description: 关键词
+        in: query
+        name: keyword
+        type: string
+      - description: 接口所属部门ID
+        in: query
+        name: service_department_id
+        type: string
+      - description: 调用部门ID
+        in: query
+        name: call_department_id
+        type: string
+      - description: 调用信息系统ID
+        in: query
+        name: call_info_system_id
+        type: string
+      - description: 调用应用ID
+        in: query
+        name: call_app_id
+        type: string
+      - description: 调用状态 success 成功 fail 失败
+        in: query
+        name: status
+        type: string
+      - description: 调用开始时间，格式：2006-01-02 15:04:05
+        in: query
+        name: start_time
+        type: string
+      - description: 调用结束时间，格式：2006-01-02 15:04:05
+        in: query
+        name: end_time
+        type: string
+      - description: 偏移量，默认0
+        in: query
+        name: offset
+        type: integer
+      - description: 每页大小，默认10，最大100
+        in: query
+        name: limit
+        type: integer
+      - description: 排序类型 create_time update_time call_start_time call_end_time
+        in: query
+        name: sort
+        type: string
+      - description: 排序方向 asc 正序 desc 倒序
+        in: query
+        name: direction
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.MonitorListRes'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 获取服务调用记录监控列表
+      tags:
+      - 服务调用记录
+  /api/data-application-service/v1/services:
+    get:
+      consumes:
+      - application/json
+      description: 接口列表
+      parameters:
+      - description: 审核状态 unpublished 未发布 auditing 审核中 pass 通过 reject 驳回
+        enum:
+        - unpublished
+        - auditing
+        - pass
+        - reject
+        in: query
+        name: audit_status
+        type: string
+      - description: 审核类型 unpublished 未发布 af-data-application-publish 发布审核
+        enum:
+        - af-data-application-online
+        - af-data-application-publish
+        - af-data-application-offline
+        - af-data-application-change
+        - af-data-application-request
+        in: query
+        name: audit_type
+        type: string
+      - in: query
+        name: category_id
+        type: string
+      - in: query
+        name: category_node_id
+        type: string
+      - description: 数据owner过滤
+        in: query
+        name: data_owner
+        type: string
+      - description: 所属部门id uncategory 表示未分类
+        example: 019407c1-cf4e-7161-82cc-a97b906d1df0
+        in: query
+        name: department_id
+        type: string
+      - default: desc
+        description: 排序方向 asc 正序 desc 倒序, 默认 desc
+        enum:
+        - asc
+        - desc
+        in: query
+        name: direction
+        type: string
+      - description: '结束时间 示例: 2006-01-02 15:04:05'
+        example: "2006-01-02 15:04:05"
+        in: query
+        name: end_time
+        type: string
+      - in: query
+        name: info_system_id
+        type: string
+      - description: 是否查看部门/主题域的子节点 true 查看子节点 false 仅查看当前节点
+        enum:
+        - "true"
+        - "false"
+        in: query
+        name: is_all
+        type: string
+      - in: query
+        name: is_authed
+        type: boolean
+      - enum:
+        - "true"
+        - "false"
+        in: query
+        name: is_user_dep
+        type: string
+      - default: 10
+        description: 每页大小 默认 10
+        in: query
+        maximum: 100
+        minimum: 1
+        name: limit
+        type: integer
+      - description: 本部门资源
+        in: query
+        name: my_department_resource
+        type: boolean
+      - default: 1
+        description: 页码 默认 1
+        in: query
+        minimum: 1
+        name: offset
+        type: integer
+      - description: 上线状态（多值，支持逗号分隔，如：online,down-auditing,down-reject）
+        example: online,down-auditing,down-reject
+        in: query
+        name: online_statuses
+        type: string
+      - description: 数据owner用户id
+        example: 019407c2-325a-77c3-a781-e480ad89336f
+        in: query
+        name: owner_id
+        type: string
+      - description: |-
+          权限规则状态过滤器，非空时根据滤逻辑视图及其子视图的权限规则状态过滤。
+
+           Active：返回所有规则都处于有效期的逻辑视图
+           Expired：返回任意规则已过期的逻辑视图
+        enum:
+        - Active
+        - Expired
+        in: query
+        name: policy_status
+        type: string
+        x-enum-varnames:
+        - PolicyActive
+        - PolicyExpired
+      - description: |-
+          非空时返回指定 Status 的 Service，包括发布状态和上线状态
+
+          TODO: 使用 Status 过滤发布状态和上线状态，而不只是发布状态
+        example: online,down-auditing,down
+        in: query
+        name: publish_and_online_status
+        type: string
+      - description: 发布状态
+        enum:
+        - unpublished
+        - pub-auditing
+        - published
+        - pub-reject
+        - change-auditing
+        - change-reject
+        in: query
+        name: publish_status
+        type: string
+      - description: 接口名称/接口编码
+        in: query
+        name: service_keyword
+        type: string
+      - description: 接口类型 service_generate 接口生成 service_register 接口注册
+        enum:
+        - service_generate
+        - service_register
+        in: query
+        name: service_type
+        type: string
+      - default: create_time
+        description: 排序类型 create_time 创建时间 update_time 更新时间 接口名称 name 默认 create_time
+        enum:
+        - create_time
+        - update_time
+        - name
+        - online_time
+        - publish_time
+        in: query
+        name: sort
+        type: string
+      - description: '开始时间 示例: 2006-01-02 15:04:05'
+        example: "2006-01-02 15:04:05"
+        in: query
+        name: start_time
+        type: string
+      - description: 上线状态（单值，已废弃，建议使用 online_statuses）
+        enum:
+        - notline
+        - online
+        - offline
+        - up-auditing
+        - down-auditing
+        - up-reject
+        - down-reject
+        in: query
+        name: status
+        type: string
+      - description: 主题域id uncategory 表示未分类
+        example: 019407c1-f33a-7f39-83af-4647ac3967d3
+        in: query
+        name: subject_domain_id
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceListRes'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 接口列表
+      tags:
+      - 接口
+    post:
+      consumes:
+      - application/json
+      description: 接口创建
+      parameters:
+      - description: 请求参数
+        in: body
+        name: _
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceCreateReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceCreateRes'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 接口创建
+      tags:
+      - 接口
+  /api/data-application-service/v1/services/{service_id}:
+    delete:
+      consumes:
+      - application/json
+      description: 接口删除
+      parameters:
+      - description: 接口ID
+        in: path
+        name: service_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 接口删除
+      tags:
+      - 接口
+    get:
+      consumes:
+      - application/json
+      description: 接口详情
+      parameters:
+      - description: 接口ID
+        in: path
+        name: service_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceGetRes'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 接口详情
+      tags:
+      - 接口
+    put:
+      consumes:
+      - application/json
+      description: 接口更新
+      parameters:
+      - description: 接口ID
+        in: path
+        name: service_id
+        required: true
+        type: string
+      - description: 请求参数
+        in: body
+        name: _
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceUpdateBodyReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 接口更新
+      tags:
+      - 接口
+  /api/data-application-service/v1/services/{service_id}/api-doc/example-code:
+    get:
+      consumes:
+      - application/json
+      description: 接口使用示例代码
+      parameters:
+      - description: 接口ID
+        in: path
+        name: service_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ExampleCode'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 接口使用示例代码
+      tags:
+      - 接口
+  /api/data-application-service/v1/services/api-doc/export:
+    post:
+      consumes:
+      - application/json
+      description: 导出API接口文档，支持单个PDF下载或批量ZIP压缩包下载
+      parameters:
+      - description: 请求参数：service_ids传入1个ID时下载单个PDF，传入多个ID时下载ZIP压缩包；app_id为应用ID，用于文件名生成
+        in: body
+        name: _
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ExportAPIDocReqBody'
+      produces:
+      - application/pdf
+      - application/zip
+      responses:
+        "200":
+          description: 成功时返回PDF或ZIP二进制数据，Content-Type为application/pdf或application/zip
+          schema:
+            type: string
+        "400":
+          description: 失败时返回JSON格式错误信息，Content-Type为application/json
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 导出API接口文档
+      tags:
+      - 接口文档
+  /api/data-application-service/v1/services/check-service-name:
+    get:
+      consumes:
+      - application/json
+      description: 接口名称重名检查
+      parameters:
+      - in: query
+        name: service_id
+        type: string
+      - in: query
+        name: service_name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 接口名称重名检查
+      tags:
+      - 接口
+  /api/data-application-service/v1/services/check-service-path:
+    get:
+      consumes:
+      - application/json
+      description: 接口路径重名检查
+      parameters:
+      - in: query
+        name: service_id
+        type: string
+      - in: query
+        maxLength: 255
+        name: service_path
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 接口路径重名检查
+      tags:
+      - 接口
+  /api/data-application-service/v1/services/draft/:service_id:
+    delete:
+      consumes:
+      - application/json
+      description: 放弃变更接口
+      parameters:
+      - description: 接口ID
+        in: path
+        name: service_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceIdRes'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 变更审核失败后，放弃变更
+      tags:
+      - 接口
+    get:
+      consumes:
+      - application/json
+      description: 获取当前需求的草稿版本
+      parameters:
+      - description: 接口ID
+        in: path
+        name: service_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceIdRes'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 获取当前需求的草稿版本
+      tags:
+      - 接口
+    post:
+      consumes:
+      - application/json
+      description: 变更已发布的需求
+      parameters:
+      - description: 接口ID
+        in: path
+        name: service_id
+        required: true
+        type: string
+      - description: 请求参数
+        in: body
+        name: _
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceChangeReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceIdRes'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 变更已发布的需求（包括变更暂存）
+      tags:
+      - 接口
+  /api/data-application-service/v1/services/form-to-sql:
+    post:
+      consumes:
+      - application/json
+      description: 接口参数转SQL
+      parameters:
+      - description: 请求参数
+        in: body
+        name: _
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceFormToSqlReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceFormToSqlRes'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 接口参数转SQL
+      tags:
+      - 接口
+  /api/data-application-service/v1/services/options/list:
+    get:
+      consumes:
+      - application/json
+      description: 获取接口管理页列表下拉筛选项接口
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.OptionsInfoRes'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 获取接口管理页列表下拉筛选项
+      tags:
+      - 接口
+  /api/data-application-service/v1/services/revoke:
+    put:
+      consumes:
+      - application/json
+      description: 审核撤回接口
+      parameters:
+      - description: 请求参数
+        in: body
+        name: _
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.UndoAuditReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceIdRes'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 撤回相关类型的审核
+      tags:
+      - 接口
+  /api/data-application-service/v1/services/sql-to-form:
+    post:
+      consumes:
+      - application/json
+      description: SQL转接口参数
+      parameters:
+      - description: 请求参数
+        in: body
+        name: _
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceSqlToFormReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceSqlToFormRes'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: SQL转接口参数
+      tags:
+      - 接口
+  /api/data-application-service/v1/services/status:
+    put:
+      consumes:
+      - application/json
+      description: 上下线接口
+      parameters:
+      - description: 请求参数
+        in: body
+        name: _
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceUpOrDownReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.ServiceIdRes'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 接口上线或者下线
+      tags:
+      - 接口
+  /api/data-application-service/v1/services/sync/{service_id}:
+    post:
+      consumes:
+      - application/json
+      description: 触发接口同步回调
+      parameters:
+      - description: 接口ID
+        in: path
+        name: service_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/domain.ServiceSyncCallbackRes'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 触发接口同步回调
+      tags:
+      - 接口
+  /api/data-application-service/v1/subject-domains:
+    get:
+      consumes:
+      - application/json
+      description: 登录用户有权限的主题域列表
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_common_dto.SubjectDomainListRes'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 登录用户有权限的主题域列表
+      tags:
+      - 主题域
+  /api/internal/data-application-service/v1/sub-view-ids:
+    get:
+      description: 获取子视图的 ID 列表
+      produces:
+      - application/json
+      responses: {}
+      tags:
+      - 子视图
+  /api/internal/data-application-service/v1/sub-views/:id/logic_view_id:
+    put:
+      consumes:
+      - application/json
+      description: 获取子视图（行列规则）的 ID 列表
+      parameters:
+      - description: 子视图 ID
+        format: uuid
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      tags:
+      - 子视图
+  /api/v1/data-application-service/v1/sub-views:
+    get:
+      consumes:
+      - application/json
+      description: 获取子视图列表
+      parameters:
+      - description: 逻辑视图 ID
+        format: uuid
+        in: query
+        name: logic_view_id
+        type: string
+      - default: 1
+        description: 页码
+        in: query
+        name: offset
+        type: integer
+      - default: 10
+        description: 每页数量
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 子视图列表
+          schema:
+            $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_domain_sub_service.SubService'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      tags:
+      - 子视图
+    post:
+      consumes:
+      - application/json
+      description: 创建子接口，也就是在接口的结果上再加一层过滤
+      parameters:
+      - description: 请求参数
+        in: body
+        name: _
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_domain_sub_service.SubService'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_domain_sub_service.SubService'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      tags:
+      - 子接口
+  /api/v1/data-application-service/v1/sub-views/:id:
+    delete:
+      consumes:
+      - application/json
+      description: 删除指定子视图
+      parameters:
+      - description: 子视图 ID
+        format: uuid
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      tags:
+      - 子视图
+  /api/v1/data-application-service/v1/sub-views:id:
+    put:
+      consumes:
+      - application/json
+      description: 更新指定子视图
+      parameters:
+      - description: 子视图 ID
+        format: uuid
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: 请求参数
+        in: body
+        name: _
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_domain_sub_service.SubService'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-service_domain_sub_service.SubService'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      tags:
+      - 子视图
+swagger: "2.0"

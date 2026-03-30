@@ -1,0 +1,191 @@
+.wrapper {
+    // display: flex;
+    background: #fff;
+    border-radius: 4px;
+
+    .left {
+        // flex: auto;
+        // margin-right: 100px;
+
+        .diagnoseTitle {
+            font-size: 16px;
+            font-weight: 550;
+        }
+
+        .updateTime {
+            margin-top: 8px;
+            color: rgb(0 0 0 / 45%);
+            font-size: 12px;
+        }
+    }
+
+    // .right {
+    //     flex: 0 0 100px;
+    // }
+
+    .undiagnosedWrapper {
+        width: 100%;
+        margin-top: 124px;
+        text-align: center;
+
+        .undiagnosedButton {
+            margin-top: 16px;
+        }
+    }
+
+    .loadingWrapper {
+        width: 100%;
+        margin-top: 124px;
+        text-align: center;
+    }
+
+    :global {
+        .any-fabric-ant-anchor-link-title {
+            color: rgb(0 0 0 / 45%);
+            cursor: default;
+
+            &:hover {
+                color: rgb(0 0 0 / 45%);
+            }
+        }
+
+        .any-fabric-ant-anchor-link-title-active {
+            &:hover {
+                color: #126ee3;
+            }
+        }
+    }
+}
+
+.weight {
+    width: 200px;
+    margin: 0 4px;
+    font-weight: 550;
+    .ellipsis-mixin();
+}
+
+.highlight {
+    color: @primary-color;
+}
+
+.affix {
+    position: absolute;
+}
+
+.standardWrapper {
+    margin-top: 16px;
+
+    .standardTitle {
+        margin-bottom: 12px;
+        font-weight: 550;
+    }
+
+    .resultEmpty {
+        height: 100%;
+        padding: 42px 0;
+        // background-color: rgb(0 55 150 / 4%);
+    }
+
+    .pageTurning {
+        display: flex;
+        margin-top: 16px;
+        margin-left: 4px;
+
+        .buttonWrpper {
+            margin-right: 24px;
+            cursor: pointer;
+        }
+
+        .moreButton {
+            font-size: 12px;
+        }
+
+        .lessButton {
+            font-size: 12px;
+        }
+
+        .icon {
+            margin-left: 4px;
+            color: @primary-color;
+            font-size: 12px;
+        }
+    }
+
+    .itemWrapper {
+        padding: 16px 24px;
+        margin: 32px 0 0 6px;
+        border-radius: 4px;
+        box-shadow: rgb(0 0 0 / 13.3%) 0 3.2px 7.2px 0;
+
+        .table {
+            margin-top: 4px;
+        }
+
+        .tableCount {
+            color: @primary-color;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .fieldWrapper {
+            display: flex;
+            align-items: center;
+        }
+    }
+
+    .itemWrapper:first-child {
+        margin-top: 20px;
+    }
+
+    .tipsWrapper {
+        display: flex;
+        align-items: center;
+    }
+
+    .chooseButton {
+        margin: 0 16px;
+    }
+}
+
+.circleWrapper {
+    position: relative;
+    width: 16px;
+    height: 16px;
+    border: 1px solid @primary-color;
+    background-color: transparent;
+    border-radius: 8px;
+    cursor: pointer;
+    visibility: visible;
+
+    .checkOutlined {
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        color: @primary-color;
+        visibility: hidden;
+    }
+
+    &:hover .checkOutlined {
+        visibility: visible;
+    }
+
+    &:active .checkOutlined {
+        visibility: visible;
+    }
+}
+
+.disablechecked {
+    cursor: not-allowed;
+
+    &:hover .checkOutlined {
+        visibility: hidden;
+    }
+
+    &:active .checkOutlined {
+        visibility: hidden;
+    }
+}
+
+.dereferenceTable {
+    margin-top: 16px;
+}

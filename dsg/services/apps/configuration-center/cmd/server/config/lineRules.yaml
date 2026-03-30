@@ -1,0 +1,17 @@
+line_rules:
+  - name: firm_list
+    sheet_line_rules:
+      - sheet_name: 厂商名录
+        instruction:
+          rows:
+            - 1
+        table_content:
+          title_num: 2
+  - name: address_book_list
+    sheet_line_rules:
+      - sheet_name: 通讯录导入模板
+        instruction:
+          rows:
+            - 1
+        table_content:
+          title_num: 2

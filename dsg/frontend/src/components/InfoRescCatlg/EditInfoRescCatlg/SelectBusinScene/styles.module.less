@@ -1,0 +1,38 @@
+.selectModalWrapper {
+    .selectBusinSceneWrapper {
+        .sceneTagsFormItem {
+            display: flex;
+            flex-direction: column;
+
+            :global {
+                .any-fabric-ant-form-item-row {
+                    flex-direction: column;
+                    align-items: flex-start;
+                }
+
+                .any-fabric-ant-form-item-label {
+                    margin-bottom: 10px;
+                }
+
+                .any-fabric-ant-form-item-control {
+                    border-top: 1px dashed #dbdbdb;
+
+                    .any-fabric-ant-form-item-control-input {
+                        margin-top: 16px;
+
+                        .any-fabric-ant-form-item-control-input-content {
+                            max-height: 160px;
+                            overflow-y: auto;
+                        }
+                    }
+                }
+            }
+        }
+
+        :global {
+            .any-fabric-ant-form-item {
+                margin-bottom: 16px;
+            }
+        }
+    }
+}

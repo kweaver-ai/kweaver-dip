@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dsg.standardization.mapper.TaskStdCreateMapper">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.dsg.standardization.entity.TaskStdCreateEntity" id="baseMap">
+        <result property="id" column="f_id"/>
+        <result property="taskNo" column="f_task_no"/>
+        <result property="table" column="f_table"/>
+        <result property="tableDescription" column="f_table_description"/>
+        <result property="tableField" column="f_table_field"/>
+        <result property="status" column="f_status"/>
+        <result property="createTime" column="f_create_time"/>
+        <result property="createUser" column="f_create_user"/>
+        <result property="createUserPhone" column="f_create_user_phone"/>
+        <result property="updateTime" column="f_update_time"/>
+        <result property="updateUser" column="f_update_user"/>
+    </resultMap>
+
+    <select id="queryList" resultMap="baseMap">
+        select * from t_de_task_std_create
+        where 1=1
+        <if test="status != null">
+            and f_status = ${status}
+        </if>
+        <if test="keyword != null and keyword != ''">
+            and (
+            lower(f_task_no) like lower(CONCAT('%',#{keyword},'%'))
+            or lower(f_table) like lower(CONCAT('%',#{keyword},'%'))
+            or lower(f_table_description) like lower(CONCAT('%',#{keyword},'%'))
+            or lower(f_table_field) like lower(CONCAT('%',#{keyword},'%'))
+            )
+        </if>
+    </select>
+    <select id="queryById" resultType="com.dsg.standardization.entity.TaskStdCreateEntity">
+        SELECT
+        f_id AS id,
+        f_task_no AS taskNo,
+        f_table AS `table`,
+        f_table_description AS tableDescription,
+        f_table_field AS tableField,
+        f_status AS status,
+        f_create_time AS createTime,
+        f_create_user AS createUser,
+        f_create_user_phone AS createUserPhone,
+        f_update_time AS updateTime,
+        f_update_user AS updateUser,
+        f_webhook AS webhook
+        FROM
+        t_de_task_std_create
+        WHERE
+        f_id = #{id}
+    </select>
+    <select id="queryByTaskNo" resultMap="baseMap">
+        select * from t_de_task_std_create where f_task_no=#{taskNo}
+    </select>
+</mapper>

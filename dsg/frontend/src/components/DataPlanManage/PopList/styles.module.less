@@ -1,0 +1,29 @@
+.pop {
+    :global {
+        .any-fabric-ant-popover-inner-content {
+            max-width: 300px;
+            padding: 12px 16px;
+        }
+    }
+
+    .popContent {
+        display: flex;
+        flex-direction: column;
+        color: rgb(0 0 0 / 85%);
+        font-size: 14px;
+
+        > div {
+            &:nth-child(1) {
+                color: rgb(0 0 0 / 45%);
+            }
+
+            &:nth-child(2) {
+                width: 100%;
+                max-height: 130px;
+                flex: 1 1;
+                line-height: 1.8;
+                overflow-y: auto;
+            }
+        }
+    }
+}

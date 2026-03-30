@@ -1,0 +1,452 @@
+syntax = "proto3";
+package register;
+
+option go_package = ".;register";
+
+service UserService {
+  // 注册用户
+  rpc CreateUser(CreateReq) returns (CreateResponse);
+  // 用户列表查询
+  rpc ListUser(ListReq) returns (ListResponse);
+  // 用户选择列表
+  rpc QueryUser(QueryReq) returns (QueryResponse);
+  //机构注册
+  rpc CreateOrganization(CreateOrganizationReq) returns (CreateOrganizationResponse);
+  // 机构编辑
+  rpc UpdateOraganization(UpdateOrganizationReq) returns (UpdateOrganizationResponse);
+  // 机构列表查询
+  rpc ListOraganization(ListOrganizationReq) returns (ListOrganizationResponse);
+  // 机构code是否存在
+  rpc OrganaizaitionCodeExist(OrganizationExitReq) returns (OrganizationExitResponse);
+  // 应用创建接口
+  rpc AppCreate(AppCreateRequest) returns (CommonResult){};
+  // 应用修改接口
+  rpc AppUpdate(AppUpdateRequest) returns (CommonResult){};
+  // 应用查询接口
+  rpc AppSelect(AppSelectRequest) returns (AppSelectResult){};
+  // 应用唯一性查询接口
+  rpc AppSelectOnly(AppSelectOnlyRequest) returns (AppSelectOnlyResult){};
+  // 系统创建接口
+  rpc SystemCreate(SystemCreateRequest) returns (CommonResult){};
+  // 系统修改接口
+  rpc SystemUpdate(SystemUpdateRequest) returns (CommonResult){};
+  // 系统发布接口（发布）
+  rpc SystemStatusUpdate(SystemStatusUpdateRequest) returns (CommonResult){};
+  // 系统查询接口
+  rpc SystemSelect(SystemSelectRequest) returns (SystemSelectResult){};
+  // 系统唯一性查询接口
+  rpc SystemSelectOnly(SystemSelectOnlyRequest) returns (SystemSelectOnlyResult){};
+  // 服务创建接口
+  rpc Create(CreateRequest) returns (Result){};
+  // 服务修改接口
+  rpc Update(UpdateRequest) returns (Result){};
+  // 服务状态修改接口（上线&下线）
+  rpc StatusUpdate(StatusUpdateRequest) returns (Result){};
+  // 服务订阅接口
+  rpc SubscriptionCreate(SubscriptionCreateRequest) returns (SubscriptionCreateResult){};
+  // 新增批量服务订阅接口
+  rpc BatchSubscriptionCreate(BatchSubscriptionCreateRequest) returns (BatchSubscriptionCreateResult){};
+  // 服务订阅状态修改接口
+  rpc SubscriptionUpdate(SubscriptionStatusUpdateRequest) returns (SubscriptionStatusUpdateResult){};
+  // 服务订阅调用频率修改接口
+  rpc SubscriptionInvokeLimitIntervalUpdate(SubscriptionInvokeLimitIntervalUpdateRequest) returns (SubscriptionStatusUpdateResult){};
+}
+
+message Result {
+  string sync_flag = 1; //同步状态(success,fail)
+  string msg = 2; //返回消息
+}
+
+message CreateReq {
+  //中文名
+  string name = 1;
+  // 登录名
+  string login_name = 2;
+  //  邮箱
+  string mail = 3;
+  //  手机号
+  string phone = 4;
+}
+
+// 注册用户的响应
+message CreateResponse {
+  // 接口响应状态码
+  int64 code = 1;
+  // 接口像一个你消息
+  string message = 2;
+  // 链路 id
+  string traceId = 3;
+  // 接口响应消息体
+  CreateResponseData data = 4;
+}
+
+// 接口响应消息体
+message CreateResponseData {
+  // 注册用户唯一标识符
+  string id = 1;
+  // 租户ID（可不传）
+  string app_id = 2;
+}
+
+message ListReq {
+  int32 offset = 1;
+  int32 limit = 2;
+  string direction = 3;
+  string name = 4;
+}
+
+
+// 查询注册用户列表的响应
+message ListResponse {
+  // 接口响应状态码
+  int64 code = 1;
+  // 消息
+  string message = 2;
+  // 链路 id
+  string traceId = 3;
+  // 接口响应消息体
+  ListResponseData data = 4;
+}
+// 接口响应消息体
+message ListResponseData {
+  // 当前页
+  int64 pageNum = 1;
+  // 每页显示记录数
+  int64 pageSize = 2;
+  // 总页数
+  int64 totalPages = 3;
+  // 总记录数
+  int64 totalRows = 4;
+  // 列表内容
+  repeated ListResponseDataItem list = 5;
+}
+
+// 列表内容
+message ListResponseDataItem {
+  string id = 1;
+  string login_name = 2;
+  string app_id = 3;
+  //网关用户状态
+  int32 status = 4;
+}
+
+message QueryReq {
+  string name = 1;
+}
+
+//列表内容
+message QueryResponse {
+  // 接口响应状态码
+  int64 code = 1;
+  // 接口像一个你消息
+  string message = 2;
+  // 链路 id
+  string traceId = 3;
+  // 接口响应消息体
+  QueryResponseData data = 4;
+}
+
+message QueryResponseData {
+  string id = 1;
+  string login_name = 2;
+  string app_id = 3;
+  int32 status = 4;
+}
+
+message CreateOrganizationReq {
+  string organization_name = 1;
+  string organization_code = 2;
+  //	网关用户ID列表
+  repeated string managers = 3;
+}
+
+message CreateOrganizationResponse {
+  int64 code = 1;
+  string message = 2;
+  string traceId = 3;
+  CreateOrganizationData data = 4;
+}
+
+message CreateOrganizationData {
+  //	网关机构ID
+  string id = 1;
+}
+
+message UpdateOrganizationReq {
+  //	网关机构ID
+  string id = 1;
+  string organization_name = 2;
+  string organization_code = 3;
+  //	网关用户ID列表
+  repeated string manager = 4;
+}
+
+message UpdateOrganizationResponse {
+  int64 code = 1;
+  string message = 2;
+  string traceId = 3;
+  UpdateOrganizationResponseData data = 4;
+}
+
+message UpdateOrganizationResponseData {
+  //	网关机构ID
+  string id = 1;
+}
+
+message ListOrganizationReq {
+  int32 offset = 1;
+  int32 limit = 2;
+  string direction = 3;
+  string sort = 4;
+  string name = 5;
+}
+message ListOrganizationResponse {
+  int64 code = 1;
+  string message = 2;
+  string traceId = 3;
+  ListOrganizationResponseData data = 4;
+}
+
+message ListOrganizationResponseData {
+  int64 pageNum = 1;
+  int64 pageSize = 2;
+  int64 totalPages = 3;
+  int64 totalRows = 4;
+  repeated ListOrganizationResponseDataItem list = 5;
+}
+
+message ListOrganizationResponseDataItem {
+//  网关机构ID
+  string id = 1;
+  string organization_name = 2;
+  string organization_code = 3;
+  repeated string manager = 4;
+}
+
+message OrganizationExitReq{
+  string organization_name = 1;
+  string organization_code = 2;
+}
+
+message OrganizationExitResponse{
+  int64 code = 1;
+  string message = 2;
+  string traceId = 3;
+  OrganizationCodeResponseData data = 4;
+}
+
+message OrganizationCodeResponseData{
+  bool exit = 1;
+}
+
+message CommonResult {
+  //errcode 0 errmsg OK 执行成功
+  string errcode = 1;
+  string errmsg = 2;
+}
+
+message AppSelectResult {
+  //errcode 0 errmsg OK 执行成功
+  string errcode = 1;
+  string errmsg = 2;
+  int64 total = 3;
+  int32 offset = 4;
+  int32 limit = 5;
+  AppSelectData data = 6;
+}
+
+message AppSelectOnlyResult {
+  //errcode 0 errmsg OK 执行成功
+  string errcode = 1;
+  string errmsg = 2;
+  bool data = 3;
+}
+
+message AppSelectData {
+  repeated AppSelectItems items = 1;
+}
+
+message AppSelectItems {
+  string system_id = 1; //应用关联系统的标识
+  string paas_id = 2; //应用标识，256 以内的小写字母、数字、_组成，平台唯一。
+  repeated AppTokenRequest tokens = 3; //token 对象，和 token 不能同时为空，AppTokenRequest
+  repeated AppSelectItemsOperators operators = 4; //负责人
+  string description = 5; //服务描述，对应AF接口服务描述
+  string name = 6; //应用名称，256 以内的中文、大小写字母、数字、_、-、()、（）组成，平台唯一，_不能出现在开始和结束的位置。
+  string create_time = 7; //创建时间, 时间戳
+  repeated AppSelectItemsCreateUser create_user = 8; //创建人信息
+}
+
+message AppSelectItemsOperators {
+  string account_id = 3; //负责人帐号 ID
+  string account_name = 4; //负责人帐号名
+}
+
+message AppSelectItemsCreateUser {
+  string account_id = 3; //创建人 ID
+  string account_name = 4; //创建人名称
+}
+
+message AppCreateRequest {
+  string system_id = 1; //应用关联系统的标识
+  string paas_id = 2; //应用标识，256 以内的小写字母、数字、_组成，平台唯一。
+  repeated AppTokenRequest tokens = 3; //token 对象，和 token 不能同时为空，AppTokenRequest
+  repeated string operators = 4; //管理员 id 列表
+  string description = 5; //服务描述，对应AF接口服务描述
+  string name = 6; //应用名称，256 以内的中文、大小写字母、数字、_、-、()、（）组成，平台唯一，_不能出现在开始和结束的位置。
+  string orgid = 7; //网关机构ID
+}
+
+message AppUpdateRequest {
+  string paas_id = 1; //应用标识，256 以内的小写字母、数字、_组成，平台唯一。
+  repeated AppTokenRequest tokens = 2; //token 对象，和 token 不能同时为空，AppTokenRequest
+  repeated string operators = 3; //管理员 id 列表
+  string description = 4; //服务描述，对应AF接口服务描述
+}
+
+message AppSelectRequest {
+  int32 limit = 1; //列表返回条数，默认值 10
+  int32 offset = 2; //列表起始位置，默认值 0
+  string system_id = 3; //系统 ID
+}
+
+message AppTokenRequest {
+  string token = 1; //应用token，对应AF应用token
+}
+
+message AppSelectOnlyRequest {
+  string system_id = 1; //系统 ID
+}
+
+message SystemSelectResult {
+  //errcode 0 errmsg OK 执行成功
+  string errcode = 1;
+  string errmsg = 2;
+  int64 total = 3;
+  int32 offset = 4;
+  int32 limit = 5;
+  repeated SystemSelectData data = 6;
+}
+
+message SystemSelectOnlyResult {
+  //errcode 0 errmsg OK 执行成功
+  string errcode = 1;
+  string errmsg = 2;
+  bool data = 3;
+}
+
+message SystemSelectData {
+  string sysid = 1; //系统标识，对应AF系统标识id
+  string description = 2; //服务描述，对应AF接口服务描述
+  string name = 3; //系统名称，对应AF系统名称
+  string status = 4; //系统状态；0: 草稿、1:审批中、2:已同意、3:已拒绝、4:已删除
+  string createTime = 5; //创建时间
+  repeated CreateUserDataRequest createUser = 6; //系统创建人
+  repeated CreateUserDataRequest operators = 7;//系统负责人
+}
+
+message SystemSelectRequest {
+  string offset = 1;
+  string limit = 2;
+}
+
+message CreateUserDataRequest {
+  string id = 1; //创建系统的用户 id
+  string username = 2; //创建系统的用户名称
+}
+
+message SystemSelectOnlyRequest {
+  string sysid = 1; //系统标识，对应AF系统标识id
+}
+
+message SystemCreateRequest {
+  string sysid = 1; //系统标识，对应AF系统标识id
+  string name = 2; //系统名称，对应AF系统名称
+  repeated string operators = 3; //管理员id列表
+  string description = 4; //服务描述，对应AF接口服务描述
+  string orgid = 5; //网关机构ID
+}
+
+message SystemUpdateRequest {
+  string sysid = 1; //系统标识，对应AF系统标识id
+  repeated string operators = 2; //管理员id列表
+  string description = 3; //服务描述，对应AF接口服务描述
+}
+
+message SystemStatusUpdateRequest {
+  string sysid = 1; //系统标识id，对应AF系统标识ID
+  string status = 2; //状态，对应AF系统的状态（发布0驳回1）
+}
+
+message CreateRequest {
+  string paas_id = 1; //网关注册id，对应AF应用ID
+  string svc_id = 2; //服务id，对应AF接口服务ID
+  string svc_name = 3; //服务名，对应AF接口服务名
+  string description = 4; //服务描述，对应AF接口服务描述
+  string pub_host = 5; //网关公共域名，留空
+  string pub_path = 6; //网关公共路径，留空
+  string target_path = 7; //网关目标路径，由AF接口服务路径拼接而成(/{固定前缀ebus}/{paas_id}/{接口路径服务路径})
+  bool target_is_https = 8; //接口uri是否https
+}
+
+message UpdateRequest {
+  string paas_id = 1; //网关注册id，对应AF应用ID
+  string svc_id = 2; //服务id，对应AF接口服务ID
+  string svc_name = 3; //服务名，对应AF接口服务名
+  string pub_host = 4; //网关公共域名，留空
+  string pub_path = 5; //网关公共路径，留空
+  string target_path = 6; //网关目标路径，由AF接口服务路径拼接而成(/{固定前缀ebus}/{paas_id}/{接口路径服务路径})
+  bool target_is_https = 7; //接口uri是否https
+  string description = 8; //服务描述，对应AF接口服务描述
+}
+
+message StatusUpdateRequest {
+  string paas_id = 1; //网关注册id，对应AF应用ID
+  string svc_id = 2; //服务id，对应AF接口服务ID
+  string status = 3; //状态，对应AF接口服务的状态（上线0下线1）
+}
+
+message SubscriptionCreateResult {
+  //code 200执行成功，500异常，message为异常信息
+  int64 code = 1;
+  string message = 2;
+}
+
+message BatchSubscriptionCreateResult {
+  repeated BatchSubscriptionCreateResultData batchSubscriptionCreateResultData= 1;
+}
+
+message BatchSubscriptionCreateResultData {
+  int64 code = 1;
+  string message = 2;
+  string paas_id = 3; //网关注册id，对应AF应用ID
+  string svc_id = 4; //服务id，对应AF接口服务ID
+}
+
+message SubscriptionCreateRequest {
+  string paas_id = 1; //网关注册id，对应AF应用ID
+  string svc_id = 2; //服务id，对应AF接口服务ID
+  string reason = 3; //申请理由，对应AF接口服务订阅申请理由
+}
+
+message SubscriptionStatusUpdateRequest {
+  string paas_id = 1; //网关注册id，对应AF应用ID
+  string svc_id = 2; //服务id，对应AF接口服务ID
+  string status = 3; //状态，对应AF接口服务的状态（权限添加0权限取消1）
+}
+
+message SubscriptionInvokeLimitIntervalUpdateRequest{
+  string paas_id = 1; //网关注册id，对应AF应用ID
+  string svc_id = 2; //服务id，对应AF接口服务ID
+  int64 interval = 3; //调用频率
+}
+
+// 批量订阅请求
+message BatchSubscriptionCreateRequest {
+  repeated SubscriptionCreateRequest requests = 1; // 多个订阅请求，这里需要返回每个订阅请求创建的结果
+}
+
+message SubscriptionStatusUpdateResult {
+  int64 code = 1;
+  string message = 2;
+}

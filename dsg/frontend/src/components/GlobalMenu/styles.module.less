@@ -1,0 +1,179 @@
+.globalMenuWrapper {
+    .globalIconBox {
+        display: flex;
+        width: 16px;
+        height: 16px;
+        align-items: center;
+        justify-content: center;
+        margin-right: 16px;
+
+        .globalIcon {
+            color: #9197a9;
+            cursor: pointer;
+            font-size: 16px;
+
+            &:hover {
+                color: rgb(0 0 0 / 85%);
+            }
+        }
+    }
+}
+
+.globalMenuPopupWrapper {
+    position: relative;
+    top: 52px !important;
+    left: 0 !important;
+    width: 880px;
+
+    .globalMenuRow {
+        max-height: calc(100vh - 76px);
+        padding: 16px 32px 24px 8px;
+        overflow-y: auto;
+    }
+
+    .globalMenuCol {
+        padding: 0 8px;
+        border-right: 1px solid rgb(0 0 0 / 10%);
+
+        &.noBorder {
+            border: none;
+        }
+    }
+
+    .closeBtn {
+        position: absolute;
+        top: 10px;
+        right: 20px;
+        color: rgb(0 0 0 / 40%);
+        cursor: pointer;
+        font-size: 16px;
+
+        &:hover {
+            color: rgb(0 0 0 / 85%);
+        }
+    }
+
+    &.towColMenus {
+        width: 600px;
+    }
+
+    &.oneColMenus {
+        width: 300px;
+    }
+
+    a,
+    a:hover {
+        display: inline-block;
+        width: 100%;
+        color: #000;
+    }
+
+    .firstMenu {
+        padding: 6px 0 6px 8px;
+        margin-bottom: 16px;
+        border-radius: 4px;
+        color: #000;
+        cursor: pointer;
+        font-weight: bold;
+
+        &:hover {
+            background: #eff0f3;
+        }
+
+        &.active {
+            background: rgb(18 110 227 / 8%);
+
+            .iconBox {
+                background: rgb(18 110 227 / 100%);
+                color: #fff;
+            }
+        }
+
+        .firstMenuLabel {
+            display: inline-block;
+            width: calc(100% - 36px);
+            margin-left: 8px;
+        }
+
+        .iconBox {
+            display: inline-block;
+            width: 28px;
+            height: 28px;
+            background: rgb(18 110 227 / 8%);
+            border-radius: 2px;
+            color: rgb(18 110 227 / 100%);
+            line-height: 28px;
+            text-align: center;
+        }
+    }
+
+    .secondMenu {
+        margin-bottom: 4px;
+        border-radius: 4px;
+
+        &.firSecondMenu {
+            margin-top: -12px;
+        }
+
+        &.active,
+        &:hover {
+            background: #eff0f3;
+        }
+
+        &.hasChidSecondMenu {
+            padding-bottom: 6px;
+        }
+
+        &.lastSecondMenu {
+            margin-bottom: 12px;
+        }
+    }
+
+    .secondMenuLabel,
+    .thirdMenu {
+        margin-left: 44px;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .secondMenuLabel {
+        height: 40px;
+        font-weight: 400;
+        line-height: 40px;
+    }
+
+    .thirdMenu {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        padding: 3px 0;
+        margin-top: -6px;
+
+        .thirdMenuItem {
+            display: flex;
+            align-items: center;
+            font-size: 13px;
+
+            a {
+                color: @text-color-third;
+
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+        }
+    }
+
+    :global {
+        .any-fabric-ant-dropdown-menu,
+        .any-fabric-ant-dropdown-menu-item,
+        .any-fabric-ant-dropdown-menu-submenu-title {
+            padding: 0;
+
+            &:hover {
+                background: #fff;
+                cursor: inherit;
+            }
+        }
+    }
+}

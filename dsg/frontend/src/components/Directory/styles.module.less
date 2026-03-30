@@ -1,0 +1,440 @@
+.directoryBox {
+    overflow: hidden;
+    height: 100%;
+    background: #fff;
+
+    .directory {
+        // overflow: scroll;
+        overflow: auto;
+        height: calc(100% - 80px);
+    }
+
+    .searchDirInput {
+        width: calc(100% - 40px);
+        margin: 32px 20px 10px;
+    }
+
+    .dirTitle {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8px 26px 20px;
+        // color: #999;
+
+        .addIcon {
+            width: 12px;
+            height: 12px;
+            margin-right: 6px;
+            color: #000;
+            cursor: pointer;
+        }
+    }
+
+    .dirList {
+        // overflow: scroll;
+        // height: calc(100% - 47px);
+        color: rgb(0 0 0 / 85%);
+
+        ul {
+            list-style: none;
+        }
+    }
+
+    .moreOperate {
+        display: none;
+        width: 46px;
+        // height: 40px;
+        flex-shrink: 0;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+
+        .moreIcon {
+            display: flex;
+        }
+
+        .addIcon {
+            width: 12px;
+            height: 12px;
+            margin-left: 10px;
+        }
+    }
+
+    .treeNode {
+        :global {
+            .any-fabric-ant-tree-draggable-icon {
+                svg {
+                    color: #fff;
+                }
+            }
+        }
+
+        &:hover {
+            .moreOperate {
+                display: flex;
+                color: #000;
+            }
+
+            :global {
+                .any-fabric-ant-tree-draggable-icon {
+                    svg {
+                        color: #f1f7fe;
+                    }
+                }
+            }
+        }
+
+        &.allNode {
+            :global {
+                .any-fabric-ant-tree-title {
+                    font-weight: 600;
+                }
+
+                .any-fabric-ant-tree-switcher {
+                    display: none;
+                }
+            }
+        }
+    }
+
+    .treeNodeCon {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .treeNodeConTitle {
+            overflow: hidden;
+            margin-right: 8px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        // 编辑/添加目录
+        &.isNodeEditing {
+            position: fixed;
+            z-index: 1001;
+            // margin-left: -18px;
+        }
+
+        .treeNodeInput {
+            z-index: 1002;
+            overflow: hidden;
+            width: 194px;
+            background-color: #fff;
+            box-shadow: 2px 0 4px var(--yth-box-shadow-color);
+            color: var(--yth-text-color);
+            text-align: left;
+
+            &:hover {
+                z-index: 1001;
+            }
+        }
+
+        // 取消按鈕
+        .dirOprCancel {
+            position: sticky;
+            // right: -28px;
+            z-index: 1001;
+            width: 28px;
+            flex-shrink: 0;
+            margin-left: 8px;
+            color: #fff;
+        }
+
+        //div遮罩层
+        .full {
+            position: fixed;
+            z-index: 1000;
+            top: 0;
+            left: 0;
+            display: block;
+            width: 100%;
+            height: 100%;
+            background: rgb(0 0 0 / 55%);
+        }
+    }
+
+    :global {
+        .any-fabric-ant-tree-list-holder-inner {
+            width: fit-content;
+            color: rgb(0 0 0 / 85%);
+            font-size: 14px;
+        }
+
+        .any-fabric-ant-tree .any-fabric-ant-tree-treenode {
+            width: 100%;
+            height: 40px;
+            align-items: center;
+            padding: 0;
+            padding-left: 8px;
+
+            &.allNode {
+                padding-left: 20px;
+            }
+
+            &:hover {
+                background: rgb(0 0 0 / 4%);
+            }
+
+            &:nth-of-type(1) {
+                // min-width: 239px;
+                // width: 248px;
+            }
+
+            &.any-fabric-ant-tree-treenode-selected,
+            &.any-fabric-ant-tree-treenode-selected:hover {
+                background: #f1f7fe;
+            }
+        }
+
+        .any-fabric-ant-tree {
+            .any-fabric-ant-tree-list-holder-inner {
+                width: 100%;
+            }
+
+            .any-fabric-ant-tree-treenode-draggable {
+                .any-fabric-ant-tree-draggable-icon {
+                    display: none;
+                    // 推拽图标暂不显示
+                    flex-shrink: 0;
+                }
+            }
+
+            .any-fabric-ant-tree-switcher {
+                width: 14px;
+                margin-right: 4px;
+
+                .any-fabric-ant-tree-switcher-icon,
+                .any-fabric-ant-select-tree-switcher-icon {
+                    width: 14px;
+                    height: 14px;
+                    line-height: 40px;
+
+                    svg {
+                        height: 7px;
+                    }
+                }
+            }
+
+            // 换行indent
+            .any-fabric-ant-tree-indent-unit {
+                width: 18px;
+            }
+
+            .any-fabric-ant-tree-node-content-wrapper {
+                overflow: hidden;
+                min-height: 0;
+                // max-width: 139px;
+                // min-height: 20px;
+                flex-grow: 1;
+                padding: 0;
+                color: rgb(0 0 0 / 85%);
+                line-height: 22px;
+
+                &:hover {
+                    background: none;
+                }
+
+                &.any-fabric-ant-tree-node-selected {
+                    background: none;
+                }
+            }
+        }
+
+        .any-fabric-ant-tree-switcher {
+            width: 14px;
+        }
+
+        .any-fabric-ant-tree-indent-unit {
+            width: 18px;
+        }
+    }
+}
+
+:global {
+    .any-fabric-ant-modal-body {
+        padding: 24px 24px 8px;
+    }
+}
+
+.delIcon {
+    color: #f5222d !important;
+}
+
+.delPopConfirm {
+    width: 172px;
+    height: 87px;
+    border-radius: 2px;
+
+    :global {
+        .any-fabric-ant-popover-inner {
+            background: #fff;
+            border-radius: 2px;
+            box-shadow: 0 9px 28px 8px rgb(0 0 0 / 5%),
+                0 6px 16px 0 rgb(0 0 0 / 8%), 0 3px 6px -4px rgb(0 0 0 / 12%);
+        }
+    }
+}
+
+// 移动目录
+.editDirMoveWrapper {
+    .editDirModal {
+        :global {
+            .any-fabric-ant-modal-content {
+                height: 100%;
+                padding: 0;
+
+                .any-fabric-ant-modal-body {
+                    height: calc(100% - 110px);
+                }
+            }
+        }
+    }
+
+    .moveToBody {
+        .moveToHeader {
+            margin-bottom: 16px;
+
+            // p {
+            //     color: rgba(0, 0, 0, 0.25);
+            //     margin: 0 0 16px;
+            // }
+
+            .searchTitle {
+                margin: 16px 0;
+                color: rgb(0 0 0 / 45%);
+                font-size: 12px;
+                line-height: 20px;
+            }
+
+            :global {
+                .any-fabric-ant-input-suffix {
+                    color: rgb(0 0 0 / 25%);
+                }
+            }
+        }
+
+        .moveToDir {
+            .movetoTree {
+                .treeNode {
+                    width: 100%;
+                    height: 40px;
+                    align-items: center;
+                    padding: 0;
+
+                    &:hover {
+                        background-color: rgb(0 0 0 / 4%);
+                    }
+
+                    .treeNodeConTitle {
+                        width: calc(100% - 1px);
+                    }
+                }
+
+                :global {
+                    .any-fabric-ant-tree-switcher {
+                        width: 14px;
+                        margin-right: 4px;
+
+                        .any-fabric-ant-tree-switcher-icon,
+                        .any-fabric-ant-select-tree-switcher-icon {
+                            width: 14px;
+                            height: 14px;
+                            line-height: 40px;
+
+                            svg {
+                                height: 7px;
+                            }
+                        }
+                    }
+
+                    .any-fabric-ant-tree-node-content-wrapper {
+                        overflow: hidden;
+                        min-height: 0;
+                        flex-grow: 1;
+                        padding: 0;
+                        background: none;
+                        color: rgb(0 0 0 / 85%);
+                        line-height: 22px;
+                    }
+
+                    .any-fabric-ant-tree-treenode-checkbox-checked {
+                        background: rgb(18 110 227 / 6%);
+                    }
+                }
+            }
+        }
+
+        .showEmpty {
+            margin-top: 53px;
+        }
+    }
+
+    .error {
+        display: flex;
+        width: 556px;
+        height: 32px;
+        padding-top: 8px;
+        background-color: rgba(245 34 45 / 6%);
+        color: @text-color-desc;
+        font-size: 12px;
+
+        .errorIcon {
+            margin-right: 7px;
+            margin-left: 17px;
+            color: #f5222d;
+            font-size: 14px;
+        }
+
+        .errorText {
+            display: inline-block;
+        }
+    }
+}
+
+// 添加/编辑目录对话框
+.editDirInfoContent {
+    margin-top: 16px;
+
+    :global {
+        .any-fabric-ant-form .any-fabric-ant-form-item {
+            margin-bottom: 0;
+        }
+    }
+}
+
+.treeNode {
+    :global {
+        .any-fabric-ant-tree-checkbox {
+            // Tree 目录节点 checkbox样式
+            .any-fabric-ant-tree-checkbox-inner {
+                width: 16px;
+                height: 16px;
+                border-radius: 8px;
+            }
+        }
+
+        .any-fabric-ant-tree-checkbox-checked {
+            .any-fabric-ant-tree-checkbox-inner {
+                background: #006feb;
+            }
+        }
+    }
+}
+
+.showEmpty {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    margin-top: 53px;
+    text-align: center;
+}
+
+// 目录搜索结果高亮显示
+.dirHighLight {
+    color: #126ee3;
+}
+
+.toolTipHighLight {
+    color: #8ac4ff;
+}

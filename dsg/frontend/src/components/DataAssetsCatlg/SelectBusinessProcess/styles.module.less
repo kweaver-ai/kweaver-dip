@@ -1,0 +1,27 @@
+.selectBusinessProcessWrapper {
+    .labelText {
+        display: block;
+        max-width: 120px;
+        cursor: pointer;
+        .ellipsis-mixin();
+    }
+
+    .filterDropDown {
+        width: 240px;
+        max-height: 400px;
+        padding: 16px 0;
+        padding-top: 8px;
+        border: 1px solid rgb(0 0 0 / 5%);
+        background: #fff;
+        border-radius: 4px;
+        box-shadow: 0 2px 9px 1px rgb(0 0 0 / 10%);
+        overflow-y: auto;
+
+        .clearFilterItem {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+        }
+    }
+}

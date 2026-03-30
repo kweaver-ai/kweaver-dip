@@ -1,0 +1,268 @@
+{
+    "settings": {
+        "max_ngram_diff": 19,
+        "analysis": {
+            "analyzer": {
+                "lower_case_keyword_analyzer": {
+                    "type": "custom",
+                    "tokenizer": "keyword",
+                    "filter": [
+                        "lowercase",
+                        "as_word_delimiter_graph_filter"
+                    ]
+                },
+                "af_ngram_analyzer": {
+                    "tokenizer": "af_ngram_tokenizer",
+                    "filter": [
+                        "lowercase"
+                    ]
+                },
+                "as_hanlp_analyzer": {
+                    "tokenizer": "as_hanlp",
+                    "filter": [
+                        "lowercase",
+                        "asciifolding"
+                    ]
+                },
+                "graph_analyzer": {
+                    "tokenizer": "keyword",
+                    "filter": [
+                        "lowercase",
+                        "asciifolding",
+                        "as_word_delimiter_graph_filter"
+                    ]
+                }
+            },
+            "tokenizer": {
+                "af_ngram_tokenizer": {
+                    "type": "ngram",
+                    "min_gram": 1,
+                    "max_gram": 20,
+                    "token_chars": [
+                        "letter",
+                        "digit"
+                    ]
+                },
+                "as_hanlp": {
+                    "type": "hanlp_index",
+                    "enable_stop_dictionary": true,
+                    "enable_custom_config": true
+                }
+            },
+            "filter": {
+                "as_word_delimiter_graph_filter": {
+                    "type": "word_delimiter_graph",
+                    "split_on_case_change": false,
+                    "split_on_numerics": false,
+                    "stem_english_possessive": true
+                }
+            }
+        }
+    },
+    "mappings": {
+        "properties": {
+            "id": {
+                "type": "keyword",
+                "ignore_above": 36,
+                "index": false
+            },
+            "code": {
+                "type": "keyword",
+                "ignore_above": 36
+            },
+            "name": {
+                "type": "text",
+                "analyzer": "as_hanlp_analyzer",
+                "fields": {
+                    "ngram": {
+                        "type": "text",
+                        "analyzer": "af_ngram_analyzer",
+                        "search_analyzer": "lower_case_keyword_analyzer"
+                    },
+                    "graph": {
+                        "type": "text",
+                        "analyzer": "graph_analyzer"
+                    }
+                }
+            },
+            "description": {
+                "type": "text",
+                "analyzer": "as_hanlp_analyzer",
+                "fields": {
+                    "ngram": {
+                        "type": "text",
+                        "analyzer": "af_ngram_analyzer",
+                        "search_analyzer": "lower_case_keyword_analyzer"
+                    },
+                    "graph": {
+                        "type": "text",
+                        "analyzer": "graph_analyzer"
+                    }
+                }
+            },
+            "data_range": {
+                "type": "long"
+            },
+            "update_cycle": {
+                "type": "long"
+            },
+            "shared_type": {
+                "type": "long"
+            },
+            "fields": {
+                "type": "nested",
+                "properties": {
+                    "field_name_zh": {
+                        "type": "text",
+                        "analyzer": "as_hanlp_analyzer",
+                        "fields": {
+                            "ngram": {
+                                "type": "text",
+                                "analyzer": "af_ngram_analyzer",
+                                "search_analyzer": "lower_case_keyword_analyzer"
+                            },
+                            "graph": {
+                                "type": "text",
+                                "analyzer": "graph_analyzer"
+                            }
+                        }
+                    },
+                    "field_name_en": {
+                        "type": "text",
+                        "analyzer": "as_hanlp_analyzer",
+                        "fields": {
+                            "ngram": {
+                                "type": "text",
+                                "analyzer": "af_ngram_analyzer",
+                                "search_analyzer": "lower_case_keyword_analyzer"
+                            },
+                            "graph": {
+                                "type": "text",
+                                "analyzer": "graph_analyzer"
+                            }
+                        }
+                    }
+                }
+            },
+            "business_objects": {
+                "type": "nested",
+                "properties": {
+                    "name": {
+                        "type": "text",
+                        "fields": {
+                            "keyword": {
+                                "type": "text"
+                            }
+                        }
+                    },
+                    "id": {
+                        "type": "keyword"
+                    },
+                    "path": {
+                        "type": "text",
+                        "index": false
+                    },
+                    "path_id": {
+                        "type": "text",
+                        "index": false
+                    }
+                }
+            },
+            "mount_data_resources": {
+                "type": "nested",
+                "properties": {
+                    "data_resources_ids": {
+                        "type": "keyword"
+                    },
+                    "data_resources_type": {
+                        "type": "keyword"
+                    }
+                }
+            },
+            "updated_at": {
+                "type": "date",
+                "format": "strict_date_optional_time||epoch_millis"
+            },
+            "published_at": {
+                "type": "date",
+                "format": "strict_date_optional_time||epoch_millis"
+            },
+            "online_at": {
+                "type": "date",
+                "format": "strict_date_optional_time||epoch_millis"
+            },
+            "is_publish": {
+                "type": "boolean"
+            },
+            "is_online": {
+                "type": "boolean"
+            },
+            "cate_info": {
+                "type": "nested",
+                "properties": {
+                    "cate_id": {
+                        "type": "keyword",
+                        "ignore_above": 36
+                    },
+                    "node_id": {
+                        "type": "keyword",
+                        "ignore_above": 36
+                    },
+                    "node_path": {
+                        "type": "text",
+                        "index": false
+                    },
+                    "node_name": {
+                        "type": "text",
+                        "analyzer": "as_hanlp_analyzer",
+                        "fields": {
+                            "ngram": {
+                                "type": "text",
+                                "analyzer": "af_ngram_analyzer",
+                                "search_analyzer": "lower_case_keyword_analyzer"
+                            },
+                            "graph": {
+                                "type": "text",
+                                "analyzer": "graph_analyzer"
+                            }
+                        }
+                    }
+                }
+            },
+            "published_status": {
+                "type": "keyword",
+                "ignore_above": 36
+            },
+            "online_status": {
+                "type": "keyword",
+                "ignore_above": 36
+            },
+            "data_owner_id": {
+                "type": "keyword",
+                "ignore_above": 36
+            },
+            "data_owner_name": {
+                "type": "text",
+                "analyzer": "as_hanlp_analyzer",
+                "fields": {
+                    "ngram": {
+                        "type": "text",
+                        "analyzer": "af_ngram_analyzer",
+                        "search_analyzer": "lower_case_keyword_analyzer"
+                    },
+                    "graph": {
+                        "type": "text",
+                        "analyzer": "graph_analyzer"
+                    }
+                }
+            },
+            "data_updated_at": {
+                "type": "date",
+                "format": "rfc3339_lenient"
+            },
+            "apply_num": {
+                "type": "integer"
+            }
+        }
+    }
+}

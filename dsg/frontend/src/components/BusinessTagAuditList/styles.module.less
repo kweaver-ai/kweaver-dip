@@ -1,0 +1,57 @@
+.tag-audit {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    padding: 16px 24px 24px;
+    background: #fff;
+
+    &-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 16px;
+        font-weight: 550;
+    }
+
+    .nameBox {
+        display: flex;
+        width: 100%;
+        align-items: center;
+        gap: 8px;
+
+        .name {
+            // cursor: pointer;
+            .ellipsis-mixin();
+
+            // &:hover {
+            //     color: #126ee3;
+            //     text-decoration: underline;
+            // }
+        }
+    }
+}
+
+.audit-content {
+    .audit-info {
+        display: flex;
+        align-items: center;
+        margin-bottom: 16px;
+
+        .audit-info-label {
+            width: 98px;
+            margin-right: 20px;
+            margin-left: 16px;
+            color: rgb(0 0 0 / 65%);
+        }
+
+        .audit-info-value {
+            flex: 1;
+            color: rgb(0 0 0 / 85%);
+            .ellipsis-mixin();
+        }
+    }
+
+    .first-audit-info {
+        margin-top: 16px;
+    }
+}

@@ -1,0 +1,71 @@
+apiVersion: v1
+kind: ConfigMap
+{{- $redis := .Values.depServices.redis | default dict }}
+{{- $redisConnectInfo := $redis.connectInfo | default dict }}
+{{- $redisHost := $redis.host }}
+{{- if and $redisConnectInfo.sentinelHost $redisConnectInfo.sentinelPort }}
+{{- $redisHost = printf "%s:%v" $redisConnectInfo.sentinelHost $redisConnectInfo.sentinelPort }}
+{{- end }}
+{{- $redisPassword := $redisConnectInfo.password | default $redis.password }}
+metadata:
+  name: {{ .Values.name }}-cm
+  namespace: {{ .Values.namespace }}
+
+data:
+  DOC_HOST: "{{ .Values.doc.host }}"
+  DB_TYPE: {{ .Values.depServices.rds.type | quote}}
+  DB_HOST: {{ .Values.depServices.rds.host | quote}}
+  DB_PORT: {{ .Values.depServices.rds.port | quote}}
+  DB_USERNAME: {{ .Values.depServices.rds.user | quote }}
+  DB_PASSWORD: {{ .Values.depServices.rds.password | quote }}
+  DB_NAME: {{ .Values.depServices.rds.database | quote }}
+  REDIS_HOST: "{{ $redisHost }}"
+  REDIS_PASSWORD: "{{ $redisPassword }}"
+  KAFKA_TYPE: "{{ .Values.depServices.mq.mqType }}"
+  KAFKA_HOST: "{{ .Values.depServices.mq.mqHost }}"
+  KAFKA_PORT: "{{ .Values.depServices.mq.mqPort }}"
+  KAFKA_LOOKUPD_HOST: "{{ .Values.depServices.mq.mqLookupdHost }}"
+  KAFKA_LOOKUPD_PORT: "{{ .Values.depServices.mq.mqLookupdPort }}"
+  KAFKA_USERNAME: "{{ .Values.depServices.mq.auth.username }}"
+  KAFKA_PASSWORD: "{{ .Values.depServices.mq.auth.password }}"
+  KAFKA_MECHANISM: "{{ .Values.depServices.mq.auth.mechanism }}"
+  KAFKA_VERSION: 3.4.0
+  NSQ_TYPE: "{{ .Values.depServices.mq.nsq.type }}"
+  NSQ_HOST: "{{ .Values.depServices.mq.nsq.host }}"
+  NSQ_PORT: "{{ .Values.depServices.mq.nsq.port }}"
+  NSQ_HTTP_HOST: "{{ .Values.depServices.mq.nsq.httpHost }}"
+  NSQ_HTTP_PORT: "{{ .Values.depServices.mq.nsq.httpPort }}"
+  NSQ_LOOKUPD_HOST: "{{ .Values.depServices.mq.nsq.lookupdHost }}"
+  NSQ_LOOKUPD_PORT: "{{ .Values.depServices.mq.nsq.lookupdPort }}"
+  VIRTUAL_ENGINE: "{{ .Values.depServices.virtualizationEngine.protocol }}://{{ .Values.depServices.virtualizationEngine.host }}:{{ .Values.depServices.virtualizationEngine.port }}"
+  DATA_CATALOG: "http://{{ .Values.depServices.dataCatalog.host }}:{{ .Values.depServices.dataCatalog.port }}"
+  DATA_VIEW: "http://{{ .Values.depServices.dataView.host }}:{{ .Values.depServices.dataView.port }}"
+  DATA_SUBJECT: "http://{{ .Values.depServices.dataSubject.host }}:{{ .Values.depServices.dataSubject.port }}"
+  METADATA_MANAGE: "http://{{ .Values.depServices.metaDataManageService.host}}:{{ .Values.depServices.metaDataManageService.port}}"
+  CONFIGURATION_CENTER: "http://{{ .Values.depServices.configCenterService.host}}:{{ .Values.depServices.configCenterService.port}}"
+  GLOSSARY_SERVICE: "http://{{ .Values.depServices.glossaryService.host}}:{{ .Values.depServices.glossaryService.port}}"
+  HYDRA_ADMIN: "http://{{ .Values.depServices.hydraService.host}}:{{ .Values.depServices.hydraService.port}}"
+  USER_MANAGEMENT: "http://{{ .Values.depServices.userManageService.host}}:{{ .Values.depServices.userManageService.port}}"
+  WORKFLOW_REST: "http://{{ .Values.depServices.workflowRest.host}}:{{ .Values.depServices.workflowRest.port}}"
+  DATA_APPLICATION_SERVICE: "http://{{ .Values.depServices.dataApplicationService.host}}:{{ .Values.depServices.dataApplicationService.port}}"
+  BASIC_SEARCH: "http://{{ .Values.depServices.basicSearch.host}}:{{ .Values.depServices.basicSearch.port}}"
+  AUTH_SERVICE: "http://{{ .Values.depServices.authService.host}}:{{ .Values.depServices.authService.port}}"
+  OSS_APP: "{{.Values.depServices.oss.ossApp}}"
+  OSS_HOST: "{{.Values.depServices.oss.ossHost}}"
+  OSS_PROTOCOL: "{{.Values.depServices.oss.ossProtocol}}"
+  OSS_IS_DEFAULT: "{{.Values.depServices.oss.ossIsDefault}}"
+  OSS_BUCKET: "{{.Values.depServices.oss.ossBucket}}"
+  AUDIT_URL: "{{ .Values.service.telemetry.audit.endpoint }}"
+  AUDIT_ENABLED: "{{ .Values.service.telemetry.audit.enabled }}"
+  TRACE_URL: "{{ .Values.service.telemetry.trace.endpoint}}"
+  TRACE_ENABLED: "{{ .Values.service.telemetry.trace.enabled}}"
+  LOG_LEVEL: "{{ .Values.service.telemetry.log.level}}"
+  LOG_URL: "{{ .Values.service.telemetry.log.endpoint}}"
+  LOG_ENABLED: "{{ .Values.service.telemetry.log.enabled}}"
+  SERVER_NAME: "{{ .Values.service.name}}"
+  SERVER_VERSION: "{{ .Values.service.version}}"
+  WORKFLOW_MQ_TYPE: "{{ .Values.depServices.mq.mqType }}"
+  WORKFLOW_CHANNEL: "{{ .Values.depServices.workflowRest.channel }}"
+  CALLBACK_ADDRESS: {{ .Values.callback.address | quote }}
+  CALLBACK_ENABLED: {{ .Values.callback.enabled | quote }}
+  CALLBACK_PRE_PATH: {{ .Values.callback.pre_path | quote }}

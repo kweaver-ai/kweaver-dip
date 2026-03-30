@@ -1,0 +1,210 @@
+.feedbackMgt {
+    position: relative;
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    padding: 22px 24px 24px;
+
+    .feedbackWrapperTitle {
+        padding: 0 20px;
+        border-bottom: 1px solid rgb(0 0 0 / 10%);
+        line-height: 52px;
+    }
+
+    .feedbackContent {
+        height: calc(100% - 24px);
+        // padding: 0 20px;
+
+        :global {
+            .any-fabric-ant-table-cell.any-fabric-ant-table-cell-ellipsis.any-fabric-ant-table-cell-row-hover
+                > div
+                > div
+                > div:first-child {
+                color: #3a8ff0;
+            }
+        }
+    }
+
+    .feedbackOperation {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 16px 0;
+
+        .topLeft {
+            display: flex;
+            align-items: center;
+
+            .feedbackTitle {
+                padding-left: 8px;
+                border-left: 4px solid #3a8ff0;
+                font-weight: 550;
+            }
+        }
+
+        .topRight {
+            display: flex;
+            justify-content: space-between;
+        }
+    }
+
+    .feedbackTabs {
+        margin-bottom: 0;
+    }
+
+    :global {
+        .any-fabric-ant-tabs-nav {
+            height: 52px;
+            margin-bottom: 0;
+        }
+    }
+}
+
+.multiColumnWrapper {
+    .titleWrapper {
+        display: flex;
+        align-items: center;
+
+        .detailColumn {
+            color: rgb(0 0 0 / 85%);
+            cursor: pointer;
+            .ellipsis-mixin();
+
+            &:hover,
+            &:active {
+                color: #3a8ff0;
+            }
+        }
+    }
+
+    .columnSubTitle {
+        color: rgb(0 0 0 / 45%);
+        font-size: 12px;
+        .ellipsis-mixin();
+    }
+}
+
+.subTitle {
+    color: rgb(0 0 0 / 45%);
+}
+
+.detailGroupTitle {
+    position: relative;
+    display: flex;
+    height: 32px;
+    align-items: center;
+    margin: 8px 0;
+    background: rgb(0 55 150 / 2%);
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 550;
+
+    &::before {
+        display: inline-block;
+        width: 3px;
+        height: 20px;
+        margin-right: 12px;
+        background-color: rgb(18 110 227 / 100%);
+        content: '';
+    }
+}
+
+.statusView {
+    display: flex;
+    align-items: center;
+
+    .dot {
+        width: 8px;
+        height: 8px;
+        flex-shrink: 0;
+        border-radius: 50%;
+    }
+
+    .text {
+        margin-right: 4px;
+        margin-left: 8px;
+        color: rgb(0 0 0 / 85%);
+        font-size: 14px;
+        .ellipsis-mixin();
+    }
+}
+
+.typeView {
+    display: inline-block;
+    max-width: 100%;
+    height: 24px;
+    padding: 0 8px;
+    background-color: rgb(214 221 237 / 25%);
+    border-radius: 4px;
+    line-height: 24px;
+    .ellipsis-mixin();
+}
+
+.detailsWrapper {
+    display: flex;
+    height: 440px;
+    background-color: #fff;
+
+    .detailsLeft {
+        height: 100%;
+        flex: 1;
+        padding-right: 16px;
+        overflow-y: auto;
+    }
+
+    .detailsRight {
+        width: 320px;
+        height: 100%;
+        flex: 0 0 320px;
+        padding-left: 16px;
+        border-left: 1px solid rgb(217 217 217 / 100%);
+        margin-left: 8px;
+    }
+}
+
+.replyWrapper {
+    height: 446px;
+    overflow-y: auto;
+}
+
+.operateHistory {
+    height: 100%;
+
+    .recordTitle {
+        padding: 8px 0;
+        border-bottom: 1px solid rgb(217 217 217 / 100%);
+        margin-bottom: 16px;
+        font-size: 14px;
+        font-weight: 550;
+    }
+
+    .dot {
+        width: 8px;
+        height: 8px;
+        border: 2px solid #3a8ff0;
+        background: transparent;
+        border-radius: 50%;
+    }
+
+    .op_user_wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 4px 12px;
+        margin-top: 8px;
+        background-color: rgb(247 248 250 / 100%);
+        border-radius: 4px;
+
+        .op_user_name {
+            width: 100px;
+            margin-right: 8px;
+            .ellipsis-mixin();
+        }
+
+        .op_time {
+            width: 140px;
+            color: rgb(0 0 0 / 45%);
+            .ellipsis-mixin();
+        }
+    }
+}

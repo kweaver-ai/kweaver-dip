@@ -1,0 +1,87 @@
+server:
+  http:
+    host: 0.0.0.0:8163
+  doc:
+    host: "${DOC_HOST}"
+    version: "1.0"
+
+logs:
+  - name: basic_search
+    default: true
+    enable_caller: true
+    stacktrace_level: error
+    development: false
+    cores:
+      - destination: logs/info.log        #日志输出地址
+        rotate_size: 100MB                      #文件分割尺寸
+        core_type: file                         #core类型，file, stdout两种
+        enable_color: false                     #是否开启输出颜色
+        output_format: json                     #日志输出的格式, json, console
+        log_level: info                         #该日志流的等级
+      - destination: logs/error.log
+        rotate_size: 100MB
+        core_type: file
+        output_format: json
+        log_level: error
+      - destination: console
+        core_type: stdout
+        output_format: console
+        enable_color: true
+        log_level: info
+  - name: basic_search_request
+    default: false
+    enable_caller: true
+    development: false
+    cores:
+      - destination: logs/http_request.log
+        rotate_size: 100MB
+        core_type: file
+        output_format: json
+        log_level: info
+      - destination: console
+        core_type: stdout
+        output_format: console
+        enable_color: true
+        log_level: info
+
+user-org-info:
+  org_code: "${USER_ORG_CODE}"
+  org_name: "${USER_ORG_NAME}"
+
+oauth:
+  hydraAdmin: "${HYDRA_HOST}"
+  clientId: "${OAUTH_CLIENT_ID}"
+  clientSecret: "${OAUTH_CLIENT_SECRET}"
+
+depServices:
+  userMgmPrivateHost: "${USER_MANAGE_HOST}"
+  anyRobotTraceUrl: "${ANYROBOT_TRACE_URL}"
+  configCenterHost: "${CONFIG_CENTER_HOST}"
+
+opensearch:
+  readUri: "${OPENSEARCH_READ_URI}"
+  writeUri: "${OPENSEARCH_WRITE_URI}"
+  username: "${OPENSEARCH_USERNAME}"
+  password: "${OPENSEARCH_PASSWORD}"
+  sniff: true
+  healthcheck: true
+  debug: true
+  highlight:
+    preTag: <span style="color:#FF6304;">
+    postTag: </span>
+
+kafka:
+  version: "${KAFKA_VERSION}"
+  uri: "${KAFKA_URI}"
+  clientId: "${KAFKA_CLIENT_ID}"
+  username: "${KAFKA_USERNAME}"
+  password: "${KAFKA_PASSWORD}"
+  groupId: "${KAFKA_GROUP_ID}"
+
+telemetry:
+  traceUrl: "${TRACE_URL}"
+  logLevel: "${LOG_LEVEL}"
+  logUrl: "${LOG_URL}"
+  serverName: "${SERVER_NAME}"
+  serverVersion: "${SERVER_VERSION}"
+  traceEnabled: "${TRACE_ENABLED}"

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="14px" height="17px" viewBox="0 0 14 17" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>左边</title>
+    <g id="横版" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="关联算子2" transform="translate(-22.000000, -425.000000)" fill-rule="nonzero">
+            <g id="输出数据" transform="translate(0.000000, 272.000000)">
+                <g id="1" transform="translate(20.000000, 112.000000)">
+                    <g id="左边" transform="translate(2.000000, 41.000000)">
+                        <path d="M11.9070983,2.06892113 C9.17467328,-0.663503902 4.81330256,-0.663503902 2.08087754,2.01637449 C-0.651547484,4.74879952 -0.704094117,9.16271688 2.02833091,11.8951419 L6.91516798,16.8345256 L11.8545517,11.9476885 C14.5869767,9.21526351 14.6395233,4.80134615 11.9070983,2.06892113 Z" id="形状" fill="#3184FE"></path>
+                        <polygon id="L" fill="#FFFFFF" points="9.81098527 9.83131618 9.81098527 9.08731618 6.66698527 9.08731618 6.66698527 4.11931618 5.80298527 4.11931618 5.80298527 9.83131618"></polygon>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

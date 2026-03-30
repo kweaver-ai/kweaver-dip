@@ -1,0 +1,254 @@
+.selectBusinessFormContainer {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    padding: 0 0 16px;
+    row-gap: 16px;
+
+    .selectFormTitle {
+        font-size: 14px;
+        font-weight: 550;
+    }
+
+    .selectedSearch {
+        padding: 0 16px;
+        margin-top: 16px;
+    }
+
+    .recommendForm {
+        user-select: none;
+
+        .recommendFormTitle {
+            padding: 0 16px;
+            margin-bottom: 12px;
+            color: rgb(0 0 0 / 65%);
+            font-size: 12px;
+            font-weight: 400;
+        }
+
+        .recommendContent {
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+
+        .recommendFormPath {
+            padding-left: 22px;
+            color: rgb(0 0 0 / 45%);
+            font-size: 12px;
+            .ellipsis-mixin();
+        }
+
+        .treeSelectNode {
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+
+        .recommendFormMargin {
+            margin: 14px 0 4px;
+        }
+
+        .forms {
+            .form {
+                height: 36px;
+                padding-left: 32px;
+
+                &:hover {
+                    background-color: #eff0f3;
+                }
+            }
+        }
+    }
+
+    .listContainer {
+        overflow: auto;
+        flex: 0 1 auto;
+    }
+
+    .scrollWrapper {
+        overflow: auto;
+        height: 100%;
+
+        .scrollEmpty {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+    }
+}
+
+.selectFormContainer {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    flex-direction: column; /* Safari/Chrome */ /* Firefox */ /* IE10+/Edge */
+    user-select: none;
+
+    .selectTitle {
+        padding: 16px 0;
+
+        .titleText {
+            padding: 0 16px 12px;
+            border-bottom: 1px solid rgb(0 0 0 / 10%);
+            font-weight: 550;
+        }
+    }
+
+    .selectFormTabs {
+        flex-shrink: 0;
+        padding: 0 20px;
+    }
+
+    .selectedFormContent {
+        overflow: auto;
+        flex: 0 1 auto;
+    }
+}
+
+.extend-node {
+    width: 100%;
+    height: 36px;
+    padding-left: 20px;
+    margin-bottom: 6px;
+    color: rgb(0 0 0 / 85%);
+    cursor: pointer;
+    line-height: 36px;
+
+    &:hover {
+        background-color: #eff0f3;
+    }
+}
+
+.active-extend-node {
+    background-color: #ecf5ff;
+
+    &:hover {
+        background-color: #ecf5ff;
+    }
+}
+
+.arrow {
+    margin-right: 6px;
+    color: rgb(0 0 0 / 65%);
+    font-size: 12px;
+    transform: rotate(0deg);
+    transition: all 0.1s linear 0s;
+}
+
+.expandArrow {
+    transform: rotate(90deg);
+    transition: all 0.1s linear 0s;
+}
+
+.recommendFormItem {
+    display: flex;
+    height: 36px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 6px 0 16px;
+    border-radius: 4px;
+    column-gap: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    line-height: 20px;
+
+    &:hover {
+        background-color: #ecf5ff;
+    }
+
+    .recommendFormName {
+        display: flex;
+        width: 100%;
+        align-items: center;
+
+        .recommendFormItemName {
+            width: 100%;
+            margin-left: 8px;
+            .ellipsis-mixin();
+        }
+
+        .recommendFormHover {
+            &:hover,
+            &:active,
+            &:focus {
+                color: #126ee3;
+                text-decoration: underline;
+            }
+        }
+    }
+
+    .recommendFormTreeName {
+        display: flex;
+        align-items: center;
+
+        .recommendFormItemName {
+            width: 100%;
+            margin-left: 8px;
+            .ellipsis-mixin();
+        }
+
+        .icon {
+            font-size: 20px;
+        }
+    }
+
+    .dragButton {
+        color: #9faabaff;
+    }
+
+    .dragTreeButton {
+        flex-shrink: 0;
+    }
+
+    .textContext {
+        display: flex;
+        overflow: hidden;
+        flex: 0 1 auto;
+        flex-direction: column;
+        row-gap: 4px;
+    }
+}
+
+.recommendFormItemTree {
+    position: relative;
+    width: 100%;
+    flex-shrink: 0;
+}
+
+.recommendFormFatherNode {
+    width: calc(100% - 50px);
+    flex-shrink: 0;
+}
+
+.recommendFormDisabled {
+    color: rgb(0 0 0 / 25%);
+    cursor: default !important;
+}
+
+.selectedFormNodeWrapper {
+    padding: 0 16px;
+    border-radius: 4px;
+
+    &:hover {
+        background: #eff0f3;
+    }
+
+    .recommendItemBottomWrapper {
+        color: rgb(0 0 0 / 45%);
+        font-size: 12px;
+        .ellipsis-mixin();
+    }
+}
+
+.selectTreeNode {
+    width: calc(100% - 24px);
+}
+
+.recommendFormWrapper {
+    padding: 0 16px;
+    border-radius: 4px;
+
+    &:hover {
+        background: #eff0f3;
+    }
+}

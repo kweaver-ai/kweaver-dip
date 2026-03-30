@@ -1,0 +1,74 @@
+.qualityRuleTemplateWrapper {
+    padding: 24px;
+    padding-top: 22px;
+
+    .top {
+        .title {
+            margin-bottom: 12px;
+        }
+    }
+
+    .btnBox {
+        :global {
+            .any-fabric-ant-btn {
+                display: flex;
+                align-items: center;
+            }
+        }
+    }
+
+    .titleTipIcon {
+        margin-left: 4px;
+    }
+
+    .nameBox {
+        display: flex;
+        align-items: center;
+
+        .nameText {
+            min-width: 0;
+            margin-right: 8px;
+            .ellipsis-mixin();
+        }
+
+        .nameTag {
+            flex-shrink: 0;
+            padding: 2px 8px;
+            background: rgb(24 144 255 / 8%);
+            border-radius: 13px;
+            color: #1890ff;
+            font-size: 12px;
+        }
+    }
+}
+
+.titleTipsWrapper {
+    padding: 8px;
+
+    .firTitle {
+        margin-bottom: 14px;
+        font-weight: 550;
+    }
+
+    .secTitle {
+        margin-bottom: 14px;
+        color: rgb(0 0 0 / 65%);
+
+        .secTitleItem {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+
+            .dot {
+                width: 6px;
+                height: 6px;
+                background: #d8d8d8;
+                border-radius: 50%;
+            }
+        }
+    }
+
+    .threeTitle {
+        margin-left: 26px;
+    }
+}

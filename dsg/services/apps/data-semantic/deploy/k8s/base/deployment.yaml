@@ -1,0 +1,107 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: data-semantic-api
+  labels:
+    app: data-semantic
+    component: api
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: data-semantic
+      component: api
+  template:
+    metadata:
+      labels:
+        app: data-semantic
+        component: api
+    spec:
+      containers:
+        - name: api
+          image: docker.io/data-semantic/api:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8888
+              protocol: TCP
+          # 挂载配置文件
+          volumeMounts:
+            - name: config
+              mountPath: /app/etc
+              readOnly: true
+            - name: logs
+              mountPath: /app/logs
+          env:
+            - name: TZ
+              value: "Asia/Shanghai"
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8888
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8888
+            initialDelaySeconds: 30
+            periodSeconds: 30
+            timeoutSeconds: 5
+            failureThreshold: 3
+      volumes:
+        - name: config
+          configMap:
+            name: data-semantic-config
+        - name: logs
+          emptyDir: {}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: data-semantic-consumer
+  labels:
+    app: data-semantic
+    component: consumer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: data-semantic
+      component: consumer
+  template:
+    metadata:
+      labels:
+        app: data-semantic
+        component: consumer
+    spec:
+      containers:
+        - name: consumer
+          image: docker.io/data-semantic/consumer:latest
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+            - name: config
+              mountPath: /app/etc
+              readOnly: true
+          env:
+            - name: TZ
+              value: "Asia/Shanghai"
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "64Mi"
+            limits:
+              cpu: "200m"
+              memory: "256Mi"
+      volumes:
+        - name: config
+          configMap:
+            name: data-semantic-config

@@ -1,0 +1,543 @@
+.createDataPush {
+    display: flex;
+    overflow: hidden;
+    height: 0;
+    min-height: 0;
+    flex: 1;
+    flex-direction: column;
+    background: #f0f2f6;
+
+    .bottom {
+        display: flex;
+        overflow: auto hidden;
+        min-width: 0;
+        height: 0;
+        min-height: 0;
+        flex: 1;
+        flex-direction: column;
+        padding: 24px;
+
+        .content {
+            display: flex;
+            height: 0;
+            min-height: 0;
+            flex: 1;
+            flex-direction: column;
+            justify-content: center;
+            background: #fff;
+            border-radius: 4px;
+
+            .form_content {
+                display: flex;
+                min-width: 0;
+                height: 0;
+                min-height: 0;
+                flex: 1;
+                padding: 24px 24px 0 32px;
+            }
+
+            .footer {
+                display: flex;
+                height: 54px;
+                flex-shrink: 0;
+                align-items: center;
+                justify-content: flex-end;
+                padding: 0 24px;
+                border-top: 1px solid rgb(0 0 0 / 6%);
+                column-gap: 8px;
+
+                .btn {
+                    min-width: 80px;
+                    height: 32px;
+                }
+            }
+        }
+    }
+}
+
+.dataPushForm {
+    overflow: auto;
+    min-height: 0;
+    flex-grow: 1;
+
+    .grayBg {
+        background: #f8f9fb;
+        border-radius: 3px;
+    }
+
+    .groupContent {
+        margin: 24px 16px 32px;
+    }
+
+    .groupSubContent {
+        display: flex;
+        flex-direction: column;
+        margin: 0 0 8px;
+    }
+
+    .group {
+        margin: 12px 0 16px 8px;
+    }
+
+    .form {
+        min-width: 1268px;
+
+        :global {
+            .any-fabric-ant-input-affix-wrapper-readonly input {
+                cursor: default;
+            }
+
+            .any-fabric-ant-row {
+                width: 100%;
+            }
+        }
+
+        .detailInfo {
+            display: flex;
+            height: 46px;
+            align-items: center;
+            padding: 12px;
+            margin-bottom: 24px;
+            background: #f8f9fb;
+            color: rgb(0 0 0 / 65%);
+
+            .detailInfoItem {
+                display: flex;
+                min-width: 10%;
+                margin-right: 24px;
+                white-space: nowrap;
+
+                &:last-child {
+                    margin-right: 0;
+                }
+
+                .detailInfoValue {
+                    .ellipsis-mixin();
+                }
+            }
+        }
+    }
+
+    .pushStrategy {
+        display: flex;
+
+        .pushStrategyContent {
+            display: flex;
+            min-width: 1268px;
+            flex: 1;
+            flex-direction: column;
+            margin: 0 auto;
+
+            .groupContent {
+                margin: 24px 16px;
+            }
+        }
+    }
+}
+
+.pushField {
+    display: flex;
+    flex-direction: column;
+
+    .pushFieldTableWrap {
+        display: flex;
+        column-gap: 6px;
+    }
+
+    .paginationTable {
+        z-index: 1;
+        padding-top: 16px;
+        margin-right: -10px;
+        background: #fff;
+    }
+
+    .fieldSourceTable,
+    .fieldTargetTable {
+        display: flex;
+        width: calc(50% - 17px);
+        flex-direction: column;
+        border-bottom: 1px solid rgb(0 0 0 / 6%);
+
+        .fieldTableTitle {
+            display: flex;
+            height: 30px;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 8px;
+            background: #fff;
+            color: rgb(0 0 0 / 45%);
+            font-size: 14px;
+        }
+
+        .privacyProtection {
+            display: flex;
+            align-items: center;
+            color: rgb(0 0 0 / 65%);
+            column-gap: 4px;
+        }
+
+        .pushFieldTable {
+            :global {
+                .any-fabric-ant-table-cell-fix-right {
+                    z-index: 0;
+                }
+            }
+
+            .tableRow {
+                &:hover {
+                    td {
+                        background: #fafafa;
+                    }
+                }
+
+                &:last-child {
+                    td {
+                        border-bottom: none;
+                    }
+                }
+
+                > td {
+                    height: 63px;
+                    background: #fff;
+                }
+
+                .name_desc {
+                    display: flex;
+                    align-items: center;
+
+                    .primaryKey {
+                        flex-shrink: 0;
+                        padding: 2px 6px 2px 5px;
+                        margin-left: 8px;
+                        background: rgb(24 144 255 / 7%);
+                        border-radius: 4px;
+                        color: #1890ff;
+                        font-size: 12px;
+                    }
+                }
+
+                .twoLine {
+                    display: flex;
+                    flex-direction: column;
+
+                    .firstLine,
+                    .secondLine {
+                        color: rgb(0 0 0 / 85%);
+                        .ellipsis-line(1);
+                    }
+                }
+
+                .deRuleWrap {
+                    display: flex;
+                    align-items: center;
+                    word-break: keep-all;
+                }
+            }
+        }
+    }
+
+    .arrowArr {
+        display: flex;
+        width: 34px;
+        flex-direction: column;
+        flex-shrink: 0;
+
+        .place {
+            width: 100%;
+            height: 71px;
+            background: #fff;
+        }
+
+        .arrows {
+            display: flex;
+            flex-direction: column;
+
+            .arrowItem {
+                display: flex;
+                height: 63px;
+                flex-shrink: 0;
+                align-items: center;
+                justify-content: center;
+                color: rgb(0 0 0 / 45%);
+            }
+        }
+    }
+
+    &.stickyPushField {
+        .fieldSourceTable,
+        .fieldTargetTable {
+            .fieldTableTitle {
+                position: sticky;
+                z-index: 1;
+                top: 38px;
+            }
+
+            .pushFieldTable {
+                :global {
+                    .any-fabric-ant-table-thead {
+                        position: sticky;
+                        z-index: 1;
+                        top: 68px;
+                    }
+                }
+            }
+        }
+
+        .arrowArr {
+            .place {
+                position: sticky;
+                z-index: 1;
+                top: 38px;
+            }
+        }
+    }
+}
+
+.targetFieldOption {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    column-gap: 8px;
+
+    .fieldInfo {
+        .ellipsis-mixin();
+    }
+
+    .fieldName {
+        margin-left: 8px;
+    }
+
+    .selectedTips {
+        display: flex;
+        height: 24px;
+        align-items: center;
+        padding: 2px 4px;
+        background: rgb(18 110 227 / 10%);
+        border-radius: 3px;
+        color: rgb(18 110 227 / 85%);
+        font-size: 12px;
+    }
+}
+
+.incrementalForm {
+    :global {
+        .any-fabric-ant-form-item-label {
+            min-width: 81px;
+        }
+    }
+}
+
+.selectOptionItem {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    column-gap: 8px;
+
+    .name {
+        .ellipsis-mixin();
+    }
+}
+
+.configWrapper {
+    position: relative;
+    min-width: 0;
+    height: 320px;
+    border: 1px solid rgb(0 0 0 / 15%);
+    background: #fff;
+    border-radius: 2px;
+
+    .emptyData {
+        color: rgb(0 0 0 / 65%);
+
+        .text {
+            display: flex;
+            justify-content: center;
+        }
+
+        .execBtn {
+            color: #126ee3;
+            cursor: pointer;
+        }
+
+        .disabledBtn {
+            color: rgb(18 110 227 / 65%) !important;
+            cursor: not-allowed;
+        }
+    }
+
+    .errorBox {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        .icon {
+            color: rgb(245 24 45);
+            font-size: 48px;
+        }
+
+        .textTip {
+            color: rgb(0 0 0 / 65%);
+
+            .text {
+                display: flex;
+                justify-content: center;
+            }
+        }
+
+        .detail {
+            min-width: 576px;
+            height: 157px;
+            padding: 4px 8px;
+            border: 1px solid rgb(245 34 45 / 25%);
+            margin: 16px 24px;
+            color: rgb(0 0 0 / 65%);
+            font-size: 12px;
+            overflow-y: auto;
+        }
+    }
+
+    .contentWrapper {
+        display: flex;
+        width: 100%;
+        height: 100%;
+
+        .editorWrapper {
+            width: 100%;
+            height: 100%;
+
+            .titleWrapper {
+                display: flex;
+                height: 32px;
+                align-items: center;
+                padding: 0 16px;
+                border-bottom: 1px solid rgb(0 0 0 / 6%);
+                background: #fafafa;
+                font-size: 12px;
+
+                .title {
+                    flex-shrink: 0;
+                    color: rgb(0 0 0 / 65%);
+                }
+
+                .description {
+                    color: rgb(0 0 0 / 45%);
+                    .ellipsis-mixin();
+                }
+
+                .example {
+                    flex-shrink: 0;
+                    color: rgb(0 0 0 / 45%);
+                    text-decoration: underline;
+                }
+            }
+
+            .buttonWrapper {
+                display: flex;
+                height: 32px;
+                align-items: center;
+                padding: 0 16px;
+
+                .btn {
+                    margin-right: 8px;
+                    color: #126ee3;
+                    cursor: pointer;
+                }
+
+                .disabledBtn {
+                    color: rgb(18 110 227 / 65%) !important;
+                    cursor: not-allowed;
+                }
+            }
+
+            .editorContent {
+                width: 100%;
+                height: calc(100% - 64px);
+
+                .editorExpand {
+                    height: 100%;
+                    padding-top: 16px;
+                }
+
+                .resultExpand {
+                    display: flex;
+                    width: 100%;
+                    height: 100%;
+                    flex-direction: column;
+
+                    .titleBar {
+                        display: flex;
+                        height: 32px;
+                        flex-shrink: 0;
+                        align-items: center;
+                        justify-content: space-between;
+                        padding: 0 16px 4px;
+                        border-bottom: 1px solid #e1e1e1;
+
+                        .description {
+                            color: rgb(0 0 0 / 45%);
+                        }
+                    }
+
+                    .resultContent {
+                        display: flex;
+                        width: 100%;
+                        height: calc(100% - 32px);
+                        flex-direction: column;
+                        align-items: center;
+                        overflow-y: scroll;
+                    }
+                }
+
+                .resultUnExpand {
+                    bottom: 0;
+                    display: flex;
+                    width: 100%;
+                    height: 32px;
+                    align-items: center;
+                    justify-content: space-between;
+                    padding: 0 16px 4px;
+
+                    .description {
+                        color: rgb(0 0 0 / 45%);
+                    }
+                }
+            }
+        }
+    }
+
+    .largeModeOpen {
+        position: absolute;
+        z-index: 99;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background-color: #fff;
+
+        .titleBar {
+            display: flex;
+            height: 40px;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            border-bottom: 1px solid #e1e1e1;
+
+            .description {
+                color: rgb(0 0 0 / 45%);
+            }
+        }
+
+        .resultContent {
+            display: flex;
+            height: calc(100% - 40px);
+            align-items: center;
+            justify-content: center;
+        }
+    }
+}
+
+.dataSourceSelect {
+    > input {
+        text-overflow: ellipsis;
+    }
+}

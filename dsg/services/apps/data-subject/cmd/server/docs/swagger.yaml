@@ -1,0 +1,2068 @@
+basePath: /api/data-subject/v1
+definitions:
+  af_sailor.SailorBusinessSubjectFieldsRecResp:
+    properties:
+      field_id:
+        description: 字段ID
+        example: "1"
+        type: string
+      field_name:
+        description: 字段名称
+        example: 字段名称
+        type: string
+      subject_id:
+        description: 逻辑实体属性ID
+        example: "1"
+        type: string
+      subject_name:
+        description: 逻辑实体属性名称
+        example: 逻辑实体属性名称
+        type: string
+    required:
+    - field_id
+    - field_name
+    - subject_id
+    - subject_name
+    type: object
+  af_sailor.SailorBusinessSubjectRecReq:
+    properties:
+      field_desc:
+        description: 业务表描述
+        type: string
+      fields:
+        description: 字段列表
+        items:
+          $ref: '#/definitions/af_sailor.SailorTableFieldsRecReq'
+        minItems: 0
+        type: array
+      subjects:
+        description: 逻辑实体属性列表
+        items:
+          $ref: '#/definitions/af_sailor.SailorSubjectsFieldsRecReq'
+        minItems: 0
+        type: array
+      table_id:
+        description: 业务表ID
+        type: string
+      table_name:
+        description: 业务表名称
+        type: string
+    required:
+    - fields
+    - subjects
+    type: object
+  af_sailor.SailorBusinessSubjectRecResp:
+    properties:
+      rec:
+        description: 字段与逻辑实体属性的对齐列表
+        items:
+          $ref: '#/definitions/af_sailor.SailorBusinessSubjectFieldsRecResp'
+        type: array
+      table_name:
+        description: 业务标准表名称
+        example: 业务表名称
+        type: string
+    required:
+    - table_name
+    type: object
+  af_sailor.SailorSubjectRecReq:
+    properties:
+      query:
+        description: 业务对象识别请求参数
+        items:
+          $ref: '#/definitions/af_sailor.SailorBusinessSubjectRecReq'
+        minItems: 0
+        type: array
+    required:
+    - query
+    type: object
+  af_sailor.SailorSubjectRecResp:
+    properties:
+      items:
+        description: 字段与逻辑实体属性的对齐列表
+        items:
+          $ref: '#/definitions/af_sailor.SailorBusinessSubjectRecResp'
+        type: array
+    type: object
+  af_sailor.SailorSubjectsFieldsRecReq:
+    properties:
+      subject_id:
+        description: 属性ID
+        example: "1"
+        type: string
+      subject_name:
+        description: 属性名称
+        example: 属性名称
+        type: string
+      subject_path:
+        description: 主题域层级信息
+        example: 主题域层级信息
+        type: string
+    required:
+    - subject_id
+    - subject_name
+    type: object
+  af_sailor.SailorTableFieldsRecReq:
+    properties:
+      field_desc:
+        description: 字段描述
+        example: 字段描述
+        type: string
+      field_id:
+        description: 字段ID
+        example: "1"
+        type: string
+      field_name:
+        description: 字段名称
+        example: 字段名称
+        type: string
+      standard_id:
+        description: 标准ID
+        example: "1"
+        type: string
+    required:
+    - field_id
+    - field_name
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-subject_adapter_driven_gorm_subject_domain.SubjectDomainGroupCount:
+    properties:
+      count:
+        description: 逻辑实体数量
+        example: 3
+        minimum: 0
+        type: integer
+      id:
+        description: 业务域分组的ID
+        example: 065dd8cb-d3bc-4cc1-b7ae-245d29d1682d
+        type: string
+      name:
+        description: 业务域分组名称
+        example: 业务域分组名称
+        type: string
+    required:
+    - count
+    - id
+    - name
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.AddBusinessObjectReqBodyParam:
+    properties:
+      id:
+        description: 业务对象/业务活动id
+        example: 88f78432-ee4e-43df-804c-4ccc4ff17f15
+        type: string
+      logic_entities:
+        description: 业务逻辑实体信息
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.LogicEntity'
+        type: array
+      ref_id:
+        description: 引用业务对象/业务活动id数组
+        items:
+          type: string
+        type: array
+        uniqueItems: true
+    required:
+    - id
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.AddBusinessObjectResp:
+    properties:
+      id:
+        description: 对象id
+        example: 88f78432-ee4e-43df-804c-4ccc4ff17f15
+        type: string
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.AddObjectReqBodyParam:
+    properties:
+      description:
+        description: 描述，非必填
+        maxLength: 255
+        minLength: 0
+        type: string
+      name:
+        description: 对象名称，仅支持中英文数字中划线下划线
+        maxLength: 128
+        minLength: 0
+        type: string
+      owners:
+        description: 用户id数组，最大长度为1
+        items:
+          type: string
+        maxItems: 1
+        type: array
+      parent_id:
+        description: 父对象id
+        type: string
+      type:
+        description: 对象类型
+        enum:
+        - subject_domain_group
+        - subject_domain
+        - business_object
+        - business_activity
+        type: string
+    required:
+    - name
+    - type
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.AddObjectResp:
+    properties:
+      id:
+        description: 对象ID
+        example: "d1529799-e8a1-4815-a7a3-533a9dbea8\tbd"
+        type: string
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.Attribute:
+    properties:
+      id:
+        description: 业务属性id,uuid
+        type: string
+      label_id:
+        description: 标签id
+        type: string
+      name:
+        description: 业务属性名称
+        type: string
+      standard_id:
+        description: 数据标准id
+        type: string
+      unique:
+        description: 唯一标识
+        type: boolean
+    required:
+    - id
+    - name
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.AttributeInfo:
+    properties:
+      id:
+        description: 业务属性id
+        type: string
+      label_icon:
+        description: 标签颜色
+        type: string
+      label_id:
+        description: 标签id
+        type: string
+      label_name:
+        description: 标签名称
+        type: string
+      label_path:
+        description: 标签路径
+        type: string
+      name:
+        description: 业务属性名称
+        type: string
+      path:
+        description: 路径
+        type: string
+      standard_info:
+        allOf:
+        - $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.StandardInfo'
+        description: StandardStatus string        `json:"standard_status" swagger:ignore`
+          //标准状态
+      unique:
+        description: 唯一标识
+        type: boolean
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.AttributeWithField:
+    properties:
+      field_id:
+        description: 关联字段id
+        type: string
+      field_name:
+        description: 关联字段名称
+        type: string
+      field_standard_info:
+        allOf:
+        - $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.StandardInfo'
+        description: StandardStatus    string        `json:"standard_status" binding:"omitempty,oneof=normal
+          modified deleted" swagger:ignore` //标准化状态：""，"normal"，"modified"，"deleted"
+      id:
+        description: 属性id
+        type: string
+      label_icon:
+        description: 标签颜色
+        type: string
+      label_id:
+        description: 标签id
+        type: string
+      label_name:
+        description: 标签名称
+        type: string
+      label_path:
+        description: 标签路径
+        type: string
+      name:
+        description: 属性名称
+        type: string
+      standard_info:
+        allOf:
+        - $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.StandardInfo'
+        description: 数据标准信息
+      unique:
+        description: 唯一标识
+        type: boolean
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.BatchCreateObjectContentReq:
+    properties:
+      contents:
+        description: 需要创建的业务对象、业务活动及内容
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.Content'
+        type: array
+      form_id:
+        description: 业务表ID, 传空表示清除所有的关系
+        type: string
+    required:
+    - contents
+    - form_id
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.CheckReferencesResp:
+    properties:
+      circular_reference:
+        description: 是否循环引用
+        example: false
+        type: boolean
+      id:
+        description: 业务对象/业务活动id
+        type: string
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.CheckRepeatReqParamBody:
+    properties:
+      id:
+        description: 对象id
+        example: 2ece555c-9095-41d9-9936-0163ae7453a7
+        type: string
+      name:
+        description: 对象名，必填，仅支持中英文数字中划线下划线
+        type: string
+      parent_id:
+        description: 父节点id
+        example: 88f78432-ee4e-43df-804c-4ccc4ff17f15
+        type: string
+    required:
+    - name
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.CheckRepeatResp:
+    properties:
+      name:
+        description: 被检测的对象名称
+        example: obj_name
+        type: string
+      repeat:
+        description: 是否重复
+        example: false
+        type: boolean
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.Content:
+    properties:
+      id:
+        description: 业务对象/业务活动id 新建时不传，仅编辑属性时传入
+        type: string
+      logic_entities:
+        description: 业务逻辑实体信息
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.LogicEntity'
+        type: array
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.DelObjectResp:
+    properties:
+      id:
+        description: 对象ID
+        example: d1529799-e8a1-4815-a7a3-533a9dbea8bd
+        type: string
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.Department:
+    properties:
+      department_id:
+        description: 所属部门id
+        type: string
+      department_name:
+        description: 所属部门名称
+        type: string
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.ExportObjectIdsReq:
+    properties:
+      ids:
+        example:
+        - 88f78432-ee4e-43df-804c-4ccc4ff17f15
+        items:
+          type: string
+        type: array
+    required:
+    - ids
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.FormRelevanceObject:
+    properties:
+      logical_entity:
+        description: 关联属性
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.UpdateLogicalEntity'
+        type: array
+      object_id:
+        description: 业务对象/业务活动 id
+        type: string
+    required:
+    - object_id
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.FormSubjectDetail:
+    properties:
+      id:
+        description: 业务对象/业务活动id
+        type: string
+      logical_entity:
+        description: 逻辑实体
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.LogicalEntity'
+        type: array
+      name:
+        description: 业务对象/业务活动名称
+        type: string
+      type:
+        description: 业务对象/业务活动类型
+        type: string
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.GetAttributRes:
+    properties:
+      attributes:
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.GetAttributResp'
+        type: array
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.GetAttributResp:
+    properties:
+      description:
+        description: 描述
+        type: string
+      id:
+        description: 对象id
+        type: string
+      label_icon:
+        description: 标签颜色
+        type: string
+      label_id:
+        description: 标签ID
+        type: string
+      label_name:
+        description: 标签名称
+        type: string
+      label_path:
+        description: 标签路径
+        type: string
+      ls_recommend:
+        description: 是否推荐
+        type: boolean
+      name:
+        description: 对象名称
+        type: string
+      path_id:
+        description: 路径id
+        type: string
+      path_name:
+        description: 路径名称
+        type: string
+      type:
+        description: 对象类型
+        type: string
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.GetBusinessObjectOwnerResp:
+    properties:
+      owner_info:
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.OwnerInfo'
+        type: array
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.GetBusinessObjectResp:
+    properties:
+      logic_entities:
+        description: 业务逻辑实体信息
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.LogicEntityInfo'
+        type: array
+      ref_info:
+        description: 引用的业务对象/业务活动信息
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.RefInfo'
+        type: array
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.GetFormFiledRelevanceObjectRes:
+    properties:
+      form_id:
+        type: string
+      subject_infos:
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.FormSubjectDetail'
+        type: array
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.GetLevelCountResp:
+    properties:
+      level_attributes:
+        description: 第5级对象个数，即 属性
+        type: integer
+      level_business_act:
+        description: 第3级对象个数，即 业务活动
+        type: integer
+      level_business_domain:
+        description: 第1级对象个数，即 业务域
+        type: integer
+      level_business_obj:
+        description: 第3级对象个数，即 业务对象
+        type: integer
+      level_business_object:
+        description: 第3级对象个数，即 业务对象/业务活动
+        type: integer
+      level_logic_entities:
+        description: 第4级对象个数，即 逻辑实体
+        type: integer
+      level_subject_domain:
+        description: 第2级对象个数，即 业务对象
+        type: integer
+      subject_domain_group_count:
+        description: 业务对象中逻辑实体分布
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_adapter_driven_gorm_subject_domain.SubjectDomainGroupCount'
+        type: array
+      total_indicator:
+        description: 所有绑定主体域的技术指标的数量
+        type: integer
+      total_interface_service:
+        description: 所有绑定主体域的接口服务的数量
+        type: integer
+      total_logical_view:
+        description: 所有业务对象关联的逻辑实体的数量
+        type: integer
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.GetObjectChildDetailResp:
+    properties:
+      display:
+        type: string
+      entries:
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.GetObjectInfo'
+        type: array
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.GetObjectInfo:
+    properties:
+      child:
+        description: 子节点
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.GetObjectInfo'
+        type: array
+      id:
+        description: 对象id
+        example: 3821e024-e218-43c0-9931-e82afc32dbb1
+        maxLength: 36
+        type: string
+      indicator_count:
+        description: 指标的数量
+        example: 3
+        type: integer
+      interface_count:
+        description: 接口服务的数量
+        example: 4
+        type: integer
+      logic_view_count:
+        description: 视图的数量
+        example: 2
+        type: integer
+      name:
+        description: 对象名称
+        example: 用户
+        maxLength: 128
+        type: string
+      parent_id:
+        description: 父级的ID
+        example: 4821e024-e218-43c0-9931-e82afc32dbb1
+        maxLength: 36
+        type: string
+      path_id:
+        description: 路径id
+        example: 0251c03c-2123-4041-845b-27613bcb9904/2446beb9-8059-48e8-9307-e922c5bc9bbd
+        type: string
+      path_name:
+        description: 路径名称
+        example: 数据治理/业务梳理
+        type: string
+      type:
+        description: 对象类型,，subject_domain_group业务对象分组，subject_domain业务对象，business_object业务对象，business_activity业务活动，logic_entity逻辑实体，attribute属性
+        example: subject_domain_group
+        maxLength: 20
+        type: string
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.GetObjectPrecisionRes:
+    properties:
+      object:
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.GetObjectResp'
+        type: array
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.GetObjectResp:
+    properties:
+      created_at:
+        description: 创建时间，秒
+        type: integer
+      created_by:
+        description: 创建人名称
+        example: af
+        maxLength: 128
+        type: string
+      description:
+        description: 描述
+        example: 用户业务域分组
+        maxLength: 255
+        type: string
+      id:
+        description: 对象id
+        example: 3821e024-e218-43c0-9931-e82afc32dbb1
+        maxLength: 36
+        type: string
+      name:
+        description: 对象名称
+        example: 用户
+        maxLength: 128
+        type: string
+      owners:
+        allOf:
+        - $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.UserInfoResp'
+        description: 拥有者
+      path_id:
+        description: 路径id
+        example: 0251c03c-2123-4041-845b-27613bcb9904/2446beb9-8059-48e8-9307-e922c5bc9bbd
+        type: string
+      path_name:
+        description: 路径名称
+        example: 数据治理/业务梳理
+        type: string
+      type:
+        description: 对象类型，subject_domain_group业务对象分组，subject_domain业务对象，business_object业务对象，business_activity业务活动，logic_entity逻辑实体，attribute属性
+        type: string
+      updated_at:
+        description: 修改时间，秒
+        type: integer
+      updated_by:
+        description: 修改人名称
+        example: af
+        maxLength: 128
+        type: string
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.GetPathResp:
+    properties:
+      path_info:
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.PathInfo'
+        type: array
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.GetSubjectDomainByPathsReq:
+    properties:
+      paths:
+        items:
+          type: string
+        type: array
+        uniqueItems: true
+    required:
+    - paths
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.HierarchyTag:
+    properties:
+      color:
+        description: 分级标签配置的背景色
+        example: '#445566'
+        maxLength: 100
+        type: string
+      count:
+        description: 该分级的字段总数
+        example: 23
+        minimum: 0
+        type: integer
+      id:
+        description: 分级标签的ID,雪花ID，最大长度19个字符
+        example: "539415387041697226"
+        maxLength: 20
+        type: string
+      name:
+        description: 分级标签的名称
+        example: 一般数据
+        maxLength: 255
+        type: string
+    required:
+    - count
+    - id
+    - name
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.ListObjectsResp:
+    properties:
+      entries:
+        description: 对象列表
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.ObjectInfo'
+        type: array
+      total_count:
+        description: 当前筛选条件下的对象数量
+        example: 3
+        minimum: 0
+        type: integer
+    required:
+    - entries
+    - total_count
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.LogicEntity:
+    properties:
+      attributes:
+        description: 业务属性信息
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.Attribute'
+        type: array
+      id:
+        description: 业务逻辑实体id,uuid
+        type: string
+      name:
+        description: 业务逻辑实体名称
+        type: string
+    required:
+    - id
+    - name
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.LogicEntityInfo:
+    properties:
+      attributes:
+        description: 业务属性信息
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.AttributeInfo'
+        type: array
+      id:
+        description: 业务逻辑实体id
+        type: string
+      name:
+        description: 业务逻辑实体名称
+        type: string
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.LogicalEntity:
+    properties:
+      attributes:
+        description: 逻辑实体属性
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.AttributeWithField'
+        type: array
+      id:
+        description: 逻辑实体id
+        type: string
+      name:
+        description: 逻辑实体名称
+        type: string
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.ObjectInfo:
+    properties:
+      child_count:
+        description: 子对象数量
+        example: 10
+        type: integer
+      created_at:
+        description: 创建时间，秒
+        type: integer
+      created_by:
+        description: 创建人名称
+        example: af
+        maxLength: 128
+        type: string
+      description:
+        description: 描述
+        example: 用户业务域分组
+        maxLength: 255
+        type: string
+      has_child:
+        description: 是否有子节点
+        example: false
+        type: boolean
+      id:
+        description: 对象id
+        example: 3821e024-e218-43c0-9931-e82afc32dbb1
+        maxLength: 36
+        type: string
+      indicator_count:
+        description: 指标的数量
+        example: 3
+        type: integer
+      interface_count:
+        description: 接口服务的数量
+        example: 3
+        type: integer
+      logic_view_count:
+        description: 视图的数量
+        example: 2
+        type: integer
+      name:
+        description: 对象名称
+        example: 用户
+        maxLength: 128
+        type: string
+      owners:
+        description: 拥有者数组
+        items:
+          type: string
+        type: array
+      path_id:
+        description: 路径id
+        example: 0251c03c-2123-4041-845b-27613bcb9904/2446beb9-8059-48e8-9307-e922c5bc9bbd
+        type: string
+      path_name:
+        description: 路径名称
+        example: 数据治理/业务梳理
+        type: string
+      second_child_count:
+        description: 第二层子对象数量 only for BusinessObject and BusinessActivity
+        example: 8
+        type: integer
+      type:
+        description: 对象类型,，subject_domain_group业务对象分组，subject_domain业务对象，business_object业务对象，business_activity业务活动，logic_entity逻辑实体，attribute属性
+        example: subject_domain_group
+        maxLength: 20
+        type: string
+      updated_at:
+        description: 修改时间，秒
+        type: integer
+      updated_by:
+        description: 修改人名称
+        example: af
+        maxLength: 128
+        type: string
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.OwnerInfo:
+    properties:
+      business_object_id:
+        description: 业务对象/业务活动id
+        type: string
+      departments:
+        description: 部门
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.Department'
+        type: array
+      user_id:
+        description: 用户id
+        type: string
+      user_name:
+        description: 用户名称
+        type: string
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.PathInfo:
+    properties:
+      id:
+        description: 对象id
+        type: string
+      name:
+        description: 获取的对象的名称
+        type: string
+      path_id:
+        description: 路径id
+        type: string
+      path_name:
+        description: 路径名称
+        type: string
+      type:
+        description: 对象类型
+        type: integer
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.QueryClassificationResp:
+    properties:
+      display:
+        description: 结果是tree还是列表，默认给的是list
+        enum:
+        - tree
+        - list
+        example: list
+        type: string
+      entries:
+        description: 返回的各级的视图，字段的统计信息
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.SubjectNode'
+        type: array
+    required:
+    - display
+    - entries
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.QueryHierarchyTotalInfoResp:
+    properties:
+      entries:
+        description: 逻辑视图字段详情
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.RelatedFormView'
+        type: array
+      total:
+        description: 该业务架构对象及其子对象下关联的逻辑视图字段数量
+        example: 3
+        minimum: 0
+        type: integer
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.RefInfo:
+    properties:
+      id:
+        description: 对象ID
+        example: 88f78432-ee4e-43df-804c-4ccc4ff17f15
+        type: string
+      name:
+        description: 对象名称
+        example: obj_name
+        type: string
+      path_id:
+        description: 路径id
+        type: string
+      path_name:
+        description: 路径名称
+        type: string
+      type:
+        description: 对象类型
+        type: string
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.RelatedFormView:
+    properties:
+      business_name:
+        description: 逻辑视图的显示名称
+        example: 用户表
+        maxLength: 255
+        type: string
+      catalog_name:
+        description: 逻辑视图的数据源catalog名称
+        example: mysql_9bg6mfbi
+        maxLength: 255
+        type: string
+      fields:
+        description: 字段信息
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.ViewField'
+        type: array
+      form_view_id:
+        description: 逻辑视图的ID
+        example: 6c710258-cc80-4e61-993d-b4fc970db1dc
+        type: string
+      schema:
+        description: 逻辑视图的数据源schema名称
+        example: af_main
+        maxLength: 128
+        type: string
+      technical_name:
+        description: 逻辑视图在数据库中的技术名称
+        example: user
+        maxLength: 255
+        type: string
+    required:
+    - business_name
+    - catalog_name
+    - form_view_id
+    - schema
+    - technical_name
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.RemoveFormSubjectsReqParam:
+    properties:
+      form_id_slice:
+        items:
+          type: string
+        type: array
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.StandardInfo:
+    properties:
+      data_type:
+        description: 数据类型
+        type: string
+      id:
+        description: 标准id
+        type: string
+      label_icon:
+        description: 标签颜色
+        type: string
+      label_id:
+        description: 标签id
+        type: string
+      label_name:
+        description: 标签名称
+        type: string
+      label_path:
+        description: 标签路径
+        type: string
+      name:
+        description: 标准中文名
+        type: string
+      name_en:
+        description: 标准英文名
+        type: string
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.SubjectNode:
+    properties:
+      child:
+        description: 子节点
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.SubjectNode'
+        type: array
+      classified_num:
+        description: 字段分类的总数
+        example: 2
+        minimum: 0
+        type: integer
+      hierarchy_info:
+        description: 该主题层级分类统计信息
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.HierarchyTag'
+        type: array
+      id:
+        description: 主题对象的ID
+        example: 26491ca6-b3bc-4032-8da3-80f23369d23a
+        type: string
+      name:
+        description: 主题对象的名称
+        example: 用户
+        maxLength: 300
+        type: string
+      parent_id:
+        description: 主题对象的父节点ID
+        example: 26491ca6-b3bc-4032-8da3-80f23369d23a
+        type: string
+      type:
+        description: 业务架构对象类型，subject_domain_group业务对象分组, subject_domain业务对象, business_object业务对象,
+          business_activity业务活动, logic_entity逻辑实体, attribute属性,
+        example: subject_domain_group
+        maxLength: 64
+        type: string
+    required:
+    - id
+    - name
+    - type
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.SubjectProp:
+    properties:
+      id:
+        description: 属性ID
+        example: 8c710389-fc09-4fdb-b0f3-8984cbaf437a
+        type: string
+      name:
+        description: 属性的名称
+        example: 用户
+        maxLength: 300
+        type: string
+      path_id:
+        description: ID的路径
+        example: 8c710389-fc09-4fdb-b0f3-8984cbaf437a/8c720389-fc09-4fdb-b0f3-8984cbaf437a
+        maxLength: 512
+        type: string
+      path_name:
+        description: 属性的名称路径
+        example: 分组/业务域
+        maxLength: 2048
+        type: string
+    required:
+    - id
+    - name
+    - path_id
+    - path_name
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.UpdateAttributes:
+    properties:
+      field_id:
+        description: 关联字段id
+        type: string
+      id:
+        description: 属性id
+        type: string
+    required:
+    - field_id
+    - id
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.UpdateFormSubjectsReqParam:
+    properties:
+      form_id:
+        description: 业务表ID, 传空表示清除所有的关系
+        type: string
+      form_relevance_objects:
+        description: 业务对象ID
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.FormRelevanceObject'
+        type: array
+    required:
+    - form_id
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.UpdateLogicalEntity:
+    properties:
+      attributes:
+        description: 逻辑实体属性, 不继续下去校验了，允许传空的属性和字段对
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.UpdateAttributes'
+        type: array
+      id:
+        description: 逻辑实体id
+        type: string
+    required:
+    - attributes
+    - id
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.UpdateObjectBodyReqParam:
+    properties:
+      description:
+        description: 描述，非必填
+        type: string
+      id:
+        description: 对象id
+        example: 88f78432-ee4e-43df-804c-4ccc4ff17f15
+        type: string
+      name:
+        description: Object名称，仅支持中英文数字中划线下划线
+        type: string
+      owners:
+        description: 用户id数组，最大长度为1
+        items:
+          type: string
+        maxItems: 1
+        type: array
+      type:
+        description: 对象类型
+        enum:
+        - subject_domain_group
+        - subject_domain
+        - business_object
+        - business_activity
+        type: string
+    required:
+    - id
+    - name
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.UpdateObjectResp:
+    properties:
+      id:
+        description: 对象ID
+        example: d1529799-e8a1-4815-a7a3-533a9dbea8bd
+        type: string
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.UserInfoResp:
+    properties:
+      user_id:
+        description: 用户id，uuid
+        example: 3821e024-e218-43c0-9931-e82afc32dbb1
+        type: string
+      user_name:
+        description: 用户名
+        example: af
+        type: string
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.ViewField:
+    properties:
+      business_name:
+        description: 逻辑视图的显示名称
+        example: 用户表
+        maxLength: 255
+        type: string
+      data_type:
+        description: 字段数据类型, 目前有：numbe,char,date,datetime,timestamp,bool,binary
+        example: char
+        maxLength: 64
+        type: string
+      hierarchy_tag:
+        allOf:
+        - $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.HierarchyTag'
+        description: 字段对应的标签信息，可能为空
+      id:
+        description: 逻辑视图的ID
+        example: 8c710389-fc09-4fdb-b0f3-8984cbaf437a
+        type: string
+      is_primary:
+        description: 是否时主键
+        example: false
+        type: boolean
+      property:
+        allOf:
+        - $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.SubjectProp'
+        description: 业务架构对象属性ID
+      subject_id:
+        description: 字段关联的业务架构对象ID
+        example: 6969dd42-22a6-4c80-bbec-6be7ea01c097
+        maxLength: 36
+        type: string
+      technical_name:
+        description: 逻辑视图在数据库中的技术名称
+        example: user
+        maxLength: 255
+        type: string
+    required:
+    - business_name
+    - data_type
+    - id
+    - is_primary
+    - subject_id
+    - technical_name
+    type: object
+  rest.HttpError:
+    properties:
+      cause:
+        description: 错误原因
+        example: 错误原因
+        type: string
+        x-omitempty: false
+      code:
+        description: '返回错误码，格式: 服务名.模块.错误'
+        example: task-center.Public.InternalError
+        type: string
+      description:
+        description: 错误描述
+        example: 内部错误
+        type: string
+      detail:
+        description: 错误详情, 一般是json对象
+        x-omitempty: false
+      solution:
+        description: 错误处理办法
+        example: 请联系内部人员
+        type: string
+        x-omitempty: false
+    type: object
+info:
+  contact: {}
+  description: AnyFabric data subject
+  title: data-subject
+  version: 1.0.0
+paths:
+  /api/data-subject/v1/subject-domain/child:
+    get:
+      consumes:
+      - application/json
+      description: 获取对象详情以及子孙节点
+      parameters:
+      - description: 结果是tree还是列表, tree树结构，list数组结构
+        enum:
+        - tree
+        - list
+        in: query
+        name: display
+        type: string
+      - description: 对象id
+        example: 88f78432-ee4e-43df-804c-4ccc4ff17f15
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.GetObjectChildDetailResp'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 获取对象详情以及子孙节点
+      tags:
+      - open业务对象
+  /business-object/context:
+    post:
+      consumes:
+      - application/json
+      description: 批量新建业务对象/活动 及其下面的逻辑实体及属性
+      parameters:
+      - description: 请求参数
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.BatchCreateObjectContentReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            type: bool
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 批量新建业务对象/活动
+      tags:
+      - 业务对象定义
+  /classification:
+    get:
+      consumes:
+      - text/plain
+      description: 分类分级统计详情
+      parameters:
+      - description: 结果是tree还是列表，默认给的是list
+        enum:
+        - tree
+        - list
+        example: list
+        in: query
+        name: display
+        type: string
+      - description: 对象id, 如果不传，默认是全部的L1层级
+        example: 88f78432-ee4e-43df-804c-4ccc4ff17f15
+        in: query
+        name: id
+        type: string
+      - description: 是否是开启分级状态，默认不开启分级功能
+        example: false
+        in: query
+        name: open_hierarchy
+        type: boolean
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.QueryClassificationResp'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 分类分级统计详情
+      tags:
+      - open资产全景
+  /classification/field:
+    get:
+      consumes:
+      - text/plain
+      description: 统计多个分级标签下面某节点视图数量
+      parameters:
+      - description: 排序方向
+        enum:
+        - asc
+        - desc
+        in: query
+        name: direction
+        type: string
+      - description: 视图的ID，传了代表是某个表的字段分业务
+        example: 3d8360f5-25f7-49ca-a7fa-ef24494d3890
+        in: query
+        name: form_view_id
+        type: string
+      - description: 对象id
+        example: 88f78432-ee4e-43df-804c-4ccc4ff17f15
+        in: query
+        name: id
+        required: true
+        type: string
+      - description: 每页大小
+        in: query
+        maximum: 2000
+        minimum: 1
+        name: limit
+        type: integer
+      - description: 页码
+        in: query
+        minimum: 1
+        name: offset
+        type: integer
+      - description: 是否是开启分级状态，默认不开启分级功能
+        example: false
+        in: query
+        name: open_hierarchy
+        type: boolean
+      - description: 排序类型
+        enum:
+        - created_at
+        - updated_at
+        - name
+        in: query
+        name: sort
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.QueryHierarchyTotalInfoResp'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 统计多个分级标签下面某节点视图数量
+      tags:
+      - 资产全景
+  /classification/fields:
+    get:
+      consumes:
+      - text/plain
+      description: 统计多个分级标签下面某节点视图数量
+      parameters:
+      - description: 排序方向
+        enum:
+        - asc
+        - desc
+        in: query
+        name: direction
+        type: string
+      - description: 视图的ID，传了代表是某个表的字段分业务
+        example: 3d8360f5-25f7-49ca-a7fa-ef24494d3890
+        in: query
+        name: form_view_id
+        type: string
+      - description: 对象id
+        example: 88f78432-ee4e-43df-804c-4ccc4ff17f15
+        in: query
+        name: id
+        required: true
+        type: string
+      - description: 每页大小
+        in: query
+        maximum: 2000
+        minimum: 1
+        name: limit
+        type: integer
+      - description: 页码
+        in: query
+        minimum: 1
+        name: offset
+        type: integer
+      - description: 是否是开启分级状态，默认不开启分级功能
+        example: false
+        in: query
+        name: open_hierarchy
+        type: boolean
+      - description: 排序类型
+        enum:
+        - created_at
+        - updated_at
+        - name
+        in: query
+        name: sort
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.QueryHierarchyTotalInfoResp'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 统计多个分级标签下面某节点视图数量
+      tags:
+      - open资产全景
+  /forms/glossary:
+    get:
+      consumes:
+      - application/json
+      description: 获取业务表关联业务对象
+      parameters:
+      - description: 业务表id,uuid
+        in: query
+        name: fid
+        required: true
+        type: string
+      - description: 业务对象id,uuid
+        in: query
+        name: oid
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.GetFormFiledRelevanceObjectRes'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 获取业务表关联业务对象
+      tags:
+      - open业务对象
+  /forms/subjects:
+    put:
+      consumes:
+      - application/json
+      description: 批量删除修改业务表关业务对象，bg服务使用
+      parameters:
+      - description: 业务表id
+        in: path
+        name: fid
+        required: true
+        type: string
+      - description: 删除业务表字段关联属性请求体
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.RemoveFormSubjectsReqParam'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            type: boolean
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 批量删除修改业务表关业务对象
+      tags:
+      - BusinessForm
+      - glossary
+  /subject-domain:
+    get:
+      consumes:
+      - application/json
+      description: 获取对象详情
+      parameters:
+      - description: 对象id
+        example: 88f78432-ee4e-43df-804c-4ccc4ff17f15
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.GetObjectResp'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 获取对象详情
+      tags:
+      - open业务对象
+    post:
+      consumes:
+      - application/json
+      description: 新建对象
+      parameters:
+      - description: 请求参数
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.AddObjectReqBodyParam'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.AddObjectResp'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 新建对象
+      tags:
+      - 业务对象定义
+    put:
+      consumes:
+      - application/json
+      description: 更新对象
+      parameters:
+      - description: 请求参数
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.UpdateObjectBodyReqParam'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.UpdateObjectResp'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 更新对象
+      tags:
+      - 业务对象定义
+  /subject-domain/{did}:
+    delete:
+      consumes:
+      - application/json
+      description: 删除对象
+      parameters:
+      - description: 对象ID
+        in: path
+        name: did
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.DelObjectResp'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 删除对象
+      tags:
+      - 业务对象定义
+  /subject-domain/attribute:
+    get:
+      consumes:
+      - application/json
+      description: 获取属性信息
+      parameters:
+      - description: 字段id，推荐时候需要
+        in: query
+        name: field_id
+        type: string
+      - description: 属性id
+        example: 88f78432-ee4e-43df-804c-4ccc4ff17f15
+        in: query
+        name: id
+        type: string
+      - description: 关键字查询，字符无限制
+        in: query
+        name: keyword
+        type: string
+      - description: 父对象id
+        example: 88f78432-ee4e-43df-804c-4ccc4ff17f15
+        in: query
+        name: parent_id
+        type: string
+      - description: 视图id，推荐时候需要
+        in: query
+        name: view_id
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.GetAttributRes'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 获取属性信息
+      tags:
+      - open业务对象
+  /subject-domain/business-object/check-references:
+    get:
+      consumes:
+      - application/json
+      description: 循环引用校验
+      parameters:
+      - description: 业务对象/业务活动id
+        example: 88f78432-ee4e-43df-804c-4ccc4ff17f15
+        in: query
+        name: id
+        required: true
+        type: string
+      - description: 引用的业务对象/业务活动id,逗号分隔
+        example: e00a4e53-a5aa-4791-9c1a-f7e74fbadfd4,d95b5f36-0d24-4a10-8ddd-c1f537a49dab
+        in: query
+        name: ref_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.CheckReferencesResp'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 循环引用校验
+      tags:
+      - 业务对象
+  /subject-domain/business-object/owner:
+    get:
+      consumes:
+      - application/json
+      description: 批量查看业务对象/业务活动关联数据owner详细信息
+      parameters:
+      - description: 业务对象/业务活动id，uuid，逗号分隔
+        example: e00a4e53-a5aa-4791-9c1a-f7e74fbadfd4,d95b5f36-0d24-4a10-8ddd-c1f537a49dab
+        in: query
+        name: ids
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.GetBusinessObjectOwnerResp'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 批量查看业务对象/业务活动关联数据owner详细信息
+      tags:
+      - open业务对象
+  /subject-domain/business-object/path:
+    get:
+      consumes:
+      - application/json
+      description: 批量获取业务对象和逻辑实体的全路径
+      parameters:
+      - description: 业务对象/业务活动id，uuid，逗号分隔
+        example: e00a4e53-a5aa-4791-9c1a-f7e74fbadfd4,d95b5f36-0d24-4a10-8ddd-c1f537a49dab
+        in: query
+        name: ids
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.GetPathResp'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 批量获取业务对象和逻辑实体的全路径
+      tags:
+      - open业务对象
+  /subject-domain/check:
+    post:
+      consumes:
+      - application/json
+      description: 名称重复校验
+      parameters:
+      - description: 请求参数
+        in: body
+        name: _
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.CheckRepeatReqParamBody'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.CheckRepeatResp'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 名称重复校验
+      tags:
+      - open业务对象
+  /subject-domain/count:
+    get:
+      consumes:
+      - application/json
+      description: 获取当前节点下的层级统计信息
+      parameters:
+      - description: 对象id
+        example: 88f78432-ee4e-43df-804c-4ccc4ff17f15
+        in: query
+        name: id
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.GetLevelCountResp'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 获取当前节点下的层级统计信息
+      tags:
+      - open资产全景
+  /subject-domain/logic-entity:
+    get:
+      consumes:
+      - application/json
+      description: 查看业务对象/业务活动定义
+      parameters:
+      - description: 对象id
+        example: 88f78432-ee4e-43df-804c-4ccc4ff17f15
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.GetBusinessObjectResp'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 查看业务对象/业务活动定义
+      tags:
+      - open业务对象
+    post:
+      consumes:
+      - application/json
+      description: 编辑业务对象/业务活动定义
+      parameters:
+      - description: 请求参数
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.AddBusinessObjectReqBodyParam'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.AddBusinessObjectResp'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 编辑业务对象/业务活动定义
+      tags:
+      - 业务对象定义
+  /subject-domain/object-entity/path:
+    get:
+      consumes:
+      - application/json
+      description: 批量获取业务对象的全路径
+      parameters:
+      - description: 业务对象/业务活动id，uuid，逗号分隔
+        example: e00a4e53-a5aa-4791-9c1a-f7e74fbadfd4,d95b5f36-0d24-4a10-8ddd-c1f537a49dab
+        in: query
+        name: ids
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.GetPathResp'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 批量获取业务对象的全路径
+      tags:
+      - open业务对象
+  /subject-domain/paths:
+    post:
+      consumes:
+      - application/json
+      description: 根据业务对象Path批量获取业务对象详情
+      parameters:
+      - description: 查询参数
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.GetSubjectDomainByPathsReq'
+      produces:
+      - application/json
+      responses:
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 根据业务对象Path批量获取业务对象详情
+      tags:
+      - open业务对象
+  /subject-domain/precision:
+    get:
+      consumes:
+      - application/json
+      description: 根据id列表批量获取业务对象详情
+      parameters:
+      - collectionFormat: csv
+        example:
+        - 88f78432-ee4e-43df-804c-4ccc4ff17f15
+        in: query
+        items:
+          type: string
+        name: object_id
+        required: true
+        type: array
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.GetObjectPrecisionRes'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 根据id列表批量获取业务对象详情
+      tags:
+      - open业务对象
+  /subject-domain/query-business-rec-list:
+    post:
+      consumes:
+      - application/json
+      description: 业务对象识别业务标准表字段推荐
+      parameters:
+      - description: 批量获取业务属性关联业务标准关系列表
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/af_sailor.SailorSubjectRecReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/af_sailor.SailorSubjectRecResp'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 业务对象识别业务标准表字段推荐
+      tags:
+      - open业务对象
+  /subject-domains:
+    get:
+      consumes:
+      - application/json
+      description: 获取业务对象定义列表
+      parameters:
+      - description: 排序方向，枚举：asc：正序；desc：倒序。默认倒序
+        enum:
+        - asc
+        - desc
+        in: query
+        name: direction
+        type: string
+      - description: 是否获取全部层级对象
+        in: query
+        name: is_all
+        type: boolean
+      - description: 关键字查询，字符无限制
+        in: query
+        maxLength: 128
+        name: keyword
+        type: string
+      - description: 每页大小，默认10
+        in: query
+        maximum: 2000
+        minimum: 1
+        name: limit
+        type: integer
+      - description: 是否计数
+        in: query
+        name: need_count
+        type: boolean
+      - description: 在查询所有L1的时候是否需要总数
+        in: query
+        name: need_total
+        type: boolean
+      - description: 页码，默认1
+        in: query
+        minimum: 1
+        name: offset
+        type: integer
+      - description: 父对象id
+        in: query
+        name: parent_id
+        type: string
+      - description: 排序类型，枚举：created_at：按创建时间排序；updated_at：按更新时间排序；name：按名称排序。默认名称排序
+        enum:
+        - created_at
+        - updated_at
+        - name
+        in: query
+        name: sort
+        type: string
+      - description: 对象类型 ，subject_domain_group业务对象分组，subject_domain业务对象，business_object业务对象，business_activity业务活动，logic_entity逻辑实体，attribute属性
+        in: query
+        name: type
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应参数
+          schema:
+            $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.ListObjectsResp'
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 获取业务对象定义列表
+      tags:
+      - open业务对象
+  /subject-domains/export:
+    post:
+      consumes:
+      - application/json
+      description: 导出业务对象
+      parameters:
+      - description: 请求参数
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-subject_domain_subject_domain.ExportObjectIdsReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 导出业务对象
+      tags:
+      - 导入导出
+  /subject-domains/import:
+    post:
+      consumes:
+      - multipart/form-data
+      description: 导入业务对象
+      parameters:
+      - description: 上传的文件
+        in: formData
+        name: file
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 导入业务对象
+      tags:
+      - 导入导出
+  /subject-domains/template:
+    get:
+      consumes:
+      - application/json
+      description: 下载业务对象模板
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: 失败响应参数
+          schema:
+            $ref: '#/definitions/rest.HttpError'
+      summary: 下载业务对象模板
+      tags:
+      - 导入导出
+swagger: "2.0"

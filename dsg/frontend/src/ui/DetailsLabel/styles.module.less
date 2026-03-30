@@ -1,0 +1,72 @@
+.detailCantainer {
+    &.borderCantainer {
+        :global {
+            .any-fabric-ant-row {
+                border-bottom: 1px solid rgb(0 0 0 / 15%);
+                border-left: 1px solid rgb(0 0 0 / 15%);
+            }
+        }
+
+        .detailCol {
+            border-top: 1px solid rgb(0 0 0 / 15%);
+            border-right: 1px solid rgb(0 0 0 / 15%);
+
+            .label {
+                border-right: 1px solid rgb(0 0 0 / 15%);
+                background: #f4f7fc;
+                color: #878d99;
+                .ellipsis-mixin();
+            }
+        }
+    }
+
+    .detailCol {
+        display: flex;
+
+        &.bloadFont {
+            font-weight: 550;
+
+            > div {
+                color: #000;
+            }
+        }
+
+        .label {
+            padding: 8px;
+            color: @text-color-desc;
+            white-space: nowrap;
+            .ellipsis-mixin();
+        }
+
+        .text {
+            position: relative;
+            flex: 1;
+            padding: 8px;
+            color: @title-color-secondary;
+
+            &.overflowEllipsis {
+                overflow: hidden;
+                max-width: calc(100% - 140px);
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+
+            &.wordBreak {
+                word-break: break-all;
+            }
+
+            &.hoverUnderLine:hover {
+                text-decoration: underline;
+            }
+
+            .tagsItem {
+                display: inline-block;
+                padding: 3px 8px;
+                margin-right: 8px;
+                margin-bottom: 16px;
+                background: rgb(0 0 0 / 4%);
+                border-radius: 2px;
+            }
+        }
+    }
+}

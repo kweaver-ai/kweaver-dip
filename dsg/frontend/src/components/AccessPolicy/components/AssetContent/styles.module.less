@@ -1,0 +1,111 @@
+.asset-content {
+    height: 100%;
+
+    .itemOprIcon {
+        // margin-right: 8px;
+        font-size: 16px;
+        line-height: 1;
+
+        & + span {
+            margin-left: 8px;
+        }
+    }
+
+    :global {
+        .any-fabric-ant-drawer {
+            border-top: none !important;
+        }
+    }
+
+    &-top {
+        display: flex;
+        align-items: center;
+        padding-top: 16px;
+        line-height: 1.2;
+
+        &-icon {
+            margin-bottom: 4px;
+            font-size: 32px;
+        }
+
+        &-title {
+            display: flex;
+            align-items: center;
+            margin-left: 8px;
+
+            span {
+                display: inline-block;
+                overflow: hidden;
+                max-width: 300px;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                word-break: keep-all;
+            }
+        }
+
+        :global(.any-fabric-ant-tooltip-disabled-compatible-wrapper) {
+            button {
+                width: 28px;
+                height: 28px;
+                border-radius: 3px;
+                color: rgba(0 0 0 / 45%) !important;
+                font-size: 16px;
+            }
+
+            &:hover {
+                background-color: transparent !important;
+            }
+        }
+
+        .access-icon {
+            width: 28px;
+            height: 28px;
+            align-items: center;
+            margin-left: 12px;
+            border-radius: 3px;
+            color: rgba(0 0 0 / 65%) !important;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.2s ease-in-out;
+
+            &:hover {
+                background-color: #eff0f3;
+            }
+        }
+    }
+
+    .assetInfo {
+        display: flex;
+        align-items: center;
+
+        > span {
+            margin-right: 12px;
+            font-size: 24px;
+        }
+
+        .assetName {
+            .ellipsis-mixin();
+
+            color: @title-color-secondary;
+            font-size: 14px;
+
+            span:hover {
+                color: @primary-color;
+                cursor: pointer;
+                text-decoration: underline;
+            }
+
+            > span,
+            div {
+                .ellipsis-mixin();
+            }
+        }
+    }
+
+    :global(.any-fabric-ant-table-cell-row-hover) {
+        .assetName {
+            color: @primary-color;
+            transition: color 0.2s ease-in-out;
+        }
+    }
+}

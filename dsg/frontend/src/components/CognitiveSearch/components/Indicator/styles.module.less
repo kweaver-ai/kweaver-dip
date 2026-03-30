@@ -1,0 +1,217 @@
+.rescItem {
+    width: 100%;
+    padding: 16px;
+    border-bottom: 1px solid #f0f0f0;
+    background: #fff;
+    border-radius: 4px;
+
+    & + .rescItem {
+        margin-top: 10px;
+    }
+
+    .iconContainer {
+        display: flex;
+        width: 22px;
+        height: 22px;
+        flex-shrink: 0;
+        align-items: center;
+        justify-content: center;
+        background-color: #3ac4ff;
+        border-radius: 3px;
+        color: #fff;
+    }
+
+    &.selRescItem {
+        // background: rgb(230 248 255 / 50%);
+
+        .nameContent {
+            .nameBtn {
+                display: block;
+            }
+        }
+    }
+
+    &:hover {
+        background: #fafafa;
+        cursor: pointer;
+
+        .nameContent {
+            .toolTip {
+                display: inline-block;
+            }
+
+            .nameBtn {
+                display: block;
+            }
+        }
+    }
+
+    .nameContent {
+        display: flex;
+        height: 24px;
+        align-items: center;
+
+        .itemIcon {
+            flex-shrink: 0;
+            font-size: 22px;
+        }
+
+        .name {
+            // flex: 1;
+            margin-left: 12px;
+        }
+
+        .recDetail {
+            display: inline-flex;
+            height: 22px;
+            flex-shrink: 0;
+            align-items: center;
+            padding: 0 4px 0 8px;
+            margin-left: 8px;
+            background-color: #e6f5ff;
+            border-radius: 4px;
+            color: #064fbd;
+            font-size: 12px;
+            line-height: 22px;
+            transition: all 0.2s ease-in-out;
+
+            > div {
+                position: relative;
+                padding-right: 6px;
+                margin-right: 2px;
+            }
+        }
+
+        .toolTip {
+            display: none;
+        }
+
+        .nameBtn {
+            display: none;
+        }
+
+        .itemOprIcon {
+            display: inline-flex;
+            width: 24px;
+            height: 24px;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgb(0 0 0 / 20%);
+            margin-left: 8px;
+            border-radius: 3px;
+            color: rgb(0 0 0 / 65%);
+            font-size: 16px;
+        }
+    }
+
+    .name {
+        font-size: 14px;
+        font-weight: 550;
+        line-height: 22px;
+        .ellipsis-mixin();
+
+        &:hover {
+            color: #126ee3;
+            cursor: pointer;
+        }
+    }
+
+    .description {
+        .ellipsis-mixin();
+
+        width: 100%;
+        margin-top: 12px;
+        color: rgb(0 0 0 / 45%);
+        text-align: left;
+    }
+
+    .filedInfoWrapper {
+        display: flex;
+        align-items: center;
+        margin-top: 6px;
+        color: rgb(0 0 0 / 65%);
+        font-size: 14px;
+        line-height: 22px;
+
+        // .fieldTitle {
+
+        // }
+
+        .fieldTagWrapper {
+            overflow: hidden;
+            flex: 1;
+            margin-left: 8px;
+
+            :global {
+                .any-fabric-ant-space-item {
+                    max-width: 33%;
+                }
+            }
+        }
+
+        .fieldTag {
+            .ellipsis-mixin();
+
+            height: 26px;
+            padding: 2px 8px;
+            background: rgb(230 245 255 / 25%);
+            border-radius: 3px;
+            color: #6b798d;
+            font-size: 14px;
+            line-height: 22px;
+        }
+    }
+
+    .otherInfo {
+        display: flex;
+        align-items: center;
+        margin-top: 12px;
+        color: rgb(107 121 141 / 80%);
+        font-size: 12px;
+
+        .line {
+            width: 1px;
+            height: 18px;
+            border-left: 1px solid rgb(0 0 0 / 24%);
+            margin: 0 8px;
+            font-size: 12px;
+        }
+
+        .itemOtherInfoWrapper {
+            display: flex;
+            overflow: hidden;
+            flex: 1;
+        }
+
+        .itemOtherInfo {
+            display: flex;
+            // max-width: calc((100% - 136px) / 2);
+            max-width: 50%;
+
+            & + .itemOtherInfo {
+                margin-left: 8px;
+            }
+
+            .icon {
+                display: flex;
+                width: 20px;
+                height: 20px;
+                align-items: center;
+                justify-content: center;
+                margin-right: 4px;
+                border-radius: 20px;
+                font-size: 16px;
+            }
+
+            .infoContent {
+                // max-width: 300px;
+                .ellipsis-mixin();
+            }
+
+            .toolTip {
+                display: flex;
+                overflow: hidden;
+            }
+        }
+    }
+}

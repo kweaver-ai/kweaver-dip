@@ -1,0 +1,284 @@
+.itemOtherInfo {
+    display: flex;
+    width: 100%;
+    max-width: calc(100% - 80px);
+    height: 16px;
+    align-items: center;
+    margin-top: 8px;
+    color: rgb(0 0 0 / 45%);
+    font-size: 12px;
+    line-height: 16px;
+
+    .itemDetailInfo {
+        position: relative;
+        display: flex;
+        max-width: 300px;
+        height: 24px;
+        align-items: center;
+        padding: 0;
+        margin-right: 12px;
+        border-radius: 3px;
+
+        &:hover {
+            background: rgb(233 233 237 / 40%);
+            cursor: pointer;
+        }
+
+        .itemDetailInfoValue {
+            .ellipsis-mixin();
+
+            display: inline-block;
+            flex-shrink: 1;
+            align-items: center;
+            margin-left: 8px;
+        }
+
+        .itemOrgName {
+            max-width: 300px;
+            line-height: 20px;
+            .ellipsis-mixin();
+        }
+
+        .commonIcon {
+            padding: 3px 0;
+        }
+
+        :global {
+            .any-fabric-anticon {
+                margin-right: 6px;
+
+                svg {
+                    width: auto;
+                    height: auto;
+                    fill: rgb(107 121 141 / 80%);
+                }
+            }
+        }
+    }
+
+    .showScoreContainer {
+        display: flex;
+        width: 260px;
+        align-items: center;
+
+        :global {
+            .any-fabric-ant-rate {
+                margin-left: 4px;
+
+                .any-fabric-ant-rate-star {
+                    color: #bfbfbf;
+                }
+            }
+
+            .any-fabric-ant-rate-star:not(:last-child) {
+                margin-right: 0;
+            }
+        }
+    }
+
+    .scoreContainer {
+        display: flex;
+        align-items: center;
+
+        .scoreText {
+            margin-right: 8px;
+            margin-left: 4px;
+            color: rgb(0 0 0 / 45%);
+            font-size: 12px;
+        }
+
+        .scoredText {
+            color: rgb(0 0 0 / 65%);
+            font-size: 12px;
+        }
+
+        :global {
+            .any-fabric-ant-rate {
+                margin-left: 4px;
+            }
+
+            .any-fabric-ant-rate-star:not(:last-child) {
+                margin-right: 0;
+            }
+        }
+    }
+}
+
+.unitTooltip {
+    display: flex;
+    align-items: flex-start;
+    color: #fff;
+    white-space: normal;
+    word-break: break-all;
+
+    > div:first-child {
+        flex-shrink: 0;
+        white-space: pre;
+    }
+
+    .commonIcon {
+        display: flex;
+        height: 22px;
+        align-items: center;
+        font-size: 16px;
+        line-height: 22px;
+
+        svg {
+            fill: #fff !important;
+        }
+    }
+}
+
+.infoItemWrapper {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    font-size: 12px;
+    line-height: 22px;
+
+    .label {
+        flex-shrink: 0;
+        // color: rgb(0 0 0 / 45%);
+        color: rgb(107 121 141 / 65%);
+    }
+
+    .right {
+        display: flex;
+        flex: 1;
+        // width: calc(100% - 60px);
+        align-items: center;
+        justify-content: space-between;
+        color: #6b798d;
+
+        .infoItemBox {
+            display: flex;
+            overflow: hidden;
+            // width: calc(100% - 50px);
+            align-items: center;
+        }
+
+        .item {
+            max-width: 20%;
+            padding: 2px 8px;
+            margin-right: 8px;
+            background: rgb(230 245 255 / 40%);
+            border-radius: 3px;
+            color: #6b798d;
+            font-size: 12px;
+            .ellipsis-mixin();
+        }
+    }
+}
+
+.infoItemDetailsWrapper {
+    width: 100%;
+    // padding-bottom: 16px;
+    border-bottom: 1px dashed rgb(0 0 0 / 10%);
+    margin-bottom: 16px;
+
+    .firstLine {
+        display: flex;
+        align-items: center;
+
+        .line {
+            display: flex;
+            width: 3px;
+            height: 14px;
+            margin-right: 8px;
+            background: #126ee3;
+            border-radius: 2px;
+        }
+
+        .icon {
+            display: flex;
+            align-items: center;
+            margin-right: 8px;
+        }
+
+        .name {
+            max-width: calc(100% - 80px);
+            margin-right: 8px;
+            .ellipsis-mixin();
+        }
+
+        .primary {
+            display: flex;
+            width: 24px;
+            height: 14px;
+            align-items: center;
+            justify-content: center;
+            background: rgb(18 110 227 / 10%);
+            border-radius: 3px;
+            color: rgb(18 110 227 / 85%);
+            font-size: 8px;
+        }
+    }
+
+    .secondLine {
+        width: 100%;
+        margin: 4px 0 12px 12px;
+        color: rgb(0 0 0 / 45%);
+        font-size: 12px;
+        .ellipsis-mixin();
+    }
+
+    .thirdLine {
+        width: 100%;
+        margin-left: 12px;
+    }
+}
+
+.catalogMountResourceWrapper {
+    .item {
+        display: flex;
+        width: 100%;
+        align-items: center;
+        padding: 6px 12px;
+        margin-bottom: 10px;
+        background: rgb(214 221 237 / 25%);
+        border-radius: 4px;
+        gap: 12px;
+
+        .icon {
+            font-size: 16px;
+        }
+
+        .nameBox {
+            display: flex;
+            width: calc(100% - 40px);
+            flex-direction: column;
+
+            .name {
+                // &:hover {
+                //     color: #126ee3;
+                //     cursor: pointer;
+                //     text-decoration: underline;
+                // }
+
+                margin-bottom: 6px;
+                .ellipsis-mixin();
+            }
+
+            .code {
+                .ellipsis-mixin();
+
+                color: rgb(0 0 0 / 45%);
+                font-size: 12px;
+            }
+        }
+    }
+}
+
+.tagWrapper {
+    display: flex;
+
+    .tag {
+        padding: 0 4px;
+        margin-right: 8px;
+        background: #f4f5f8;
+        border-radius: 2px;
+        color: rgb(0 0 0 / 45%);
+        font-size: 12px;
+        line-height: 22px;
+    }
+}

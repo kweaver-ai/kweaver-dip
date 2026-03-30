@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="144px" height="144px" viewBox="0 0 144 144" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>为空可新增</title>
+    <defs>
+        <linearGradient x1="50%" y1="3.85205925%" x2="50%" y2="121.56033%" id="linearGradient-1">
+            <stop stop-color="#779EEA" stop-opacity="0.4" offset="0%"></stop>
+            <stop stop-color="#FFFFFF" stop-opacity="0" offset="100%"></stop>
+        </linearGradient>
+        <path d="M4,0 L48,0 C50.209139,0 52,1.790861 52,4 L52,23.8611111 C52,26.0702501 50.209139,27.8611111 48,27.8611111 L4,27.8611111 C1.790861,27.8611111 0,26.0702501 0,23.8611111 L0,4 C0,1.790861 1.790861,0 4,0 Z" id="path-2"></path>
+    </defs>
+    <g id="保留线条" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="为空可新增">
+            <g id="Group-4">
+                <rect id="Rectangle-25" x="0" y="0" width="144" height="144"></rect>
+                <g id="编组-2" transform="translate(0.000100, 58.000000)">
+                    <path d="M71.9999005,42 C106.372514,42 135.319719,57.9978546 143.9998,77.9997707 L0,77.9997707 C8.68008123,57.9978546 37.6272862,42 71.9999005,42 Z" id="Combined-Shape" fill="url(#linearGradient-1)" fill-rule="nonzero"></path>
+                    <g id="Group-14-Copy" transform="translate(36.999900, 0.000000)">
+                        <polygon id="Clip-2" points="0.63636364 3.86237374 34.9673154 3.86237374 34.9673154 17.565875 0.63636364 17.565875"></polygon>
+                        <path d="M38.3425662,0 C39.1001876,0 39.8252897,0.21404557 40.445673,0.5975095 C41.0660564,0.98097343 41.5817208,1.53385573 41.9204667,2.2115292 L41.9204667,2.2115292 L58.2216522,34.8226403 C58.7155248,35.8106503 58.7621723,36.9053068 58.4383492,37.876429 C58.1145261,38.8475512 57.4202324,39.6951391 56.4322225,40.1890116 C55.8769005,40.4665982 55.2645872,40.6111111 54.6437517,40.6111111 L54.6437517,40.6111111 L4,40.6111111 C2.8954305,40.6111111 1.8954305,40.1633959 1.17157288,39.4395382 C0.44771525,38.7156806 0,37.7156806 0,36.6111111 L0,36.6111111 L0,4 C0,2.8954305 0.44771525,1.8954305 1.17157288,1.17157288 C1.8954305,0.44771525 2.8954305,0 4,0 L4,0 L38.3425662,0 Z" id="Rectangle-3-Copy-7" stroke="#779EEA" stroke-width="2" fill="#FFFFFF" fill-rule="nonzero"></path>
+                        <polygon id="Clip-5" points="21.4056237 9.6243295 55.958202 9.6243295 55.958202 49.2601124 21.4056237 49.2601124"></polygon>
+                        <g id="Rectangle-3-Copy-8" stroke-dasharray="3" transform="translate(10.000000, 6.000000)">
+                            <g id="path-2-Clipped">
+                                <mask id="mask-3" fill="white">
+                                    <use xlink:href="#path-2"></use>
+                                </mask>
+                                <g id="path-2"></g>
+                                <path d="M4,0 L48,0 C50.209139,0 52,1.790861 52,4 L52,23.8611111 C52,26.0702501 50.209139,27.8611111 48,27.8611111 L4,27.8611111 C1.790861,27.8611111 0,26.0702501 0,23.8611111 L0,4 C0,1.790861 1.790861,0 4,0 Z" id="path-2" stroke="#779EEA" stroke-width="4" fill="#F8FAFE" fill-rule="nonzero" mask="url(#mask-3)"></path>
+                            </g>
+                        </g>
+                        <polygon id="Clip-8" points="0.63641057 14.0353649 55.9205357 14.0353649 55.9205357 51.6165265 0.63641057 51.6165265"></polygon>
+                        <path d="M67,15 C68.3807119,15 69.6307119,15.5596441 70.5355339,16.4644661 C71.4403559,17.3692881 72,18.6192881 72,20 L72,20 L72,52.25 C72,53.6307119 71.4403559,54.8807119 70.5355339,55.7855339 C69.6307119,56.6903559 68.3807119,57.25 67,57.25 L67,57.25 L5,57.25 C3.61928813,57.25 2.36928813,56.6903559 1.46446609,55.7855339 C0.55964406,54.8807119 0,53.6307119 0,52.25 L0,52.25 L0,15 L67,15 Z" id="Rectangle-3" stroke="#779EEA" stroke-width="2" fill="#FFFFFF" fill-rule="nonzero"></path>
+                    </g>
+                </g>
+            </g>
+            <g id="Group" transform="translate(94.000000, 90.000000)" fill-rule="nonzero">
+                <rect id="Rectangle-5" stroke="#779EEA" stroke-width="2" fill="#FFFFFF" x="0" y="0" width="22" height="22" rx="4"></rect>
+                <polygon id="Combined-Shape" fill="#779EEA" points="12 5 12 10 17 10 17 12 12 12 12 17 10 17 10 11.999 5 12 5 10 10 9.999 10 5"></polygon>
+            </g>
+        </g>
+    </g>
+</svg>

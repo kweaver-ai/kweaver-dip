@@ -1,0 +1,254 @@
+.feedbackMgt {
+    position: relative;
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+
+    .feedbackTabs {
+        margin-bottom: 0;
+    }
+
+    :global {
+        .any-fabric-ant-tabs-nav {
+            height: 52px;
+            margin-bottom: 0;
+        }
+    }
+}
+
+.feedbackContent {
+    height: calc(100% - 24px);
+
+    .feedbackOperation {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 16px 0;
+
+        .topLeft {
+            display: flex;
+            align-items: center;
+
+            .feedbackTitle {
+                padding-left: 8px;
+                border-left: 4px solid #3a8ff0;
+            }
+        }
+
+        .topRight {
+            display: flex;
+            justify-content: space-between;
+        }
+    }
+}
+
+.myFeedback {
+    padding: 0;
+}
+
+.feedbackList {
+    padding: 12px 24px 24px;
+}
+
+.multiColumnWrapper {
+    display: flex;
+    align-items: center;
+
+    .sourceIcon {
+        margin-right: 8px;
+        font-size: 20px;
+    }
+
+    .contentWrapper {
+        display: flex;
+        flex-direction: column;
+        .ellipsis-mixin();
+
+        .valueWrapper {
+            display: flex;
+            overflow: hidden;
+            align-items: center;
+
+            .value {
+                min-width: 0;
+                color: rgb(0 0 0 / 85%);
+                cursor: pointer;
+                .ellipsis-mixin();
+
+                &:hover,
+                &:active {
+                    color: #3a8ff0;
+                }
+            }
+        }
+
+        .subValue {
+            color: rgb(0 0 0 / 45%);
+            font-size: 12px;
+            .ellipsis-mixin();
+        }
+    }
+
+    // 已下线状态样式
+    &.offline {
+        cursor: default;
+        pointer-events: none;
+
+        .valueWrapper {
+            .value {
+                color: rgb(0 0 0 / 45%);
+                cursor: default;
+
+                &:hover,
+                &:active {
+                    color: rgb(0 0 0 / 45%);
+                }
+            }
+        }
+
+        .subValue {
+            color: rgb(0 0 0 / 25%);
+        }
+    }
+}
+
+.offlineTips {
+    padding: 2px 4px;
+    margin-left: 4px;
+    background-color: rgb(255 77 79 / 8%);
+    border-radius: 4px;
+    color: rgb(255 77 79 / 100%);
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+.subTitle {
+    color: rgb(0 0 0 / 45%);
+}
+
+.detailGroupTitle {
+    position: relative;
+    display: flex;
+    height: 32px;
+    align-items: center;
+    margin: 8px 0;
+    background: rgb(0 55 150 / 2%);
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 550;
+
+    &::before {
+        display: inline-block;
+        width: 3px;
+        height: 20px;
+        margin-right: 12px;
+        background-color: rgb(18 110 227 / 100%);
+        content: '';
+    }
+}
+
+.statusView {
+    display: flex;
+    align-items: center;
+
+    .dot {
+        width: 8px;
+        height: 8px;
+        flex-shrink: 0;
+        border-radius: 50%;
+    }
+
+    .text {
+        margin-right: 4px;
+        margin-left: 8px;
+        color: rgb(0 0 0 / 85%);
+        font-size: 14px;
+        .ellipsis-mixin();
+    }
+}
+
+.feedbackTypeView {
+    height: 24px;
+    padding: 0 8px;
+    background-color: rgb(214 221 237 / 25%);
+    border-radius: 4px;
+    line-height: 24px;
+}
+
+.detailsWrapper {
+    display: flex;
+    height: 440px;
+    background-color: #fff;
+
+    .detailsLeft {
+        height: 100%;
+        flex: 1;
+        padding-right: 16px;
+        overflow-y: auto;
+    }
+
+    .detailsRight {
+        height: 100%;
+        flex: 0 0 320px;
+        padding-left: 16px;
+        border-left: 1px solid rgb(217 217 217 / 100%);
+        margin-left: 8px;
+    }
+}
+
+.replyWrapper {
+    height: 446px;
+    padding-right: 8px;
+    overflow-y: auto;
+
+    .replyForm {
+        padding: 8px 20px;
+    }
+}
+
+.operateHistory {
+    height: 100%;
+
+    .recordTitle {
+        padding: 8px 0;
+        border-bottom: 1px solid rgb(217 217 217 / 100%);
+        margin-bottom: 16px;
+        font-size: 14px;
+        font-weight: 550;
+    }
+
+    .dot {
+        width: 8px;
+        height: 8px;
+        border: 2px solid #3a8ff0;
+        background: transparent;
+        border-radius: 50%;
+    }
+
+    .op_user_wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 4px 12px;
+        margin-top: 8px;
+        background-color: rgb(247 248 250 / 100%);
+        border-radius: 4px;
+
+        .op_user_name {
+            width: 100px;
+            margin-right: 8px;
+            .ellipsis-mixin();
+        }
+
+        .op_time {
+            width: 140px;
+            color: rgb(0 0 0 / 45%);
+            .ellipsis-mixin();
+        }
+    }
+}
+
+.feedbackIcon,
+.feedbackButton {
+    cursor: pointer;
+}

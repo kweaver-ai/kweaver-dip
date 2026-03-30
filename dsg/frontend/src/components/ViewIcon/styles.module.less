@@ -1,0 +1,42 @@
+.modelingWrapper {
+    .title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 15px;
+        padding-bottom: 5;
+        font-size: 22px;
+        font-weight: 550;
+    }
+
+    .iconWrapper {
+        display: flex;
+        height: calc(100vh - 120px);
+        flex-wrap: wrap;
+        overflow-y: auto;
+
+        .iconBox {
+            width: 120px;
+            margin: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            text-align: center;
+
+            .icon {
+                font-size: 40px;
+            }
+
+            .iconName {
+                word-break: break-all;
+            }
+        }
+    }
+
+    .emptyBox {
+        width: 100%;
+    }
+
+    .dirHighLight {
+        color: @primary-color;
+    }
+}

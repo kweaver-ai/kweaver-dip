@@ -1,0 +1,156 @@
+.sideDrawerWrapper {
+    .sideDrawerHeader {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .closeBtn {
+            color: rgb(0 0 0 / 85%);
+            cursor: pointer;
+            font-size: 16px;
+        }
+    }
+
+    .sideDrawerFooter {
+        display: flex;
+        align-items: center;
+
+        .drawerTip {
+            flex-shrink: 0;
+            color: #ff6304;
+            font-size: 12px;
+            line-height: 18px;
+        }
+
+        .modalFooter {
+            display: flex;
+            flex: 1;
+            align-items: center;
+            justify-content: flex-end;
+        }
+    }
+
+    .policyContentWrapper {
+        .auditListRescTitle {
+            display: flex;
+            align-items: center;
+            margin-bottom: 14px;
+            color: #000;
+            font-size: 14px;
+            line-height: 22px;
+        }
+
+        .onlineStatus {
+            width: 44px;
+            height: 22px;
+            flex-shrink: 0;
+            margin-top: 4px;
+            margin-left: 16px;
+            background: rgb(255 77 79 / 8%);
+            border-radius: 4px;
+        }
+
+        .auditRescWrapper {
+            .rescTableWrapper {
+                .tableOprWrapper {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    margin-bottom: 16px;
+                }
+
+                .titleBox,
+                .filterBox {
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                }
+
+                .itemTitleInfo {
+                    overflow: hidden;
+                    flex: 1;
+
+                    .name {
+                        .ellipsis-mixin();
+
+                        color: #000;
+                        font-size: 14px;
+                        line-height: 22px;
+
+                        &:hover {
+                            color: @primary-color;
+                            cursor: pointer;
+                            text-decoration: underline;
+                        }
+                    }
+
+                    .codeInfo {
+                        color: rgb(0 0 0 / 45%);
+                        font-size: 12px;
+                        line-height: 18px;
+                    }
+                }
+            }
+
+            .emptyWrapper {
+                display: flex;
+                width: 100%;
+                flex-direction: column;
+                align-items: center;
+                margin-top: 84px;
+            }
+        }
+    }
+
+    .modalFooter {
+        display: flex;
+        width: 100%;
+        justify-content: flex-end;
+        gap: 16px;
+
+        :global {
+            .any-fabric-ant-btn {
+                min-width: 80px;
+            }
+        }
+    }
+}
+
+.showCount {
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+
+    &::after {
+        position: absolute;
+        right: 8px;
+        bottom: 4px;
+        margin-bottom: 0 !important;
+    }
+
+    :global {
+        .any-fabric-ant-input {
+            height: calc(100% - 30px);
+            border: none;
+
+            &:focus {
+                border: none;
+                box-shadow: none !important;
+            }
+        }
+    }
+}
+
+.modalContentWrapper {
+    margin-top: 8px;
+    font-size: 14px;
+    line-height: 20px;
+
+    .modalContentTitle {
+        color: rgb(0 0 0 / 85%);
+    }
+
+    .modalContentWrapper {
+        margin-top: 8px;
+        color: rgb(0 0 0 / 45%);
+    }
+}

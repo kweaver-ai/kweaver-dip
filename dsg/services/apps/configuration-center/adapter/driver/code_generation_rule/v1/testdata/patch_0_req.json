@@ -1,0 +1,10 @@
+{
+    "prefix": "SJST",
+    "prefix_enabled": true,
+    "rule_code_enabled": true,
+    "code_separator": "/",
+    "code_separator_enabled": true,
+    "digital_code_width": 6,
+    "digital_code_starting": 1,
+    "digital_code_ending": 999999
+}

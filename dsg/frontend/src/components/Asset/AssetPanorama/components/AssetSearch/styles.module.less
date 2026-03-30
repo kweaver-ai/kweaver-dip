@@ -1,0 +1,131 @@
+.asset-search {
+    display: flex;
+    width: min(100%, 280px);
+    max-width: 280px;
+}
+
+.search-empty {
+    color: rgb(0 0 0 / 85%);
+    text-align: center;
+}
+
+.pop-container {
+    max-height: 256px;
+    padding: 0 12px;
+    overflow-anchor: none;
+    overflow-y: auto;
+
+    :global {
+        .any-fabric-ant-select-item {
+            padding: 0;
+        }
+        // .rc-virtual-list-holder {
+        //     overflow-y: visible !important;
+        // }
+        .any-fabric-ant-collapse
+            > .any-fabric-ant-collapse-item
+            > .any-fabric-ant-collapse-head {
+            padding: 12px 0;
+            border-bottom: 1px solid rgb(0 0 0 / 15%);
+            margin-bottom: 8px;
+            color: rgb(0 0 0 / 45%);
+        }
+
+        .any-fabric-ant-collapse-ghost
+            > .any-fabric-ant-collapse-item
+            > .any-fabric-ant-collapse-content
+            > .any-fabric-ant-collapse-content-box {
+            padding: 0;
+        }
+
+        .any-fabric-ant-collapse
+            > .any-fabric-ant-collapse-item
+            > .any-fabric-ant-collapse-header {
+            padding: 12px 0;
+            border-bottom: 1px solid rgb(0 0 0 / 15%);
+            margin-bottom: 8px;
+            color: rgb(0 0 0 / 45%);
+            font-size: 12px;
+        }
+    }
+
+    .top-tip {
+        padding: 6px 12px;
+        color: rgb(0 0 0 / 45%);
+        font-size: 12px;
+        line-height: 17px;
+    }
+}
+
+.search-item {
+    padding: 0 12px;
+    margin: 0 -12px;
+    cursor: pointer;
+
+    .nameInfo {
+        display: flex;
+        height: 32px;
+        align-items: center;
+        font-size: 14px;
+    }
+
+    &:hover {
+        background-color: #eff0f3;
+    }
+
+    &-icon {
+        padding-right: 6px;
+    }
+
+    &-right {
+        display: flex;
+        width: calc(100% - 24px);
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    &-content {
+        width: 100%;
+        flex: 1;
+        .ellipsis-mixin();
+
+        &-name {
+            overflow: hidden;
+            font-weight: 500;
+            text-overflow: ellipsis;
+        }
+
+        &-path {
+            overflow: hidden;
+            margin-top: 2px;
+            color: #999;
+            font-size: 12px;
+            text-overflow: ellipsis;
+        }
+    }
+
+    &-opt {
+        padding: 2px 4px;
+    }
+
+    :global {
+        .any-fabric-ant-badge-dot {
+            margin-top: 16px !important;
+        }
+
+        .any-fabric-anticon {
+            font-size: 20px;
+        }
+
+        .any-fabric-ant-collapse-arrow {
+            margin-right: 10px;
+        }
+    }
+
+    .path-item {
+        width: 100%;
+        color: rgb(0 0 0 / 65%);
+        font-size: 12px;
+        .ellipsis-mixin();
+    }
+}

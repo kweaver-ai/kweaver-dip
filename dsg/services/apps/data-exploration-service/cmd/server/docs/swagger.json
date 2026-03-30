@@ -1,0 +1,1504 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "AnyFabric Data Exploration",
+        "title": "data-exploration-service",
+        "contact": {},
+        "version": "0.0"
+    },
+    "basePath": "/api",
+    "paths": {
+        "/data-exploration-service/v1/explore-task/{id}": {
+            "delete": {
+                "description": "删除探查任务",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "数据探查任务管理"
+                ],
+                "summary": "删除探查任务",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "任务id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_exploration.DeleteTaskResp"
+                        }
+                    },
+                    "400": {
+                        "description": "失败响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/rest.HttpError"
+                        }
+                    }
+                }
+            }
+        },
+        "/data-exploration-service/v1/report": {
+            "get": {
+                "description": "按表或任务获取第三方数据探查报告",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "数据探查报告管理"
+                ],
+                "summary": "按表或任务获取第三方数据探查报告",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "maxLength": 255,
+                        "minLength": 1,
+                        "type": "string",
+                        "description": "表id",
+                        "name": "table_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "任务id",
+                        "name": "task_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "任务版本",
+                        "name": "task_version",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_exploration.ReportFormat"
+                        }
+                    },
+                    "400": {
+                        "description": "失败响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/rest.HttpError"
+                        }
+                    }
+                }
+            }
+        },
+        "/data-exploration-service/v1/report/field": {
+            "get": {
+                "description": "获取表字段数据探查报告",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "数据探查报告管理"
+                ],
+                "summary": "获取表字段数据探查报告",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "字段名",
+                        "name": "field_name",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "字段类型",
+                        "name": "field_type",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "任务id",
+                        "name": "task_id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_exploration.FieldReportResp"
+                        }
+                    },
+                    "400": {
+                        "description": "失败响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/rest.HttpError"
+                        }
+                    }
+                }
+            }
+        },
+        "/data-exploration-service/v1/report/{code}": {
+            "get": {
+                "description": "按编号获取数据探查报告",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "数据探查报告管理"
+                ],
+                "summary": "按编号获取数据探查报告",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "minLength": 1,
+                        "type": "string",
+                        "default": "1",
+                        "description": "exploration code",
+                        "name": "code",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_exploration.ReportFormat"
+                        }
+                    },
+                    "400": {
+                        "description": "失败响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/rest.HttpError"
+                        }
+                    }
+                }
+            }
+        },
+        "/data-exploration-service/v1/report/{task_id}": {
+            "delete": {
+                "description": "删除数据探报告",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "数据探查报告管理"
+                ],
+                "summary": "删除数据探报告",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "minLength": 1,
+                        "type": "string",
+                        "default": "1",
+                        "description": "exploration task_id",
+                        "name": "task_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "任务id",
+                        "name": "task_id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "任务版本",
+                        "name": "task_version",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_exploration.DeleteDataExploreReportResp"
+                        }
+                    },
+                    "400": {
+                        "description": "失败响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/rest.HttpError"
+                        }
+                    }
+                }
+            }
+        },
+        "/data-exploration-service/v1/reports": {
+            "get": {
+                "description": "获取数据探查任务列表配置",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "数据探查报告管理"
+                ],
+                "summary": "获取数据探查任务列表配置",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "enum": [
+                            "asc",
+                            "desc"
+                        ],
+                        "type": "string",
+                        "default": "desc",
+                        "description": "排序方向，枚举：asc：正序；desc：倒序。默认倒序",
+                        "name": "direction",
+                        "in": "query"
+                    },
+                    {
+                        "maximum": 100,
+                        "minimum": 1,
+                        "type": "integer",
+                        "default": 15,
+                        "description": "每页大小，默认15",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "minimum": 1,
+                        "type": "integer",
+                        "default": 1,
+                        "description": "页码，默认1",
+                        "name": "offset",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            "f_created_at",
+                            "f_updated_at"
+                        ],
+                        "type": "string",
+                        "default": "f_created_at",
+                        "description": "排序类型，枚举：f_created_at：按创建时间排序；f_updated_at：按更新时间排序; 默认按创建时间排序",
+                        "name": "sort",
+                        "in": "query"
+                    },
+                    {
+                        "maxLength": 255,
+                        "minLength": 1,
+                        "type": "string",
+                        "description": "数据源表ID",
+                        "name": "table_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "任务id",
+                        "name": "task_id",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_exploration.ListReportRespParam"
+                        }
+                    },
+                    "400": {
+                        "description": "失败响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/rest.HttpError"
+                        }
+                    }
+                }
+            }
+        },
+        "/data-exploration-service/v1/task": {
+            "post": {
+                "description": "按提交参数添加数据探查任务配置",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "数据探查任务管理"
+                ],
+                "summary": "按提交参数添加数据探查任务配置",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "请求参数",
+                        "name": "_",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_task_config.TaskConfigReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_task_config.TaskConfigResp"
+                        }
+                    },
+                    "400": {
+                        "description": "失败响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/rest.HttpError"
+                        }
+                    }
+                }
+            }
+        },
+        "/data-exploration-service/v1/task/{task_id}": {
+            "get": {
+                "description": "获取数据探查任务配置",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "数据探查任务管理"
+                ],
+                "summary": "获取数据探查任务配置",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "minLength": 1,
+                        "type": "string",
+                        "default": "1",
+                        "description": "exploration task_id",
+                        "name": "task_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_task_config.TaskConfigRespDetail"
+                        }
+                    },
+                    "400": {
+                        "description": "失败响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/rest.HttpError"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "按提交参数更新数据探查任务配置",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "数据探查任务管理"
+                ],
+                "summary": "按提交参数更新数据探查任务配置",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "请求参数",
+                        "name": "_",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_task_config.TaskConfigUpdateReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_task_config.TaskConfigResp"
+                        }
+                    },
+                    "400": {
+                        "description": "失败响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/rest.HttpError"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "删除数据探查任务配置",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "数据探查任务管理"
+                ],
+                "summary": "删除数据探查任务配置",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "minLength": 1,
+                        "type": "string",
+                        "default": "1",
+                        "description": "exploration task_id",
+                        "name": "task_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_task_config.TaskConfigResp"
+                        }
+                    },
+                    "400": {
+                        "description": "失败响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/rest.HttpError"
+                        }
+                    }
+                }
+            }
+        },
+        "/data-exploration-service/v1/tasks": {
+            "get": {
+                "description": "获取数据探查任务列表配置",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "数据探查任务管理"
+                ],
+                "summary": "获取数据探查任务列表配置",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "enum": [
+                            "asc",
+                            "desc"
+                        ],
+                        "type": "string",
+                        "default": "desc",
+                        "description": "排序方向，枚举：asc：正序；desc：倒序。默认倒序",
+                        "name": "direction",
+                        "in": "query"
+                    },
+                    {
+                        "maximum": 100,
+                        "minimum": 1,
+                        "type": "integer",
+                        "default": 15,
+                        "description": "每页大小，默认15",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "minimum": 1,
+                        "type": "integer",
+                        "default": 1,
+                        "description": "页码，默认1",
+                        "name": "offset",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            "f_created_at",
+                            "f_updated_at"
+                        ],
+                        "type": "string",
+                        "default": "f_created_at",
+                        "description": "排序类型，枚举：f_created_at：按创建时间排序；f_updated_at：按更新时间排序; 默认按创建时间排序",
+                        "name": "sort",
+                        "in": "query"
+                    },
+                    {
+                        "maxLength": 255,
+                        "minLength": 1,
+                        "type": "string",
+                        "example": "1",
+                        "description": "数据源表ID",
+                        "name": "table_id",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_task_config.TaskConfigListRespParam"
+                        }
+                    },
+                    "400": {
+                        "description": "失败响应参数",
+                        "schema": {
+                            "$ref": "#/definitions/rest.HttpError"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_exploration.DeleteDataExploreReportResp": {
+            "type": "object",
+            "properties": {
+                "task_id": {
+                    "description": "任务id",
+                    "type": "string"
+                },
+                "version": {
+                    "description": "任务版本",
+                    "type": "integer"
+                }
+            }
+        },
+        "devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_exploration.DeleteTaskResp": {
+            "type": "object",
+            "properties": {
+                "task_id": {
+                    "description": "任务id",
+                    "type": "string",
+                    "example": "1"
+                }
+            }
+        },
+        "devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_exploration.ExploreDetails": {
+            "type": "object",
+            "properties": {
+                "accuracy_score": {
+                    "description": "准确性维度评分，缺省为NULL",
+                    "type": "number"
+                },
+                "completeness_score": {
+                    "description": "完整性维度评分，缺省为NULL",
+                    "type": "number"
+                },
+                "consistency_score": {
+                    "description": "一致性维度评分，缺省为NULL",
+                    "type": "number"
+                },
+                "explore_details": {
+                    "description": "探查结果详情",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_exploration.RuleResult"
+                    }
+                },
+                "standardization_score": {
+                    "description": "规范性维度评分，缺省为NULL",
+                    "type": "number"
+                },
+                "uniqueness_score": {
+                    "description": "唯一性维度评分，缺省为NULL",
+                    "type": "number"
+                }
+            }
+        },
+        "devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_exploration.ExploreFieldDetail": {
+            "type": "object",
+            "properties": {
+                "accuracy_score": {
+                    "description": "准确性维度评分，缺省为NULL",
+                    "type": "number"
+                },
+                "code_info": {
+                    "description": "码表信息",
+                    "type": "string"
+                },
+                "completeness_score": {
+                    "description": "完整性维度评分，缺省为NULL",
+                    "type": "number"
+                },
+                "consistency_score": {
+                    "description": "一致性维度评分，缺省为NULL",
+                    "type": "number"
+                },
+                "details": {
+                    "description": "规则结果明细（仅返回部分需要呈现的字段规则输出结果）",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_exploration.RuleResult"
+                    }
+                },
+                "field_id": {
+                    "description": "字段id",
+                    "type": "string"
+                },
+                "standardization_score": {
+                    "description": "规范性维度评分，缺省为NULL",
+                    "type": "number"
+                },
+                "uniqueness_score": {
+                    "description": "唯一性维度评分，缺省为NULL",
+                    "type": "number"
+                }
+            }
+        },
+        "devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_exploration.FieldReportResp": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "description": "探查结果",
+                    "type": "string"
+                },
+                "total_sample": {
+                    "description": "探查样本总数",
+                    "type": "integer"
+                }
+            }
+        },
+        "devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_exploration.ListReportRespParam": {
+            "type": "object",
+            "required": [
+                "entries",
+                "total_count"
+            ],
+            "properties": {
+                "entries": {
+                    "description": "对象列表",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_exploration.ReportSummary"
+                    }
+                },
+                "total_count": {
+                    "description": "当前筛选条件下的对象数量",
+                    "type": "integer",
+                    "minimum": 0,
+                    "example": 3
+                }
+            }
+        },
+        "devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_exploration.ReportFormat": {
+            "type": "object",
+            "properties": {
+                "accuracy_score": {
+                    "description": "准确性维度评分，缺省为NULL",
+                    "type": "number"
+                },
+                "code": {
+                    "description": "数据探查报告编号",
+                    "type": "string"
+                },
+                "completeness_score": {
+                    "description": "完整性维度评分，缺省为NULL",
+                    "type": "number"
+                },
+                "consistency_score": {
+                    "description": "一致性维度评分，缺省为NULL",
+                    "type": "number"
+                },
+                "created_at": {
+                    "description": "创建时间",
+                    "type": "integer"
+                },
+                "explore_type": {
+                    "description": "探查类型,0 快速探查,1 随机快速探,2 全量探查",
+                    "type": "integer"
+                },
+                "field_explore": {
+                    "description": "字段探查参数",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_exploration.ExploreFieldDetail"
+                    }
+                },
+                "finished_at": {
+                    "description": "完成时间",
+                    "type": "integer"
+                },
+                "metadata_explore": {
+                    "$ref": "#/definitions/devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_exploration.ExploreDetails"
+                },
+                "row_explore": {
+                    "$ref": "#/definitions/devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_exploration.ExploreDetails"
+                },
+                "schema": {
+                    "description": "数据库名",
+                    "type": "string"
+                },
+                "standardization_score": {
+                    "description": "规范性维度评分，缺省为NULL",
+                    "type": "number"
+                },
+                "table": {
+                    "description": "表名称",
+                    "type": "string"
+                },
+                "table_explore": {
+                    "description": "视图级探查参数",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_exploration.RuleResult"
+                    }
+                },
+                "table_id": {
+                    "description": "表id",
+                    "type": "string"
+                },
+                "task_id": {
+                    "description": "任务ID",
+                    "type": "string"
+                },
+                "total_rows": {
+                    "description": "实际探查数量",
+                    "type": "integer"
+                },
+                "total_sample": {
+                    "description": "探查样本总数，全量探查时该参数无效",
+                    "type": "integer"
+                },
+                "total_score": {
+                    "description": "总分，缺省为NULL",
+                    "type": "number"
+                },
+                "uniqueness_score": {
+                    "description": "唯一性维度评分，缺省为NULL",
+                    "type": "number"
+                },
+                "ve_catalog": {
+                    "description": "数据源编目",
+                    "type": "string"
+                },
+                "version": {
+                    "description": "任务版本",
+                    "type": "integer"
+                }
+            }
+        },
+        "devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_exploration.ReportSummary": {
+            "type": "object",
+            "properties": {
+                "accuracy_score": {
+                    "description": "准确性维度评分，缺省为NULL",
+                    "type": "number"
+                },
+                "code": {
+                    "description": "数据探查报告编号",
+                    "type": "string"
+                },
+                "completeness_score": {
+                    "description": "完整性维度评分，缺省为NULL",
+                    "type": "number"
+                },
+                "consistency_score": {
+                    "description": "一致性维度评分，缺省为NULL",
+                    "type": "number"
+                },
+                "created_at": {
+                    "description": "创建时间",
+                    "type": "integer"
+                },
+                "finished_at": {
+                    "description": "完成时间",
+                    "type": "integer"
+                },
+                "standardization_score": {
+                    "description": "规范性维度评分，缺省为NULL",
+                    "type": "number"
+                },
+                "task_id": {
+                    "description": "任务ID",
+                    "type": "string"
+                },
+                "total_rows": {
+                    "description": "实际探查数量",
+                    "type": "integer"
+                },
+                "total_score": {
+                    "description": "总评分",
+                    "type": "number"
+                },
+                "uniqueness_score": {
+                    "description": "唯一性维度评分，缺省为NULL",
+                    "type": "number"
+                },
+                "version": {
+                    "description": "任务版本",
+                    "type": "integer"
+                }
+            }
+        },
+        "devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_exploration.RuleResult": {
+            "type": "object",
+            "properties": {
+                "accuracy_score": {
+                    "description": "准确性维度评分，缺省为NULL",
+                    "type": "number"
+                },
+                "completeness_score": {
+                    "description": "完整性维度评分，缺省为NULL",
+                    "type": "number"
+                },
+                "consistency_score": {
+                    "description": "一致性维度评分，缺省为NULL",
+                    "type": "number"
+                },
+                "dimension": {
+                    "description": "维度属性 0准确性,1及时性,2完整性,3唯一性，4一致性,5规范性,6数据统计",
+                    "type": "string"
+                },
+                "dimension_type": {
+                    "description": "维度类型",
+                    "type": "string"
+                },
+                "inspected_count": {
+                    "description": "检测数据量",
+                    "type": "integer"
+                },
+                "issue_count": {
+                    "description": "问题数据量",
+                    "type": "integer"
+                },
+                "result": {
+                    "description": "规则输出结果 []any规则输出列级结果",
+                    "type": "string"
+                },
+                "rule_config": {
+                    "description": "规则配置",
+                    "type": "string"
+                },
+                "rule_description": {
+                    "description": "规则描述",
+                    "type": "string"
+                },
+                "rule_id": {
+                    "description": "规则ID",
+                    "type": "string"
+                },
+                "rule_name": {
+                    "description": "规则名称",
+                    "type": "string"
+                },
+                "standardization_score": {
+                    "description": "规范性维度评分，缺省为NULL",
+                    "type": "number"
+                },
+                "uniqueness_score": {
+                    "description": "唯一性维度评分，缺省为NULL",
+                    "type": "number"
+                }
+            }
+        },
+        "devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_task_config.ExploreField": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "field_id": {
+                    "type": "string"
+                },
+                "field_name": {
+                    "description": "字段名称",
+                    "type": "string",
+                    "maxLength": 255,
+                    "minLength": 1
+                },
+                "field_type": {
+                    "description": "字段类型",
+                    "type": "string"
+                },
+                "params": {
+                    "description": "探查项目参数",
+                    "type": "string"
+                },
+                "projects": {
+                    "description": "探查项目",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_task_config.Projects"
+                    }
+                }
+            }
+        },
+        "devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_task_config.Projects": {
+            "type": "object",
+            "required": [
+                "dimension",
+                "rule_id"
+            ],
+            "properties": {
+                "dimension": {
+                    "type": "string"
+                },
+                "dimension_type": {
+                    "type": "string"
+                },
+                "rule_config": {
+                    "type": "string"
+                },
+                "rule_description": {
+                    "type": "string"
+                },
+                "rule_id": {
+                    "type": "string"
+                },
+                "rule_name": {
+                    "type": "string"
+                }
+            }
+        },
+        "devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_task_config.TaskConfigListRespParam": {
+            "type": "object",
+            "required": [
+                "entries",
+                "total_count"
+            ],
+            "properties": {
+                "entries": {
+                    "description": "对象列表",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_task_config.TaskConfigRespDetail"
+                    }
+                },
+                "total_count": {
+                    "description": "当前筛选条件下的对象数量",
+                    "type": "integer",
+                    "minimum": 0,
+                    "example": 3
+                }
+            }
+        },
+        "devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_task_config.TaskConfigReq": {
+            "type": "object",
+            "required": [
+                "dv_task_id",
+                "explore_type",
+                "schema",
+                "table",
+                "table_id",
+                "task_enabled",
+                "ve_catalog"
+            ],
+            "properties": {
+                "dv_task_id": {
+                    "description": "data-view任务id",
+                    "type": "string"
+                },
+                "explore_type": {
+                    "description": "探查类型,1 探查数据,2 探查时间戳",
+                    "type": "integer",
+                    "enum": [
+                        1,
+                        2
+                    ]
+                },
+                "field_explore": {
+                    "description": "字段探查参数",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_task_config.ExploreField"
+                    }
+                },
+                "field_info": {
+                    "type": "string"
+                },
+                "metadata_explore": {
+                    "description": "元数据级探查项目",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_task_config.Projects"
+                    }
+                },
+                "row_explore": {
+                    "description": "行级级探查项目",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_task_config.Projects"
+                    }
+                },
+                "schema": {
+                    "description": "数据库名",
+                    "type": "string",
+                    "maxLength": 255,
+                    "minLength": 1,
+                    "example": "1"
+                },
+                "table": {
+                    "description": "表名称",
+                    "type": "string",
+                    "maxLength": 255,
+                    "minLength": 1,
+                    "example": "1"
+                },
+                "table_id": {
+                    "description": "数据源表ID",
+                    "type": "string",
+                    "maxLength": 255,
+                    "minLength": 1,
+                    "example": "1"
+                },
+                "task_desc": {
+                    "description": "探查描述",
+                    "type": "string",
+                    "maxLength": 255,
+                    "minLength": 0,
+                    "example": "1"
+                },
+                "task_enabled": {
+                    "description": "探查配置启用禁用状态，0禁用，1启用",
+                    "type": "integer",
+                    "enum": [
+                        0,
+                        1
+                    ]
+                },
+                "task_name": {
+                    "description": "探查任务配置名称",
+                    "type": "string",
+                    "maxLength": 255,
+                    "minLength": 1,
+                    "example": "1"
+                },
+                "total_sample": {
+                    "description": "探查样本总数，全量探查时该参数无效",
+                    "type": "integer",
+                    "minimum": 0
+                },
+                "user_id": {
+                    "description": "用户id",
+                    "type": "string"
+                },
+                "user_name": {
+                    "description": "用户名",
+                    "type": "string"
+                },
+                "ve_catalog": {
+                    "description": "数据源编",
+                    "type": "string",
+                    "maxLength": 255,
+                    "minLength": 1,
+                    "example": "1"
+                },
+                "view_explore": {
+                    "description": "视图级探查项目",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_task_config.Projects"
+                    }
+                }
+            }
+        },
+        "devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_task_config.TaskConfigResp": {
+            "type": "object",
+            "properties": {
+                "task_id": {
+                    "description": "任务配置id",
+                    "type": "string",
+                    "example": "1"
+                },
+                "version": {
+                    "description": "版本号",
+                    "type": "integer",
+                    "example": 1
+                }
+            }
+        },
+        "devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_task_config.TaskConfigRespDetail": {
+            "type": "object",
+            "required": [
+                "created_by_uid",
+                "created_by_uname",
+                "exec_status",
+                "explore_type",
+                "schema",
+                "table",
+                "table_id",
+                "task_enabled",
+                "updated_by_uid",
+                "updated_by_uname",
+                "ve_catalog"
+            ],
+            "properties": {
+                "created_at": {
+                    "description": "创建时间",
+                    "type": "integer"
+                },
+                "created_by_uid": {
+                    "description": "创建人ID",
+                    "type": "string",
+                    "minLength": 1,
+                    "example": "1"
+                },
+                "created_by_uname": {
+                    "description": "创建人名称",
+                    "type": "string",
+                    "minLength": 1,
+                    "example": "1"
+                },
+                "exec_at": {
+                    "description": "最后一次执行时间",
+                    "type": "integer"
+                },
+                "exec_status": {
+                    "description": "执行状态 1未执行，2执行中，3执行成功，4已取消，5执行失败",
+                    "type": "integer",
+                    "enum": [
+                        0,
+                        1,
+                        2,
+                        3
+                    ]
+                },
+                "explore_type": {
+                    "description": "探查类型,0 快速探查,1 随机快速探,2 全量探查,3 探查时间戳",
+                    "type": "integer",
+                    "enum": [
+                        1,
+                        2,
+                        3
+                    ]
+                },
+                "field_explore": {
+                    "description": "字段探查参数",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_task_config.ExploreField"
+                    }
+                },
+                "schema": {
+                    "description": "数据库名",
+                    "type": "string",
+                    "minLength": 1,
+                    "example": "1"
+                },
+                "table": {
+                    "description": "表名称",
+                    "type": "string",
+                    "minLength": 1,
+                    "example": "1"
+                },
+                "table_explore_projects": {
+                    "description": "表级探查项目",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_task_config.Projects"
+                    }
+                },
+                "table_id": {
+                    "description": "数据源表ID",
+                    "type": "string",
+                    "example": "1"
+                },
+                "task_enabled": {
+                    "description": "探查配置启用禁用状态，0禁用，1启用",
+                    "type": "integer",
+                    "enum": [
+                        0,
+                        1
+                    ]
+                },
+                "task_id": {
+                    "description": "任务配置id",
+                    "type": "string",
+                    "example": "1"
+                },
+                "task_name": {
+                    "description": "探查任务配置名称",
+                    "type": "string",
+                    "minLength": 1,
+                    "example": "1"
+                },
+                "total_sample": {
+                    "description": "探查样本总数，全量探查时该参数无效",
+                    "type": "integer",
+                    "maximum": 10000,
+                    "minimum": 0
+                },
+                "updated_at": {
+                    "description": "更新时间",
+                    "type": "integer",
+                    "maximum": 256,
+                    "minimum": 0
+                },
+                "updated_by_uid": {
+                    "description": "更新人ID",
+                    "type": "string",
+                    "minLength": 1,
+                    "example": "1"
+                },
+                "updated_by_uname": {
+                    "description": "更新人名称",
+                    "type": "string",
+                    "minLength": 1,
+                    "example": "1"
+                },
+                "ve_catalog": {
+                    "description": "数据源编",
+                    "type": "string",
+                    "minLength": 1,
+                    "example": "1"
+                },
+                "version": {
+                    "description": "版本号",
+                    "type": "integer",
+                    "example": 1
+                }
+            }
+        },
+        "devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_task_config.TaskConfigUpdateReq": {
+            "type": "object",
+            "required": [
+                "dv_task_id",
+                "explore_type",
+                "schema",
+                "table",
+                "table_id",
+                "task_enabled",
+                "task_id",
+                "ve_catalog"
+            ],
+            "properties": {
+                "dv_task_id": {
+                    "description": "data-view任务id",
+                    "type": "string"
+                },
+                "explore_type": {
+                    "description": "探查类型,1 探查数据,2 探查时间戳",
+                    "type": "integer",
+                    "enum": [
+                        1,
+                        2
+                    ]
+                },
+                "field_explore": {
+                    "description": "字段探查参数",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_task_config.ExploreField"
+                    }
+                },
+                "field_info": {
+                    "type": "string"
+                },
+                "metadata_explore": {
+                    "description": "元数据级探查项目",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_task_config.Projects"
+                    }
+                },
+                "row_explore": {
+                    "description": "行级级探查项目",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_task_config.Projects"
+                    }
+                },
+                "schema": {
+                    "description": "数据库名",
+                    "type": "string",
+                    "maxLength": 255,
+                    "minLength": 1,
+                    "example": "1"
+                },
+                "table": {
+                    "description": "表名称",
+                    "type": "string",
+                    "maxLength": 255,
+                    "minLength": 1,
+                    "example": "1"
+                },
+                "table_id": {
+                    "description": "数据源表ID",
+                    "type": "string",
+                    "maxLength": 255,
+                    "minLength": 1,
+                    "example": "1"
+                },
+                "task_desc": {
+                    "description": "探查描述",
+                    "type": "string",
+                    "maxLength": 255,
+                    "minLength": 0,
+                    "example": "1"
+                },
+                "task_enabled": {
+                    "description": "探查配置启用禁用状态，0禁用，1启用",
+                    "type": "integer",
+                    "enum": [
+                        0,
+                        1
+                    ]
+                },
+                "task_id": {
+                    "description": "task_id",
+                    "type": "string",
+                    "example": "1"
+                },
+                "task_name": {
+                    "description": "探查任务配置名称",
+                    "type": "string",
+                    "maxLength": 255,
+                    "minLength": 1,
+                    "example": "1"
+                },
+                "total_sample": {
+                    "description": "探查样本总数，全量探查时该参数无效",
+                    "type": "integer",
+                    "minimum": 0
+                },
+                "user_id": {
+                    "description": "用户id",
+                    "type": "string"
+                },
+                "user_name": {
+                    "description": "用户名",
+                    "type": "string"
+                },
+                "ve_catalog": {
+                    "description": "数据源编",
+                    "type": "string",
+                    "maxLength": 255,
+                    "minLength": 1,
+                    "example": "1"
+                },
+                "view_explore": {
+                    "description": "视图级探查项目",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/devops_KweaverAI_cn_KweaverAIDevOps_AnyFabric__git_data-exploration-service_domain_task_config.Projects"
+                    }
+                }
+            }
+        },
+        "rest.HttpError": {
+            "type": "object",
+            "properties": {
+                "cause": {
+                    "description": "错误原因",
+                    "type": "string",
+                    "x-omitempty": false,
+                    "example": "错误原因"
+                },
+                "code": {
+                    "description": "返回错误码，格式: 服务名.模块.错误",
+                    "type": "string",
+                    "example": "task-center.Public.InternalError"
+                },
+                "description": {
+                    "description": "错误描述",
+                    "type": "string",
+                    "example": "内部错误"
+                },
+                "detail": {
+                    "description": "错误详情, 一般是json对象",
+                    "x-omitempty": false
+                },
+                "solution": {
+                    "description": "错误处理办法",
+                    "type": "string",
+                    "x-omitempty": false,
+                    "example": "请联系内部人员"
+                }
+            }
+        }
+    }
+}

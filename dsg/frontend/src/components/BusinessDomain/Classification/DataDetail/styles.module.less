@@ -1,0 +1,164 @@
+.container {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    row-gap: 16px;
+
+    .detailGroupWrapper {
+        display: flex;
+        width: 100%;
+        flex-direction: column;
+
+        .itemContentWrapper {
+            display: flex;
+            flex-direction: column;
+            padding: 16px;
+        }
+    }
+
+    .configWrapper {
+        display: flex;
+        flex-direction: column;
+        padding: 16px;
+        row-gap: 4px;
+
+        .title {
+            font-weight: 550;
+        }
+
+        .selectGradeContainer {
+            display: flex;
+            align-items: top;
+            margin-left: 24px;
+            column-gap: 4px;
+
+            .itemText {
+                display: flex;
+                height: 32px;
+                flex-shrink: 0;
+                align-items: center;
+            }
+
+            .selectWrapper {
+                display: flex;
+                width: 0;
+                flex: 1;
+                align-items: top;
+
+                .label {
+                    display: flex;
+                    width: 80px;
+                    height: 32px;
+                    flex-shrink: 0;
+                    align-items: center;
+                    justify-content: center;
+                    border: 1px solid #d9d9d9;
+                    border-right: transparent;
+                    margin-left: 8px;
+                    background: #fafafa;
+                    border-radius: 4px 0 0 4px;
+                }
+
+                .select {
+                    width: 320px;
+                }
+            }
+        }
+
+        .combinationContainer {
+            display: flex;
+            margin-top: 16px;
+            margin-left: 24px;
+        }
+    }
+}
+
+.configGradeRuleContainer {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    padding: 16px;
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+    row-gap: 16px;
+
+    .configContentWrapper {
+        display: flex;
+        column-gap: 8px;
+
+        .configOutOperatorWrapper {
+            flex-shrink: 0;
+        }
+
+        .configOutRuleWrapper {
+            display: flex;
+            width: 0;
+            flex: 1;
+            flex-direction: column;
+            row-gap: 12px;
+
+            .configInRuleItemBox {
+                display: flex;
+                width: 100%;
+                padding: 16px;
+                border: 1px solid #d9d9d9;
+                column-gap: 8px;
+
+                .configInRuleItemOperator {
+                    flex-shrink: 0;
+                }
+
+                .rulerItemContentWrapper {
+                    display: flex;
+                    width: 0;
+                    flex: 1;
+                    flex-direction: column;
+
+                    .titleContainer {
+                        display: flex;
+                        overflow: hidden;
+                        align-items: center;
+                        margin-bottom: 12px;
+                        column-gap: 8px;
+
+                        .text {
+                            font-weight: 550;
+                            .ellipsis-mixin();
+                        }
+                    }
+
+                    .itemSelectContainer {
+                        display: flex;
+                        width: 100%;
+                        align-items: top;
+                        column-gap: 12px;
+
+                        .operateBtnWrapper {
+                            display: flex;
+                            width: 32px;
+                            height: 32px;
+                            flex-shrink: 0;
+                            align-items: center;
+                            justify-content: center;
+                            border-radius: 4px;
+                            cursor: pointer;
+
+                            &:hover {
+                                background: #ecf4fd;
+                            }
+                        }
+
+                        .notDeleteBtnWrapper {
+                            display: flex;
+                            width: 32px;
+                            height: 32px;
+                            flex-shrink: 0;
+                            align-items: center;
+                            justify-content: center;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

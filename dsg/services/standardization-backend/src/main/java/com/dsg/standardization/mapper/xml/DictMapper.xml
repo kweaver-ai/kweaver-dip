@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsg.standardization.mapper.DictMapper">
+    <!-- 树形结构 -->
+    <resultMap type="com.dsg.standardization.entity.DictEntity" id="baseMap">
+        <result property="id" column="f_id"/>
+        <result property="code" column="f_code"/>
+        <result property="chName" column="f_ch_name"/>
+        <result property="enName" column="f_en_name"/>
+        <result property="description" column="f_description"/>
+        <result property="catalogId" column="f_catalog_id"/>
+        <result property="version" column="f_version"/>
+        <result property="orgType" column="f_org_type"/>
+        <result property="authorityId" column="f_authority_id"/>
+        <result property="createTime" column="f_create_time"/>
+        <result property="createUser" column="f_create_user"/>
+        <result property="updateTime" column="f_update_time"/>
+        <result property="updateUser" column="f_update_user"/>
+        <result property="deleted" column="f_deleted"/>
+        <result property="state" column="f_state"/>
+        <result property="disableReason" column="f_disable_reason"/>
+        <result property="departmentIds" column="f_department_ids"/>
+        <result property="thirdDeptId" column="f_third_dept_id"/>
+    </resultMap>
+
+
+    <update id="deleteByIds">
+        update t_de_dict set f_deleted=f_id
+        where f_id in
+        <foreach collection="idList" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+
+    <select id="queryList" resultMap="baseMap">
+        select *
+        from t_de_dict
+        where f_deleted=0
+        <if test="catalogIds != null and catalogIds.size() > 0">
+            and f_catalog_id in
+            <foreach collection="catalogIds" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+
+        <if test="orgType != null">
+            and f_org_type=#{orgType}
+        </if>
+        <if test="state != null">
+            and f_state = #{state}
+        </if>
+        <if test="keyword != null and keyword !=''">
+            and (
+            lower(f_ch_name) like lower(CONCAT('%',#{keyword},'%'))
+            or lower(f_en_name) like lower(CONCAT('%',#{keyword},'%'))
+            )
+        </if>
+        <if test="departmentId != null and departmentId != ''">
+            and f_department_ids like CONCAT('%',#{departmentId},'%')
+        </if>
+    </select>
+
+    <select id="queryEffectDictByCode" resultMap="baseMap">
+        select * from t_de_dict where f_code = #{code} and f_deleted = 0 limit 1
+    </select>
+
+    <select id="queryExportData" resultType="com.dsg.standardization.vo.excel.DictExcelVo">
+        select
+        t1.f_id,
+        t1.f_ch_name as chName,
+        t1.f_en_name as enName,
+        t1.f_description as description,
+        t1.f_org_type as orgType,
+        t2.f_code as code,
+        t2.f_value as value,
+        t2.f_description as enumDescription
+        from
+        t_de_dict t1
+        join t_de_dict_enum t2 on
+        t1.f_id = t2.f_dict_id
+        where f_deleted=0
+        <if test="search.ids != null and search.ids !=''">
+            and t1.f_id in
+            <foreach collection="search.ids" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="catalogIds != null and catalogIds.size() > 0">
+            and t1.f_catalog_id in
+            <foreach collection="catalogIds" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        order by f_id
+    </select>
+
+
+    <select id="queryDictByCode" resultMap="baseMap">
+        select *, CAST (substring(f_version,2) as SIGNED) as version_num
+        from t_de_dict tdr
+        where f_deleted=0
+        and f_code = #{code}
+        order by version_num desc
+
+    </select>
+    <select id="queryByCodes" resultMap="baseMap">
+        select * from t_de_dict
+        where f_deleted = 0
+        and f_code in
+        <foreach collection="dictCodes" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+
+    </select>
+
+    <select id="selectByNames" resultMap="baseMap">
+        select *
+        from t_de_dict
+        where 1=1
+        and f_org_type = #{orgType}
+        and f_deleted = 0
+        and (
+        f_en_name in
+        <foreach collection="list" item="item" open="(" separator="," close=")">
+            #{item.enName}
+        </foreach>
+        or
+        f_ch_name in
+        <foreach collection="list" item="item" open="(" separator="," close=")">
+            #{item.chName}
+        </foreach>
+        )
+        <if test="deptIds !=null and deptIds !=''">
+            and f_department_ids = #{deptIds}
+        </if>
+    </select>
+
+    <select id="queryByStdFileCatalog" resultMap="baseMap">
+        select
+        distinct dict.*
+        from
+        t_std_file file
+        join t_relation_dict_file relation on
+        file.f_id = relation.f_file_id
+        join t_de_dict dict on
+        relation.f_dict_id = dict.f_id
+        where dict.f_deleted=0
+        <if test="catalogIds != null and catalogIds.size() > 0">
+            and file.f_catalog_id in
+            <foreach collection="catalogIds" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+
+        <if test="orgType != null">
+            and dict.f_org_type=#{orgType}
+        </if>
+        <if test="state != null">
+            and dict.f_state = #{state}
+        </if>
+
+        <if test="keyword != null and keyword !=''">
+            and (lower(dict.f_ch_name) like lower(CONCAT('%',#{keyword},'%')) or lower(dict.f_en_name) like
+            lower(CONCAT('%',#{keyword},'%')) )
+        </if>
+    </select>
+    <select id="queryByFileId" resultMap="baseMap">
+        select t1.*
+        from t_de_dict t1
+        join t_relation_dict_file t2
+        on t1.f_id = t2.f_dict_id
+        where t2.f_file_id = #{fileId}
+        and t1.f_deleted=0
+    </select>
+
+    <update id="removeCatalog">
+        update t_de_dict
+        set f_catalog_id = #{catalogId},
+        f_version = f_version+1,
+        f_update_time=now(),
+        f_update_user=#{updateUser}
+        where f_deleted=0
+        and f_id in
+        <foreach collection="ids" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        and f_catalog_id != #{catalogId}
+    </update>
+    <update id="updateVersionByIds">
+        update t_de_dict
+        set f_version=f_version+1,
+        f_update_user=#{updateUser},
+        f_update_time=now()
+        where f_id in
+        <foreach collection="idList" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <insert id="save">
+        insert into t_de_dict(
+        f_id,
+        f_code,
+        f_ch_name,
+        f_en_name,
+        f_catalog_id,
+        f_org_type,
+        f_description,
+        f_version,
+        f_create_time,
+        f_create_user,
+        f_update_time,
+        f_update_user,
+        f_authority_id,
+        f_department_ids,
+        f_third_dept_id
+        ) values
+        <foreach collection="dataList" item="item" separator=",">
+            (
+            #{item.id},
+            #{item.code},
+            #{item.chName},
+            #{item.enName},
+            #{item.catalogId},
+            #{item.orgType},
+            #{item.description},
+            #{item.version},
+            #{item.createTime},
+            #{item.createUser},
+            #{item.updateTime},
+            #{item.updateUser},
+            #{item.authorityId},
+            #{item.departmentIds},
+            #{item.thirdDeptId}
+            )
+        </foreach>
+
+    </insert>
+
+
+    <select id="checkIsExist" resultMap="baseMap">
+        select *
+        from t_de_dict
+        where 1=1
+        and (f_en_name = #{enName} or f_ch_name = #{chName} )
+        and f_org_type = #{orgType}
+        and f_deleted = 0
+        <if test="id != null ">
+            and f_code not in
+            (
+            select f_code from t_de_dict where f_id = #{id}
+            )
+        </if>
+    </select>
+    <select id="queryPageByFileId" resultMap="baseMap">
+        select t1.*
+        from t_de_dict t1
+        join t_relation_dict_file t2
+        on t1.f_id = t2.f_dict_id
+        where t2.f_file_id = #{fileId}
+        and t1.f_deleted=0
+    </select>
+
+    <select id="queryByStdFile" resultMap="baseMap">
+        select t1.*
+        from t_de_dict t1
+        join t_relation_dict_file t2
+        on t1.f_id = t2.f_dict_id
+        where t2.f_file_id = #{fileId}
+        and t1.f_deleted=0
+        <if test="orgType != null">
+            and t1.f_org_type=#{orgType}
+        </if>
+        <if test="state != null">
+            and t1.f_state = #{state}
+        </if>
+
+        <if test="keyword != null and keyword !=''">
+            and (
+            lower(t1.f_ch_name) like lower(CONCAT('%',#{keyword},'%'))
+            or lower(t1.f_en_name) like lower(CONCAT('%',#{keyword},'%'))
+            )
+        </if>
+        <if test="departmentId != null and departmentId != ''">
+            and t1.f_department_ids like CONCAT('%',#{departmentId},'%')
+        </if>
+    </select>
+    <select id="queryDataNotUesdStdFile" resultMap="baseMap">
+        select *
+        from t_de_dict
+        where f_id not in (select f_dict_id from t_relation_dict_file)
+        and f_deleted =0
+        <if test="orgType != null">
+            and f_org_type=#{orgType}
+        </if>
+        <if test="state != null">
+            and f_state = #{state}
+        </if>
+
+        <if test="keyword != null and keyword !=''">
+            and (
+            lower(f_ch_name) like lower(CONCAT('%',#{keyword},'%'))
+            or lower(f_en_name) like lower(CONCAT('%',#{keyword},'%'))
+            )
+        </if>
+    </select>
+    <select id="queryData" resultMap="baseMap">
+        select * from t_de_dict where f_deleted=0
+        <if test="orgType != null">
+            and f_org_type = #{orgType}
+        </if>
+
+        <if test="chName != null and chName != ''">
+            and f_ch_name = #{chName}
+        </if>
+
+        <if test="enName != null and enName != ''">
+            and f_en_name = #{enName}
+        </if>
+        <if test="filterId != null">
+            and f_id != #{filterId}
+        </if>
+        <if test="deptIds != null and deptIds != ''">
+            and f_department_ids = #{deptIds}
+        </if>
+        limit 1
+    </select>
+
+</mapper>

@@ -1,0 +1,274 @@
+.bussinessStandard {
+    display: flex;
+    height: 100%;
+    margin-left: -24px;
+
+    .empty {
+        width: 100%;
+        margin-top: 124px;
+        text-align: center;
+
+        .operateDesc {
+            text-align: center;
+        }
+    }
+
+    .standardtContent {
+        display: flex;
+        width: 100%;
+
+        .emptyForm {
+            position: absolute;
+            top: 300px;
+            left: 50%;
+            text-align: center;
+
+            .operateDesc {
+                text-align: center;
+            }
+        }
+    }
+}
+
+.formWrapper {
+    .topSide {
+        padding: 0 22px 0 20px;
+
+        .titleWrapper {
+            display: flex;
+            width: 208px;
+            height: 40px;
+            justify-content: space-between;
+            margin-top: 12px;
+            font-size: 14px;
+            line-height: 40px;
+
+            .formTitle {
+                color: @title-color-secondary;
+                font-weight: bold;
+            }
+        }
+    }
+
+    .formList {
+        overflow: auto;
+        width: 256px;
+        height: calc(100% - 220px);
+        margin-top: 16px;
+
+        .form {
+            display: flex;
+            height: 55px;
+            align-items: center;
+            padding: 0 22px 0 20px;
+            line-height: 40px;
+
+            .textWrapper {
+                width: 162px;
+                margin-left: 8px;
+
+                .name {
+                    height: 22px;
+                    color: @title-color-secondary;
+                    font-size: 14px;
+                    line-height: 22px;
+                    .ellipsis-mixin();
+                }
+
+                .creator {
+                    height: 17px;
+                    color: @text-color-third;
+                    font-size: 12px;
+                    line-height: 17px;
+                }
+
+                .hightLightText {
+                    color: @primary-color;
+                }
+            }
+        }
+
+        .pagination {
+            margin-top: 32px;
+            margin-right: 20px;
+            float: right;
+        }
+
+        .selectedForm {
+            background-color: rgb(18 110 227 / 6%);
+        }
+    }
+}
+
+.standardWrapper {
+    width: calc(100% - 256px);
+    padding-left: 12px;
+
+    .operateWrapper {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 8px;
+        margin-bottom: 16px;
+
+        .btn {
+            display: flex;
+            min-width: 94px;
+            height: 32px;
+            align-items: center;
+            font-size: 12px;
+        }
+
+        .addIcon,
+        .importIcon {
+            display: flex;
+            margin-right: 8px;
+            font-size: 14px;
+        }
+
+        .isStandard {
+            display: flex;
+
+            .selectIsStandard {
+                width: 190px;
+            }
+
+            .shrinkStandardSelected {
+                width: 80px;
+            }
+        }
+
+        .fieldInput {
+            width: 272px;
+        }
+
+        .shrinkFieldInput {
+            width: 150px;
+        }
+    }
+
+    .normalizationRate {
+        margin-bottom: 16px;
+        font-size: 14px;
+
+        .normalizationRateLable {
+            font-weight: bold;
+        }
+
+        .normalizationRateValue {
+            margin-right: 5px;
+            color: @link-color;
+        }
+
+        .normalizationRateIcon {
+            color: @text-color-desc;
+            font-size: 12px;
+        }
+
+        .rateTips {
+            font-size: 12px;
+
+            :first-child {
+                margin-top: 5px;
+            }
+
+            p {
+                margin-bottom: 5px;
+            }
+        }
+    }
+
+    .indicatorList {
+        .showTableInfo {
+            font-size: 14px;
+
+            .topInfo {
+                .ellipsis-mixin();
+            }
+
+            .bottomInfo {
+                color: @text-color-third;
+                .ellipsis-mixin();
+            }
+
+            .enName {
+                color: @text-color-desc;
+                .ellipsis-mixin();
+            }
+        }
+    }
+}
+
+.createStandard {
+    .formName {
+        display: flex;
+        margin-top: -10px;
+        margin-bottom: 8px;
+        font-size: 16px;
+
+        .xlsIcon {
+            margin-right: 8px;
+            font-size: 20px;
+        }
+    }
+
+    .formWrapper {
+        width: 1084px;
+
+        .title {
+            margin-bottom: 16px;
+            color: @title-color-secondary;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .w256 {
+            width: 256px;
+        }
+
+        .w532 {
+            width: 532px;
+        }
+
+        .ml20 {
+            margin-left: 20px;
+        }
+    }
+}
+
+.detailsWrapper {
+    .bodyWrapper {
+        width: 1140px;
+
+        .title {
+            margin-bottom: 24px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .infoWrapper {
+            display: flex;
+            margin-bottom: 24px;
+            font-size: 14px;
+
+            .lable {
+                color: @title-color-secondary;
+            }
+
+            .value {
+                max-width: 430px;
+                margin-left: 10px;
+                color: @text-color-desc;
+                word-break: break-all;
+            }
+        }
+
+        .divider {
+            border-color: rgb(0 0 0 / 10%);
+            margin-top: 0;
+        }
+    }
+}
+
+.delIcon {
+    color: #f5222d !important;
+}

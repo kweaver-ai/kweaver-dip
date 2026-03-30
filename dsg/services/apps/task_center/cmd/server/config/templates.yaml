@@ -1,0 +1,666 @@
+templates:
+  - name: mainBusiness
+    sheet_name: 主干业务清单表
+    models_name: 主干业务名称
+    type: 1
+    components:
+      - index: 2
+        label: 任务名称
+        name: task_name
+        type: input
+        required: true
+        rule:
+          regexp: ^[!-~a-zA-Z0-9_\u4e00-\u9fa5 ！￥……（）——“”：；，。？、‘’《》｛｝【】·\s]+$
+          regexp_info: 仅支持中英文、数字及键盘上的特殊字符
+          max_length: 128
+          length_info: 超过最大长度：128
+        disabled: false
+        same_as:
+        placeholder:
+        is_multiple_values: false
+      - index: 3
+        label: 机构名称
+        name: organization_name
+        type: input
+        required: true
+        rule:
+          regexp: ^[!-~a-zA-Z0-9_\u4e00-\u9fa5 ！￥……（）——“”：；，。？、‘’《》｛｝【】·\s]+$
+          regexp_info: 仅支持中英文、数字及键盘上的特殊字符
+          max_length: 128
+          length_info: 超过最大长度：128
+        disabled:
+        same_as:
+        placeholder:
+        is_multiple_values: false
+        max_values: 0
+      - index: 4
+        label: 处室名称
+        name: department_name
+        type: input
+        required: true
+        rule:
+          regexp: ^[!-~a-zA-Z0-9_\u4e00-\u9fa5 ！￥……（）——“”：；，。？、‘’《》｛｝【】·\s]+$
+          regexp_info: 仅支持中英文、数字及键盘上的特殊字符
+          max_length: 128
+          length_info: 超过最大长度：128
+        disabled:
+        same_as:
+        placeholder:
+        is_multiple_values: true
+        max_values: 3
+        separator: ;
+      - index: 1
+        label: 主干业务名称
+        name: main_business
+        type: input
+        required: true
+        rule:
+          regexp: ^[a-zA-Z0-9\u4e00-\u9fa5-_]+$
+          regexp_info: 仅支持中英文、数字、下划线及中划线
+          max_length: 128
+          length_info: 超过最大长度：128
+        disabled: true
+        same_as:
+        placeholder:
+        is_multiple_values: false
+      - index: 8
+        label: 相关业务责任
+        name: business_responsibilities
+        type: text_area
+        required: false
+        rule:
+          regexp: ^[!-~a-zA-Z0-9_\u4e00-\u9fa5 ！￥……（）——“”：；，。？、‘’《》｛｝【】·\s]*$
+          regexp_info: 仅支持中英文、数字及键盘上的特殊字符
+          max_length: 128
+          length_info: 超过最大长度：128
+        disabled:
+        same_as:
+        placeholder:
+        is_multiple_values: false
+      - index: 6
+        label: 主题分类
+        name: topic_classification
+        type: input
+        required: false
+        rule:
+          regexp: ^[!-~a-zA-Z0-9_\u4e00-\u9fa5 ！￥……（）——“”：；，。？、‘’《》｛｝【】·\s]*$
+          regexp_info: 仅支持中英文、数字及键盘上的特殊字符
+          max_length: 128
+          length_info: 超过最大长度：128
+        disabled:
+        same_as:
+        placeholder:
+        is_multiple_values: false
+      - index: 5
+        label: 来源系统
+        name: source_systems
+        type: input
+        required: false
+        rule:
+          regexp: ^[!-~a-zA-Z0-9_\u4e00-\u9fa5 ！￥……（）——“”：；，。？、‘’《》｛｝【】·\s]*$
+          regexp_info: 仅支持中英文、数字及键盘上的特殊字符
+          max_length: 128
+          length_info: 超过最大长度：128
+        disabled:
+        same_as:
+        placeholder:
+        is_multiple_values: true
+        max_values: 3
+        separator: ;
+      - index: 7
+        label: 来源事项
+        name: source_matters
+        type: input
+        required: false
+        rule:
+          regexp: ^[!-~a-zA-Z0-9_\u4e00-\u9fa5 ！￥……（）——“”：；，。？、‘’《》｛｝【】·\s]*$
+          regexp_info: 仅支持中英文、数字及键盘上的特殊字符
+          max_length: 128
+          length_info: 超过最大长度：128
+        disabled:
+        same_as:
+        placeholder:
+        is_multiple_values: false
+      - index: 9
+        label: 相关标准
+        name: relevant_standards
+        type: input
+        required: false
+        rule:
+          regexp: ^[!-~a-zA-Z0-9_\u4e00-\u9fa5 ！￥……（）——“”：；，。？、‘’《》｛｝【】·\s]*$
+          regexp_info: 仅支持中英文、数字及键盘上的特殊字符
+          max_length: 128
+          length_info: 超过最大长度：128
+        disabled:
+        same_as:
+        placeholder:
+        is_multiple_values: false
+  - name: otherBusiness
+    sheet_name: 其他业务清单表
+    type: 2
+    components:
+      - index: 1
+        label: 任务名称
+        name: task_name
+        type: input
+        required: true
+        rule:
+        disabled:
+        same_as:
+        placeholder:
+        is_multiple_values: false
+
+  - name: indicator
+    sheet_name: 指标汇总表
+    models_name: 指标汇总表
+#    fill_instructions: |
+#      填表说明：
+#      *号代表必填
+#      1. 【指标名称】填统计维度或者统计指标，不需要填统计维度和指标的组合。
+#      2. 【来源业务表】多表用；分隔符
+#      3. 【来源业务表字段】多字段用\分隔符。
+#      4. 【取值规则】取信息项的哪部分值域范围。不取值分隔符保留。
+#      5. 【取值说明】对取值规则做明确的说明，若有多条规则需要分条称述。例如：1.xxxx；2.xxxxx。若值域为代码，对代码中文名称进行说明。
+#      6. 【运算逻辑】计、去重、或、且、除、乘，不同字段的运算逻辑用\分隔。字段若不计算分隔符保留。
+#      7. 【输出字段】指标需要输出的字段或者维度。多字段用\分隔符。
+#      8. 【输出字段说明】对输出字段的明确说明，包括但不仅限于取自哪个业务字段，以何种形式输出等。输出字段说明与输出字段一一对应，用“、”分隔。
+#      9. 【校验规则】指标间值的计算公式。
+#      10. 【共享属性】有三种可选：无条件共享，有条件共享，不予共享
+#      11. 【开放属性】有两种可选：向公众开放，不向公众开放
+#      12. 【敏感属性】有两种可选：敏感，不敏感，根据信息项数据的密级程度设置敏感属性。
+#      13. 【涉密属性】有两种可选：涉密，非涉密，根据信息项数据的涉密程度设置涉密属性。
+    type: 1
+    components:
+      - index: 1
+        label: 指标名称
+        name: Name
+        type: input
+        required: true
+        is_multiple_values: false
+      - index: 2
+        label: 指标说明
+        name: Desc
+        type: input
+        required: false
+        is_multiple_values: false
+      - index: 3
+        label: 来源业务表
+        name: SourceTableCn
+        type: input
+        required: false
+        is_multiple_values: false
+      - index: 4
+        label: 来源业务表字段
+        name: KeyCn
+        type: input
+        required: true
+        is_multiple_values: false
+      - index: 5
+        label: 业务字段英文名称
+        name: KeyEn
+        type: input
+        required: true
+        is_multiple_values: false
+      - index: 6
+        label: 取值规则
+        name: OperationScope
+        type: input
+        required: false
+        is_multiple_values: false
+      - index: 7
+        label: 规则说明
+        name: RuleExplain
+        type: input
+        required: false
+        is_multiple_values: false
+      - index: 8
+        label: 运算逻辑
+        name: OperationLogic
+        type: input
+        required: true
+        is_multiple_values: false
+      - index: 9
+        label: 输出字段
+        name: Property
+        type: input
+        required: true
+        is_multiple_values: false
+      - index: 10
+        label: 输出字段说明
+        name: Explain
+        type: input
+        required: true
+        is_multiple_values: false
+      - index: 11
+        label: 校验规则
+        name: CheckRule
+        type: input
+        required: false
+        is_multiple_values: false
+      - index: 12
+        label: 样例
+        name: Demo
+        type: input
+        required: false
+        is_multiple_values: false
+      - index: 13
+        label: 样例说明
+        name: DemoDesc
+        type: input
+        required: false
+        is_multiple_values: false
+      - index: 14
+        label: 指标分类
+        name: Tag
+        type: input
+        required: false
+        is_multiple_values: false
+      - index: 15
+        label: 共享属性
+        name: Share
+        type: input
+        required: false
+        is_multiple_values: false
+      - index: 16
+        label: 开放属性
+        name: Open
+        type: input
+        required: false
+        is_multiple_values: false
+      - index: 17
+        label: 敏感属性
+        name: Sensitive
+        type: input
+        required: false
+        is_multiple_values: false
+      - index: 18
+        label: 涉密属性
+        name: SecretRelated
+        type: input
+        required: false
+        is_multiple_values: false
+
+
+
+  - name: original_list
+    sheet_name: 原始表清单表
+    type: 4
+    components:
+      - label: 业务表名称
+        name: name
+        required: true
+      - label: 业务表描述说明
+        name: description
+        required: false
+      - label: 参考标准
+        name: guideline
+        required: false
+      - label: 数据范围
+        name: data_range
+        required: true
+      - label: 更新周期
+        name: update_cycle
+        required: true
+      - label: 资源标签
+        name: resource_tag
+        required: false
+        is_multiple_values: true
+        max_values: 3
+      - label: 来源系统
+        name: source_system
+        required: false
+        is_multiple_values: true
+        max_values: 3
+      - label: 来源业务场景
+        name: source_business_scene
+        required: false
+        is_multiple_values: true
+        max_values: 3
+      - label: 关联业务场景
+        name: related_business_scene
+        required: false
+        is_multiple_values: true
+        max_values: 3
+  - name: original_field
+    sheet_name: 原始表字段表
+    type: 5
+    components:
+      - label: 业务表名称
+        name: business_form_name
+        required: true
+        belong: 业务属性
+      - label: 字段名称
+        name: name
+        required: true
+        belong: 业务属性
+      - label: 字段英文名
+        name: name_en
+        required: true
+        belong: 业务属性
+      - label: 是否本业务产生
+        name: is_current_business_generation
+        required: true
+        belong: 业务属性
+      - label: 标准主题
+        name: standard_theme
+        required: false
+        belong: 业务属性
+      - label: 一级分类
+        name: primary_class
+        required: false
+        belong: 业务属性
+      - label: 二级分类
+        name: secondary_class
+        required: false
+        belong: 业务属性
+      - label: 制定依据
+        name: formulate_basis
+        required: false
+        belong: 业务属性
+      - label: 业务定义
+        name: business_definition
+        required: false
+        belong: 业务属性
+      - label: 标准来源规范文件
+        name: standard_source_specification_document
+        required: false
+        belong: 业务属性
+
+      - label: 数据类型
+        name: data_type
+        required: true
+        belong: 技术属性
+      - label: 数据长度
+        name: data_length
+        required: true
+        belong: 技术属性
+      - label: 是否主键
+        name: is_primary_key
+        required: true
+        belong: 技术属性
+      - label: 是否增量字段
+        name: is_incremental_field
+        required: true
+        belong: 技术属性
+      - label: 是否必填
+        name: is_required
+        required: true
+        belong: 技术属性
+      - label: 是否标准
+        name: is_standard
+        required: true
+        belong: 技术属性
+      - label: 码表
+        name: code_table
+        required: false
+        belong: 技术属性
+      - label: 值域
+        name: value_range
+        required: false
+        belong: 技术属性
+      - label: 编码规则
+        name: encoding_rule
+        required: false
+        belong: 技术属性
+      - label: 关联字段
+        name: field_relationship
+        required: false
+        belong: 技术属性
+
+      - label: 样例
+        name: sample
+        required: false
+        belong: 附加属性
+      - label: 说明
+        name: explanation
+        required: false
+        belong: 附加属性
+      - label: 敏感属性
+        name: sensitive_attribute
+        required: true
+        belong: 附加属性
+      - label: 涉密属性
+        name: confidential_attribute
+        required: true
+        belong: 附加属性
+      - label: 共享属性
+        name: shared_attribute
+        required: true
+        belong: 附加属性
+      - label: 开放属性
+        name: open_attribute
+        required: true
+        belong: 附加属性
+
+  - name: standard_list
+    sheet_name: 标准表清单表
+    type: 6
+    components:
+      - label: 业务表名称
+        name: name
+        required: true
+      - label: 业务表描述说明
+        name: description
+        required: false
+      - label: 参考标准
+        name: guideline
+        required: false
+      - label: 数据范围
+        name: data_range
+        required: true
+      - label: 更新周期
+        name: update_cycle
+        required: true
+      - label: 资源标签
+        name: resource_tag
+        required: false
+        is_multiple_values: true
+        max_values: 3
+      - label: 来源系统
+        name: source_system
+        required: false
+        is_multiple_values: true
+        max_values: 3
+      - label: 来源业务场景
+        name: source_business_scene
+        required: false
+        is_multiple_values: true
+        max_values: 3
+      - label: 关联业务场景
+        name: related_business_scene
+        required: false
+        is_multiple_values: true
+        max_values: 3
+  - name: standard_field
+    sheet_name: 标准表字段表
+    type: 7
+    components:
+      - label: 业务表名称
+        name: business_form_name
+        required: true
+        belong: 业务属性
+      - label: 字段名称
+        name: name
+        required: true
+        belong: 业务属性
+      - label: 字段英文名
+        name: name_en
+        required: true
+        belong: 业务属性
+      - label: 是否本业务产生
+        name: is_current_business_generation
+        required: true
+        belong: 业务属性
+      - label: 标准主题
+        name: standard_theme
+        required: false
+        belong: 业务属性
+      - label: 一级分类
+        name: primary_class
+        required: false
+        belong: 业务属性
+      - label: 二级分类
+        name: secondary_class
+        required: false
+        belong: 业务属性
+      - label: 制定依据
+        name: formulate_basis
+        required: false
+        belong: 业务属性
+      - label: 业务定义
+        name: business_definition
+        required: false
+        belong: 业务属性
+      - label: 标准来源规范文件
+        name: standard_source_specification_document
+        required: false
+        belong: 业务属性
+
+      - label: 数据类型
+        name: data_type
+        required: true
+        belong: 技术属性
+      - label: 数据长度
+        name: data_length
+        required: true
+        belong: 技术属性
+      - label: 是否主键
+        name: is_primary_key
+        required: true
+        belong: 技术属性
+      - label: 是否增量字段
+        name: is_incremental_field
+        required: true
+        belong: 技术属性
+      - label: 是否必填
+        name: is_required
+        required: true
+        belong: 技术属性
+      - label: 是否标准
+        name: is_standard
+        required: true
+        belong: 技术属性
+      - label: 码表
+        name: code_table
+        required: false
+        belong: 技术属性
+      - label: 值域
+        name: value_range
+        required: false
+        belong: 技术属性
+      - label: 编码规则
+        name: encoding_rule
+        required: false
+        belong: 技术属性
+      - label: 关联字段
+        name: field_relationship
+        required: false
+        belong: 技术属性
+
+      - label: 样例
+        name: sample
+        required: false
+        belong: 附加属性
+      - label: 说明
+        name: explanation
+        required: false
+        belong: 附加属性
+      - label: 敏感属性
+        name: sensitive_attribute
+        required: true
+        belong: 附加属性
+      - label: 涉密属性
+        name: confidential_attribute
+        required: true
+        belong: 附加属性
+      - label: 共享属性
+        name: shared_attribute
+        required: true
+        belong: 附加属性
+      - label: 开放属性
+        name: open_attribute
+        required: true
+        belong: 附加属性
+
+
+
+
+  - name: fusionForm
+    sheet_name:
+    type: 2
+    components:
+      - index: 1
+        label: 标准表名称
+        name: StandardFormName
+        type: input
+        required: true
+        is_kv: true
+      - index: 2
+        label: 总体优先规则
+        name: OverallPriorityRule
+        type: input
+        required: true
+        is_kv: true
+      - index: 3
+        label: 总体规则备注
+        name: OverallRuleRemark
+        type: input
+        required: false
+        is_kv: true
+      - index: 4
+        label: 融合字段
+        name: FusionField
+        type: input
+        required: true
+        is_kv: true
+      - index: 5
+        label: 字段值域
+        name: FieldRange
+        type: input
+        required: false
+        is_kv: true
+      - index: 6
+        label: 取值单位
+        name: GetDataUnit
+        type: input
+        required: true
+      - index: 7
+        label: 取值主干业务
+        name: GetDataMainBusiness
+        type: input
+        required: false
+      - index: 8
+        label: 取值业务表
+        name: GetDataBusinessTable
+        type: input
+        required: true
+      - index: 9
+        label: 取值优先级
+        name: GetDataPriority
+        type: input
+        required: true
+      - index: 10
+        label: 优先规则
+        name: PriorityRule
+        type: input
+        required: true
+      - index: 11
+        label: 字段关联规则
+        name: FieldAssociationRule
+        type: input
+        required: false
+      - index: 12
+        label: 规则字段
+        name: RuleField
+        type: input
+        required: true
+      - index: 13
+        label: 取值规则
+        name: GetDataRule
+        type: input
+        required: false
+      - index: 14
+        label: 备注
+        name: Remark
+        type: input
+        required: false

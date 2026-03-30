@@ -1,0 +1,122 @@
+server:
+  http:
+    addr: 0.0.0.0:8155
+  grpc:
+    addr: 0.0.0.0:9000
+data:
+  database:
+    driver: mysql
+    source:
+  redis:
+    addr: 127.0.0.1:6379
+    read_timeout: 0.2s
+    write_timeout: 0.2s
+logs:
+  - name: auth-service
+    default: true
+    enable_caller: true
+    stacktrace_level: error
+    development: true
+    cores:
+      - destination: ./logs/info.log #日志输出地址
+        rotate_size: 100MB #文件分割尺寸
+        core_type: file #core类型，file, stdout两种
+        enable_color: false #是否开启输出颜色
+        output_format: json #日志输出的格式, json, console
+        log_level: info #该日志流的等级
+      - destination: ./logs/error.log
+        rotate_size: 100MB
+        core_type: file
+        output_format: json
+        log_level: error
+      - destination: console
+        core_type: stdout
+        output_format: console
+        enable_color: true
+        log_level: warn
+
+doc:
+  host: "${DOC_HOST}"
+  version: "1.0"
+
+mq:
+  kafka:
+    Type: kafka
+    Host: "${KAFKA_HOST}"
+    Port: "${KAFKA_PORT}"
+    LookupdHost: "${KAFKA_LOOKUPD_HOST}"
+    LookupdPort: "${KAFKA_LOOKUPD_PORT}"
+    username: "${KAFKA_USERNAME}"
+    password: "${KAFKA_PASSWORD}"
+    mechanism: "${KAFKA_MECHANISM}"
+    version: "${KAFKA_VERSION}"
+  nsq:
+    Type: nsq
+    Host: "${NSQ_HOST}"
+    Port: "${NSQ_PORT}"
+    LookupdHost: "${NSQ_LOOKUPD_HOST}"
+    LookupdPort: "${NSQ_LOOKUPD_PORT}"
+    HttpHost: "${NSQ_HTTP_HOST}"
+    HttpPort: "${NSQ_HTTP_PORT}"
+
+database:
+  dbtype: "${DB_TYPE}"
+  host: "${DB_HOST}"
+  port: "${DB_PORT}"
+  username: "${DB_USERNAME}"
+  password: "${DB_PASSWORD}"
+  database: "${DB_NAME}"
+  max-idle-connections: 5
+  max-open-connections: 50
+  max-connection-idle-time: 300
+  max-connection-life-time: 90
+  loglevel: 2
+  isdebug: true
+  tableprefix: ""
+
+telemetry:
+  logLevel: "${LOG_LEVEL}"
+  traceUrl: "${TRACE_URL}"
+  logUrl: "${LOG_URL}"
+  serverName: "${SERVER_NAME}"
+  serverVersion: "${SERVER_VERSION}"
+  traceEnabled: "${TRACE_ENABLED}"
+
+redis:
+  host: "${REDIS_HOST}"
+  password: "${REDIS_PASSWORD}"
+  master_name: "${REDIS_MASTER_NAME}"
+
+# 微服务的 url 地址
+services:
+  virtual_engine: "${VIRTUAL_ENGINE}" #虚拟化引擎
+  data_catalog: "${DATA_CATALOG}" #数据目录
+  metadata_manage: "${METADATA_MANAGE}" #元数据平台
+  configuration_center: "${CONFIGURATION_CENTER}" #配置中心
+  glossary_service: "${GLOSSARY_SERVICE}" #业务术语
+  hydra_admin: "${HYDRA_ADMIN}" # 授权服务
+  user_management: "${USER_MANAGEMENT}" # 用户服务
+  workflow_rest: "${WORKFLOW_REST}" # 流程服务
+  data_application_service: "${DATA_APPLICATION_SERVICE}" # 接口服务
+  basic_search: "${BASIC_SEARCH}" # 搜索服务
+  data_subject: "${DATA_SUBJECT}" # 主题域
+  data_view: "${DATA_VIEW}" # 逻辑视图
+  doc_audit_rest: "${DOC_AUDIT_REST}" # 审核
+
+kafka:
+  version: "${KAFKA_VERSION}"
+  uri: "${KAFKA_URI}"
+  clientId: "${KAFKA_CLIENT_ID}"
+  username: "${KAFKA_USERNAME}"
+  password: "${KAFKA_PASSWORD}"
+  groupId: "${KAFKA_GROUP_ID}"
+  mechanism: "${KAFKA_MECHANISM}"
+
+workflow:
+  mq_type: ${WORKFLOW_MQ_TYPE}
+  mq_channel: ${WORKFLOW_MQ_CHANNEL}
+
+# 审计日志配置
+audit:
+  # 是否启用审计日志
+  enabled: true

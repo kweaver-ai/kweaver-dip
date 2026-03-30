@@ -1,0 +1,427 @@
+.headerWrapper {
+    // padding-left: 20px !important;
+    position: relative;
+    z-index: 2;
+    display: flex;
+    min-width: 1280px;
+    align-items: center;
+    justify-content: space-between;
+
+    .imgWrapper {
+        display: flex;
+        // width: 400px;
+        align-items: center;
+
+        &.imgWrapperDisabled {
+            .img {
+                cursor: default;
+            }
+        }
+
+        .img {
+            width: 123px;
+            max-width: 300px;
+            margin-right: 16px;
+            cursor: pointer;
+            object-fit: contain;
+        }
+
+        .imgDrm {
+            width: auto;
+        }
+
+        .homeIcon {
+            margin-right: 16px;
+            color: #9197a9;
+            cursor: pointer;
+            font-size: 18px;
+
+            &:hover {
+                color: #126ee3;
+            }
+        }
+
+        .menuWrapper {
+            display: flex;
+            align-items: center;
+            margin-left: 56px;
+        }
+
+        .menuItem {
+            position: relative;
+            display: flex;
+            height: 52px;
+            align-items: center;
+            padding: 0 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+
+            &.menuItemActive {
+                &::after {
+                    position: absolute;
+                    bottom: 0;
+                    left: 16px;
+                    width: calc(100% - 32px);
+                    height: 3px;
+                    background-color: #126ee3;
+                    border-radius: 2px 2px 0 0;
+                    content: '';
+                }
+            }
+
+            &:hover {
+                color: #126ee3;
+            }
+        }
+
+        .menuLabel {
+            color: rgb(0 0 0);
+            font-size: 14px;
+            white-space: nowrap;
+
+            &:hover {
+                color: #126ee3;
+            }
+
+            &.menuLabelActive {
+                color: #126ee3;
+                font-weight: 500;
+            }
+        }
+    }
+
+    .cogAsstTitle {
+        display: flex;
+        flex-shrink: 0;
+        align-items: baseline;
+
+        &.dataApplication {
+            .divider {
+                margin: 0 16px;
+            }
+        }
+
+        .subTitle {
+            font-size: 14px;
+            font-weight: 550;
+        }
+
+        .divider {
+            width: 1px;
+            height: 16px;
+            align-self: center;
+            margin: 0 16px 0 0;
+            background: #000;
+        }
+    }
+
+    .searchPageHeader {
+        // display: flex;
+        // align-items: center;
+        // position: absolute;
+        // left: calc(50% - 200px);
+        // padding: 6px 0;
+        // margin: auto 0;
+        margin-left: 24px;
+    }
+
+    .cogSearchDropdown {
+        position: absolute;
+        left: calc(50% - 260px);
+        display: flex;
+        align-items: center;
+        margin: auto 0;
+
+        .searchInput {
+            overflow: hidden;
+            width: 520px;
+            height: 32px;
+            background-color: #f0f2f7 !important;
+            border-radius: 4px;
+        }
+
+        .searchPlace {
+            position: absolute;
+            display: flex;
+            width: 520px;
+            height: 32px;
+            align-items: center;
+            justify-content: center;
+            background-color: #f0f2f7;
+            border-radius: 4px;
+            color: rgb(0 0 0 / 65%);
+            cursor: text;
+            font-size: 14px;
+        }
+
+        :global {
+            .any-fabric-ant-input-prefix {
+                margin-right: 8px;
+
+                .any-fabric-anticon-search {
+                    color: rgb(0 0 0 / 65%);
+                }
+            }
+
+            .any-fabric-ant-input-affix-wrapper:hover {
+                background-color: #f0f2f7;
+            }
+        }
+    }
+
+    .operationWrapper {
+        display: flex;
+        width: 400px;
+        align-items: center;
+        justify-content: flex-end;
+
+        .itemWrapper {
+            display: flex;
+            align-items: center;
+            margin-left: 24px;
+            cursor: pointer;
+
+            .divider {
+                border-left-color: #979797;
+                margin: 0;
+            }
+        }
+
+        .downloadTask {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+
+            .downloadIcon {
+                display: flex;
+                height: 32px;
+                align-items: center;
+                padding: 8px;
+                border-radius: 4px;
+                font-size: 16px;
+
+                // &:hover {
+                //     background: rgb(0 0 0 / 12%);
+                // }
+            }
+        }
+
+        .singleIcon {
+            position: relative;
+            display: flex;
+            width: 32px;
+            height: 32px;
+            align-items: center;
+            justify-content: center;
+            margin-left: 16px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+    }
+
+    // 认知搜索页面header
+    &.cogSearchHeaderWrapper {
+        justify-content: flex-start;
+        box-shadow: 0 2px 10px 6px rgb(0 0 0 / 5%);
+
+        .imgWrapper {
+            // width: 154px;
+
+            .img {
+                margin-right: 0;
+            }
+        }
+
+        .cogSearchDropdown {
+            position: relative;
+            left: 0;
+            margin-left: 24px;
+
+            .searchInput {
+                width: 640px;
+            }
+        }
+
+        .operationWrapper {
+            width: auto;
+            flex: 1;
+        }
+    }
+
+    &.cogSearchHeaderBigWrapper {
+        height: 62px;
+        padding-top: 10px;
+        box-shadow: none;
+    }
+}
+
+.headerShadow {
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    min-width: 1280px;
+    height: 52px;
+    box-shadow: 0 2px 10px 6px rgb(0 0 0 / 5%);
+    pointer-events: none;
+}
+
+.taskWrapper {
+    :global {
+        .any-fabric-ant-drawer-body {
+            padding-top: 4px;
+            padding-bottom: 0;
+        }
+    }
+}
+
+.cityShareCard {
+    padding-top: 0;
+
+    :global {
+        .any-fabric-ant-popover-inner-content {
+            padding: 0;
+        }
+    }
+
+    .cityShareMenu {
+        display: flex;
+        width: 333px;
+        min-height: 198px;
+        max-height: 500px;
+        flex-direction: column;
+        cursor: default;
+
+        .loading {
+            display: flex;
+            flex: 1;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .menuHeader {
+            display: flex;
+            height: 43px;
+            flex-shrink: 0;
+            align-items: center;
+            padding: 0 16px;
+            border-bottom: 1px solid rgb(0 0 0 / 10%);
+            font-weight: 550;
+        }
+
+        .search {
+            width: calc(100% - 32px);
+            margin: 8px 16px;
+        }
+
+        .menuBody {
+            overflow: hidden auto;
+            height: 0;
+            min-height: 0;
+            flex: 1;
+        }
+
+        .menuFooter {
+            display: flex;
+            height: 52px;
+            flex-shrink: 0;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            border-top: 1px solid rgb(0 0 0 / 10%);
+
+            &-Opr {
+                display: flex;
+                gap: 8px;
+            }
+        }
+
+        .resourceItem {
+            display: flex;
+            height: 56px;
+            align-items: center;
+            padding: 0 16px;
+
+            :global {
+                .any-fabric-ant-checkbox-wrapper {
+                    flex: 1;
+                    align-items: center;
+
+                    .any-fabric-ant-checkbox {
+                        top: 0;
+                    }
+                }
+            }
+
+            &.checked {
+                &:hover {
+                    background: rgb(236 245 255);
+                }
+            }
+
+            &.disabled {
+                color: rgb(0 0 0 / 25%);
+
+                &:hover {
+                    background: transparent;
+                }
+
+                .resourceIcon {
+                    opacity: 0.65;
+                }
+
+                .resourceCode {
+                    color: rgb(0 0 0 / 25%);
+                }
+            }
+
+            &:hover {
+                background: #f5f5f5;
+
+                .removeBtn {
+                    display: block;
+                }
+            }
+
+            .resourceContent {
+                display: flex;
+                flex: 1;
+                align-items: center;
+                margin-right: 8px;
+                gap: 8px;
+
+                .resourceNameWrap {
+                    display: flex;
+                    flex: 1;
+                    flex-direction: column;
+                }
+            }
+
+            .resourceIcon {
+                font-size: 24px;
+            }
+
+            .resourceName,
+            .resourceCode {
+                .ellipsis-line(1);
+            }
+
+            .resourceCode {
+                color: rgb(0 0 0 / 45%);
+                font-size: 12px;
+            }
+
+            .removeBtn {
+                display: none;
+                flex-shrink: 0;
+            }
+
+            .disabledIcon {
+                color: #e60012;
+                cursor: pointer;
+                font-size: 14px;
+            }
+        }
+    }
+}

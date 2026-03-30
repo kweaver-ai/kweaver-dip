@@ -1,0 +1,211 @@
+.rank-card {
+    display: flex;
+    width: 100%;
+    height: 356px;
+    flex-direction: column;
+    padding: 16px 0;
+    background: #fff;
+    border-radius: 4px;
+
+    &-header {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 0 16px;
+        margin-bottom: 10px;
+        column-gap: 8px;
+
+        &-title {
+            color: rgb(0 0 0 / 85%);
+            font-size: 14px;
+            font-style: normal;
+            font-weight: bold;
+            line-height: 20px;
+            text-align: left;
+        }
+    }
+
+    &-content {
+        display: flex;
+        height: 0;
+        flex: 1;
+        flex-direction: column;
+        padding: 0 24px 0 16px;
+        gap: 8px;
+        overflow-y: overlay;
+
+        &-item {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        &-empty {
+            display: flex;
+            height: 100%;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+}
+
+.owner-wrapper {
+    display: flex;
+    width: 100%;
+    flex: 1;
+    flex-direction: column;
+    background: #f0f2f6;
+
+    &-loading {
+        display: flex;
+        width: 100%;
+        height: 100%;
+        align-items: center;
+        justify-content: center;
+    }
+
+    &-alert {
+        display: flex;
+        width: 100%;
+        height: 32px;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 20px;
+        background: #f6f9fe;
+        color: rgb(0 0 0 / 85%);
+
+        .title {
+            display: flex;
+            overflow: hidden;
+            width: 0;
+            flex: 1;
+            align-items: center;
+            column-gap: 8px;
+            font-size: 12px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        &-close {
+            cursor: pointer;
+        }
+    }
+
+    &-content {
+        display: flex;
+        height: 0;
+        flex: 1;
+        flex-direction: column;
+        padding: 20px;
+
+        &-table {
+            min-height: 350px;
+            flex: 1;
+            padding: 16px 16px 4px;
+            margin-top: 16px;
+            background: #fff;
+            border-radius: 4px;
+        }
+    }
+}
+
+.depart-table {
+    height: 100%;
+
+    &-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 16px;
+
+        &-title {
+            color: rgb(0 0 0 / 85%);
+            font-size: 14px;
+            font-style: normal;
+            font-weight: bold;
+            line-height: 20px;
+            text-align: left;
+        }
+
+        &-options {
+            display: flex;
+            width: 0;
+            flex: 1;
+            align-items: center;
+            justify-content: flex-end;
+            column-gap: 8px;
+        }
+    }
+
+    &-content {
+        flex: 1;
+    }
+
+    .depart-title {
+        display: flex;
+        width: 100%;
+        align-items: center;
+        gap: 6px;
+
+        span {
+            &:last-child {
+                overflow: hidden;
+                text-overflow: ellipsis;
+
+                &:hover {
+                    color: #1890ff;
+                    cursor: pointer;
+                    text-decoration: underline;
+                }
+            }
+        }
+    }
+}
+
+.rank-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    column-gap: 16px;
+
+    &-title {
+        display: inline-flex;
+        overflow: hidden;
+        width: 0;
+        max-width: 100px;
+        flex: 2;
+        align-items: center;
+        justify-content: flex-start;
+        color: rgb(0 0 0 / 85%);
+        column-gap: 8px;
+        font-size: 12px;
+        line-height: 17px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+
+        .name {
+            overflow: hidden;
+            cursor: pointer;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+
+            &:hover {
+                color: #1890ff;
+                text-decoration: underline;
+            }
+        }
+    }
+
+    &-progress {
+        display: flex;
+        width: 0;
+        flex: 5;
+        align-items: center;
+        column-gap: 16px;
+
+        &-text {
+            display: inline-block;
+            width: 40px;
+            text-align: left;
+        }
+    }
+}

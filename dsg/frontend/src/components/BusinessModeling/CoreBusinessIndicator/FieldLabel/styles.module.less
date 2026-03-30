@@ -1,0 +1,65 @@
+.field-label {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    column-gap: 6px;
+    cursor: pointer;
+
+    &.is-selected,
+    &:hover {
+        background: rgb(236 245 255);
+    }
+
+    &-showCode {
+        .field-label-text {
+            padding: 8px 0 7px;
+
+            &-name {
+                margin-bottom: 4px;
+                line-height: 20px;
+                .ellipsis-mixin();
+            }
+
+            &-code {
+                color: rgb(0 0 0 / 45%);
+                font-size: 12px;
+                line-height: 17px;
+                .ellipsis-mixin();
+            }
+        }
+    }
+
+    &-text {
+        overflow: hidden;
+        width: calc(100% - 20px);
+        align-items: center;
+        color: inherit;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+
+        &-name {
+            .ellipsis-mixin();
+        }
+    }
+
+    &-link {
+        > div {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #2878ff;
+        }
+
+        &-check {
+            width: 32px;
+            margin-right: 4px;
+        }
+    }
+}
+
+.attr-icons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: inherit;
+}

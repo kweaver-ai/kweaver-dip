@@ -1,0 +1,114 @@
+.cognitive-search {
+    height: 100%;
+    background: #f0f2f6;
+
+    :global {
+        .any-fabric-ant-tabs-tabpane,
+        .any-fabric-ant-tabs-content {
+            height: 100%;
+        }
+
+        // .any-fabric-ant-tabs-content-holder {
+        //     overflow-y: overlay;
+        // }
+    }
+
+    .commonIcon {
+        .any-fabric-anticon {
+            svg {
+                width: 14px;
+                height: 14px;
+                fill: rgb(0 0 0 / 65%);
+            }
+        }
+    }
+
+    &-input {
+        padding-top: 20px;
+    }
+
+    &-tab {
+        overflow: hidden;
+        width: 100%;
+        height: 100%;
+        flex-grow: 1;
+        // margin-top: 16px;
+
+        & > div:first-child {
+            z-index: 1;
+            overflow: hidden;
+            margin: 0 !important;
+            background: #fff;
+            background-color: #fff;
+            box-shadow: 0 2px 10px 6px rgb(0 0 0 / 5%);
+            text-align: center;
+
+            &::after {
+                position: fixed;
+                z-index: 1;
+                top: 0;
+                left: 0;
+                width: 100vw;
+                min-width: 1280px;
+                height: 52px;
+                box-shadow: 0 2px 10px 6px rgb(0 0 0 / 5%);
+            }
+
+            :global {
+                // .any-fabric-ant-tabs-nav {
+                //     overflow: hidden;
+                //     margin: 0 !important;
+                //     background: #fff;
+                //     background-color: #fff;
+                //     text-align: center;
+                //     box-shadow: 0px 2px 10px 6px rgba(0, 0, 0, 0.05);
+                //     z-index: 1;
+
+                //     &::after {
+                //         position: fixed;
+                //         z-index: 1;
+                //         top: 0;
+                //         left: 0;
+                //         width: 100vw;
+                //         min-width: 1280px;
+                //         height: 52px;
+                //         box-shadow: 0 2px 10px 6px rgb(0 0 0 / 5%);
+                //     }
+                // }
+
+                .any-fabric-ant-tabs-content-holder {
+                    position: relative;
+                    flex-grow: 1;
+                }
+
+                .any-fabric-ant-tabs-nav-operations {
+                    display: none;
+                }
+
+                .any-fabric-ant-tabs-nav-wrap {
+                    position: relative;
+                    // left: calc(50% - 368px);
+                    left: 202px;
+                    width: calc(100% - 202px);
+                    // width: calc(50% + 368px);
+
+                    .any-fabric-ant-tabs-nav-list {
+                        width: 736px;
+                    }
+                }
+
+                .any-fabric-ant-tabs-tab {
+                    padding: 4px 0 12px;
+                }
+            }
+        }
+    }
+
+    .cognitiveSearchTabDrm {
+        :global {
+            .any-fabric-ant-tabs-nav-wrap {
+                left: 248px !important;
+            }
+        }
+    }
+}

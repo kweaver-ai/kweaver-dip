@@ -1,0 +1,15 @@
+USE af_configuration;
+-- ALTER TABLE af_configuration.front_end_library MODIFY COLUMN `name` varchar(256)   COMMENT '前置库名称';
+-- ALTER TABLE af_configuration.front_end_library MODIFY COLUMN `username` varchar(256)    COMMENT '前置库用户名';
+-- ALTER TABLE af_configuration.front_end_library MODIFY COLUMN `password` varchar(256)   COMMENT '前置库密码';
+-- ALTER TABLE af_configuration.front_end_library MODIFY COLUMN `business_name` varchar(256)   COMMENT '对接业务名称';
+-- ALTER TABLE af_configuration.front_end_library MODIFY COLUMN `version` varchar(256)   COMMENT '前置库版本';
+-- ALTER TABLE af_configuration.front_end_library MODIFY COLUMN `comment` varchar(300)   COMMENT '前置库描述';
+-- ALTER TABLE af_configuration.front_end_item MODIFY COLUMN `node_name` varchar(256)    COMMENT '节点人名称';
+-- ALTER TABLE af_configuration.front_end_processors MODIFY COLUMN `deployment_system` varchar(256)    COMMENT '运行业务系统';
+-- ALTER TABLE af_configuration.front_end_item MODIFY COLUMN `administrator_name` varchar(256)   COMMENT '技术负责人名称';
+-- ALTER TABLE af_configuration.front_end_item MODIFY COLUMN `administrator_phone` varchar(256)  COMMENT '节点描述';
+-- ALTER TABLE af_configuration.front_end_processors MODIFY COLUMN `deployment_system` varchar(128)   COMMENT '运行业务系统';
+-- ALTER TABLE af_configuration.front_end_processors MODIFY COLUMN `administrator_email` varchar(255)   COMMENT '技术联系人邮箱';
+-- ALTER TABLE af_configuration.front_end_processors MODIFY COLUMN `administrator_name` varchar(255)    COMMENT '技术负责人名称';
+-- ALTER TABLE af_configuration.front_end_processors  ADD COLUMN IF NOT EXISTS `reject_reason` varchar(300)  COMMENT '驳回原因';

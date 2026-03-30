@@ -1,0 +1,51 @@
+{{- if .Values.consumer.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.consumer.name }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    {{- toYaml .Values.labels.consumer.deployment | nindent 4}}
+spec:
+  replicas: {{ .Values.consumer.replicaCount | default 1 }}
+  selector:
+    matchLabels:
+      {{- toYaml .Values.labels.consumer.pod | nindent 6}}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap-consumer.yaml") . | sha256sum }}
+      labels:
+        {{- toYaml .Values.labels.consumer.pod | nindent 8}}
+    spec:
+      containers:
+      - name: consumer
+        image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}-consumer:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        env:
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        resources:
+          {{- toYaml .Values.consumer.resources | nindent 10 }}
+        volumeMounts:
+        - name: config
+          mountPath: /app/etc
+          readOnly: true
+      volumes:
+      - name: config
+        configMap:
+          name: {{ .Values.consumer.name }}-cm
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+      {{- range .}}
+        {{ .labelKey | quote }}: {{ .labelVal | quote }}
+      {{- end }}
+    {{- end }}
+{{- end }}

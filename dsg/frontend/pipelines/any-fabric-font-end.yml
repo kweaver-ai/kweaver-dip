@@ -1,0 +1,120 @@
+trigger:
+    branches:
+        include:
+            - master
+            - feature/*
+            - release/*
+            - develop
+            - alpha
+
+    paths:
+        include:
+            - '*'
+
+pool:
+    name: anyfabric-centos7-x86_64
+
+resources:
+    containers:
+        - container: builder
+          endpoint: acr.aishu.cn
+          image: public/node-amd64:22.18.0
+
+        - container: builder
+          endpoint: acr-arm.aishu.cn
+          image: public/node-arm64:22.18.0
+
+variables:
+    - group: any-fabric-front-end-config
+    - name: artifactName
+      value: Distribute
+    - name: currentBranchName
+      value: $[lower(variables['Build.SourceBranchName'])]
+    - name: chartName
+      value: any-fabric-frontend
+    - name: version
+      ${{ if startsWith(variables['Build.SourceBranch'], 'refs/heads/release/') }}:
+          value: '2.0.10'
+      ${{ if not(startsWith(variables['Build.SourceBranch'], 'refs/heads/release/')) }}:
+          value: '1.0.0'
+    - name: isRelease
+      value: $[startsWith(variables['Build.SourceBranch'], 'refs/heads/release/')]
+    - name: branchNameLower
+      ${{ if startsWith(variables['Build.SourceBranch'], 'refs/heads/feature/') }}:
+          value: $(currentBranchName)
+      ${{ if not(startsWith(variables['Build.SourceBranch'], 'refs/heads/feature/')) }}:
+          value: $(currentBranchName)
+    - name: tagVersion
+      ${{ if startsWith(variables['Build.SourceBranch'], 'refs/heads/release/') }}:
+          value: $(version)
+      ${{ if not(startsWith(variables['Build.SourceBranch'], 'refs/heads/release/')) }}:
+          value: $(version)-$(branchNameLower)
+    - name: versionBuild
+      value: $(tagVersion).$(Build.BuildNumber)
+
+jobs:
+    - job: build
+      displayName: AnyFabric-webpack构建
+      continueOnError: true
+      container: builder
+      workspace:
+          clean: all
+      steps:
+          # 执行构建命令
+          - script: |
+                echo "start"
+                yarn --registry http://repository.aishu.cn:8081/repository/npm-all/
+                cd ./
+                yarn build
+                # cp -r ./app.json ./build/
+                # sed -i '/version/s|"version": .*|"version": "$(version)-$(branchNameLower)-$(Build.BuildNumber)",|g' ./build/app.json
+            continueOnError: false
+          - task: CopyFiles@2
+            continueOnError: true
+            inputs:
+                SourceFolder: $(Build.SourcesDirectory)
+                # 这里填需要放到镜像中的路径，一行一个
+                contents: |
+                    build/**
+                    ci/web.nginx
+                targetFolder: $(Build.BinariesDirectory)
+          - task: PublishBuildArtifacts@1
+            continueOnError: true
+            inputs:
+                pathToPublish: '$(Build.BinariesDirectory)'
+                artifactName: $(artifactName)
+                publishLocation: 'Container'
+
+    - template: template/build-template.yml
+      parameters:
+          name: DockerJobX86
+          displayName: '生成镜像并推送至harbar(x86)'
+          pool: anyfabric-centos7-x86_64
+          registry: $(image.registry)
+          imageName: $(image.repository.anyFabricFrontend)
+          artifactName: $(artifactName)
+          versionBuild: $(versionBuild)
+          harborAccount: $(acr.user)
+          harborSecret: $(acr.secret)
+          chartName: $(chartName)
+          chartDisplayName: '生成Chart并推送至harbar(x86)'
+          sourcesDirectory: $(Build.SourcesDirectory)
+          version: $(version)
+          tagVersion: $(tagVersion)
+
+    - template: template/build-template.yml
+      parameters:
+          name: DockerJobARM
+          displayName: '生成镜像并推送至harbar(arm)'
+          pool: anyfabric-centos7-arm
+          registry: $(image.registry_arm)
+          imageName: $(image.repository.anyFabricFrontend)
+          artifactName: $(artifactName)
+          versionBuild: $(versionBuild)
+          harborAccount: $(acr.user)
+          harborSecret: $(acr.secret)
+          chartName: $(chartName)
+          chartDisplayName: '生成Chart并推送至harbar(arm)'
+          sourcesDirectory: $(Build.SourcesDirectory)
+          version: $(version)
+          tagVersion: $(tagVersion)

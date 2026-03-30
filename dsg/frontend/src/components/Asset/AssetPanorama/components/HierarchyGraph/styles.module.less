@@ -1,0 +1,308 @@
+.asset-node {
+    display: flex;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: space-between;
+    border: 2px solid transparent;
+    background-color: #fff;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+
+    &.is-count-zero {
+        background-color: #e3e5e9 !important;
+        cursor: default;
+    }
+
+    &.is-active {
+        border-color: #3e75ff;
+        box-shadow: 0 9px 28px 8px rgb(62 117 255 / 5%),
+            0 6px 16px 0 rgb(62 117 255 / 8%),
+            3px 6px 6px -4px rgb(62 117 255 / 12%);
+
+        &-group {
+            padding: 16px 0 !important;
+            border: 2px solid #8c7beb;
+            border-radius: 6px;
+
+            .percent {
+                bottom: 10px;
+                height: 4px;
+                border-radius: 2px;
+            }
+
+            .asset-node-icon {
+                font-size: 26px;
+            }
+
+            .asset-node-item-name {
+                font-size: 16px;
+                font-weight: 500;
+            }
+        }
+
+        &-other {
+            border: 2px solid #8c7beb;
+        }
+    }
+
+    &-content {
+        display: flex;
+        width: 100%;
+        align-items: center;
+        padding: 0 13px;
+
+        .percent {
+            position: absolute;
+            bottom: 0;
+            display: flex;
+            overflow: hidden;
+            width: calc(100% - 26px);
+            height: 2px;
+            background-color: rgb(0 0 0 / 25%);
+            border-radius: 1px;
+
+            > div {
+                height: 100%;
+            }
+        }
+
+        &.can-click {
+            cursor: pointer;
+        }
+
+        &-expand {
+            display: flex;
+            width: 14px;
+            height: 14px;
+            align-items: center;
+            justify-content: center;
+            margin-right: 5px;
+            margin-left: -6px;
+            transition: all 0.2s ease-in-out;
+
+            :global(.any-fabric-anticon) {
+                margin-right: 0;
+                cursor: pointer;
+                font-size: 16px;
+            }
+
+            &.expand {
+                transform: rotate(90deg);
+            }
+        }
+    }
+
+    &-disabled {
+        background-color: #e3e5e9;
+    }
+
+    &-icon {
+        display: flex;
+        align-items: center;
+        margin-right: 4px;
+        font-size: 22px;
+        // transition: font-size 0.2s ease-in-out;
+    }
+
+    .tag {
+        padding-top: 2px;
+        margin-right: 6px;
+        font-size: 16px;
+    }
+
+    .has-data-view {
+        display: inline-block;
+        height: 16px;
+        padding: 0 6px;
+        background-color: #e8eef2;
+        border-radius: 12px;
+        color: #8492a6;
+        font-size: 12px;
+        line-height: 16px;
+        text-align: center;
+
+        > * {
+            display: list-item;
+            overflow: hidden;
+            max-width: 56px;
+            font-size: 10px;
+            text-overflow: ellipsis;
+            transform-origin: center;
+        }
+
+        .show-detail {
+            color: #126ee3;
+        }
+
+        &:has(.is-expand) {
+            background-color: #126ee330;
+            color: #126ee3;
+        }
+    }
+
+    &-item {
+        overflow: hidden;
+        flex: 1;
+
+        &-name {
+            padding-right: 6px;
+            color: rgb(0 0 0 / 85%);
+            font-size: 14px;
+            // transition: font-size 0.2s ease-in-out;
+        }
+
+        span {
+            color: inherit;
+        }
+
+        > div {
+            overflow: hidden;
+            width: 100%;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            word-break: keep-all;
+        }
+    }
+
+    &-detail {
+        cursor: pointer;
+        font-size: 13px;
+    }
+
+    .data-count {
+        display: flex;
+        width: 100%;
+        justify-content: flex-start;
+        padding: 0 13px;
+
+        &-margin-left {
+            margin-left: 13px;
+        }
+
+        .data-item {
+            display: flex;
+            align-items: baseline;
+            margin-right: 8px;
+            color: #8492a6;
+
+            .icon {
+                height: 20px;
+                margin-right: 8px;
+                font-size: 16px;
+            }
+
+            .text {
+                font-size: 12px;
+            }
+
+            &:hover {
+                color: #126ee3;
+                text-decoration: underline;
+            }
+
+            &-disabled {
+                cursor: not-allowed;
+
+                &:hover {
+                    color: #8492a6;
+                }
+            }
+        }
+
+        .data-item-selected {
+            color: #3e75ff;
+        }
+    }
+}
+
+.asset-wrapper {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+
+    &-graph {
+        width: 100%;
+        height: 100%;
+    }
+
+    &-controller {
+        position: absolute;
+        right: 24px;
+        bottom: 24px;
+    }
+
+    &-label {
+        position: absolute;
+        bottom: 24px;
+        left: 32px;
+    }
+}
+
+.guide-pop {
+    position: relative;
+    top: 12px;
+    display: flex;
+    width: 306px;
+    height: 263px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 40px 32px;
+    background: white;
+    border-radius: 10px;
+
+    &::before {
+        position: absolute;
+        top: -36px;
+        left: 153px;
+        width: 2px;
+        height: 36px;
+        background: white;
+        content: '';
+    }
+
+    &::after {
+        position: absolute;
+        top: -36px;
+        left: 149px;
+        width: 9px;
+        height: 9px;
+        background: white;
+        border-radius: 50%;
+        box-shadow: 0 0 0 4px rgb(255 255 255 / 50%);
+        content: '';
+    }
+
+    .icon {
+        display: grid;
+        width: 98px;
+        height: 98px;
+        align-content: center;
+        font-size: 56px;
+    }
+
+    .content {
+        color: rgb(0 0 0 / 85%);
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 24px;
+        text-align: center;
+    }
+
+    .button {
+        border: none;
+        background: #126ee3;
+        color: white;
+        font-size: 14px;
+
+        &:hover {
+            border: none;
+            background: #126ee3cc;
+            color: white;
+        }
+    }
+}

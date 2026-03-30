@@ -1,0 +1,177 @@
+version: "3.8"
+
+services:
+  # ========== 数据库服务 ==========
+  # MySQL 数据库
+  mysql:
+    image: mysql:8.0
+    container_name: data-semantic-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root123456
+      MYSQL_DATABASE: data-semantic
+      TZ: Asia/Shanghai
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --default-authentication-plugin=mysql_native_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot123456"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - data-semantic-net
+
+  # Redis 缓存
+  redis:
+    image: redis:7-alpine
+    container_name: data-semantic-redis
+    command: redis-server --appendonly yes
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - data-semantic-net
+
+  # Kafka 消息队列
+  kafka:
+    image: bitnami/kafka:3.7
+    container_name: data-semantic-kafka
+    environment:
+      ALLOW_PLAINTEXT_LISTENER: yes
+      KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE: yes
+      KAFKA_CFG_LOG_RETENTION_HOURS: 168
+      KAFKA_CFG_NODE_ID: 0
+      KAFKA_CFG_PROCESS_ROLES: controller,broker
+      KAFKA_CFG_CONTROLLER_QUORUM_VOTERS: 0@kafka:9091
+      KAFKA_CFG_LISTENERS: PLAINTEXT://:9092,CONTROLLER://:9091
+      KAFKA_CFG_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+    ports:
+      - "9092:9092"
+    volumes:
+      - kafka_data:/bitnami/kafka
+    healthcheck:
+      test: ["CMD-SHELL", "kafka-topics.sh --bootstrap-server localhost:9092 --list"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      - data-semantic-net
+
+  # ========== 认证服务 ==========
+  # PostgreSQL 数据库 (Hydra 需要)
+  postgres:
+    image: postgres:15-alpine
+    container_name: hydra-postgres
+    environment:
+      POSTGRES_DB: hydra
+      POSTGRES_USER: hydra
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U hydra"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - data-semantic-net
+
+  # Hydra 数据库迁移
+  hydra-migrate:
+    image: oryd/hydra:v2.2.0
+    container_name: hydra-migrate
+    command:
+      - migrate
+      - sql
+      - --read-from-env
+      - --yes
+    environment:
+      DSN: postgres://hydra:password@postgres:5432/hydra?sslmode=disable&max_conns=20&max_idle_conns=4
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - data-semantic-net
+
+  # Hydra OAuth2 服务
+  hydra:
+    image: oryd/hydra:v2.2.0
+    container_name: hydra
+    ports:
+      - "4444:4444"  # Public port
+      - "4445:4445"  # Admin port
+    command:
+      - serve
+      - all
+      - --dev
+    environment:
+      DSN: postgres://hydra:password@postgres:5432/hydra?sslmode=disable&max_conns=20&max_idle_conns=4
+      URLS_SELF_ISSUER: http://localhost:4444
+      URLS_CONSENT: http://localhost:9020/consent
+      URLS_LOGIN: http://localhost:9020/login
+      SECRETS_SYSTEM: youReallyNeedToChangeThisKeyForProductionToBeSecure
+      STRATEGIES_ACCESS_TOKEN: jwt
+    depends_on:
+      hydra-migrate:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4445/health/ready"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - data-semantic-net
+
+  # Hydra Login/Consent (用于登录/授权的简单界面)
+  hydra-login-consent:
+    image: oryd/hydra-login-consent-node:v1.10.6
+    container_name: hydra-login-consent
+    ports:
+      - "9020:9020"
+    environment:
+      HYDRA_ADMIN_URL: http://hydra:4445
+    depends_on:
+      hydra:
+        condition: service_healthy
+    networks:
+      - data-semantic-net
+
+  # ========== 可观测性 ==========
+  # OpenTelemetry Collector
+  otel-collector:
+    image: otel/opentelemetry-collector:0.111.0
+    container_name: otel-collector
+    command: --config=/etc/otelcol-contrib/config.yaml
+    volumes:
+      - ./deploy/docker/otel-collector-config.yaml:/etc/otelcol-contrib/config.yaml:ro
+    ports:
+      - "4317:4317"   # OTLP gRPC receiver
+      - "4318:4318"   # OTLP HTTP receiver
+      - "9100:8888"   # Prometheus metrics
+    depends_on:
+      - hydra
+    networks:
+      - data-semantic-net
+
+volumes:
+  mysql_data:
+  redis_data:
+  kafka_data:
+  postgres_data:
+
+networks:
+  data-semantic-net:
+    driver: bridge

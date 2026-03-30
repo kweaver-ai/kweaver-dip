@@ -1,0 +1,244 @@
+.createModalWrapper {
+    :global {
+        .any-fabric-ant-modal-footer {
+            padding: 11px 24px;
+        }
+    }
+
+    .createDiagnosisWrapper {
+        width: 100%;
+        height: 100%;
+
+        .stepsBox {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 12px;
+
+            .steps {
+                width: 496px;
+
+                :global {
+                    .any-fabric-ant-steps-vertical {
+                        flex-flow: nowrap;
+                    }
+                }
+            }
+        }
+
+        .tabs {
+            margin-left: 16px;
+
+            :global {
+                .any-fabric-ant-tabs-nav {
+                    margin-bottom: 0;
+
+                    &::before {
+                        border: none;
+                    }
+                }
+            }
+        }
+
+        .content {
+            display: flex;
+            width: 100%;
+            height: calc(100% - 90px);
+            border: 1px solid rgb(0 0 0 / 15%);
+
+            .left {
+                width: 50%;
+                padding: 16px 8px;
+                border-right: 1px solid rgb(217 217 217 / 100%);
+
+                .objTreeWrapper {
+                    width: 100%;
+                    max-height: 100%;
+                    overflow-y: auto;
+
+                    :global {
+                        .any-fabric-ant-tree-checkbox {
+                            margin: 7px 8px 0 0;
+                        }
+
+                        .search-wrapper {
+                            height: 100%;
+                        }
+                    }
+
+                    .search-wrapper {
+                        height: 100%;
+                    }
+                }
+
+                .loader {
+                    display: flex;
+                    height: calc(100% - 100px);
+                    align-items: center;
+                }
+            }
+
+            .right {
+                width: 50%;
+                padding: 20px 16px;
+
+                .top {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    margin-bottom: 24px;
+
+                    .count {
+                        color: rgb(0 0 0 / 85%);
+                    }
+
+                    .clear {
+                        color: @primary-color;
+                        cursor: pointer;
+                    }
+                }
+
+                .bottom {
+                    height: calc(100% - 40px);
+                    overflow-y: auto;
+                }
+            }
+
+            .bottom {
+                height: calc(100% - 40px);
+                overflow-y: auto;
+            }
+
+            .seletedItem {
+                display: flex;
+                height: 56px;
+                align-items: center;
+                justify-content: space-between;
+                padding: 8px;
+
+                .leftInfo {
+                    display: flex;
+                    max-width: 300px;
+                    align-items: center;
+
+                    .typeIcon {
+                        margin-right: 8px;
+                        font-size: 28px;
+                    }
+
+                    .infos {
+                        max-width: 240px;
+
+                        .name {
+                            color: rgb(0 0 0 / 85%);
+                            .ellipsis-mixin();
+                        }
+
+                        .path {
+                            color: rgb(0 0 0 / 45%);
+                            .ellipsis-mixin();
+                        }
+                    }
+                }
+
+                .closeIcon {
+                    cursor: pointer;
+                }
+            }
+
+            .seletedSearchItem {
+                background-color: rgb(241 247 254 / 100%);
+            }
+        }
+
+        .secContent {
+            margin: 0 130px;
+
+            &-title {
+                margin-top: 80px;
+                margin-bottom: 24px;
+                font-weight: 500;
+            }
+
+            &-Checkbox {
+                .checkboxItem {
+                    display: flex;
+
+                    .checkbox {
+                        margin-right: 10px;
+                    }
+
+                    .checkboxBlueBg {
+                        :global {
+                            .any-fabric-ant-checkbox-inner {
+                                background: rgb(18 110 227 / 30%);
+
+                                &::after {
+                                    border-color: #fff;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            &-secTitle {
+                margin-top: 42px;
+                margin-bottom: 20px;
+                font-weight: 500;
+            }
+
+            &-subTitle {
+                margin-bottom: 12px;
+                color: rgb(0 0 0 / 45%);
+            }
+
+            &-list {
+                height: 210px;
+                overflow-y: auto;
+
+                &-item {
+                    display: flex;
+                    width: 100%;
+                    align-items: center;
+                    justify-content: space-between;
+                    padding: 7px 12px;
+                    margin-bottom: 6px;
+                    background: rgb(18 110 227 / 4%);
+                    border-radius: 3px;
+
+                    & > div {
+                        display: flex;
+                        width: calc(100% - 12px);
+                    }
+                }
+
+                &-icon {
+                    margin-right: 6px;
+                    font-size: 20px;
+                }
+
+                &-text {
+                    width: calc(100% - 38px);
+                    .ellipsis-mixin();
+                }
+
+                &-closeIcon {
+                    color: rgb(0 0 0 / 25%);
+                    cursor: pointer;
+                    font-size: 12px;
+                }
+            }
+        }
+    }
+
+    .footer {
+        :global {
+            .any-fabric-ant-btn-default {
+                &:focus {
+                    border: 1px solid #ccc;
+                    color: rgb(0 0 0 / 85%);
+                }
+            }
+        }
+    }
+}

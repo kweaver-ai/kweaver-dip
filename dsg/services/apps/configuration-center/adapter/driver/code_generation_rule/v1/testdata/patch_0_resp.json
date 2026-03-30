@@ -1,0 +1,19 @@
+{
+    "id": "13daf448-d9c4-11ee-81aa-005056b4b3fc",
+    "name": "逻辑视图",
+    "type": "DataView",
+    "prefix": "SJST",
+    "prefix_enabled": true,
+    "rule_code": "YYYYMMDD",
+    "rule_code_enabled": true,
+    "code_separator": "/",
+    "code_separator_enabled": true,
+    "digital_code_type": "Sequence",
+    "digital_code_width": 6,
+    "digital_code_starting": 1,
+    "digital_code_ending": 999999,
+    "updater_id": "00000000-0000-0000-0000-000000000000",
+    "created_at": "0001-01-01T00:00:00Z",
+    "updated_at": "0001-01-01T00:00:00Z",
+    "updater_name": ""
+}

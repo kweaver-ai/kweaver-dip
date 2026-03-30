@@ -1,0 +1,94 @@
+.wrapper {
+    display: block;
+    padding: 6px 10px 10px;
+
+    .text {
+        display: table;
+        width: 100%;
+        padding: 6px 0;
+        margin: 0;
+        cursor: inherit;
+        line-height: 23px;
+        table-layout: fixed;
+
+        .clums {
+            display: table-cell;
+            width: 110px;
+            color: rgb(0 0 0 / 50%);
+            font-size: 15px;
+            vertical-align: middle;
+
+            &.details {
+                width: 94px;
+            }
+        }
+
+        .texts {
+            display: table-cell;
+            overflow: hidden;
+            color: rgb(0 0 0);
+            font-size: 15px;
+            text-overflow: ellipsis;
+            vertical-align: middle;
+            white-space: nowrap;
+        }
+
+        .link {
+            color: @primary-color;
+            cursor: pointer;
+        }
+
+        :global {
+            .any-fabric-ant-btn-text:hover {
+                background: #fff;
+            }
+        }
+    }
+
+    :global {
+        .any-fabric-ant-modal-body {
+            padding: 0 24px 24px;
+        }
+
+        .any-fabric-ant-tabs-top {
+            height: 100%;
+        }
+
+        .any-fabric-ant-tabs-content-holder {
+            overflow-y: auto;
+        }
+
+        .any-fabric-ant-collapse-icon-position-end
+            > .any-fabric-ant-collapse-item
+            > .any-fabric-ant-collapse-header {
+            padding-left: 0;
+            border-bottom: 1px solid rgb(0 0 0 / 6%);
+        }
+
+        .any-fabric-ant-collapse-ghost
+            > .any-fabric-ant-collapse-item
+            > .any-fabric-ant-collapse-content
+            > .any-fabric-ant-collapse-content-box {
+            padding-left: 0;
+        }
+
+        .any-fabric-ant-collapse-header-text {
+            padding-left: 12px;
+            border-left: 4px solid #126ee3;
+            font-size: 16px;
+            font-weight: 550;
+        }
+
+        .any-fabric-ant-descriptions-item-label {
+            color: rgb(0 0 0 / 45%);
+        }
+
+        .any-fabric-ant-drawer-body {
+            padding-top: 8px;
+        }
+    }
+}
+
+.modalContent {
+    // height: 497px;
+}

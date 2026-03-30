@@ -1,0 +1,27 @@
+.ownerItem {
+    display: flex;
+    align-items: center;
+    color: @text-color-desc;
+
+    .avatarWrapper {
+        display: flex;
+        width: 24px;
+        height: 24px;
+        flex-shrink: 0;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid rgb(0 0 0 / 45%);
+        margin-right: 8px;
+        background-color: white;
+        border-radius: 50%;
+    }
+
+    .ownerName {
+        .ellipsis-mixin();
+    }
+
+    .associateTip {
+        flex-shrink: 0;
+        color: rgb(0 0 0 / 45%);
+    }
+}

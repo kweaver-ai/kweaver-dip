@@ -1,0 +1,157 @@
+.personalCenter {
+    display: flex;
+    height: 100%;
+    padding: 24px;
+    background: #f0f0f4;
+    gap: 16px;
+
+    &-sidebar {
+        width: 280px;
+        height: 100%;
+        background: #fff;
+        border-radius: 4px;
+        overflow-y: auto;
+
+        &-userInfo {
+            padding: 20px 20px 18px;
+            border-bottom: 1px solid rgb(0 0 0 / 10%);
+        }
+
+        :global {
+            .any-fabric-ant-menu-item {
+                margin-bottom: 0 !important;
+
+                &:hover {
+                    background-color: #eff0f3;
+                }
+            }
+
+            .any-fabric-ant-menu-item.any-fabric-ant-menu-item-selected::after {
+                display: none;
+                content: '';
+            }
+
+            .any-fabric-ant-menu-item.any-fabric-ant-menu-item-active {
+                color: currentcolor;
+            }
+
+            .any-fabric-ant-menu:not(.any-fabric-ant-menu-horizontal)
+                .any-fabric-ant-menu-item-selected {
+                background-color: #ecf5ff;
+            }
+
+            .any-fabric-ant-menu-item-icon {
+                font-size: 20px;
+            }
+        }
+    }
+
+    &-content {
+        height: 100%;
+        flex: 1;
+        // padding: 0 20px 10px;
+        background: #fff;
+        border-radius: 4px;
+        overflow-x: hidden;
+        overflow-y: auto;
+
+        .myApplysWrapper {
+            :global {
+                .any-fabric-ant-tabs-nav {
+                    height: 52px;
+                    padding: 0 20px;
+                }
+
+                .any-fabric-ant-tabs-content-holder {
+                    padding: 0 20px;
+                }
+            }
+        }
+    }
+
+    .docAuditClientContent {
+        padding: 0;
+    }
+}
+
+.userinfo-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 18px;
+
+    &-icon {
+        display: flex;
+        width: 32px;
+        height: 32px;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(to bottom, #73c0ff, #1890ff);
+        background-clip: border-box;
+        border-radius: 50%;
+        color: #fff;
+        font-size: 24px;
+    }
+
+    .userName {
+        margin-left: 16px;
+        font-size: 18px;
+    }
+}
+
+.userinfo-position {
+    &-row {
+        display: flex;
+        color: rgb(0 0 0 / 65%);
+
+        &:not(:last-child) {
+            margin-bottom: 11px;
+        }
+
+        & > div:nth-child(1) {
+            width: 45px;
+        }
+
+        & > div:nth-child(2) {
+            display: flex;
+            overflow: hidden;
+            flex: 1;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .tag {
+            overflow: hidden;
+            background-color: #fff;
+            color: rgb(0 0 0 / 65%);
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .btn {
+            display: inline-block;
+            color: #126ee3;
+            cursor: pointer;
+
+            & > span {
+                margin-left: 4px;
+            }
+        }
+    }
+}
+
+.msgMenu {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    & > span:nth-child(2) {
+        display: inline-block;
+        min-width: 16px;
+        padding: 0 4px;
+        background: #ff4d4f;
+        border-radius: 10px;
+        color: #fff;
+        line-height: 16px;
+        text-align: center;
+    }
+}

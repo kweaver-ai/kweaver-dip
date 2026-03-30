@@ -1,0 +1,128 @@
+.col-filter {
+    &-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 16px;
+    }
+
+    &-list {
+        width: 100%;
+        max-height: 200px;
+        overflow-y: auto;
+
+        :global {
+            .any-fabric-ant-checkbox-wrapper {
+                display: flex;
+                align-items: center;
+                margin-bottom: 16px;
+
+                & > :nth-child(2) {
+                    width: calc(100% - 16px);
+                }
+            }
+
+            .any-fabric-ant-checkbox-inner {
+                border-radius: 2px;
+            }
+
+            .any-fabric-ant-checkbox-disabled .any-fabric-ant-checkbox-inner {
+                border-color: #126ee3 !important;
+                background-color: #126ee3 !important;
+                opacity: 0.35;
+
+                &::after {
+                    border-color: white !important;
+                }
+            }
+        }
+    }
+
+    .filter-empty {
+        width: 100%;
+    }
+}
+
+.field-wrapper-tooltip {
+    :global {
+        .any-fabric-ant-tooltip-inner {
+            padding: 6px 8px !important;
+        }
+    }
+}
+
+.field-wrapper {
+    display: flex;
+    box-sizing: border-box;
+    align-items: center;
+    margin-top: 5px;
+    color: rgb(0 0 0 / 65%);
+    transition: all 0.2s ease-in-out;
+
+    :global {
+        .any-fabric-anticon {
+            margin-right: 6px;
+            font-size: 16px;
+        }
+    }
+
+    &-title {
+        display: flex;
+        width: calc(100% - 16px);
+        flex: 1;
+        align-items: center;
+
+        &-text {
+            overflow: hidden;
+            max-width: calc(100% - 16px);
+            // flex: 1;
+            align-items: center;
+            text-overflow: ellipsis;
+            transition: all 0.2s ease-in-out;
+            white-space: nowrap;
+
+            &:hover {
+                cursor: pointer;
+            }
+        }
+
+        &-tag {
+            padding: 0 4px;
+            margin: 0 4px;
+            background: #e0edff;
+            border-radius: 3px;
+            color: #6591ff;
+            font-size: 10px;
+            white-space: nowrap;
+        }
+
+        &-label {
+            display: flex;
+            height: 22px;
+            align-items: center;
+            padding: 1px 4px 0;
+
+            &-tip {
+                display: inline;
+
+                span {
+                    margin-right: 4px;
+                    color: rgb(0 0 0 / 45%);
+                    font-size: 12px;
+                }
+            }
+        }
+    }
+}
+
+.label {
+    padding-bottom: 2px !important;
+
+    :global {
+        .any-fabric-ant-tooltip-inner {
+            padding: 6px;
+            background-color: white;
+            color: rgb(0 0 0 / 85%);
+        }
+    }
+}

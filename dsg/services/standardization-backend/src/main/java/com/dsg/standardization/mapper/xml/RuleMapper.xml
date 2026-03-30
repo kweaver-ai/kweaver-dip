@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dsg.standardization.mapper.RuleMapper">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.dsg.standardization.entity.RuleEntity" id="baseMap">
+        <result property="id" column="f_id"/>
+        <result property="name" column="f_name"/>
+        <result property="catalogId" column="f_catalog_id"/>
+        <result property="orgType" column="f_org_type"/>
+        <result property="description" column="f_description"/>
+        <result property="ruleType" column="f_rule_type"/>
+        <result property="version" column="f_version"/>
+        <result property="expression" column="f_expression"/>
+        <result property="authorityId" column="f_authority_id"/>
+        <result property="createTime" column="f_create_time"/>
+        <result property="createUser" column="f_create_user"/>
+        <result property="updateTime" column="f_update_time"/>
+        <result property="updateUser" column="f_update_user"/>
+        <result property="deleted" column="f_deleted"/>
+        <result property="state" column="f_state"/>
+        <result property="disableReason" column="f_disable_reason"/>
+        <result property="departmentIds" column="f_department_ids"/>
+        <result property="thirdDeptId" column="f_third_dept_id"/>
+    </resultMap>
+    <update id="deleteByIds">
+        update t_rule set f_deleted = f_id where f_id in
+        <foreach collection="idList" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+
+    <select id="queryList" resultMap="baseMap">
+        select * from t_rule
+        where f_deleted=0
+        <if test="catalogIds != null and catalogIds.size() > 0">
+            and f_catalog_id in
+            <foreach collection="catalogIds" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+
+        <if test="orgType != null">
+            and f_org_type=#{orgType}
+        </if>
+        <if test="state != null">
+            and f_state = #{state}
+        </if>
+        <if test="ruleType != null">
+            and f_rule_type=#{ruleType}
+        </if>
+        <if test="keyword != null and keyword !=''">
+            and lower(f_name) like lower(CONCAT('%',#{keyword},'%'))
+        </if>
+        <if test="departmentId != null and departmentId != ''">
+            and f_department_ids like CONCAT('%',#{departmentId},'%')
+        </if>
+    </select>
+
+    <select id="queryByIds" resultMap="baseMap">
+        select * from t_rule
+        where f_id in
+        <foreach collection="ids" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="queryByNameAndOrgType" resultMap="baseMap">
+        select * from t_rule where f_deleted =0 and f_name = #{name} and f_org_type=#{orgType}
+    </select>
+
+    <select id="queryByStdFileCatalog" resultMap="baseMap">
+        select
+        distinct rule.*
+        from t_std_file file
+        join t_relation_rule_file relation on file.f_id = relation.f_file_id
+        join t_rule rule on relation.f_rule_id = rule.f_id
+        where rule.f_deleted =0
+        <if test="catalogIds != null and catalogIds.size() > 0">
+            and file.f_catalog_id in
+            <foreach collection="catalogIds" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+
+        <if test="orgType != null">
+            and rule.f_org_type=#{orgType}
+        </if>
+        <if test="state != null">
+            and rule.f_state = #{state}
+        </if>
+        <if test="ruleType != null">
+            and rule.f_rule_type=#{ruleType}
+        </if>
+        <if test="keyword != null and keyword !=''">
+            and lower(rule.f_name) like lower(CONCAT('%',#{keyword},'%'))
+        </if>
+    </select>
+
+    <select id="queryByFileId" resultMap="baseMap">
+        select t1.*
+        from t_rule t1
+        join t_relation_rule_file t2
+        on t1.f_id = t2.f_rule_id
+        where t2.f_file_id = #{fileId}
+        and t1.f_deleted=0
+    </select>
+
+    <select id="queryPageByFileId" resultMap="baseMap">
+        select t1.*
+        from t_rule t1
+        join t_relation_rule_file t2
+        on t1.f_id = t2.f_rule_id
+        where t2.f_file_id = #{fileId}
+        and t1.f_deleted=0
+    </select>
+
+    <select id="queryDataNotUesdStdFile" resultMap="baseMap">
+        select *
+        from t_rule
+        where f_id not in (select f_rule_id from t_relation_rule_file)
+        and f_deleted =0
+        <if test="orgType != null">
+            and f_org_type=#{orgType}
+        </if>
+        <if test="state != null">
+            and f_state = #{state}
+        </if>
+        <if test="ruleType != null">
+            and f_rule_type=#{ruleType}
+        </if>
+        <if test="keyword != null and keyword !=''">
+            and lower(f_name) like lower(CONCAT('%',#{keyword},'%'))
+        </if>
+    </select>
+
+    <select id="queryByStdFile" resultMap="baseMap">
+        select t1.*
+        from t_rule t1
+        join t_relation_rule_file t2
+        on t1.f_id = t2.f_rule_id
+        where t2.f_file_id = #{fileId}
+        and t1.f_deleted=0
+        <if test="orgType != null">
+            and t1.f_org_type=#{orgType}
+        </if>
+        <if test="state != null">
+            and t1.f_state = #{state}
+        </if>
+        <if test="ruleType != null">
+            and t1.f_rule_type=#{ruleType}
+        </if>
+        <if test="keyword != null and keyword !=''">
+            and lower(t1.f_name) like lower(CONCAT('%',#{keyword},'%'))
+        </if>
+        <if test="departmentId != null and departmentId != ''">
+            and t1.f_department_ids like CONCAT('%',#{departmentId},'%')
+        </if>
+    </select>
+
+    <select id="queryData" resultMap="baseMap">
+        select * from t_rule where f_deleted=0
+        <if test="name != null and name != ''">
+            and f_name = #{name}
+        </if>
+        <if test="filterId != null">
+            and f_id != #{filterId}
+        </if>
+        <if test="deptIds != null and deptIds != ''">
+            and f_department_ids = #{deptIds}
+        </if>
+        limit 1
+    </select>
+
+
+    <update id="removeCatalog">
+        update t_rule
+        set f_catalog_id = #{catalogId},
+        f_version = f_version+1,
+        f_update_time=now(),
+        f_update_user=#{updateUser}
+        where f_deleted=0
+        and f_id in
+        <foreach collection="ids" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        and f_catalog_id != #{catalogId}
+    </update>
+
+
+    <update id="updateVersionByIds">
+        update t_rule
+        set f_version=f_version+1,
+        f_update_user=#{updateUser},
+        f_update_time=now()
+        where f_id in
+        <foreach collection="idList" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+
+</mapper>

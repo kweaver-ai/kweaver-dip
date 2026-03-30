@@ -1,0 +1,73 @@
+.myscore-wrapper {
+    .wrapperTitle {
+        padding: 0 20px;
+        border-bottom: 1px solid rgba(0 0 0 / 10%);
+        font-weight: 550;
+        line-height: 52px;
+    }
+
+    .operate-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 20px;
+        margin: 16px 0;
+
+        .title {
+            padding-left: 8px;
+            border-left: 4px solid #3a8ff0;
+            font-weight: 550;
+        }
+    }
+
+    .code-title {
+        color: rgba(0 0 0 / 45%);
+    }
+
+    .name-wrapper {
+        .name {
+            max-width: 200px;
+            .ellipsis-mixin();
+        }
+
+        .code {
+            max-width: 200px;
+            color: rgba(0 0 0 / 45%);
+            .ellipsis-mixin();
+        }
+    }
+}
+
+.score-wrapper {
+    .score-title {
+        margin-bottom: 16px;
+        color: #262626;
+        font-size: 21px;
+        font-weight: 550;
+        text-align: center;
+    }
+
+    .score-desc {
+        margin-bottom: 8px;
+        color: rgba(0 0 0 / 65%);
+        font-size: 16px;
+        text-align: center;
+    }
+
+    .score-rate {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 40px;
+    }
+
+    :global {
+        .any-fabric-ant-rate {
+            font-size: 38px;
+        }
+
+        .any-fabric-ant-rate-star:not(:last-child) {
+            margin-right: 32px;
+        }
+    }
+}

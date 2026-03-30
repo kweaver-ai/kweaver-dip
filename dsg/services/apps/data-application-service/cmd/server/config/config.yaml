@@ -1,0 +1,132 @@
+server:
+  http:
+    addr: 0.0.0.0:8156
+  grpc:
+    addr: 0.0.0.0:9000
+data:
+  database:
+    driver: mysql
+    source:
+  redis:
+    addr: 127.0.0.1:6379
+    read_timeout: 0.2s
+    write_timeout: 0.2s
+
+logs:
+  - name: data-application-service
+    default: true
+    enable_caller: true
+    stacktrace_level: error
+    development: true
+    cores:
+      - destination: ./logs/info.log        #日志输出地址
+        rotate_size: 100MB                      #文件分割尺寸
+        core_type: file                         #core类型，file, stdout两种
+        enable_color: false                     #是否开启输出颜色
+        output_format: json                     #日志输出的格式, json, console
+        log_level: info                         #该日志流的等级
+      - destination: ./logs/error.log
+        rotate_size: 100MB
+        core_type: file
+        output_format: json
+        log_level: error
+      - destination: console
+        core_type: stdout
+        output_format: console
+        enable_color: true
+        log_level: info
+
+telemetry:
+  logLevel: "${LOG_LEVEL}"
+  traceUrl: "${TRACE_URL}"
+  logUrl: "${LOG_URL}"
+  serverName: "${SERVER_NAME}"
+  serverVersion: "${SERVER_VERSION}"
+  traceEnabled: "${TRACE_ENABLED}"
+  auditUrl: "${AUDIT_URL}"
+  auditEnabled: "${AUDIT_ENABLED}"
+
+doc:
+  host: "${DOC_HOST}"
+  version: "1.0"
+
+mq:
+  kafka:
+    type: kafka
+    host: "${KAFKA_HOST}"
+    port: "${KAFKA_PORT}"
+    lookupdHost: "${KAFKA_LOOKUPD_HOST}"
+    lookupdPort: "${KAFKA_LOOKUPD_PORT}"
+    username: "${KAFKA_USERNAME}"
+    password: "${KAFKA_PASSWORD}"
+    mechanism: "${KAFKA_MECHANISM}"
+    version: "${KAFKA_VERSION}"
+  nsq:
+    type: nsq
+    host: "${NSQ_HOST}"
+    port: "${NSQ_PORT}"
+    httpHost: "${NSQ_HTTP_HOST}"
+    httpPort: "${NSQ_HTTP_PORT}"
+    lookupdHost: "${NSQ_LOOKUPD_HOST}"
+    lookupdPort: "${NSQ_LOOKUPD_PORT}"
+
+database:
+  dbtype: "${DB_TYPE}"
+  host: "${DB_HOST}"
+  port: "${DB_PORT}"
+  username: "${DB_USERNAME}"
+  password: "${DB_PASSWORD}"
+  database: "${DB_NAME}"
+  max-idle-connections: 5
+  max-open-connections: 50
+  max-connection-idle-time: 300
+  max-connection-life-time: 900
+  loglevel: 2
+  isdebug: true
+  tableprefix: ""
+
+redis:
+  host: "${REDIS_HOST}"
+  password: "${REDIS_PASSWORD}"
+  master_name: "${REDIS_MASTER_NAME}"
+
+# 微服务的 url 地址
+services:
+  virtual_engine: "${VIRTUAL_ENGINE}" #虚拟化引擎
+  data_catalog: "${DATA_CATALOG}" #数据资源目录
+  data_view: "${DATA_VIEW}" #数据视图
+  metadata_manage: "${METADATA_MANAGE}" #元数据平台
+  configuration_center: "${CONFIGURATION_CENTER}" #配置中心
+  glossary_service: "${GLOSSARY_SERVICE}" #业务术语
+  hydra_admin: "${HYDRA_ADMIN}" # 授权服务
+  user_management: "${USER_MANAGEMENT}" # 用户服务
+  workflow_rest: "${WORKFLOW_REST}" # 流程服务
+  data_application_service: "${DATA_APPLICATION_SERVICE}" # 接口服务
+  basic_search: "${BASIC_SEARCH}" # 搜索服务
+  data_subject: "${DATA_SUBJECT}" # 主题域
+  auth_service: "${AUTH_SERVICE}" # 权限服务
+
+cdcSource:
+  - expression: "0 0/10 * * * ?"
+    table: "service"
+    column: "id,service_id,owner_id,subject_domain_id,status,is_changed,update_time,delete_time"
+    id_column_name: "id"
+    timestamp_column_name: "update_time"
+
+# Workflow 配置
+workflow:
+  # Example: kafka, nsq
+  mq_type: ${WORKFLOW_MQ_TYPE}
+  # Example: data-application-service
+  channel: ${WORKFLOW_CHANNEL}
+  send_buf_size: 1024
+  recv_buf_size: 1024
+
+# 回调配置
+callback:
+  # 是否启用回调
+  enabled: ${CALLBACK_ENABLED}
+  # 通过这个地址调用回调接口
+  address: ${CALLBACK_ADDRESS}
+  # 回调接口前缀
+  pre_path: ${CALLBACK_PRE_PATH}

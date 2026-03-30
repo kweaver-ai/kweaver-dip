@@ -1,0 +1,125 @@
+/* 业务节点 */
+.businNodeItem {
+    position: relative;
+    display: flex;
+    width: 192px;
+    height: 64px;
+    align-items: center;
+    padding: 0 16px;
+    border: 1px solid #d7e3ed;
+    background: #fff;
+    border-radius: 6px;
+    cursor: pointer;
+    gap: 8px;
+
+    &:hover,
+    &.selNodeItem {
+        position: relative;
+        top: -8px;
+        left: -8px;
+        width: 224px;
+        height: 80px;
+        box-shadow: 0 12px 48px 16px rgb(0 0 0 / 0%),
+            0 9px 28px 0 rgb(0 0 0 / 5%), 0 6px 16px -8px rgb(0 0 0 / 8%);
+        // transform: scale(1.16);
+    }
+
+    &.selNodeItem {
+        border: 2px solid #126ee3;
+    }
+
+    &.catlgNodeItem {
+        width: 208px;
+        height: 64px;
+
+        &:hover,
+        &.selNodeItem {
+            width: 224px;
+            height: 80px;
+        }
+
+        .nodeInfoTitle {
+            &:hover {
+                color: #126ee3;
+            }
+        }
+    }
+
+    .nodeInfoWrapper {
+        overflow: hidden;
+        width: fit-content;
+        color: rgb(0 0 0 / 85%);
+        font-size: 14px;
+        line-height: 22px;
+
+        .nodeInfoTitle {
+            .ellipsis-mixin();
+        }
+
+        .nodeOtherInfo {
+            .nodeOtherInfoItem {
+                display: flex;
+                align-items: center;
+
+                .otherInfoTitle {
+                    flex-shrink: 0;
+                    color: rgb(0 0 0 / 30%);
+                }
+
+                .otherInfoCont {
+                    .ellipsis-mixin();
+                }
+            }
+        }
+    }
+}
+
+.nodeExpandInfo {
+    position: absolute;
+    top: calc(50% - 8px);
+    right: -8px;
+    width: 16px;
+    height: 16px;
+    border: 1px solid #d7e3ed;
+    background: #fff;
+    border-radius: 50%;
+    color: rgb(0 0 0 / 85%);
+    cursor: pointer;
+    font-size: 8px;
+    line-height: 16px;
+    text-align: center;
+}
+
+.nodeIcon {
+    font-size: 20px;
+}
+
+.viewNodeWrapper {
+    position: relative;
+    width: 96px;
+    height: 80px;
+    padding-top: 14px;
+    border: 1px solid #d7e3ed;
+    background: #fff;
+    border-radius: 6px;
+    cursor: pointer;
+    text-align: center;
+
+    .nodeIcon {
+        font-size: 32px;
+    }
+
+    .switchIcon {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        width: 16px;
+        height: 16px;
+        cursor: pointer;
+
+        &:hover {
+            background: #eff0f3;
+            border-radius: 2px;
+        }
+    }
+}

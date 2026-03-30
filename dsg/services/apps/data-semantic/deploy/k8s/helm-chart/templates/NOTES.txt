@@ -1,0 +1,23 @@
+Thank you for installing {{ .Chart.Name }}!
+
+Your release is named {{ .Release.Name }}.
+
+To learn more about the release, try:
+
+  $ helm status {{ .Release.Name }}
+  $ helm get all {{ .Release.Name }}
+
+API Service:
+  The API service is available as a ClusterIP service within Kubernetes.
+
+  To access the API from within the cluster:
+    http://{{ include "data-semantic.fullname" . }}-api.{{ include "data-semantic.namespace" . }}.svc.cluster.local:8888
+
+  API Health Check:
+    http://{{ include "data-semantic.fullname" . }}-api.{{ include "data-semantic.namespace" . }}.svc.cluster.local:8888/api/data-semantic/v1/health
+
+Consumer Service:
+  The consumer service runs as a Deployment and consumes Kafka messages.
+  It does not expose an external endpoint.
+
+For more information, visit the project documentation.

@@ -1,0 +1,616 @@
+// 隐藏滚动条样式 mixin
+.hide-scrollbar() {
+    -ms-overflow-style: none; // IE/Edge
+    scrollbar-width: none; // Firefox
+
+    &::-webkit-scrollbar {
+        display: none; // Chrome/Safari/Edge
+    }
+}
+
+.assistantContainer {
+    display: flex;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    padding: 24px;
+    background: url('../../assets/backImage.png') no-repeat center center;
+    background-size: cover;
+}
+
+.chatKitContainer {
+    // 确保第三方组件样式不受外部影响
+    position: relative;
+    display: flex;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    font-size: 16px;
+    // 样式隔离：创建新的堆叠上下文，减少外部样式影响
+    isolation: isolate;
+    line-height: 24px;
+
+    // 注意：如果 @dip/chatkit 组件使用了全局类名，可能会被外部样式覆盖
+    // 建议检查组件实际渲染效果，必要时添加更具体的样式隔离策略
+}
+
+.header {
+    display: flex;
+    width: 100%;
+    height: 64px;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    background: transparent;
+
+    .leftSection {
+        display: flex;
+        align-items: center;
+        column-gap: 12px;
+
+        .logo {
+            display: flex;
+            align-items: center;
+            column-gap: 4px;
+        }
+
+        .title {
+            color: rgb(0 0 0 / 85%);
+            font-size: 22px;
+        }
+    }
+
+    .rightSection {
+        display: flex;
+        align-items: center;
+        column-gap: 16px;
+
+        .searchInput {
+            width: 320px;
+        }
+    }
+}
+
+.content {
+    overflow: hidden auto;
+    flex: 1;
+    .hide-scrollbar();
+
+    .cardGrid {
+        display: grid;
+        padding: 0 16px;
+        margin: 0 auto;
+        gap: 16px;
+        grid-template-columns: repeat(3, 1fr);
+
+        @media (max-width: 1200px) {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        @media (max-width: 768px) {
+            grid-template-columns: 1fr;
+        }
+    }
+}
+
+.emptyContainer {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    .emptyAddBtn {
+        margin-top: 16px;
+    }
+}
+
+.categoryWrapper {
+    display: grid;
+    padding: 12px 16px;
+    border: 1px solid #e2e8f0;
+    margin: 8px 16px 16px;
+    background: #fff;
+    border-radius: 8px;
+    row-gap: 12px;
+}
+
+.categoryRow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    column-gap: 12px;
+}
+
+.categoryLabel {
+    width: 64px;
+    flex-shrink: 0;
+    color: #8c8c8c;
+    font-size: 14px;
+}
+
+.categoryOptions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.categoryTag {
+    padding: 4px 12px;
+    border: 1px solid transparent;
+    background: #fff;
+    border-radius: 6px;
+    color: #595959;
+    cursor: pointer;
+    font-size: 14px;
+    line-height: 20px;
+    user-select: none;
+
+    &:hover {
+        color: #1890ff;
+    }
+}
+
+.categoryTagSelected {
+    border-color: #1890ff;
+    background: rgb(24 144 255 / 6%);
+    color: #1890ff;
+}
+
+.assistantCard {
+    position: relative;
+    display: flex;
+    overflow: hidden;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 24px;
+    border: 1px solid #e2e8f0;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: none;
+    cursor: pointer;
+    gap: 12px;
+    transition: all 0.2s ease;
+
+    &:hover {
+        box-shadow: rgb(0 0 0 / 8%) 0 2px 8px;
+        transform: translateY(-2px);
+
+        .cardFooter .cardOperation {
+            opacity: 1;
+        }
+    }
+
+    // 可选择模式（多选）- 仅修改边框样式，内部元素样式保持一致
+    &.selectable {
+        border: 1px solid #f0f0f0;
+
+        &:hover {
+            border-color: #1890ff;
+        }
+    }
+
+    // 选中状态
+    &.selected {
+        border-color: #1890ff;
+        background: rgb(24 144 255 / 4%);
+    }
+
+    // 禁用状态
+    &.disabled {
+        background: #fafafa;
+        cursor: not-allowed;
+        opacity: 0.6;
+
+        &:hover {
+            border-color: #f0f0f0;
+            box-shadow: 0 2px 8px rgb(0 0 0 / 8%);
+        }
+    }
+
+    // 多选框
+    .cardCheckbox {
+        position: absolute;
+        z-index: 1;
+        top: 4px;
+        left: 8px;
+    }
+
+    // 卡片主体（图标 + 标题描述）
+    .cardBody {
+        display: flex;
+        gap: 16px;
+    }
+
+    // 图标
+    .iconWrapper {
+        display: flex;
+        flex-shrink: 0;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        color: #fff;
+        font-size: 18px;
+        font-weight: 500;
+
+        img {
+            width: 100%;
+            height: 100%;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        .agentIcon {
+            width: 32px;
+            height: 32px;
+            object-fit: contain;
+        }
+    }
+
+    // 内容区域
+    .cardContent {
+        display: flex;
+        overflow: hidden;
+        flex: 1;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .cardTitle {
+        overflow: hidden;
+        color: rgb(0 0 0 / 85%);
+        font-size: 16px;
+        font-weight: 500;
+        line-height: 22px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .cardDescription {
+        // 详情两行省略
+        /* stylelint-disable-next-line value-no-vendor-prefix */
+        display: -webkit-box;
+        overflow: hidden;
+        -webkit-box-orient: vertical;
+        color: rgb(0 0 0 / 45%);
+        font-size: 13px;
+        -webkit-line-clamp: 2;
+        line-height: 20px;
+        text-overflow: ellipsis;
+        white-space: normal;
+        word-break: break-word;
+    }
+
+    .cardFooter {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        color: rgb(0 0 0 / 45%);
+        font-size: 12px;
+
+        .footerLeft {
+            display: flex;
+            min-width: 0;
+            flex: 1;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .avatar {
+            flex-shrink: 0;
+        }
+
+        .userName {
+            overflow: hidden;
+            max-width: 80px;
+            color: rgb(0 0 0 / 65%);
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .publishTime {
+            overflow: hidden;
+            flex-shrink: 1;
+            margin-left: 8px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .cardOperation {
+            display: flex;
+            width: 24px;
+            height: 24px;
+            align-items: center;
+            justify-content: center;
+            background-color: transparent;
+            border-radius: 4px;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+
+            &:hover {
+                background-color: rgb(0 0 0 / 8%);
+            }
+        }
+    }
+}
+
+// AddAssistant 抽屉样式
+.addAssistantDrawer {
+    :global {
+        .any-fabric-ant-drawer-body {
+            display: flex;
+            flex-direction: column;
+            padding: 16px 24px;
+        }
+    }
+}
+
+.drawerHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+
+    .drawerSubtitle {
+        color: rgb(0 0 0 / 85%);
+        font-size: 14px;
+        font-weight: 550;
+    }
+
+    .drawerSearch {
+        width: 240px;
+    }
+}
+
+.drawerFooter {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .selectedCount {
+        color: rgb(0 0 0 / 65%);
+        font-size: 14px;
+    }
+
+    .footerButtons {
+        display: flex;
+        gap: 8px;
+    }
+}
+
+.addAssistantGridWrapper {
+    flex: 1;
+    padding-top: 8px; // 预留顶部空间，避免卡片 hover 上移时被裁剪
+    overflow-y: auto;
+    .hide-scrollbar();
+}
+
+.addAssistantGrid {
+    display: grid;
+    gap: 24px;
+    grid-template-columns: repeat(3, 1fr);
+
+    @media (max-width: 1200px) {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+    }
+}
+
+.loadMoreWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px 0 0;
+    gap: 8px;
+
+    .loadMoreText {
+        color: rgb(0 0 0 / 45%);
+        font-size: 14px;
+    }
+
+    .noMoreText {
+        color: rgb(0 0 0 / 25%);
+        font-size: 14px;
+    }
+}
+
+.historyButton {
+    position: absolute;
+    z-index: 10;
+    top: 0;
+    right: 48px;
+
+    &:hover {
+        color: #1890ff;
+    }
+}
+
+.chatHistoryDrawer {
+    :global {
+        .ant-drawer-body {
+            display: flex;
+            overflow: hidden;
+            flex-direction: column;
+            padding: 0;
+        }
+    }
+
+    .header {
+        display: flex;
+        width: 100%;
+        height: 64px;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 24px;
+
+        .title {
+            color: rgb(0 0 0 / 85%);
+            font-size: 18px;
+            font-weight: 550;
+            line-height: 1.2;
+        }
+
+        .closeIcon {
+            color: rgb(0 0 0 / 45%);
+            cursor: pointer;
+            font-size: 16px;
+            transition: color 0.2s;
+
+            &:hover {
+                color: rgb(0 0 0 / 85%);
+            }
+        }
+    }
+
+    .loaderWrapper {
+        display: flex;
+        height: 100%;
+        align-items: center;
+        justify-content: center;
+        padding-top: 120px;
+    }
+
+    .chatHistoryContent {
+        display: flex;
+        overflow: hidden;
+        flex: 1;
+        flex-direction: column;
+    }
+
+    .agentInfo {
+        display: flex;
+        flex-direction: column;
+        flex-shrink: 0;
+        align-items: center;
+        padding: 24px 0;
+    }
+
+    .agentName {
+        margin-top: 16px;
+        color: rgb(0 0 0 / 85%);
+        font-size: 16px;
+        font-weight: 500;
+        line-height: 1.2;
+    }
+
+    .conversationList {
+        flex: 1;
+        padding: 0;
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+
+    .conversationItem {
+        width: 100%;
+        height: 36px;
+        box-sizing: border-box;
+        background-color: transparent;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background-color 0.2s;
+
+        &:hover {
+            background-color: rgb(0 0 0 / 2%);
+        }
+
+        &.selected {
+            background-color: #f0f0f0;
+        }
+
+        .itemContent {
+            display: flex;
+            width: 100%;
+            height: 36px;
+            box-sizing: border-box;
+            align-items: center;
+            padding: 0;
+            border-radius: 4px;
+        }
+
+        .historyIcon {
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+            align-self: center;
+            margin-top: 0;
+            margin-left: 10px;
+            color: rgb(0 0 0 / 45%);
+            font-size: 16px;
+        }
+
+        .itemTitle {
+            overflow: hidden;
+            min-width: 0;
+            flex: 1;
+            margin-left: 8px;
+            color: rgb(0 0 0 / 85%);
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 36px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .itemMeta {
+            display: flex;
+            height: 36px;
+            flex-shrink: 0;
+            align-items: center;
+            margin-right: 10px;
+            gap: 8px;
+        }
+
+        .itemTime {
+            color: rgb(0 0 0 / 45%);
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 36px;
+            white-space: nowrap;
+        }
+
+        .deleteIcon {
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+            color: rgb(0 0 0 / 45%);
+            cursor: pointer;
+            font-size: 16px;
+            transition: color 0.2s;
+
+            &:hover {
+                color: rgb(0 0 0 / 85%);
+            }
+        }
+    }
+}
+
+.historyHeader {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+
+    .title {
+        color: rgb(0 0 0 / 85%);
+        font-size: 18px;
+        font-weight: 550;
+        line-height: 1.2;
+    }
+
+    .closeIcon {
+        color: rgb(0 0 0 / 45%);
+        cursor: pointer;
+        font-size: 16px;
+        transition: color 0.2s;
+
+        &:hover {
+            color: rgb(0 0 0 / 85%);
+        }
+    }
+}

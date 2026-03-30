@@ -1,0 +1,354 @@
+.commonShapeWrapper {
+    .common {
+        display: flex;
+        width: 100%;
+        height: 100%;
+        align-items: center;
+        padding: 0 20px;
+        border: 2px solid transparent;
+
+        .typeIcon {
+            color: rgb(110 196 114);
+            font-size: 28px;
+        }
+
+        .name {
+            flex: 1;
+            margin-left: 8px;
+            .ellipsis-mixin();
+        }
+
+        .nameInput {
+            border: 1px solid red;
+            box-shadow: none;
+        }
+
+        .right {
+            display: none;
+            margin-left: 12px;
+
+            .operate {
+                display: flex;
+                width: 20px;
+                height: 20px;
+                align-items: center;
+                justify-content: center;
+                border: 1px solid #d3d8db;
+                border-radius: 2px;
+
+                &:hover {
+                    background-color: rgb(228 230 237 / 25%);
+                }
+            }
+        }
+
+        &:hover,
+        &:active {
+            border: 2px solid rgb(36 160 254 / 100%);
+
+            .right {
+                display: block;
+            }
+        }
+    }
+
+    .errorInfo {
+        position: absolute;
+        top: calc(100% + 4px);
+        left: 2px;
+        color: red;
+        font-size: 12px;
+    }
+
+    .countWrapper {
+        position: absolute;
+        top: 20px;
+        left: 220px;
+        display: flex;
+        align-items: center;
+
+        .line {
+            width: 4px;
+            border-bottom: 2px solid rgb(224 230 233 / 100%);
+        }
+
+        .count {
+            display: flex;
+            width: fit-content;
+            min-width: 20px;
+            height: 20px;
+            align-items: center;
+            justify-content: center;
+            padding: 2px;
+            border: 1px solid rgb(224 230 233 / 100%);
+            background-color: white;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 12px;
+            text-align: center;
+        }
+    }
+}
+
+.activityShapeWrapper,
+.logicEntityShapeWrapper,
+.attributeShapeWrapper {
+    position: relative;
+    width: 220px;
+    height: 60px;
+    background: #fff;
+    border-radius: 3px;
+    box-shadow: 0 2px 6px 0 rgb(46 96 220 / 20%);
+}
+
+.logicEntityShapeWrapper {
+    .common {
+        .typeIcon {
+            color: rgb(40 162 254);
+        }
+    }
+}
+
+.referenceNodeShapeWrapper {
+    position: relative;
+    display: flex;
+    width: 220px;
+    height: 86px;
+    flex-direction: column;
+    justify-content: center;
+    border: 2px solid transparent;
+    background: #fff;
+    border-radius: 3px;
+    box-shadow: 0 2px 6px 0 rgb(46 96 220 / 20%);
+
+    &:hover,
+    &:active {
+        border: 2px solid rgb(36 160 254 / 100%);
+    }
+
+    .common {
+        height: fit-content;
+        border: none;
+
+        &:hover,
+        &:active {
+            border: none;
+        }
+    }
+
+    .refPath {
+        padding: 0 20px;
+        margin-top: 6px;
+        color: rgb(0 0 0 / 45%);
+        font-size: 12px;
+        .ellipsis-mixin();
+    }
+}
+
+.highLightBorder {
+    width: 100%;
+    height: 100%;
+    border: 2px solid rgb(36 160 254 / 100%);
+}
+
+.attributeShapeWrapper {
+    .common {
+        .typeIcon {
+            color: rgb(251 188 63);
+        }
+    }
+
+    .uniqueFlag {
+        position: absolute;
+        top: -52px;
+        left: -1px;
+        font-size: 65px;
+    }
+
+    .standardIconContainer {
+        position: absolute;
+        top: 18px;
+        right: -40px;
+        display: flex;
+        width: 28px;
+        height: 28px;
+        align-items: center;
+        justify-content: center;
+        background-color: #fff;
+        border-radius: 50%;
+        box-shadow: 0 2px 6px 0 rgb(46 96 220 / 20%);
+        cursor: pointer;
+
+        .standardIcon {
+            color: rgb(15 111 227 / 85%);
+            font-size: 18px;
+        }
+
+        // &:hover {
+        //     background-color: rgb(144 195 255 / 25%);
+        // }
+    }
+
+    .openContainer {
+        border: 1px solid rgba(38 161 255 / 100%);
+    }
+
+    .tagIconContainer {
+        right: -80px;
+    }
+
+    .onlyTagIconContainer {
+        right: -40px;
+    }
+}
+
+.standardDetailsWrapper {
+    .title {
+        display: flex;
+        height: 56px;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 24px;
+        border: 1px solid rgb(0 0 0 / 6%);
+        color: rgb(0 0 0 / 85%);
+        font-size: 16px;
+        font-weight: 550;
+
+        .closeIcon {
+            color: rgb(0 0 0 / 45%);
+            cursor: pointer;
+            font-size: 12px;
+        }
+    }
+
+    .detailsInfo {
+        padding: 16px 24px 0;
+
+        .tagName {
+            margin-left: 8px;
+            color: rgb(0 0 0 / 85%);
+        }
+
+        .tagOrigin {
+            margin-top: 6px;
+            color: rgb(0 0 0 / 45%);
+        }
+    }
+
+    .fieldItem {
+        display: flex;
+        margin-bottom: 12px;
+
+        .label {
+            flex-shrink: 0;
+            color: rgb(0 0 0 / 45%);
+        }
+
+        .value {
+            color: rgb(0 0 0 / 85%);
+            .ellipsis-line();
+        }
+    }
+}
+
+.standardToolTip {
+    :global {
+        .any-fabric-ant-tooltip-content {
+            width: 320px;
+        }
+
+        .any-fabric-ant-tooltip-arrow {
+            display: none;
+        }
+
+        .any-fabric-ant-tooltip-inner {
+            padding: 0 0 6px;
+        }
+    }
+}
+
+.tagToolTip {
+    :global {
+        .any-fabric-ant-tooltip-content {
+            width: 268px;
+        }
+    }
+}
+
+.modalContent {
+    word-break: break-all;
+}
+
+.uniqueTips {
+    display: inline-flex;
+
+    .attrName {
+        max-width: 160px;
+        .ellipsis-mixin();
+    }
+}
+
+.attribute-dropdown {
+    :global {
+        .any-fabric-ant-dropdown-menu-item,
+        .any-fabric-ant-dropdown-menu-submenu-title {
+            padding: 0;
+        }
+
+        .any-fabric-ant-dropdown-menu-submenu-expand-icon {
+            top: 4px;
+        }
+    }
+}
+
+.dropdown-item {
+    display: flex;
+    width: 140px;
+    height: 32px;
+    align-items: center;
+    padding-left: 12px;
+
+    .left {
+        display: flex;
+        align-items: center;
+
+        .tag-icon {
+            margin-right: 4px;
+            color: blue;
+            font-size: 18px;
+        }
+
+        .tag-name {
+            width: 66px;
+            .ellipsis-mixin();
+        }
+    }
+}
+
+.dropdown-item-selected {
+    display: flex;
+    justify-content: space-between;
+    background-color: #e6f8ff;
+
+    .checked-icon {
+        margin-right: 12px;
+        color: @primary-color;
+    }
+}
+
+:global {
+    .tag-sub-menu-item.any-fabric-ant-dropdown-menu-item {
+        padding: 0 !important;
+    }
+
+    .tag-sub-menu-item.any-fabric-ant-dropdown-menu-submenu {
+        .any-fabric-ant-dropdown-menu-submenu-title {
+            display: flex;
+
+            .any-fabric-ant-dropdown-menu-title-content {
+                flex: 1;
+                .ellipsis-mixin();
+            }
+        }
+    }
+}

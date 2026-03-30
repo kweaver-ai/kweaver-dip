@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dsg.standardization.mapper.DictEnumMapper">
+    <!-- 树形结构 -->
+    <resultMap type="com.dsg.standardization.entity.DictEnumEntity" id="baseMap">
+        <result property="id" column="f_id"/>
+        <result property="code" column="f_code"/>
+        <result property="value" column="f_value"/>
+        <result property="description" column="f_description"/>
+        <result property="dictId" column="f_dict_id"/>
+    </resultMap>
+    <insert id="save">
+        insert into t_de_dict_enum(f_id,f_code,f_value,f_description,f_dict_id) values
+        <foreach collection="dataList" item="item" separator=",">
+            (
+            #{item.id},
+            #{item.code},
+            #{item.value},
+            #{item.description},
+            #{item.dictId}
+            )
+        </foreach>
+
+    </insert>
+
+    <delete id="deleteByDictCodes">
+        delete from t_de_dict_enum where f_dict_id in (
+        select f_id from t_de_dict where f_code in
+        <foreach collection="dictCodes" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        )
+    </delete>
+    <delete id="deleteByDictId">
+        delete from t_de_dict_enum where f_dict_id = #{dectId}
+    </delete>
+
+    <select id="queryByDictId" resultMap="baseMap">
+        select * from t_de_dict_enum where f_dict_id = #{dictId}
+    </select>
+
+    <select id="queryList" resultMap="baseMap">
+        select * from t_de_dict_enum
+        where f_dict_id = #{dictId}
+        <if test="keyword != null and keyword !=''">
+            and (lower(f_code) like lower(CONCAT('%',#{keyword},'%')) or lower(f_value) like lower(CONCAT('%',#{keyword},'%'))
+            )
+        </if>
+    </select>
+
+    <select id="queryByDictIds" resultMap="baseMap">
+        select * from t_de_dict_enum where f_dict_id in
+        <foreach collection="dictIds" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+</mapper>

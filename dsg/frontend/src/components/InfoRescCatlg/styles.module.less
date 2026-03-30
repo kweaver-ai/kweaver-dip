@@ -1,0 +1,221 @@
+.infoRescCatlgWrapper {
+    height: 100%;
+
+    .catlgTabs {
+        :global {
+            .any-fabric-ant-tabs-nav {
+                margin-bottom: 0;
+
+                .any-fabric-ant-tabs-nav-wrap {
+                    padding-left: 20px;
+                }
+            }
+        }
+    }
+
+    .left {
+        overflow: auto;
+        height: calc(100% - 46px);
+    }
+
+    .right {
+        height: 100%;
+        // padding: 18px 0;
+        padding-top: 20px;
+
+        .operate-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+    }
+
+    .catlgName {
+        display: flex;
+        align-items: center;
+
+        .nameIcon {
+            margin-right: 8px;
+            font-size: 16px;
+        }
+
+        .catlgNameCont {
+            width: calc(100% - 22px);
+
+            .names {
+                .ellipsis-mixin();
+
+                &:hover {
+                    color: @primary-color;
+                    cursor: pointer;
+                    text-decoration-line: underline;
+                }
+            }
+
+            .nameWrapper {
+                display: flex;
+                align-items: center;
+
+                .names {
+                    margin-right: 4px;
+                    color: @title-color-secondary;
+                }
+            }
+
+            .code {
+                color: rgb(0 0 0 / 45%);
+                font-size: 12px;
+            }
+        }
+    }
+
+    .relateRescWrapper {
+        display: flex;
+        align-items: center;
+
+        .firstRelCatlgName {
+            .ellipsis-mixin();
+
+            width: fit-content;
+        }
+
+        .link {
+            &:hover {
+                color: #126ee3;
+                cursor: pointer;
+                text-decoration-line: underline;
+            }
+        }
+    }
+
+    .department {
+        .ellipsis-mixin();
+    }
+}
+
+.auditInfoWrapper {
+    width: 220px;
+    color: #000;
+    font-size: 12px;
+    line-height: 18px;
+
+    .auditTitleWrapper {
+        display: flex;
+        align-items: center;
+        font-weight: 550;
+        gap: 8px;
+    }
+
+    .auditContentWrapper {
+        overflow: hidden auto;
+        max-height: 200px;
+        margin-top: 10px;
+        word-break: break-word;
+    }
+}
+
+.auditing {
+    display: inline-block;
+    height: 20px;
+    flex-shrink: 0;
+    padding: 0 8px;
+    background: rgb(24 144 255 / 7%);
+    border-radius: 12px;
+    color: #1890ff;
+    font-size: 12px;
+    line-height: 18px;
+}
+
+.detailLabel {
+    display: inline-block;
+    border-radius: 4px !important;
+}
+
+.auditNotPass {
+    display: inline-block;
+    height: 20px;
+    flex-shrink: 0;
+    padding: 0 8px;
+    background: rgb(255 77 79 / 7%);
+    border-radius: 12px;
+    color: #ff4d4f;
+    font-size: 12px;
+    line-height: 18px;
+}
+
+.draft {
+    display: inline-block;
+    height: 20px;
+    flex-shrink: 0;
+    padding: 0 8px;
+    background: rgba(120 120 120 / 7%);
+    border-radius: 12px;
+    color: #787878;
+    font-size: 12px;
+    line-height: 18px;
+}
+
+.rescTooltipWrapper {
+    // max-width: 220px;
+    // max-height: 190px;
+    // padding: 0;
+    // padding-top: 4px;
+    // color: #000000;
+    // overflow: hidden auto;
+    // border-radius: 4px;
+    // box-shadow: 0px 9px 28px 8px rgba(0,0,0,0.05), 0px 3px 6px -4px rgba(0,0,0,0.12), 0px 6px 16px 0px rgba(0,0,0,0.08);
+
+    .link {
+        &:hover {
+            color: #126ee3;
+            cursor: pointer;
+            text-decoration-line: underline;
+        }
+    }
+
+    :global {
+        .any-fabric-ant-tooltip-inner {
+            overflow: hidden auto;
+            max-width: 220px;
+            max-height: 180px;
+            background: rgb(255 255 255);
+            color: rgb(0 0 0 / 85%);
+        }
+    }
+}
+
+// 线管节点
+.showGraphWrapper {
+    overflow: hidden;
+    width: 100%;
+    // height: calc(100vh - 234px);
+    height: 100%;
+    padding: 0;
+    margin-top: -32px;
+    background-color: rgb(246 249 251 / 100%);
+
+    .checkedWrapper {
+        position: relative;
+        display: inline-block;
+        width: 1216px;
+        height: 0;
+        margin-left: calc((100% - 1216px) / 2);
+        text-align: right;
+
+        .checkedContainer {
+            position: absolute;
+            z-index: 100;
+            top: 24px;
+            right: 0;
+            display: inline-flex;
+        }
+    }
+}
+
+.tagItem {
+    max-width: 80px;
+    color: rgb(0 0 0 / 85%);
+
+    .ellipsis-mixin();
+}

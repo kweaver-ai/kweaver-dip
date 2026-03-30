@@ -1,0 +1,17 @@
+{{- $fullName := print (include "standardization.fullname" .) "" -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $fullName }}
+  namespace: {{.Values.namespace}}
+  labels:
+    {{- include "standardization.labels.backend" . | nindent 4 }}
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "standardization.backend.selectorLabels" . | nindent 4 }}

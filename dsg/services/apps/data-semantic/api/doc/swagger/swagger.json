@@ -1,0 +1,823 @@
+{
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "schemes": [
+    "https"
+  ],
+  "swagger": "2.0",
+  "info": {
+    "title": "data-semantic API",
+    "version": "v1"
+  },
+  "basePath": "/",
+  "paths": {
+    "/api/data-semantic/v1/batch-object-match": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "summary": "批量匹配业务对象",
+        "operationId": "dataSemanticBatchObjectMatch",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "entries",
+                "kn_id",
+                "ot_id"
+              ],
+              "properties": {
+                "entries": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "name"
+                    ],
+                    "properties": {
+                      "data_source": {
+                        "description": "给定的视图数据（直接追加到结果）",
+                        "type": "object",
+                        "required": [
+                          "id",
+                          "name"
+                        ],
+                        "properties": {
+                          "id": {
+                            "description": "视图ID（对应form_view表mdl_id）",
+                            "type": "string"
+                          },
+                          "name": {
+                            "description": "视图名称",
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "name": {
+                        "description": "业务对象名称（用于模糊匹配）",
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "kn_id": {
+                  "description": "知识网络ID",
+                  "type": "string"
+                },
+                "ot_id": {
+                  "description": "网络中指定对象ID",
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "entries": {
+                  "description": "匹配结果列表",
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "name"
+                    ],
+                    "properties": {
+                      "data_source": {
+                        "description": "匹配的业务对象列表",
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "required": [
+                            "id",
+                            "name",
+                            "object_name"
+                          ],
+                          "properties": {
+                            "id": {
+                              "description": "视图ID（mdl_id）",
+                              "type": "string"
+                            },
+                            "name": {
+                              "description": "视图名称",
+                              "type": "string"
+                            },
+                            "object_name": {
+                              "description": "业务对象名称",
+                              "type": "string"
+                            }
+                          }
+                        }
+                      },
+                      "name": {
+                        "description": "原始输入名称",
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/data-semantic/v1/{id}/business-objects": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "summary": "查询业务对象识别结果",
+        "operationId": "dataSemanticGetBusinessObjects",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "name": "object_id",
+            "in": "query",
+            "allowEmptyValue": true
+          },
+          {
+            "type": "string",
+            "name": "keyword",
+            "in": "query",
+            "allowEmptyValue": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "list": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "object_name",
+                      "attributes"
+                    ],
+                    "properties": {
+                      "attributes": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "required": [
+                            "id",
+                            "attr_name",
+                            "form_view_field_id",
+                            "field_tech_name",
+                            "field_business_name",
+                            "field_role",
+                            "field_type"
+                          ],
+                          "properties": {
+                            "attr_name": {
+                              "type": "string"
+                            },
+                            "description": {
+                              "type": "string"
+                            },
+                            "field_business_name": {
+                              "type": "string"
+                            },
+                            "field_role": {
+                              "type": "integer"
+                            },
+                            "field_tech_name": {
+                              "type": "string"
+                            },
+                            "field_type": {
+                              "type": "string"
+                            },
+                            "form_view_field_id": {
+                              "type": "string"
+                            },
+                            "id": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      },
+                      "id": {
+                        "type": "string"
+                      },
+                      "object_name": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "unidentified_fields": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "technical_name",
+                      "data_type"
+                    ],
+                    "properties": {
+                      "business_name": {
+                        "type": "string"
+                      },
+                      "data_type": {
+                        "type": "string"
+                      },
+                      "description": {
+                        "type": "string"
+                      },
+                      "field_role": {
+                        "type": "integer"
+                      },
+                      "id": {
+                        "type": "string"
+                      },
+                      "technical_name": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "summary": "保存业务对象及属性",
+        "operationId": "dataSemanticSaveBusinessObjects",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "type",
+                "op_id",
+                "name"
+              ],
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "op_id": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "consumes": [
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "summary": "删除识别结果",
+        "operationId": "dataSemanticDeleteBusinessObjects",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/data-semantic/v1/{id}/business-objects/attributes/move": {
+      "put": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "summary": "调整属性归属业务对象",
+        "operationId": "dataSemanticMoveAttribute",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "attribute_id",
+                "target_object_uuid"
+              ],
+              "properties": {
+                "attribute_id": {
+                  "type": "string"
+                },
+                "target_object_uuid": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "attribute_id": {
+                  "type": "string"
+                },
+                "business_object_id": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/data-semantic/v1/{id}/business-objects/regenerate": {
+      "post": {
+        "consumes": [
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "summary": "重新识别业务对象",
+        "operationId": "dataSemanticRegenerateBusinessObjects",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "understand_status": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/data-semantic/v1/{id}/fields": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "summary": "查询字段语义补全数据",
+        "operationId": "dataSemanticGetFields",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "name": "keyword",
+            "in": "query",
+            "allowEmptyValue": true
+          },
+          {
+            "type": "boolean",
+            "name": "only_incomplete",
+            "in": "query",
+            "allowEmptyValue": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "fields": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "form_view_field_id",
+                      "field_business_name",
+                      "field_tech_name",
+                      "field_type",
+                      "field_role",
+                      "field_description"
+                    ],
+                    "properties": {
+                      "field_business_name": {
+                        "type": "string"
+                      },
+                      "field_description": {
+                        "type": "string"
+                      },
+                      "field_role": {
+                        "type": "integer"
+                      },
+                      "field_tech_name": {
+                        "type": "string"
+                      },
+                      "field_type": {
+                        "type": "string"
+                      },
+                      "form_view_field_id": {
+                        "type": "string"
+                      },
+                      "id": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "table_business_name": {
+                  "type": "string"
+                },
+                "table_description": {
+                  "type": "string"
+                },
+                "table_info_id": {
+                  "type": "string"
+                },
+                "table_tech_name": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/data-semantic/v1/{id}/generate": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "summary": "一键生成理解数据",
+        "operationId": "dataSemanticGenerateUnderstanding",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "fields": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "form_view_field_id",
+                      "field_tech_name",
+                      "field_type",
+                      "field_business_name",
+                      "field_role",
+                      "field_description"
+                    ],
+                    "properties": {
+                      "field_business_name": {
+                        "type": "string"
+                      },
+                      "field_description": {
+                        "type": "string"
+                      },
+                      "field_role": {
+                        "type": "integer"
+                      },
+                      "field_tech_name": {
+                        "type": "string"
+                      },
+                      "field_type": {
+                        "type": "string"
+                      },
+                      "form_view_field_id": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "understand_status": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/data-semantic/v1/{id}/semantic-info": {
+      "put": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "summary": "保存库表信息补全数据",
+        "operationId": "dataSemanticSaveSemanticInfo",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "fieldData": {
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "field_business_name",
+                    "field_role",
+                    "field_description"
+                  ],
+                  "properties": {
+                    "field_business_name": {
+                      "type": "string"
+                    },
+                    "field_description": {
+                      "type": "string"
+                    },
+                    "field_role": {
+                      "type": "integer"
+                    },
+                    "id": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "tableData": {
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "table_business_name",
+                    "table_description"
+                  ],
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "table_business_name": {
+                      "type": "string"
+                    },
+                    "table_description": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/data-semantic/v1/{id}/status": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "summary": "查询库表理解状态",
+        "operationId": "dataSemanticGetStatus",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "understand_status": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/data-semantic/v1/{id}/submit": {
+      "post": {
+        "consumes": [
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "summary": "提交确认理解数据",
+        "operationId": "dataSemanticSubmitUnderstanding",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/data-semantic/v1/health": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "summary": "健康检查",
+        "operationId": "healthCheck",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "x-date": "2026-03-25 09:00:22",
+  "x-description": "This is a goctl generated swagger file.",
+  "x-github": "https://github.com/zeromicro/go-zero",
+  "x-go-zero-doc": "https://go-zero.dev/",
+  "x-goctl-version": "1.9.2"
+}

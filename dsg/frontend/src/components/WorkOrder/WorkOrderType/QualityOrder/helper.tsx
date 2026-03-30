@@ -1,0 +1,1 @@
+import __ from './locale'

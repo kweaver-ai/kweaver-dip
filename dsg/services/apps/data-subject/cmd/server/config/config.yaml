@@ -1,0 +1,78 @@
+server:
+  name: "data_subject"
+  http:
+    addr: 0.0.0.0:8123
+    timeout: 1s
+  grpc:
+    addr: 0.0.0.0:8223
+    timeout: 1s
+
+doc:
+  host: "${DOC_HOST}"
+  version: "1.0"
+
+depServices:
+  userMgmPrivate: "user-management-private:30980"
+  hydraAdmin: "hydra-admin:4445"
+  businessGroomingHost: "${BUSINESS_GROOMING_HOST}"
+  configurationCenterHost: "${CONFIGURATION_CENTER_HOST}"
+  standardizationHost: "${STANDARDIZATION_HOST}"
+  dataViewHost: "${DATA_VIEW_HOST}"
+  afSailorServiceHost: "${AF_SAILOR_SERVICE_HOST}"
+  kafkaMQ:
+    mqType: 1
+    host: "${KAFKA_MQ_HOST}"
+    sasl:
+      enabled: true
+      username: "${KAFKA_MQ_USENAME}"
+      password: "${KAFKA_MQ_PASSWORD}"
+    producer:
+      sendBufSize: 1024
+      recvBufSize: 1024
+telemetry:
+  traceUrl: "${TRACE_URL}"
+  logLevel: "${LOG_LEVEL}"
+  logUrl: "${LOG_URL}"
+  serverName: "${SERVER_NAME}"
+  serverVersion: "${SERVER_VERSION}"
+  traceEnabled: "${TRACE_ENABLED}"
+
+database:
+  dbtype: "${DB_TYPE}"
+  host: "${DB_HOST}"
+  port: "${DB_PORT}"
+  username: "${DB_USERNAME}"
+  password: "${DB_PASSWORD}"
+  database: "${DB_NAME}"
+  max-idle-connections: 5
+  max-open-connections: 50
+  max-connection-idle-time: 300
+  max-connection-life-time: 900
+  loglevel: 2
+  isdebug: true
+  tableprefix: t_
+
+############## CDC Config ##############
+
+sourceConf:
+  broker: "${KAFKA_MQ_HOST}"
+  kafkaUser: "${KAFKA_MQ_USENAME}"
+  kafkaPassword: "${KAFKA_MQ_PASSWORD}"
+  clientId: af.data-subject
+  mechanism: PLAIN
+  redisHost: "${REDIS_HOST}"
+  redisPassword: "${REDIS_PASSWORD}"
+  sources:
+    type: "${DB_TYPE}"
+    host: "${DB_HOST}"
+    port: "${DB_PORT}"
+    username: "${DB_USERNAME}"
+    password: "${DB_PASSWORD}"
+    db: "${DB_NAME}"
+    schema: "${SCHEMA}"
+    source:
+      - expression: "${CRON_EXPRESSION}"
+        table: "${CRON_TABLE}"
+        column: "${CRON_COLUMN}"
+        idColumnName: "${CRON_ID_COLUMN_NAME}"
+        timestampColumnName: "${CRON_TIMESTAMP_COLUMN_NAME}"

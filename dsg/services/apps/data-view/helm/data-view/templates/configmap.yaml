@@ -1,0 +1,81 @@
+apiVersion: v1
+kind: ConfigMap
+{{- $mq := .Values.depServices.mq | default dict }}
+{{- $kafkaMQHost := printf "%s:%v" $mq.kafkaHost $mq.kafkaPort }}
+{{- if and $mq.mqHost $mq.mqPort }}
+{{- $kafkaMQHost = printf "%s:%v" $mq.mqHost $mq.mqPort }}
+{{- end }}
+metadata:
+  name: {{ .Values.name }}-cm
+  namespace: {{ .Values.namespace }}
+data:
+  {{- with .Values }}
+  DB_TYPE: {{ .depServices.rds.type | quote}}
+  DB_HOST: {{ .depServices.rds.host | quote}}
+  DB_PORT: {{ .depServices.rds.port | quote}}
+  DB_USERNAME: {{ .depServices.rds.user | quote }}
+  DB_PASSWORD: {{ .depServices.rds.password | quote }}
+  DB_NAME: {{ .depServices.rds.database | quote }}
+  HYDRA_HOST: "{{ .depServices.hydra.administrativeHost}}:{{ .depServices.hydra.administrativePort}}"
+  HYDRA_PUBLIC_HOST: "{{ .depServices.hydra.publicHost}}:{{ .depServices.hydra.publicPort}}"
+  USER_MANAGE_HOST: "{{index .depServices "user-management" "privateHost"}}:{{index .depServices "user-management" "privatePort"}}"
+  TASK_CENTER_HOST: "{{index .depServices "task-center" "host"}}:{{index .depServices "task-center" "port"}}"
+  CONFIGURATION_CENTER_HOST: "http://{{index .depServices "configuration-center" "host"}}:{{index .depServices "configuration-center" "port"}}"
+  AF_SAILOR_SERVICE_HOST: "{{index .depServices "af-sailor-service" "protocol"}}://{{index .depServices "af-sailor-service" "host"}}"
+  VIRTUAL_ENGINE_HOST: "{{index .depServices "virtualizationEngine" "protocol"}}://{{index .depServices "virtualizationEngine" "host"}}:{{index .depServices "virtualizationEngine" "port"}}"
+  METADATA_HOST: "{{index .depServices "metadata-manage" "protocol"}}://{{index .depServices "metadata-manage" "host"}}"
+  DATA_EXPLORE_HOST: "http://{{index .depServices "data-explore" "host"}}:{{index .depServices "data-explore" "port"}}"
+  AUTH_SERVICE_HOST: "{{index .depServices "auth-service" "protocol"}}://{{index .depServices "auth-service" "host"}}"
+  DATA_SUBJECT_HOST: "{{index .depServices "data-subject" "protocol"}}://{{index .depServices "data-subject" "host"}}"
+  STANDARDIZATION_BACKEND_HOST: "{{index .depServices "standardization-backend" "protocol"}}://{{index .depServices "standardization-backend" "host"}}:{{index .depServices "standardization-backend" "port"}}"
+  SCENE_ANALYSIS_HOST: "{{index .depServices "sceneAnalysis" "protocol"}}://{{index .depServices "sceneAnalysis" "host"}}:{{index .depServices "sceneAnalysis" "port"}}"
+  MDL_DATA_MODEL_HOST: "{{index .depServices "mdl-data-model" "protocol"}}://{{index .depServices "mdl-data-model" "host"}}"
+  MDL_UNIQUERY_HOST: "{{index .depServices "mdl-uniquery" "protocol"}}://{{index .depServices "mdl-uniquery" "host"}}"
+  OSS_APP: {{ .depServices.oss.ossApp | quote}}
+  OSS_HOST: {{ .depServices.oss.ossHost | quote}}
+  OSS_PROTOCOL: {{ .depServices.oss.ossProtocol | quote}}
+  OSS_IS_DEFAULT: {{ .depServices.oss.ossIsDefault | quote}}
+  OSS_BUCKET: {{ .depServices.oss.ossBucket | quote}}
+  EXTERNAL_PLUGIN_FW_ADDR: "{{index .depServices "external-plugin-framework" "host"}}:{{index .depServices "external-plugin-framework" "port"}}"
+  MQ_TYPE: {{ .depServices.mq.mqType | quote }}
+  MQ_HOST: {{ .depServices.mq.mqHost | quote }}
+  MQ_PORT: {{ .depServices.mq.mqPort | quote }}
+  MQ_LOOKUPD_HOST: {{ .depServices.mq.mqLookupdHost | quote }}
+  MQ_LOOKUPD_PORT: {{ .depServices.mq.mqLookupdPort | quote }}
+  AUTH_USERNAME: {{ .depServices.mq.auth.username | quote }}
+  AUTH_PASSWORD: {{ .depServices.mq.auth.password | quote }}
+  AUTH_MECHANISM: {{ .depServices.mq.auth.mechanism | quote }}
+  KAFKA_MQ_HOST: "{{ $kafkaMQHost }}"
+  KAFKA_MQ_USENAME: "{{ .depServices.mq.auth.username}}"
+  KAFKA_MQ_PASSWORD: "{{ .depServices.mq.auth.password}}"
+  NSQ_TYPE: "{{ .depServices.mq.nsq.type }}"
+  NSQ_HOST: "{{ .depServices.mq.nsq.host }}"
+  NSQ_PORT: "{{ .depServices.mq.nsq.port }}"
+  NSQ_HTTP_HOST: "{{ .depServices.mq.nsq.httpHost }}"
+  NSQ_HTTP_PORT: "{{ .depServices.mq.nsq.httpPort }}"
+  NSQ_LOOKUPD_HOST: "{{ .depServices.mq.nsq.lookupdHost }}"
+  NSQ_LOOKUPD_PORT: "{{ .depServices.mq.nsq.lookupdPort }}"
+  SERVER_NAME: {{.service.name | quote }}
+  LOG_LEVEL: {{.service.telemetry.log.level | quote }}
+  LOG_URL: {{.service.telemetry.log.endpoint | quote }}
+  TRACE_ENABLED: {{.service.telemetry.trace.enabled| quote }}
+  TRACE_URL: {{.service.telemetry.trace.endpoint | quote }}
+  AUDIT_ENABLED: {{.service.telemetry.audit.enabled| quote }}
+  AUDIT_URL: {{.service.telemetry.audit.endpoint | quote }}
+  COMPLETION_DEFAULT_OVER_TIME: "{{ .exploration.completionDefaultOvertime}}"
+  {{- end }}
+  {{- with .Values.depServices.redis }}
+  REDIS_MASTER_NAME: {{ .connectInfo.masterGroupName | quote }}
+  REDIS_USER_NAME: {{ .connectInfo.username | quote }}
+  REDIS_PASSWORD: {{ .connectInfo.password | quote }}
+  REDIS_SENTINEL_HOST: {{ .connectInfo.sentinelHost | quote }}
+  REDIS_SENTINEL_PORT: {{ .connectInfo.sentinelPort | quote }}
+  REDIS_SENTINEL_USER_NAME: {{ .connectInfo.sentinelUsername | quote }}
+  REDIS_SENTINEL_PASSWORD: {{ .connectInfo.sentinelPassword | quote }}
+  REDIS_CONNECT_TYPE: {{ .connectType | quote }}
+  {{- end }}
+  {{- with .Values.config }}
+  SYNTHETIC_DATA_CACHE: {{ .SyntheticDataCache.ExpirationTime | quote }}
+  {{- end }}
+  ScanStartConcurrentCount: "100"
+  ScanGoroutineLimitCount: "500"

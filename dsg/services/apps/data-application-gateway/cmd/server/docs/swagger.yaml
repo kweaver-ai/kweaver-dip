@@ -1,0 +1,323 @@
+definitions:
+  github_com_kweaver-ai_dsg_services_apps_data-application-gateway_common_dto.DataTableRequestParam:
+    properties:
+      cn_name:
+        description: 中文名称
+        maxLength: 255
+        type: string
+      data_type:
+        description: 字段类型
+        enum:
+        - string
+        - int
+        - long
+        - float
+        - double
+        - boolean
+        type: string
+      default_value:
+        description: 默认值
+        maxLength: 128
+        type: string
+      description:
+        description: 描述
+        maxLength: 255
+        type: string
+      en_name:
+        description: 英文名称
+        maxLength: 255
+        type: string
+      operator:
+        description: 运算逻辑 = 等于, != 不等于, > 大于, >= 大于等于, < 小于, <= 小于等于, like 模糊匹配, in
+          包含, not in 不包含
+        type: string
+      required:
+        description: 是否必填 yes 必填 no非必填
+        enum:
+        - "yes"
+        - "no"
+        type: string
+    required:
+    - data_type
+    - en_name
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-gateway_common_dto.DataTableResponseParam:
+    properties:
+      cn_name:
+        description: 中文名称
+        maxLength: 255
+        type: string
+      data_type:
+        description: 字段类型
+        enum:
+        - string
+        - int
+        - long
+        - float
+        - double
+        - boolean
+        type: string
+      description:
+        description: 描述
+        maxLength: 255
+        type: string
+      en_name:
+        description: 英文名称
+        maxLength: 255
+        type: string
+      masking:
+        description: 脱敏规则 plaintext 不脱敏 hash 哈希 override 覆盖 replace 替换 默认 plaintext
+        enum:
+        - plaintext
+        - hash
+        - override
+        - replace
+        type: string
+      sequence:
+        description: 序号
+        minimum: 1
+        type: integer
+      sort:
+        description: 排序方式 unsorted 不排序 asc 升序 desc 降序 默认 unsorted
+        enum:
+        - unsorted
+        - asc
+        - desc
+        type: string
+    required:
+    - en_name
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-gateway_common_dto.Member:
+    properties:
+      data_type:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      name_en:
+        type: string
+      operator:
+        description: 限定条件
+        type: string
+      value:
+        description: 限定比较值
+        type: string
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-gateway_common_dto.Param:
+    properties:
+      data_type:
+        allOf:
+        - $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-gateway_common_dto.ParamDataType'
+        description: 参数类型
+      position:
+        allOf:
+        - $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-gateway_common_dto.ParamPosition'
+        description: 参数位置
+      value:
+        description: 参数值
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-gateway_common_dto.ParamDataType:
+    enum:
+    - string
+    - int
+    - long
+    - float
+    - double
+    - boolean
+    type: string
+    x-enum-varnames:
+    - ParamDataTypeString
+    - ParamDataTypeInt
+    - ParamDataTypeLong
+    - ParamDataTypeFloat
+    - ParamDataTypeDouble
+    - ParamDataTypeBoolean
+  github_com_kweaver-ai_dsg_services_apps_data-application-gateway_common_dto.ParamPosition:
+    enum:
+    - header
+    - path
+    - query
+    - body
+    type: string
+    x-enum-varnames:
+    - ParamPositionHeader
+    - ParamPositionPath
+    - ParamPositionQuery
+    - ParamPositionBody
+  github_com_kweaver-ai_dsg_services_apps_data-application-gateway_common_dto.QueryTestReq:
+    properties:
+      backend_service_host:
+        description: 后台服务域名/IP
+        maxLength: 128
+        type: string
+      backend_service_path:
+        description: 后台服务路径
+        maxLength: 128
+        type: string
+      create_model:
+        description: 创建模式 wizard 向导模式 script 脚本模式
+        enum:
+        - wizard
+        - script
+        type: string
+      current_rules:
+        allOf:
+        - $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-gateway_common_dto.SubServiceDetail'
+        description: 当前接口测限定规则，授权管理页面用到的
+      data_table_request_params:
+        description: 请求参数
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-gateway_common_dto.DataTableRequestParam'
+        type: array
+      data_table_response_params:
+        description: 返回参数
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-gateway_common_dto.DataTableResponseParam'
+        type: array
+      data_view_id:
+        description: 数据视图Id
+        type: string
+      datasource_id:
+        description: |-
+          数据源id
+
+          Deprecated: 不再需要数据源 ID, 测试接口所需的 catalog 和 scheme 可以通过逻辑视图获取
+        type: string
+      http_method:
+        description: 请求方式 post get put delete
+        enum:
+        - post
+        - get
+        - put
+        - delete
+        type: string
+      page_size:
+        description: 分页大小
+        maximum: 1000
+        minimum: 1
+        type: integer
+      params:
+        additionalProperties:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-gateway_common_dto.Param'
+        type: object
+      rules:
+        description: 过滤规则
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-gateway_common_dto.Rule'
+        type: array
+      script:
+        description: 脚本（仅脚本模式需要此参数）
+        type: string
+      service_type:
+        description: 接口类型 service_generate 接口生成 service_register 接口注册
+        enum:
+        - service_generate
+        - service_register
+        type: string
+    required:
+    - service_type
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-gateway_common_dto.QueryTestRes:
+    properties:
+      request:
+        description: 请求详情
+      response:
+        description: 返回内容
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-gateway_common_dto.RowFilters:
+    properties:
+      where:
+        description: 条件组列表
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-gateway_common_dto.Where'
+        type: array
+      where_relation:
+        description: 条件组间关系
+        type: string
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-gateway_common_dto.Rule:
+    properties:
+      operator:
+        description: 运算逻辑 = 等于, != 不等于, > 大于, >= 大于等于, < 小于, <= 小于等于, like 模糊匹配, in
+          包含, not in 不包含
+        type: string
+      param:
+        description: 过滤字段
+        type: string
+      value:
+        description: 过滤值
+        maxLength: 128
+        type: string
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-gateway_common_dto.SubServiceDetail:
+    properties:
+      fixed_row_filters:
+        allOf:
+        - $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-gateway_common_dto.RowFilters'
+        description: 固定的行过滤规则
+      row_filters:
+        allOf:
+        - $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-gateway_common_dto.RowFilters'
+        description: 行过滤规则
+      scope_fields:
+        description: 固定的字段ID
+        items:
+          type: string
+        type: array
+    type: object
+  github_com_kweaver-ai_dsg_services_apps_data-application-gateway_common_dto.Where:
+    properties:
+      member:
+        description: 限定对象
+        items:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-gateway_common_dto.Member'
+        type: array
+      relation:
+        description: 限定关系
+        type: string
+    type: object
+info:
+  contact: {}
+  description: data application gateway
+  title: data-application-gateway
+  version: "0.0"
+paths:
+  /api/data-application-gateway/v1/query-test:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 请求参数
+        in: body
+        name: _
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-gateway_common_dto.QueryTestReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_kweaver-ai_dsg_services_apps_data-application-gateway_common_dto.QueryTestRes'
+      summary: 数据查询测试接口
+      tags:
+      - 数据查询
+  /data-application-gateway/{service_path}:
+    post:
+      parameters:
+      - description: 服务路径
+        in: path
+        name: service_path
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+      summary: 数据查询外部接口
+      tags:
+      - 数据查询
+swagger: "2.0"

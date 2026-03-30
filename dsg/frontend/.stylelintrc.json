@@ -1,0 +1,35 @@
+{
+    "plugins": [
+        "stylelint-order"
+    ],
+    "extends": [
+        "stylelint-config-standard",
+        "stylelint-config-css-modules",
+        "stylelint-config-prettier",
+        "stylelint-config-idiomatic-order"
+    ],
+    "customSyntax": "postcss-less",
+    "rules": {
+        "no-invalid-double-slash-comments": [
+            null,
+            {
+                "severity": "warning"
+            }
+        ],
+        "selector-class-pattern": null,
+        "string-quotes": "single",
+        "at-rule-empty-line-before": null,
+        "at-rule-no-unknown": null,
+        "at-rule-name-case": "lower",
+        "shorthand-property-no-redundant-values": true,
+        "declaration-block-no-duplicate-properties": true,
+        "no-descending-specificity": null,
+        "max-nesting-depth": 10,
+        "indentation": [
+            4,
+            {
+                "severity": "warning"
+            }
+        ]
+    }
+}

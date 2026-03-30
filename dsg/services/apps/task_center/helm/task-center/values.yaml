@@ -1,0 +1,159 @@
+# 名称空间，服务都要在同一个空间。
+namespace: anyshare
+
+# 1 修改标签
+labels:
+  deployment:
+    name: task-center-deployment
+  pod:
+    app: task-center-pod
+  service:
+    app: task-center-service
+
+# 2 修改仓库服务的镜像地址：不同的项目记得修改repository中af后的项目名和tag
+image:
+  registry: acr.xxx.cn
+  repository: af/task-center
+  tag: "1.0.0-alpha"
+  pullPolicy: IfNotPresent
+
+#3 修改容器副本数量
+replicaCount: 1
+
+#4 修改deployment的名称
+name: task-center-deployment
+
+nodeSelector: []
+
+#需要暴露的端口号列表
+#containerPort容器需要监听的端口号
+#protocol端口协议，支持TCP和UDP，默认TCP
+ports:
+  name: server-port
+  containerPort: 8143
+
+
+# 修改service的名字、端口，nodePort是对外的端口。
+service:
+  name: task-center
+  type: ClusterIP
+  port: 8143
+  version: "1.0.0"
+  telemetry:
+    log:
+      enabled: true
+      endpoint: http://10.4.104.243/api/feed_ingester/v1/jobs/otl-test4-log/events
+      level: error
+    trace:
+      enabled: true
+      endpoint: http://10.4.104.243/api/feed_ingester/v1/jobs/otl-test3/events
+
+kafka:
+  version: "2.3.1"
+  uri: kafka-headless.resource:9097
+  clientId: af.task-center
+  username: kafkaclient
+  password: xxx
+  groupId: af.task-center
+  mechanism: PLAIN
+
+depServices:
+  class-443:
+    ingressClass: class-443
+  nsq:
+    nsqlookupdHost: proton-mq-nsq-nsqlookupd.resource
+    nsqlookupdPort: 4161
+    nsqdHost: proton-mq-nsq-nsqd.resource
+    nsqdPort: 4151
+    nsqdPortTCP: 4150
+  mq:
+    auth:
+      mechanism: PLAIN
+      password: xxx
+      username: anyrobot
+    connectorType: nsq
+    mqHost: proton-mq-nsq-nsqd.resource
+    mqLookupdHost: proton-mq-nsq-nsqlookupd.resource
+    mqLookupdPort: 4161
+    mqPort: 4151
+    nsqdPortTCP: 4150
+    mqType: nsq
+  rds:
+    type: mariadb
+    host: mariadb-mariadb-master.resource
+    port: 3330
+    user: anyshare
+    password: xxx
+    database: af_tasks
+  configuration-center:
+    host: configuration-center
+    port: 8133
+  business-grooming:
+    host: business-grooming
+    port: 8123
+  data-catalog:
+    host: data-catalog
+    port: 8153
+  data-view:
+    host: data-view
+    port: 8123
+  data-exploration:
+    host: data-exploration-service
+    port: 8281
+  oss:
+    ossApp: af
+    ossHost: ossgatewaymanager-private:9002
+    ossProtocol: http
+    ossIsDefault: true
+    ossBucket: afstorage
+  codeRuleIDConf:
+    tenant: bed2d4ac-24b9-499f-8195-614e78215895
+  hydraService:
+    publicHost: hydra-public
+    publicPort: 4444
+    administrativeHost: hydra-admin
+    administrativePort: 4445
+    clientId: 109be1e1-72c0-4137-8484-813b14be5e21
+    clientSecret: Si4iZL.ZZ1JO
+  userManageService:
+    host: user-management-private
+    port: 30980
+  workflow:
+    workflow-rest:
+      host: flow-audit-config
+      port: 9800
+    doc-audit-rest:
+      host: flow-audit-core
+      port: 9800
+    tenantID: af_workflow
+# 修改pod资源限制：cpu示例:0.5/500m/1/1000m;memory示例:512Mi/1Gi
+resources:
+  requests:
+    cpu: 0.1
+    memory: 10Mi
+  limits:
+    cpu: 1
+    memory: 1024Mi
+
+# 回调配置
+callback:
+  # 是否启用回调
+  enabled: false
+  # 通过这个地址调用回调接口，格式定义在
+  # https://github.com/grpc/grpc/blob/master/doc/naming.md
+  #
+  #
+  #  - 192.169.52.204
+  #  - 192.169.52.204:80
+  #  - work-order-callback-server.example
+  #  - work-order-callback-server.example:80
+  #  - dns:///192.169.52.204:80
+  #  - dns:///work-order-callback-server.example:80
+  #  - dns://10.96.0.10/work-order-callback-server.example.svc.cluster.local:80
+  #  - dns://10.96.0.10/192-169-52-204.example.pod.cluster.local:80
+  #  - unix:///tmp/callback.sock
+  address: localhost
+
+# 一个 AnyFabric 只会对应一个租户，所以应该从类似配置中心的地方获取，但是目前没
+# 有定义。在定义前，通过 Helm values 指定租户 ID。
+tenantID: FAKE_TENANT_ID

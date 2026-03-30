@@ -1,0 +1,394 @@
+.businessDiagnosisDetailsWrapper {
+    width: 100%;
+    height: 100%;
+    background: #fff;
+
+    .contentBox {
+        display: flex;
+        height: calc(100% - 52px);
+        overflow-y: auto;
+    }
+
+    .content {
+        width: calc(100% - 152px);
+        padding: 0 24px;
+
+        &-title {
+            display: flex;
+            align-items: center;
+            margin: 20px 0 24px;
+
+            &-left {
+                display: flex;
+                width: 0;
+                flex: 1;
+                align-items: center;
+            }
+
+            &-text {
+                font-size: 20px;
+                font-weight: 600;
+                .ellipsis-mixin();
+            }
+
+            &-btn {
+                padding: 6px;
+                margin-left: 8px;
+                border-radius: 3px;
+                color: rgb(0 0 0 / 45%);
+                cursor: pointer;
+                font-size: 16px;
+
+                &:hover {
+                    background: rgb(0 0 0 / 4%);
+                }
+            }
+
+            &-right {
+                flex-shrink: 0;
+                margin-left: 16px;
+                color: rgb(0 0 0 / 45%);
+
+                .export {
+                    margin-left: 12px;
+                }
+            }
+        }
+
+        &-tags {
+            margin-bottom: 24px;
+
+            &-title {
+                margin-bottom: 16px;
+            }
+        }
+
+        &-viewTitle {
+            margin-bottom: 20px;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .overviewRatio {
+            display: flex;
+            margin-bottom: 20px;
+
+            &-box {
+                display: flex;
+                flex: 1;
+                align-items: center;
+                justify-content: space-between;
+                padding: 24px 0;
+                border: 1px solid rgb(0 0 0 / 15%);
+                margin-right: 16px;
+                border-radius: 4px;
+
+                &:last-child {
+                    max-width: 200px;
+                    margin-right: 0;
+                }
+            }
+
+            &-item {
+                position: relative;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                margin: 0 16px;
+            }
+
+            &-progress {
+                margin-bottom: 8px;
+
+                :global {
+                    .any-fabric-ant-progress-text {
+                        font-size: 20px;
+                    }
+                }
+            }
+
+            &-dashboard_title {
+                position: absolute;
+                bottom: 8px;
+            }
+
+            &-noPercent {
+                color: rgb(0 0 0 / 30%);
+                font-size: 14px;
+            }
+        }
+
+        .overviewDistribution {
+            padding: 16px 32px 24px 20px;
+            border: 1px solid rgb(0 0 0 / 15%);
+            margin-bottom: 24px;
+            border-radius: 3px;
+
+            &-title {
+                margin-bottom: 44px;
+            }
+        }
+
+        // &-first {
+        //     &-box {
+        //         display: flex;
+        //         align-items: flex-end;
+        //         justify-content: space-between;
+        //     }
+
+        //     &-item {
+        //         width: calc(50% - 12px);
+        //         padding: 16px 44px 30px 20px;
+        //         border: 1px solid rgb(0 0 0 / 15%);
+        //         margin-bottom: 24px;
+        //         border-radius: 3px;
+        //     }
+
+        //     &-itemSingle {
+        //         width: 100%;
+        //     }
+
+        //     &-text {
+        //         margin-left: 4px;
+        //         font-size: 48px;
+        //         font-weight: 500;
+        //     }
+
+        //     &-Progress {
+        //         margin-top: 20px;
+        //     }
+        // }
+
+        // &-second {
+        //     padding: 16px 32px 24px 20px;
+        //     border: 1px solid rgb(0 0 0 / 15%);
+        //     margin-bottom: 24px;
+        //     border-radius: 3px;
+
+        //     &-title {
+        //         margin-bottom: 44px;
+        //     }
+        // }
+
+        &-third {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 0;
+
+            &-item {
+                width: calc(50% - 12px);
+            }
+
+            .content-first-box {
+                width: 100%;
+                flex-wrap: wrap;
+            }
+        }
+
+        &-fourth {
+            &-title {
+                display: flex;
+                margin-bottom: 16px;
+                font-size: 16px;
+            }
+
+            &-percent {
+                margin-left: 4px;
+            }
+
+            &-noPaginations {
+                margin-top: 38px;
+            }
+
+            &-firstTitle {
+                margin-top: 0;
+            }
+
+            &-disabled {
+                color: rgb(0 0 0 / 30%);
+            }
+
+            &-table {
+                padding-bottom: 24px;
+
+                :global {
+                    .any-fabric-ant-table-tbody > tr > td {
+                        vertical-align: top;
+                    }
+                }
+            }
+        }
+    }
+
+    // .menuContainer {
+    //     width: 152px;
+    //     height: 100%;
+    //     padding-top: 24px;
+
+    .anchorWrapper {
+        // position: fixed;
+        // z-index: 10;
+        padding-top: 24px;
+    }
+    // }
+}
+
+.emptyBox {
+    margin-top: 100px;
+    text-align: center;
+
+    .title {
+        margin-bottom: 14px;
+        font-size: 18px;
+    }
+
+    .subText {
+        margin-bottom: 20px;
+    }
+}
+
+.createEmpty {
+    width: 460px;
+    margin: auto;
+    margin-top: 80px;
+    text-align: center;
+
+    .icon {
+        font-size: 100px;
+
+        :global {
+            .any-fabric-ant-spin-dot {
+                font-size: 85px;
+
+                .any-fabric-ant-spin-dot-item {
+                    width: 40px;
+                    height: 40px;
+                }
+            }
+        }
+    }
+
+    .title {
+        margin-bottom: 20px;
+        font-size: 24px;
+    }
+
+    .subText {
+        font-size: 18px;
+    }
+}
+
+.detailsTableItem {
+    display: flex;
+    min-height: 28px;
+    align-items: center;
+    justify-content: space-between;
+
+    & > span {
+        display: flex;
+        align-items: center;
+    }
+
+    &-left {
+        display: block !important;
+        margin-right: 8px;
+        .ellipsis-mixin();
+    }
+
+    &-export-left {
+        display: block !important;
+        margin-right: 8px;
+        white-space: normal;
+        word-break: break-all;
+    }
+
+    .clickText {
+        margin: 0 4px;
+        color: @link-color;
+        cursor: pointer;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+
+    .disableBtn {
+        color: rgb(0 0 0 / 30%);
+        cursor: not-allowed;
+    }
+
+    .percent {
+        margin-left: 4px;
+    }
+
+    &.disabled {
+        color: rgb(0 0 0 / 30%);
+    }
+}
+
+.optionBtn {
+    padding: 6px;
+    margin-left: 6px;
+    border-radius: 3px;
+    color: rgb(0 0 0 / 65%) !important;
+    cursor: pointer;
+    font-size: 16px;
+
+    &:hover {
+        background: rgb(0 0 0 / 4%);
+    }
+
+    &.disable {
+        color: rgb(0 0 0 / 30%) !important;
+        cursor: not-allowed;
+
+        &:hover {
+            background: #fff;
+        }
+    }
+}
+
+.optionInfo {
+    flex: 1;
+    justify-content: flex-end;
+    font-size: 14px;
+
+    &.disable {
+        color: rgb(0 0 0 / 30%);
+        cursor: not-allowed;
+    }
+}
+
+.tableProcessItem {
+    display: flex;
+    height: 36px;
+    align-items: center;
+    padding: 0 8px 0 0;
+
+    .icon {
+        margin-right: 6px;
+        font-size: 16px;
+    }
+
+    .text {
+        display: inline-block;
+        font-size: 14px;
+        .ellipsis-mixin();
+    }
+}
+
+.tableMaxTwoLine {
+    .ellipsis-line(2);
+}
+
+.exportingPDFLoading {
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0 0 0 / 20%);
+}

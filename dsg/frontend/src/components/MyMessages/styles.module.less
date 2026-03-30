@@ -1,0 +1,81 @@
+.messageWrapper {
+    .title {
+        padding: 0 20px;
+        border-bottom: 1px solid rgb(0 0 0 / 10%);
+        font-weight: 550;
+        line-height: 52px;
+    }
+
+    .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 20px;
+        margin: 16px 0;
+
+        .statusFilter {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+    }
+
+    .messageList {
+        padding: 0 20px;
+
+        .messageItem {
+            border-bottom: 1px solid #f0f0f0;
+            cursor: pointer;
+
+            .messageContent {
+                display: flex;
+                width: 100%;
+                align-items: center;
+            }
+
+            .unreadDot {
+                width: 6px;
+                height: 6px;
+                margin-right: 8px;
+                background-color: #e60012;
+                border-radius: 50%;
+
+                &.hidden {
+                    visibility: hidden;
+                }
+            }
+
+            .messageText {
+                flex: 1;
+                margin-left: 8px;
+            }
+
+            .messageTime {
+                margin-left: 16px;
+                color: rgb(0 0 0 / 65%);
+            }
+        }
+    }
+}
+
+.messageLink {
+    color: rgb(0 0 0 / 85%);
+    cursor: pointer;
+
+    &:hover {
+        color: #126ee3;
+    }
+}
+
+.messageName {
+    display: inline-block;
+    overflow: hidden;
+    max-width: 220px;
+    text-overflow: ellipsis;
+    vertical-align: bottom;
+    white-space: nowrap;
+}
+
+.messageDeadline {
+    color: #e60012;
+}

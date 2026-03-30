@@ -1,0 +1,56 @@
+.subscribeModal {
+    .divide {
+        width: 100%;
+        height: 1px;
+        background: #f0f0f0;
+    }
+
+    .form {
+        margin: 20px 20px 40px;
+    }
+
+    .systemInfoName {
+        display: inline-block;
+        margin-left: 5px;
+        .ellipsis-mixin();
+    }
+}
+
+.subscribeDetails {
+    padding-top: 8px;
+
+    &-tabs {
+        :global {
+            .any-fabric-ant-tabs-nav {
+                margin-bottom: 0;
+
+                .any-fabric-ant-tabs-nav-wrap {
+                    padding-left: 20px;
+                }
+            }
+        }
+    }
+
+    .groupItem {
+        margin: 16px 16px 0;
+
+        .title {
+            width: 100%;
+            padding-bottom: 14px;
+            border-bottom: 1px solid rgb(0 0 0 / 6%);
+            margin: 0 8px 8px;
+            color: rgb(0 0 0 / 85%);
+            font-size: 14px;
+            font-weight: 550;
+        }
+    }
+
+    .table {
+        margin: 20px 24px 0;
+
+        .pagination {
+            margin-top: 16px;
+            float: right;
+        }
+    }
+}

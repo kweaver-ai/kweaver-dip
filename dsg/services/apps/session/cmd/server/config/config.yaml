@@ -1,0 +1,105 @@
+httpPort: 0.0.0.0:8113
+doc:
+  host: "${DOC_HOST}"
+  version: "1.0"
+config:
+  logPath: /tmp/logs
+  # staticPath: /usr/local/bin/af/cmd/server/static/*
+  # staticPath: /home/workspace/session/cmd/server/static/*
+  staticPath: cmd/server/static/*
+  domainName:
+  sessionExpireSecond: "${SESSION_EXPIRE_SECOND}"
+  httpClientExpireSecond: "${HTTP_EXPIRE_SECOND}"
+  oauth:
+    oauthClientID: "${OAUTH_CLIENT_ID}"
+    oauthClientSecret: "${OAUTH_CLIENT_SECRET}"
+  redis:
+    connectInfo:
+      masterGroupName: "${REDIS_MASTER_NAME}"
+      password: "${REDIS_PASSWORD}"
+      sentinelHost: "${REDIS_SENTINEL_HOST}"
+      sentinelPassword: "${REDIS_SENTINEL_PASSWORD}"
+      sentinelPort: "${REDIS_SENTINEL_PORT}"
+      sentinelUsername: "${REDIS_SENTINEL_USER_NAME}"
+      username: "${REDIS_USER_NAME}"
+    connectType: "${REDIS_CONNECT_TYPE}"
+    database: "${REDIS_DB}"
+  depServices:
+    userMgmPrivate: "${USER_MANAGE_HOST}"
+    deployMgm: "${DEPLOY_MANAGE_HOST}"
+    hydraPublic: "${HYDRA_PUBLIC_HOST}"
+    hydraAdmin: "${HYDRA_ADMIN_HOST}"
+    configurationCenter: "${CONFIGURATION_CENTER_HOST}"
+  telemetry:
+    traceUrl: "${TRACE_URL}"
+    logLevel: "${LOG_LEVEL}"
+    logUrl: "${LOG_URL}"
+    serverName: "${SERVER_NAME}"
+    serverVersion: "${SERVER_VERSION}"
+    traceEnabled: "${TRACE_ENABLED}"
+  mq:
+    kafka:
+      Type: kafka
+      Host: "${KAFKA_HOST}"
+      Port: "${KAFKA_PORT}"
+      LookupdHost: "${KAFKA_LOOKUPD_HOST}"
+      LookupdPort: "${KAFKA_LOOKUPD_PORT}"
+      username: "${KAFKA_USERNAME}"
+      password: "${KAFKA_PASSWORD}"
+      mechanism: "${KAFKA_MECHANISM}"
+      version: "2.3.1"
+    nsq:
+      Type: nsq
+      Host: "${NSQ_HOST}"
+      Port: "${NSQ_PORT}"
+      LookupdHost: "${NSQ_LOOKUPD_HOST}"
+      LookupdPort: "${NSQ_LOOKUPD_PORT}"
+      HttpHost: "${NSQ_HTTP_HOST}"
+      HttpPort: "${NSQ_HTTP_PORT}"
+#  telemetry:
+#    logLevel: error
+#    traceUrl: http://10.4.104.243/api/feed_ingester/v1/jobs/otl-test3/events
+#    logUrl: http://10.4.104.243/api/feed_ingester/v1/jobs/otl-test4-log/events
+#    serverName: session
+#    serverVersion: 1.0.0
+#    traceEnabled: "true"
+
+
+logs:
+  - name: af_session
+    default: true
+    enable_caller: true
+    stacktrace_level: error
+    development: false
+    cores:
+      - destination: logs/info.log        #日志输出地址
+        rotate_size: 100MB                      #文件分割尺寸
+        core_type: file                         #core类型，file, stdout两种
+        enable_color: false                     #是否开启输出颜色
+        output_format: json                     #日志输出的格式, json, console
+        log_level: info                         #该日志流的等级
+      - destination: logs/error.log
+        rotate_size: 100MB
+        core_type: file
+        output_format: json
+        log_level: error
+      - destination: console
+        core_type: stdout
+        output_format: console
+        enable_color: true
+        log_level: info
+  - name: af_session_request
+    default: false
+    enable_caller: true
+    development: false
+    cores:
+      - destination: logs/http_request.log
+        rotate_size: 100MB
+        core_type: file
+        output_format: json
+        log_level: info
+      - destination: console
+        core_type: stdout
+        output_format: console
+        enable_color: true
+        log_level: info

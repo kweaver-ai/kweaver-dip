@@ -1,0 +1,137 @@
+// .favoriteMgt {
+//     position: relative;
+//     display: flex;
+//     height: 100%;
+//     flex-direction: column;
+
+.favoriteContent {
+    height: calc(100% - 24px);
+    padding: 0 20px;
+}
+
+.favoriteOperation {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 16px 0;
+
+    .topLeft {
+        position: relative;
+        display: flex;
+        align-items: center;
+
+        &::before {
+            width: 4px;
+            height: 16px;
+            margin-right: 8px;
+            background-color: #3a8ff0;
+            content: '';
+        }
+    }
+
+    .topRight {
+        display: flex;
+        justify-content: space-between;
+    }
+}
+
+:global {
+    .any-fabric-ant-tabs-nav {
+        height: 52px;
+        margin-bottom: 0;
+    }
+}
+// }
+
+.multiColumnWrapper {
+    display: flex;
+    align-items: center;
+
+    .sourceIcon {
+        margin-right: 8px;
+        font-size: 20px;
+    }
+
+    .contentWrapper {
+        display: flex;
+        flex-direction: column;
+        .ellipsis-mixin();
+
+        .valueWrapper {
+            display: flex;
+            overflow: hidden;
+            align-items: center;
+
+            .value {
+                min-width: 0;
+                color: rgb(0 0 0 / 85%);
+                cursor: pointer;
+                .ellipsis-mixin();
+
+                &:hover,
+                &:active {
+                    color: #3a8ff0;
+                }
+            }
+        }
+
+        .subValue {
+            color: rgb(0 0 0 / 45%);
+            font-size: 12px;
+            .ellipsis-mixin();
+        }
+    }
+
+    // 已下线状态样式
+    &.offline {
+        cursor: default;
+        pointer-events: none;
+
+        .valueWrapper {
+            .value {
+                color: rgb(0 0 0 / 45%);
+                cursor: default;
+
+                &:hover,
+                &:active {
+                    color: rgb(0 0 0 / 45%);
+                }
+            }
+        }
+
+        .subValue {
+            color: rgb(0 0 0 / 25%);
+        }
+    }
+}
+
+.score {
+    padding: 2px 4px;
+    background-color: rgb(245 137 13 / 8%);
+    border-radius: 4px;
+    color: #f7a80a;
+}
+
+.subjectViewWrapper {
+    display: inline-flex;
+    align-items: center;
+
+    .divider {
+        margin: 0 8px;
+        color: rgb(0 0 0 / 45%);
+    }
+}
+
+.offlineTips {
+    padding: 2px 4px;
+    margin-left: 4px;
+    background-color: rgb(255 77 79 / 8%);
+    border-radius: 4px;
+    color: rgb(255 77 79 / 100%);
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+.subTitle {
+    color: rgb(0 0 0 / 45%);
+}

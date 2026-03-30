@@ -1,0 +1,234 @@
+.visitor-wrapper {
+    .common-title {
+        color: rgba(0 0 0 / 85%);
+        font-size: 14px;
+        font-weight: bold;
+    }
+
+    &-content {
+        display: flex;
+        overflow: hidden;
+        height: 450px;
+        border: 1px solid rgba(0 0 0 / 6%);
+
+        &-left {
+            width: 295px;
+            height: 100%;
+            border-right: 1px solid rgba(0 0 0 / 6%);
+        }
+
+        &-right {
+            width: 296px;
+            height: 100%;
+        }
+    }
+}
+
+:global {
+    .any-fabric-ant-modal-body {
+        padding: 16px 24px;
+    }
+}
+
+.visitor-label {
+    display: flex;
+    width: 100%;
+    flex: 1;
+    align-items: center;
+    color: rgba(0 0 0 / 85%);
+    white-space: nowrap;
+    word-break: keep-all;
+
+    &-icon {
+        font-size: 16px;
+    }
+
+    &-title {
+        overflow: hidden;
+        max-width: calc(100% - 24px);
+        padding-left: 8px;
+        font-size: 14px;
+        text-overflow: ellipsis;
+    }
+}
+
+.visitor-list {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+
+    .no-select {
+        color: rgba(0 0 0 / 45%);
+        cursor: default;
+    }
+
+    &-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px 16px 14px;
+
+        div {
+            &:nth-child(1) {
+                color: rgba(0 0 0 / 85%);
+                font-weight: bold;
+            }
+
+            &:nth-child(2) {
+                color: rgb(18 110 227);
+                cursor: pointer;
+            }
+        }
+    }
+
+    &-visitors {
+        flex: 1;
+        overflow-y: auto;
+    }
+
+    .visitor-item {
+        display: flex;
+        height: 36px;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 16px;
+        // transition: background 0.2s ease-in-out;
+
+        &:hover {
+            background: #eff0f3;
+        }
+
+        &-close {
+            color: rgba(0 0 0 / 65%);
+            cursor: pointer;
+            font-size: 12px;
+
+            &:hover {
+                color: rgba(0 0 0 / 85%);
+            }
+        }
+
+        > *:first-child {
+            max-width: calc(100% - 16px);
+        }
+    }
+}
+
+.visitor-tree {
+    > div:nth-child(1) {
+        > div {
+            &:nth-child(1) {
+                padding-top: 12px;
+            }
+        }
+    }
+
+    &-list {
+        height: 392px;
+        overflow-y: auto;
+    }
+
+    :global {
+        .search-result {
+            display: flex;
+            height: 392px;
+        }
+
+        .any-fabric-ant-tree-treenode {
+            align-items: center;
+        }
+    }
+
+    .search-wrapper {
+        display: flex;
+        width: 100%;
+        height: 392px;
+        flex-direction: column;
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+}
+
+.search-item {
+    display: flex;
+    width: 100%;
+    height: 32px;
+    flex-direction: column;
+    justify-content: center;
+    padding: 2px 20px 0;
+    cursor: pointer;
+    font-size: 14px;
+
+    &.has-path {
+        height: 48px;
+    }
+
+    .itemview-wrapper {
+        height: 14px;
+    }
+
+    &:hover {
+        background-color: #eff0f3;
+    }
+
+    &-path {
+        overflow: hidden;
+        width: 100%;
+        padding-top: 3px;
+        color: rgba(0 0 0 / 65%);
+        font-size: 12px;
+        line-height: 1.4;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        word-break: keep-all;
+    }
+
+    :global {
+        .any-fabric-ant-badge-dot {
+            margin-top: 16px !important;
+        }
+
+        .any-fabric-anticon {
+            font-size: 16px;
+        }
+
+        .any-fabric-ant-collapse-arrow {
+            margin-right: 10px;
+        }
+    }
+}
+
+.itemview-wrapper {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+
+    &.isContain {
+        > *:first-child {
+            max-width: calc(100% - 56px);
+            color: rgba(0 0 0 / 45%);
+            cursor: default;
+        }
+    }
+
+    &.isMe {
+        > *:first-child {
+            max-width: calc(100% - 48px);
+            color: rgba(0 0 0 / 45%);
+            cursor: default;
+        }
+    }
+
+    &-label {
+        display: inline-block;
+        padding: 2px 6px 3px;
+        margin-right: 4px;
+        background-color: rgba(18 110 227 / 10%);
+        border-radius: 3px;
+        color: rgb(18 110 227);
+        font-size: 12px;
+        line-height: 1.5;
+        transform: scale(0.75);
+    }
+}

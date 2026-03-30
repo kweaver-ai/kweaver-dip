@@ -1,0 +1,160 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "standardization.fullname" . }}
+  namespace: {{.Values.namespace}}
+  labels:
+    {{ include "standardization.labels.backend" . | nindent 4 }}
+data:
+  config-yml: |
+    server:
+      port: 8080
+      servlet:
+        context-path: /api/standardization
+        undertow:
+          io-threads: 8
+          worker-threads: 64
+          buffer-size: 16384
+          direct-buffers: true
+          enabled: true
+          no-request-timeout: 300000
+          connection-timeout: 600000
+          max-http-post-size: 104857600
+    redisson:
+      lock:
+        server:
+          address: 127.0.0.1:6379
+          type: sentinel
+          password: xxx
+          database: 1
+    spring:
+      application:
+        name: standardization
+        version: 1.0.0
+      mvc:
+        throw-exception-if-no-handler-found: true
+        pathmatch:
+          matching-strategy: ANT_PATH_MATCHER
+      servlet:
+        multipart:
+          max-file-size: 30MB
+          max-request-size: 30MB
+      redis:
+        host: 127.0.0.1
+        port: 6379
+        password: xxx
+      datasource:
+        hikari:
+          maximumPoolSize: 25
+          minimumIdle: 10
+          idleTimeout: 60000
+          connectionTimeout: 30000
+          maxLifetime: 1800000
+          connectionTestQuery: SELECT 1
+          pool-name: HikariCP
+        {{- if eq .Values.depServices.rds.type "DM8" }}
+        driver-class-name: dm.jdbc.driver.DmDriver
+        url: jdbc:dm://{{.Values.depServices.rds.host}}:{{.Values.depServices.rds.port}}/{{.Values.depServices.rds.database}}?genKeyNameCase=2&schema={{.Values.depServices.rds.database}}
+        {{- else }}
+        driver-class-name: org.mariadb.jdbc.Driver
+        url: jdbc:mariadb://{{.Values.depServices.rds.host}}:{{.Values.depServices.rds.port}}/{{.Values.depServices.rds.database}}?useUnicode=true&useSSL=false&characterEncoding=utf8mb4&serverTimezone=GMT%2B8
+        {{- end }}
+        username: {{ .Values.depServices.rds.user | quote }}
+        password: {{ .Values.depServices.rds.password | quote }}
+        data-type: {{ .Values.depServices.rds.type }}
+      kafka:
+        bootstrap-servers: {{ .Values.depServices.mq.Host}}:{{ .Values.depServices.mq.Port}}
+        producer:
+          properties:
+            sasl.jaas.config: org.apache.kafka.common.security.plain.PlainLoginModule required username="{{ .Values.depServices.mq.auth.username}}" password="{{ .Values.depServices.mq.auth.password}}";
+            security.protocol: SASL_PLAINTEXT
+            sasl.mechanism: {{ .Values.depServices.mq.auth.mechanism}}
+        consumer:
+          properties:
+            sasl.jaas.config: org.apache.kafka.common.security.plain.PlainLoginModule required username="{{ .Values.depServices.mq.auth.username}}" password="{{ .Values.depServices.mq.auth.password}}";
+            security.protocol: SASL_PLAINTEXT
+            sasl.mechanism:  {{ .Values.depServices.mq.auth.mechanism}}
+            group-id: kafka-stand
+    #mybatis-plus配置
+    mybatis-plus:
+      mapper-locations: classpath*:com/**/mapper/xml/*.xml
+      configuration:
+        #log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+        log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+    excel:
+      import:
+        template:
+          dict: template/template_dict.xlsx
+          de: template/template_de.xlsx
+    anyshare:
+      password: xxx
+      account: a6bab599-a9dd-46d9-9222-01b3ed2df0f4
+      url: https://10.2.184.163:443
+      basedir: gns://4C86CE07A5704459BCD9C7FC7620749A
+      basedir_name: AnyShare://af_std_file
+      temp_basedir: gns://4C86CE07A5704459BCD9C7FC7620749A
+      temp_basedir_name: AnyShare://af_std_file
+      temp_file_clean_interval_hours: 24
+    nsq:
+      lookup-hosts: proton-mq-nsq-nsqlookupd.resource:4161
+      nsqd-host: proton-mq-nsq-nsqd.resource:4150
+      failover-nsqd-host: proton-mq-nsq-nsqd.resource:4150
+      task:
+        std-create:
+          topic: de_create_topic
+          result-topic: de_create_result_topic
+          group-id: group-de-create
+        std-rec:
+          topic: de_rec_topic
+          result-topic: de_rec_result_topic
+          group-id: group-de-rec
+      de:
+        update:
+          topic: de_update_topic
+          group-id: group_de_update
+        delete:
+          topic: de_delete_topic
+          group-id: group_de_delete
+    rec:
+      service:
+        url: http://af-sailor-service:80/api/internal/af-sailor-service/v1/recommend/code
+        rule_url: http://af-sailor:9797/api/af-sailor/v1/internal/recommend/field/rule
+    token:
+      check:
+        url: http://hydra-admin:4445/admin/oauth2/introspect
+        client-url: http://hydra-admin:4445/admin/clients/
+      access-control:
+        resource-code: 30
+        url: http://configuration-center:8133/api/configuration-center/v1/access-control
+        httpGetGroupUris:
+          - /api/standardization/v1/dataelement/task/std-rec/rec
+          - /api/standardization/v1/dataelement/dict/export
+          - /api/standardization/v1/dataelement/dict/export/template
+          - /api/standardization/v1/dataelement/export
+      third-party-account:
+        url: http://configuration-center:8133/api/internal/configuration-center/v1/apps/account/
+    third-party:
+      department-id: 8fd85070-3c6c-11f0-9815-12b58a7f919c/8fdbed3e-3c6c-11f0-9815-12b58a7f919c/9060f92a-3c6c-11f0-9815-12b58a7f919c
+      third-dept-id: zctc6m9par2s4nbg5wxbua
+    hostAliases: []
+    anyrobot:
+      log:
+        enabled: {{ .Values.service.telemetry.log.enabled | quote }}
+        endpoint: {{ .Values.service.telemetry.log.endpoint | quote }}
+        level: {{ .Values.service.telemetry.log.level | quote }}
+      trace:
+        enabled: {{ .Values.service.telemetry.trace.enabled | quote }}
+        endpoint: {{ .Values.service.telemetry.trace.endpoint | quote }}
+    oss:
+      ossApp:  {{ .Values.oss.ossApp | quote }}
+      ossHost:  {{ .Values.oss.ossHost | quote }}
+      ossProtocol:  {{ .Values.oss.ossProtocol | quote }}
+      ossIsDefault:  {{ .Values.oss.ossIsDefault | quote }}
+      ossBucket:  {{ .Values.oss.ossBucket | quote }}
+    af-service:
+      task-center:
+        detail-url: {{ .Values.afService.taskCenter.detailUrl | quote }}
+    knife4j:
+      enable: true
+    configuration:
+      center: http://configuration-center:8133

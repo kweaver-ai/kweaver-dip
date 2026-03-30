@@ -1,0 +1,149 @@
+.detailsWrapper {
+    .detail-basic {
+        margin-bottom: 20px;
+        margin-left: 16px;
+
+        &-row {
+            display: flex;
+            margin: 9px 0;
+        }
+
+        &-lable {
+            width: 115px;
+            flex: none;
+            margin-right: 8px;
+            color: rgb(0 0 0 / 45%);
+        }
+
+        &-text {
+            color: rgb(0 0 0 / 65%);
+            word-break: break-all;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 3px 8px;
+            margin-right: 8px;
+            background: rgb(0 0 0 / 4%);
+            border-radius: 2px;
+        }
+    }
+
+    .lableSuffix {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .detail-main-business {
+        display: flex;
+        flex-flow: wrap;
+        margin-left: 16px;
+
+        .detail-tag {
+            padding: 7px 14px;
+            margin-right: 16px;
+            margin-bottom: 8px;
+            background: rgb(240 242 246 / 65%);
+            border-radius: 3px;
+        }
+    }
+}
+
+.fileWrapper {
+    display: flex;
+    width: fit-content;
+    align-items: center;
+    padding: 3px 14px;
+    margin-right: 8px;
+    margin-bottom: 8px;
+    background: rgb(240 242 246 / 65%);
+    border-radius: 3px;
+
+    .fileName {
+        margin-left: 8px;
+    }
+}
+
+.drawerFootWrapper {
+    text-align: right;
+}
+
+.deleteIcon {
+    display: flex;
+    width: 24px;
+    height: 24px;
+    align-items: center;
+    justify-content: center;
+    color: rgb(0 0 0 / 25%);
+
+    &:hover {
+        color: rgb(0 0 0 / 45%);
+    }
+}
+
+.editFormWrapper {
+    .fileDesc {
+        display: flex;
+        height: 22px;
+        align-items: center;
+        color: @text-color-third;
+        font-size: 12px;
+        line-height: 22px;
+
+        .fileOrder {
+            width: 3px;
+            height: 3px;
+            margin: 0 6px;
+            background: @text-color-third;
+            border-radius: 50%;
+        }
+    }
+
+    .editFormBox {
+        height: calc(100vh - 119px);
+    }
+
+    .footer {
+        text-align: right;
+    }
+}
+
+.mainBusinessTableWrapper {
+    padding-bottom: 16px;
+
+    .optBox {
+        margin-top: -8px;
+        margin-bottom: 12px;
+    }
+}
+
+.uploadedFile {
+    display: flex;
+    width: fit-content;
+    height: 36px;
+    align-items: center;
+    padding: 0 12px;
+    margin-top: 16px;
+    background-color: #f1f7fe;
+    border-radius: 3px;
+    color: @title-color-secondary;
+
+    .fileName {
+        margin: 0 24px 0 8px;
+        .ellipsis-line(1);
+    }
+
+    .deleteIcon {
+        display: flex;
+        width: 24px;
+        height: 24px;
+        align-items: center;
+        justify-content: center;
+        color: rgb(0 0 0 / 25%);
+
+        &:hover {
+            color: rgb(0 0 0 / 45%);
+        }
+    }
+}
