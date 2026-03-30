@@ -61,8 +61,8 @@ const CheckEnvironmentStep = () => {
 
   return (
     <div className="w-full flex flex-col">
-      <div className="font-bold text-[--dip-text-color] text-[26px]">OpenClow服务连接</div>
-      <div className="text-black/50 mt-3">系统正在尝试与OpenClow建立安全隧道。</div>
+      <div className="font-bold text-[--dip-text-color] text-[26px]">OpenClaw 服务连接</div>
+      <div className="text-black/50 mt-3">系统正在尝试与 OpenClaw 建立安全隧道。</div>
 
       <div className="mt-12 flex items-center justify-center">
         <div className={styles.iconBox}>
