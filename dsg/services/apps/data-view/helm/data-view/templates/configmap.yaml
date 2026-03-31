@@ -15,7 +15,7 @@ data:
   DB_PORT: {{ .depServices.rds.port | quote}}
   DB_USERNAME: {{ .depServices.rds.user | quote }}
   DB_PASSWORD: {{ .depServices.rds.password | quote }}
-  DB_NAME: {{ .depServices.rds.database | quote }}
+  DB_NAME: "af_main"
   HYDRA_HOST: "{{ .depServices.hydra.administrativeHost}}:{{ .depServices.hydra.administrativePort}}"
   HYDRA_PUBLIC_HOST: "{{ .depServices.hydra.publicHost}}:{{ .depServices.hydra.publicPort}}"
   USER_MANAGE_HOST: "{{index .depServices "user-management" "privateHost"}}:{{index .depServices "user-management" "privatePort"}}"

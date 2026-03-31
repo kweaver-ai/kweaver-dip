@@ -20,7 +20,7 @@ data:
   DB_PORT: {{ .depServices.rds.port | quote}}
   DB_USERNAME: {{ .depServices.rds.user | quote }}
   DB_PASSWORD: {{ .depServices.rds.password | quote }}
-  DB_NAME: {{ .depServices.rds.database | quote }}
+  DB_NAME: "af_tasks"
   NSQD_HOST: {{ .depServices.nsq.nsqdHost | quote }}
   NSQD_PORT: {{ .depServices.nsq.nsqdPort | quote }}
   NSQD_PORT_TCP: {{ .depServices.mq.nsqdPortTCP | quote}}

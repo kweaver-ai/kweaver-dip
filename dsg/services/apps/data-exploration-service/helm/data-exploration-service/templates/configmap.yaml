@@ -11,7 +11,7 @@ data:
   DB_PORT: {{ .depServices.rds.port | quote}}
   DB_USERNAME: {{ .depServices.rds.user | quote }}
   DB_PASSWORD: {{ .depServices.rds.password | quote }}
-  DB_NAME: {{ .depServices.rds.database | quote }}
+  DB_NAME: "af_data_exploration"
   CONFIGURATION_CENTER_HOST: "http://{{ .depServices.configCenterService.host}}:{{ .depServices.configCenterService.port}}"
   HYDRA_HOST_PRIVATE: "http://{{ .depServices.hydraService.privateHost}}:{{ .depServices.hydraService.privatePort}}"
   HYDRA_HOST_PUBLIC: "http://{{ .depServices.hydraService.publicHost}}:{{ .depServices.hydraService.publicPort}}"

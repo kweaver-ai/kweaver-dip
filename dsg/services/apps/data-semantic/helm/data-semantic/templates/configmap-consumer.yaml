@@ -41,7 +41,7 @@ data:
       Default:
         Host: {{ .Values.depServices.rds.host }}
         Port: {{ .Values.depServices.rds.port }}
-        Database: {{ .Values.depServices.rds.database }}
+        Database: "af_main"
         Username: {{ .Values.depServices.rds.user }}
         Password: {{ .Values.depServices.rds.password }}
         Charset: utf8mb4
