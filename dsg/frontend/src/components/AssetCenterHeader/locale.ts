@@ -4,6 +4,7 @@ export default i18n([
     ['申请清单', '申請清單', 'Application Checklist'],
     ['回到工作台', '回到工作台', 'Back to the Workshop'],
     ['运营中心', '營運中心', 'Operations Center'],
+    ['资产全景', '資產全景', 'Asset Overview'],
     ['配置中心', '配置中心', 'Configuration Center'],
     ['数据服务超市', '數據服務超級市場', 'Data Service Supermarket'],
     ['数据运营管理', '數據運營管理', 'Data Operations Management'],

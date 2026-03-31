@@ -1,6 +1,35 @@
 {
     "smart_data_find": [
         {
+            "label": "资产全景",
+            "path": "asset-view",
+            "key": "asset-view",
+            "layoutElement": "IndexRouterLayout",
+            "module": ["asset-overview"],
+            "children": [
+                {
+                    "index": true,
+                    "label": "资产全景",
+                    "key": "assetOverviewIndex",
+                    "element": "AssetPage"
+                },
+                {
+                    "label": "资产架构",
+                    "path": "architecture",
+                    "key": "architecture",
+                    "element": "DataArchitecture",
+                    "hide": true
+                },
+                {
+                    "label": "分类分级详情",
+                    "path": "classification",
+                    "key": "classification",
+                    "element": "ClassificationPage",
+                    "hide": true
+                }
+            ]
+        },
+        {
             "label": "接口服务",
             "key": "interfaceServiceMgt",
             "layoutElement": "IndexRouterLayout",

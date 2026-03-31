@@ -83,6 +83,10 @@ const AssetCenterHeader = (props: {
                 label: __('数据服务超市'),
             },
             {
+                key: 'asset-overview',
+                label: __('资产全景'),
+            },
+            {
                 key: 'work-center',
                 label: __('数据运营管理'),
             },
@@ -161,7 +165,12 @@ const AssetCenterHeader = (props: {
                 const firstPath = pathArr[0]
 
                 // 匹配我们的菜单配置
-                const menuKeys = ['data-market', 'work-center', 'config-center']
+                const menuKeys = [
+                    'data-market',
+                    'asset-overview',
+                    'work-center',
+                    'config-center',
+                ]
                 if (menuKeys.includes(firstPath)) {
                     menuKey = firstPath
                 } else {
@@ -298,7 +307,14 @@ const AssetCenterHeader = (props: {
     // 处理菜单点击
     const handleMenuClick = (key: string) => {
         setActiveMenuKey(key)
-        if (['data-market', 'work-center', 'config-center'].includes(key)) {
+        if (
+            [
+                'data-market',
+                'asset-overview',
+                'work-center',
+                'config-center',
+            ].includes(key)
+        ) {
             const firstUrl = findFirstPathByModule(key)
             navigate(firstUrl)
         } else {
