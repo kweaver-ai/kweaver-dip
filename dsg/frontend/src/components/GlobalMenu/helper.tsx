@@ -311,11 +311,11 @@ export const globalMenuClassify = [
         //     icon: <HomeOutlined />,
         //     activeIcon: <HomeColored />,
         // },
-        // {
-        //     key: 'asset-view',
-        //     icon: <AssetsViewOutlined />,
-        //     activeIcon: <AssetsViewColored />,
-        // },
+        {
+            key: 'asset-view',
+            icon: <AssetsViewOutlined />,
+            activeIcon: <AssetsViewColored />,
+        },
         {
             key: 'data-assets',
             icon: <DataAssetsNewOutlined />,

@@ -74,9 +74,10 @@ export const goEffectivePath = (
     isOnlySystemMgm,
     navigate?,
 ) => {
-    // 按优先级检查菜单：数据服务超市 -> 数据运营管理 -> 应用配置
+    // 按优先级检查菜单：数据服务超市 -> 资产全景 -> 数据运营管理 -> 应用配置
     const menuPriority = [
         { key: 'data-market' }, // 数据服务超市
+        { key: 'asset-overview' }, // 资产全景
         { key: 'work-center' }, // 数据运营管理
         { key: 'config-center' }, // 应用配置
     ]

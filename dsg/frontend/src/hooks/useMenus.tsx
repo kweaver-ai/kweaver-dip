@@ -189,6 +189,14 @@ const groupMenus = {
             module: ['data-market'],
         },
         {
+            label: '资产全景',
+            layoutElement: 'IndexRouterLayout',
+            key: 'asset-overview',
+            path: '',
+            type: 'module',
+            module: ['asset-overview'],
+        },
+        {
             label: '数据运营管理',
             layoutElement: 'IndexRouterLayout',
             key: 'work-center',
@@ -528,6 +536,7 @@ export const useMenus = (): [
                     const res = await getAllMenus({
                         resource_type: resourceType,
                     })
+
                     const backendMenus = res?.menus || []
                     const routers = getRouters([
                         ...defaultRoute,
@@ -1227,6 +1236,7 @@ export const isMenusEmpty = (menus: any[]): boolean => {
         'personal-center',
         // 模块容器
         'data-market',
+        'asset-overview',
         'work-center',
         'config-center',
         // 数据运营管理分组

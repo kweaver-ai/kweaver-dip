@@ -67,6 +67,7 @@ export const homeRouteKeys = {
         // 'asset-center',
         // 'asset-view',
         'data-assets',
+        'asset-view',
         // 'app-center',
         'work-center',
         // 'my-assets',
