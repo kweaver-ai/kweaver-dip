@@ -62,6 +62,54 @@ components:
         - role
         - content
 
+    ChatAgentAttachment:
+      summary: Chat Agent 附件
+      type: object
+      additionalProperties: false
+      properties:
+        type:
+          type: string
+          const: input_file
+        source:
+          type: object
+          additionalProperties: false
+          properties:
+            type:
+              type: string
+              const: path
+            path:
+              type: string
+              description: 文件路径（当前可传工作区相对路径或可访问 URL）
+          required:
+            - type
+            - path
+      required:
+        - type
+        - source
+
+    ChatUploadRequest:
+      summary: Chat 上传请求
+      type: object
+      additionalProperties: false
+      properties:
+        file:
+          type: string
+          format: binary
+          description: 本地上传文件（二进制）
+      required:
+        - file
+
+    ChatUploadResponse:
+      summary: Chat 上传响应
+      type: object
+      additionalProperties: false
+      properties:
+        path:
+          type: string
+          description: 工作区相对路径，可用于后续 `POST /chat/agent` attachments
+      required:
+        - path
+
     ChatAgentRequest:
       summary: 基于 OpenResponse 风格的 Chat Agent 请求
       type: object
@@ -73,6 +121,10 @@ components:
             - type: array
               items:
                 $ref: './responses.schemas.yaml#/components/schemas/ChatAgentMessageInputItem'
+        attachments:
+          type: array
+          items:
+            $ref: './responses.schemas.yaml#/components/schemas/ChatAgentAttachment'
       required:
         - input
 

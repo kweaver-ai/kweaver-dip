@@ -2,12 +2,18 @@ import type { NextFunction, Request, Response } from "express";
 import { describe, expect, it, vi } from "vitest";
 
 import {
+  appendAttachmentHintsToMessage,
   createChatAgentRouter,
   isChatAgentMessageInputItem,
+  readChatAgentAttachments,
   readChatAgentItemText,
   readChatAgentMessage,
   readChatAgentRequestBody
 } from "./chat-agent";
+import {
+  HIDDEN_ATTACHMENT_CONTEXT_END,
+  HIDDEN_ATTACHMENT_CONTEXT_START
+} from "../utils/hidden-attachment-context";
 
 vi.mock("node:crypto", async (importOriginal) => {
   const actual = await importOriginal<typeof import("node:crypto")>();
@@ -192,6 +198,15 @@ describe("createChatAgentRouter", () => {
             content: "hello"
           }
         ],
+        attachments: [
+          {
+            type: "input_file",
+            source: {
+              type: "path",
+              path: "tmp/chat-1/a.txt"
+            }
+          }
+        ]
       },
       headers: {
         "x-openclaw-session-key": "agent:agent-1:user:user-1:direct:chat-1"
@@ -204,7 +219,26 @@ describe("createChatAgentRouter", () => {
     expect(createResponseStream).toHaveBeenCalledWith(
       {
         sessionKey: "agent:agent-1:user:user-1:direct:chat-1",
-        message: "hello",
+        message: [
+          "hello",
+          "",
+          HIDDEN_ATTACHMENT_CONTEXT_START,
+          "ATTACHMENT_PATHS:",
+          "1. tmp/chat-1/a.txt",
+          "ATTACHMENT_INSTRUCTION:",
+          "You must read every listed file path using available file-reading tools before answering the user.",
+          "If any file cannot be read, explicitly report which path failed and why.",
+          HIDDEN_ATTACHMENT_CONTEXT_END
+        ].join("\n"),
+        attachments: [
+          {
+            type: "input_file",
+            source: {
+              type: "path",
+              path: "tmp/chat-1/a.txt"
+            }
+          }
+        ],
         idempotencyKey: "generated-idempotency-key"
       },
       "agent-1",
@@ -258,5 +292,71 @@ describe("createChatAgentRouter", () => {
         message: "Chat agent input must include a user message"
       })
     );
+  });
+});
+
+describe("appendAttachmentHintsToMessage", () => {
+  it("appends attachment path hints when attachments are present", () => {
+    const result = appendAttachmentHintsToMessage("hello", [
+      {
+        type: "input_file",
+        source: { type: "path", path: "tmp/chat-1/a.txt" }
+      }
+    ]);
+
+    expect(result).toContain(HIDDEN_ATTACHMENT_CONTEXT_START);
+    expect(result).toContain("1. tmp/chat-1/a.txt");
+    expect(result).toContain(HIDDEN_ATTACHMENT_CONTEXT_END);
+  });
+
+  it("returns original message when attachments are absent", () => {
+    expect(appendAttachmentHintsToMessage("hello", undefined)).toBe("hello");
+    expect(appendAttachmentHintsToMessage("hello", [])).toBe("hello");
+  });
+});
+
+describe("readChatAgentAttachments", () => {
+  it("accepts input_file attachments with source.path", () => {
+    expect(
+      readChatAgentAttachments([
+        {
+          type: "input_file",
+          source: {
+            type: "path",
+            path: "tmp/chat-1/a.txt"
+          }
+        }
+      ])
+    ).toEqual([
+      {
+        type: "input_file",
+        source: {
+          type: "path",
+          path: "tmp/chat-1/a.txt"
+        }
+      }
+    ]);
+  });
+
+  it("rejects unsupported attachment shapes", () => {
+    expect(() => readChatAgentAttachments("x")).toThrow(
+      "Chat agent attachments must be an array"
+    );
+    expect(() =>
+      readChatAgentAttachments([
+        {
+          type: "file",
+          source: { type: "path", path: "x" }
+        }
+      ])
+    ).toThrow("Chat agent attachment type only supports `input_file`");
+    expect(() =>
+      readChatAgentAttachments([
+        {
+          type: "input_file",
+          source: { type: "url", path: "x" }
+        }
+      ])
+    ).toThrow("Chat agent attachment source.type only supports `path`");
   });
 });

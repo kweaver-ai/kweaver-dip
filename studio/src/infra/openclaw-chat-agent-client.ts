@@ -18,6 +18,7 @@ import {
   type OpenClawWebSocket,
   type OpenClawWebSocketFactory
 } from "./openclaw-gateway-client";
+import { ChatAgentAttachment } from "../types/chat-agent";
 
 const DEFAULT_TIMEOUT_MS = 5_000;
 const SSE_HEADERS = new Headers({
@@ -44,6 +45,11 @@ export interface OpenClawChatSendParams {
    * Optional idempotency key.
    */
   idempotencyKey?: string;
+
+  /**
+   * Attachments sent by the client.
+   */
+  attachments?: ChatAgentAttachment[];
 }
 
 /**

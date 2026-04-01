@@ -22,6 +22,7 @@ import type {
 } from "../types/session-key";
 import type { OpenClawChatHistoryParams } from "../types/sessions";
 import { getEnv } from "../utils/env";
+import { buildHiddenAttachmentContextBlock } from "../utils/hidden-attachment-context";
 import { parseSession } from "../utils/session";
 
 const env = getEnv();
@@ -146,10 +147,15 @@ export function createChatRouter(
         const requestBody = readChatAgentRequestBody(request.body);
         const sessionKey = readRequiredSessionKeyHeader(request.headers);
         const agentId = readAgentIdFromSessionKey(sessionKey);
+        const message = appendAttachmentHintsToMessage(
+          requestBody.message,
+          requestBody.attachments
+        );
         const upstreamResponse = await chatAgentClient.createResponseStream(
           {
             sessionKey,
-            message: requestBody.message,
+            message,
+            attachments: requestBody.attachments,
             idempotencyKey: randomUUID()
           },
           agentId,
@@ -412,12 +418,90 @@ export function readChatAgentRequestBody(
     throw new HttpError(400, "Chat agent request body must be a JSON object");
   }
 
-  const { input } = requestBody as Partial<ChatAgentRequest>;
+  const { input, attachments } = requestBody as Partial<ChatAgentRequest>;
   const message = readChatAgentMessage(input);
+  const normalizedAttachments = readChatAgentAttachments(attachments);
 
   return {
-    message
+    message,
+    attachments: normalizedAttachments
   };
+}
+
+/**
+ * Validates chat agent attachments.
+ *
+ * Allowed shape:
+ * `{ type: "input_file", source: { type: "path", path: string } }`
+ *
+ * @param attachments Raw attachments field from request body.
+ * @returns Normalized attachments.
+ */
+export function readChatAgentAttachments(
+  attachments: unknown
+): NormalizedChatAgentRequest["attachments"] {
+  if (attachments === undefined) {
+    return undefined;
+  }
+
+  if (!Array.isArray(attachments)) {
+    throw new HttpError(400, "Chat agent attachments must be an array");
+  }
+
+  return attachments.map((entry) => {
+    if (typeof entry !== "object" || entry === null) {
+      throw new HttpError(400, "Chat agent attachment must be an object");
+    }
+
+    const record = entry as Record<string, unknown>;
+    if (record.type !== "input_file") {
+      throw new HttpError(400, "Chat agent attachment type only supports `input_file`");
+    }
+
+    const source = record.source;
+    if (typeof source !== "object" || source === null) {
+      throw new HttpError(400, "Chat agent attachment source must be an object");
+    }
+
+    const sourceRecord = source as Record<string, unknown>;
+    if (sourceRecord.type !== "path") {
+      throw new HttpError(400, "Chat agent attachment source.type only supports `path`");
+    }
+
+    if (typeof sourceRecord.path !== "string" || sourceRecord.path.trim() === "") {
+      throw new HttpError(400, "Chat agent attachment source.path must be a non-empty string");
+    }
+
+    return {
+      type: "input_file",
+      source: {
+        type: "path",
+        path: sourceRecord.path.trim()
+      }
+    };
+  });
+}
+
+/**
+ * Appends attachment path hints into the user message so downstream agents that
+ * do not natively consume `attachments` can still locate uploaded files.
+ *
+ * @param message Original user message.
+ * @param attachments Validated attachments.
+ * @returns Message with hidden attachment hints.
+ */
+export function appendAttachmentHintsToMessage(
+  message: string,
+  attachments: NormalizedChatAgentRequest["attachments"]
+): string {
+  if (attachments === undefined || attachments.length === 0) {
+    return message;
+  }
+
+  const paths = attachments.map((attachment) => attachment.source.path);
+  const hiddenBlock = buildHiddenAttachmentContextBlock(paths);
+
+  return [message, "", hiddenBlock].join("\n");
 }
 
 /**

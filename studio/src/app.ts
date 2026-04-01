@@ -7,6 +7,8 @@ import { notFoundHandler } from "./middleware/not-found";
 import { createBknRouter } from "./routes/bkn";
 import { createChatRouter } from "./routes/chat";
 import { createCronRouter } from "./routes/plan";
+import { createChatAgentRouter } from "./routes/chat-agent";
+import { createChatUploadRouter } from "./routes/chat-upload";
 import { createDigitalHumanRouter } from "./routes/digital-human";
 import { createHealthRouter } from "./routes/health";
 import { createGuideRouter } from "./routes/guide";
@@ -58,6 +60,8 @@ export function createApp(options: AppOptions = {}): Express {
   app.use(createSessionsRouter());
   app.use(createSkillsRouter());
   app.use(createDigitalHumanRouter());
+  app.use(createChatUploadRouter());
+  app.use(createChatAgentRouter());
 
   if (options.enableDiagnostics === true) {
     app.get("/__diagnostics/error", raiseDiagnosticError);

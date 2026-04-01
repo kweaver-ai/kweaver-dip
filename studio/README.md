@@ -519,10 +519,65 @@ GitHub：https://github.com/kweaver-ai/web
 | 参数 | 类型 | 是否必填 | 说明 |
 | -- | -- | -- | -- |
 | input | string \| MessageItem[] | 是 | OpenResponse 风格输入；当前服务会从中提取最后一条 `role=user` 的文本消息，或直接使用字符串 |
+| attachments | ChatAttachment[] | 否 | 附件数组。若包含文件，需先调用 `POST /api/dip-studio/v1/chat/upload` 拿到 `path`，再在此处传入 |
+
+`ChatAttachment` 字段：
+
+| 参数 | 类型 | 是否必填 | 说明 |
+| -- | -- | -- | -- |
+| type | string | 是 | 当前仅允许 `input_file` |
+| source | object | 是 | 文件来源对象 |
+
+`ChatAttachment.source` 字段：
+
+| 参数 | 类型 | 是否必填 | 说明 |
+| -- | -- | -- | -- |
+| type | string | 是 | 当前仅允许 `path` |
+| path | string | 是 | 文件路径（推荐传 `POST /api/dip-studio/v1/chat/upload` 返回的工作区相对路径） |
 
 响应：`200 text/event-stream`
 
 返回 OpenResponse 风格 SSE 事件流。服务端通过 OpenClaw WebSocket `chat.send` 建立 Agent 消息流，自动生成随机 UUID 作为 `params.idempotencyKey`，并将 `chat` 文本帧、`agent/assistant` 文本帧以及 `agent/tool` 工具调用帧转换为 `response.created`、`response.output_item.added`、`response.output_text.delta`、`response.output_item.done`、`response.completed`、`response.failed` 等事件；其中 `agent/assistant.data.delta` 优先透传，缺失时回退为 `data.text`。
+
+当请求携带 `attachments` 时，服务会把文件路径列表追加到下游提示词中（隐藏上下文），用于兼容下游未直接消费 `attachments` 字段的场景。
+
+固定模板如下（服务端自动注入）：
+
+```text
+<!-- DIP_HIDDEN_ATTACHMENTS_START -->
+ATTACHMENT_PATHS:
+1. tmp/<session>/<file>
+2. tmp/<session>/<file>
+ATTACHMENT_INSTRUCTION:
+You must read every listed file path using available file-reading tools before answering the user.
+If any file cannot be read, explicitly report which path failed and why.
+<!-- DIP_HIDDEN_ATTACHMENTS_END -->
+```
+
+#### 上传对话附件
+
+`POST /api/dip-studio/v1/chat/upload`
+
+请求头：
+
+| 参数 | 类型 | 是否必填 | 说明 |
+| -- | -- | -- | -- |
+| Authorization | string | 是 | `Bearer <access-token>`，用于 Hydra 内省鉴权 |
+| x-openclaw-session-key | string | 是 | 必须先通过 `POST /api/dip-studio/v1/chat/session` 获取；服务会从其中的 `agent:<agentId>` 前缀解析数字员工 ID |
+
+请求：`multipart/form-data`
+
+| 字段 | 类型 | 是否必填 | 说明 |
+| -- | -- | -- | -- |
+| file | binary | 是 | 本地文件二进制内容（字段名固定为 `file`） |
+
+响应：`200 application/json`
+
+| 参数 | 类型 | 说明 |
+| -- | -- | -- |
+| path | string | 工作区相对路径，用于后续 `POST /api/dip-studio/v1/chat/agent` 的 `attachments[].path` |
+
+推荐调用顺序：先调用 `POST /api/dip-studio/v1/chat/upload` 上传文件并拿到 `path`，再调用 `POST /api/dip-studio/v1/chat/agent` 发起对话。
 
 #### 获取会话消息详情
 
@@ -556,6 +611,8 @@ GitHub：https://github.com/kweaver-ai/web
 响应：`200 application/json`
 
 返回指定会话的完整消息详情。该接口内部复用 `GET /api/dip-studio/v1/chat/messages` 的消息查询逻辑，但保持原有路径参数与响应结构不变。
+
+说明：会话历史响应会自动过滤上述隐藏附件上下文模板，不会返回给前端展示。
 
 #### 获取会话归档列表
 

@@ -8,8 +8,13 @@ import {
   hasMatchingSessionUserId,
   isHiddenSessionArchiveEntry,
   readSessionArchiveLookup,
+  sanitizeSessionGetResultMessages,
   withDerivedTitles
 } from "./sessions";
+import {
+  HIDDEN_ATTACHMENT_CONTEXT_END,
+  HIDDEN_ATTACHMENT_CONTEXT_START
+} from "../utils/hidden-attachment-context";
 
 describe("DefaultSessionsLogic", () => {
   it("delegates listSessions to the adapter", async () => {
@@ -80,12 +85,20 @@ describe("DefaultSessionsLogic", () => {
   });
 
   it("delegates getSession to the adapter", async () => {
+    const hidden = [
+      "hello",
+      "",
+      HIDDEN_ATTACHMENT_CONTEXT_START,
+      "ATTACHMENT_PATHS:",
+      "1. tmp/chat-1/a.txt",
+      HIDDEN_ATTACHMENT_CONTEXT_END
+    ].join("\n");
     const logic = new DefaultSessionsLogic({
       listSessions: vi.fn(),
       getChatMessages: vi.fn().mockResolvedValue({
         sessionKey: "key1",
         sessionId: "runtime-1",
-        messages: []
+        messages: [{ role: "user", content: hidden }]
       }),
       getSession: vi.fn().mockResolvedValue({
         key: "legacy-key",
@@ -104,7 +117,12 @@ describe("DefaultSessionsLogic", () => {
       key: "key1",
       sessionKey: "key1",
       sessionId: "runtime-1",
-      messages: []
+      messages: [
+        {
+          role: "user",
+          content: "hello"
+        }
+      ]
     });
   });
 
@@ -366,6 +384,27 @@ describe("sessions logic helpers", () => {
     expect(isHiddenSessionArchiveEntry({ name: "report.md", type: "file" })).toBe(
       false
     );
+  });
+
+  it("sanitizes hidden attachment context in session messages", () => {
+    const hidden = [
+      "summary please",
+      "",
+      HIDDEN_ATTACHMENT_CONTEXT_START,
+      "ATTACHMENT_PATHS:",
+      "1. tmp/chat-1/a.txt",
+      HIDDEN_ATTACHMENT_CONTEXT_END
+    ].join("\n");
+
+    expect(
+      sanitizeSessionGetResultMessages({
+        key: "k",
+        messages: [{ role: "user", content: hidden }]
+      })
+    ).toEqual({
+      key: "k",
+      messages: [{ role: "user", content: "summary please" }]
+    });
   });
 
   it("reads archives lookup fields from session key", () => {

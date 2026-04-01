@@ -48,6 +48,11 @@ export interface ChatAgentRequest {
   input: string | ChatAgentInputItem[];
 
   /**
+   * Attachments sent by the client.
+   */
+  attachments?: ChatAgentAttachment[];
+
+  /**
    * Allows clients to send additional OpenResponse-compatible fields.
    */
   [key: string]: unknown;
@@ -61,4 +66,31 @@ export interface NormalizedChatAgentRequest {
    * User message text extracted from the OpenResponse-style input.
    */
   message: string;
+
+  /**
+   * Attachments sent by the client.
+   */
+  attachments?: ChatAgentAttachment[];
+}
+
+export interface ChatAgentAttachment {
+  /**
+   * Attachment type.
+   */
+  type: "input_file";
+
+  /**
+   * Attachment source descriptor.
+   */
+  source: {
+    /**
+     * Source type.
+     */
+    type: "path";
+
+    /**
+     * File path string.
+     */
+    path: string;
+  };
 }

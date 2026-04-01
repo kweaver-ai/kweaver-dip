@@ -5,6 +5,7 @@ import type {
   OpenClawArchivesHttpResult
 } from "../infra/openclaw-archives-http-client";
 import { parseSession } from "../utils/session";
+import { stripHiddenAttachmentContextBlock } from "../utils/hidden-attachment-context";
 import type {
   OpenClawChatHistoryParams,
   OpenClawChatHistoryResult,
@@ -12,6 +13,7 @@ import type {
   OpenClawSessionDeleteResult,
   OpenClawSessionGetParams,
   OpenClawSessionGetResult,
+  OpenClawSessionMessage,
   OpenClawSessionArchiveEntry,
   OpenClawSessionArchivesResult,
   OpenClawSessionSummary,
@@ -164,7 +166,9 @@ export class DefaultSessionsLogic implements SessionsLogic {
     params: OpenClawChatHistoryParams
   ): Promise<OpenClawChatHistoryResult> {
     if (this.openClawSessionsAdapter.getChatMessages !== undefined) {
-      return this.openClawSessionsAdapter.getChatMessages(params);
+      const result = await this.openClawSessionsAdapter.getChatMessages(params);
+
+      return sanitizeMessagesInResult(result);
     }
 
     const result = await this.openClawSessionsAdapter.getSession({
@@ -172,10 +176,10 @@ export class DefaultSessionsLogic implements SessionsLogic {
       limit: params.limit
     });
 
-    return {
+    return sanitizeMessagesInResult({
       ...result,
       sessionKey: result.key
-    };
+    });
   }
 
   /**
@@ -366,6 +370,77 @@ export function buildFilteredSessionsListResult(
     ...result,
     count: sessions.length,
     sessions
+  };
+}
+
+/**
+ * Strips hidden attachment markers from any OpenClaw payload carrying `messages`.
+ *
+ * @param result Raw session or chat history result.
+ * @returns The same shape with sanitized message bodies.
+ */
+function sanitizeMessagesInResult<T extends { messages?: OpenClawSessionMessage[] }>(
+  result: T
+): T {
+  if (!Array.isArray(result.messages)) {
+    return result;
+  }
+
+  return {
+    ...result,
+    messages: result.messages.map((message) => sanitizeSessionMessage(message))
+  };
+}
+
+/**
+ * Backward-compatible sanitizer for one `sessions.get` style payload.
+ *
+ * @param result Raw session detail payload.
+ * @returns Session detail payload with hidden attachment context removed.
+ */
+export function sanitizeSessionGetResultMessages(
+  result: OpenClawSessionGetResult
+): OpenClawSessionGetResult {
+  return sanitizeMessagesInResult(result);
+}
+
+/**
+ * Removes hidden attachment context from one session message.
+ *
+ * @param message Raw session message.
+ * @returns Sanitized message.
+ */
+export function sanitizeSessionMessage(
+  message: OpenClawSessionMessage
+): OpenClawSessionMessage {
+  if (typeof message.content === "string") {
+    return {
+      ...message,
+      content: stripHiddenAttachmentContextBlock(message.content)
+    };
+  }
+
+  if (!Array.isArray(message.content)) {
+    return message;
+  }
+
+  return {
+    ...message,
+    content: message.content.map((part: unknown) => {
+      if (typeof part !== "object" || part === null) {
+        return part;
+      }
+
+      const record = part as Record<string, unknown>;
+      if (typeof record.text !== "string") {
+        return part;
+      }
+
+      return {
+        ...record,
+        text: stripHiddenAttachmentContextBlock(record.text)
+      };
+    })
   };
 }
 

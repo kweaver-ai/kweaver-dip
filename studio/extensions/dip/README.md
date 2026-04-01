@@ -5,6 +5,7 @@
 1. **Agent skills**：可发现技能列表、按 agent 读写技能绑定、以及通过 Gateway 上传 `.skill`（zip）安装到仓库 `skills/`。
 2. **工作区 archives**：HTTP 读取 `archives/`，以及写文件后的归档路径补齐。
 3. **内置技能包**：插件目录下附带若干 skill 文档，参与发现逻辑。
+4. **工作区临时上传**：将上传文件写入 `workspace/tmp`（可按会话分目录）。
 
 插件自身打包了 2 个 skills：
 
@@ -94,6 +95,40 @@ GET /v1/archives...
 - 目标是文件时：按扩展名返回常见 MIME 类型并直接流式输出文件内容
 - 不存在返回 `404`
 - 路径穿越被拦截时返回 `403`
+
+### 4. 工作区临时上传
+
+插件注册了上传路由：
+
+```text
+POST /v1/workspace/tmp/upload
+```
+
+请求方式：
+
+- 请求体支持：
+  - **`multipart/form-data`**（推荐，字段名固定为 `file`，可携带原始文件名）
+  - **原始文件字节**（binary body，兼容模式）
+- 可选查询参数：
+  - `agent=<agentId>`：上传到指定 agent 的 workspace（未传时使用当前 workspace）。
+  - `session=<sessionId|sessionKey>`：按会话在 `tmp/<session>/` 下分目录存放。
+
+落盘规则：
+
+- 基础目录：`{workspace}/tmp/`
+- 会话目录：`{workspace}/tmp/{normalizedSession}/`
+- 文件名：`{basename}_{sha256前12位哈希}{ext}`（未提供文件名时默认 `upload_<hash>.bin`）
+
+成功响应示例：
+
+```json
+{
+  "name": "report_2cf24dba5fb0.pdf",
+  "path": "tmp/chat-1/report_2cf24dba5fb0.pdf",
+  "absolutePath": "/abs/workspace/tmp/chat-1/report_2cf24dba5fb0.pdf",
+  "bytes": 12840
+}
+```
 
 ### 4. 写文件后的归档补齐
 

@@ -1,16 +1,12 @@
 import type { Router } from "express";
 
 import type { OpenClawChatAgentClient } from "../infra/openclaw-chat-agent-client";
-import {
-  createChatRouter,
-  isChatAgentMessageInputItem,
-  readChatAgentItemText,
-  readChatAgentMessage,
-  readChatAgentRequestBody
-} from "./chat";
+import { createChatRouter } from "./chat";
 
 export {
+  appendAttachmentHintsToMessage,
   isChatAgentMessageInputItem,
+  readChatAgentAttachments,
   readChatAgentItemText,
   readChatAgentMessage,
   readChatAgentRequestBody
