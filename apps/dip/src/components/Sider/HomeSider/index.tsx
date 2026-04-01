@@ -248,16 +248,15 @@ const HomeSider = ({ collapsed, onCollapse, layout = 'entry' }: HomeSiderProps) 
               ) : null}
             </>
           ) : null}
-
-          {hasStore ? (
-            <StoreMenuSection
-              collapsed={collapsed}
-              selectedKey={selectedKey}
-              roleIds={roleIds}
-              navigate={navigate}
-            />
-          ) : null}
         </div>
+        {hasStore ? (
+          <StoreMenuSection
+            collapsed={collapsed}
+            selectedKey={selectedKey}
+            roleIds={roleIds}
+            navigate={navigate}
+          />
+        ) : null}
         <ExternalLinksSection collapsed={collapsed} roleIds={roleIds} />
       </div>
 

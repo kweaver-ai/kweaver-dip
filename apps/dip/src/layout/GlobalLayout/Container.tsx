@@ -1,7 +1,6 @@
 import { Layout } from 'antd'
 import type { ReactNode } from 'react'
 import { useMatches, useParams } from 'react-router-dom'
-import bg from '@/assets/images/gradient-container-bg.png'
 import type { RouteHandle } from '@/routes/types'
 import { WENSHU_APP_KEY } from '@/routes/types'
 import { useGlobalLayoutStore } from '@/stores/globalLayoutStore'
@@ -41,7 +40,11 @@ const Container = ({ children }: ContainerProps) => {
   // 1. 优先通过当前微应用的 key 判断（兼容直接刷新 /application/:appKey 的场景）
   // 2. 兼容通过 store 中缓存的 wenshuAppInfo.key 判断（兼容从首页/登录跳转的场景）
   const isWenshuByKey = currentMicroApp?.key === WENSHU_APP_KEY
-  const isWenshuByRoute = wenshuAppInfo?.key === params?.appKey
+  const appKey = params?.appKey
+  const isWenshuByRoute =
+    appKey != null &&
+    appKey !== '' &&
+    (wenshuAppInfo?.key === appKey || appKey === WENSHU_APP_KEY)
   const isWenshuApp = isWenshuByKey || isWenshuByRoute
 
   // 布局决策：
