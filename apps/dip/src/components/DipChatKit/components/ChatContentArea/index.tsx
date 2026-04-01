@@ -10,6 +10,7 @@ import {
   createChatSessionKey,
   createDigitalHumanResponseSSE,
   getDigitalHumanSessionMessages,
+  uploadChatAttachment,
 } from '../../apis'
 import type { DipChatKitResponseStreamChunk } from '../../apis/types'
 import { useDipChatKitStore } from '../../store'
@@ -245,9 +246,26 @@ const ChatContentArea: React.FC<ChatContentAreaProps> = ({
         sessionKey = await ensureSessionKey(employeeId)
       }
 
+      const attachmentPaths =
+        payload.files.length > 0
+          ? await Promise.all(
+              payload.files.map((file) => uploadChatAttachment(file, sessionKey, signal)),
+            )
+          : []
+
+      const body: Record<string, unknown> = {
+        input: payload.content,
+      }
+      if (attachmentPaths.length > 0) {
+        body.attachments = attachmentPaths.map((path) => ({
+          type: 'input_file',
+          source: { type: 'path', path },
+        }))
+      }
+
       return {
         sessionKey,
-        stream: createDigitalHumanResponseSSE({ input: payload.content }, { sessionKey, signal }),
+        stream: createDigitalHumanResponseSSE(body, { sessionKey, signal }),
       }
     },
     [ensureSessionKey, fixedSessionKey, resolveEmployeeId],

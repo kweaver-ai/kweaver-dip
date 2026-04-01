@@ -14,6 +14,7 @@ import type {
   DipChatKitResponseStreamToolCallChunk,
   DipChatKitResponseStreamToolCallPayload,
   DipChatKitSessionGetResponse,
+  DipChatKitUploadChatAttachmentResponse,
 } from './types'
 
 const BASE = '/api/dip-studio/v1'
@@ -367,6 +368,43 @@ const formatHttpErrorMessage = async (response: Response): Promise<string> => {
   }
 
   return responseText
+}
+
+export const uploadChatAttachment = async (
+  file: File,
+  sessionKey: string,
+  signal?: AbortSignal,
+): Promise<DipChatKitUploadChatAttachmentResponse['path']> => {
+  const formData = new FormData()
+  formData.append('file', file)
+
+  const response = await fetch(buildFullRequestUrl(`${BASE}/chat/upload`), {
+    method: 'POST',
+    headers: {
+      ...getCommonHttpHeaders(),
+      'x-openclaw-session-key': sessionKey,
+    },
+    body: formData,
+    signal,
+  })
+
+  if (!response.ok) {
+    throw new Error(await formatHttpErrorMessage(response))
+  }
+
+  const data = (await response.json()) as DipChatKitUploadChatAttachmentResponse | Record<string, unknown>
+  const path =
+    typeof (data as DipChatKitUploadChatAttachmentResponse).path === 'string'
+      ? (data as DipChatKitUploadChatAttachmentResponse).path.trim()
+      : ''
+
+  if (!path) {
+    throw new Error(
+      intl.get('dipChatKit.uploadAttachmentMissingPath').d('上传附件失败，未返回有效路径') as string,
+    )
+  }
+
+  return path
 }
 
 export async function* createDigitalHumanResponseSSE(

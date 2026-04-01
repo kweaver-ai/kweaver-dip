@@ -69,6 +69,20 @@ export interface DipChatKitResponseSSEOptions {
   signal?: AbortSignal
 }
 
+export interface DipChatKitUploadChatAttachmentResponse {
+  path: string
+}
+
+export interface DipChatKitChatAttachmentSource {
+  type: 'path'
+  path: string
+}
+
+export interface DipChatKitChatAttachment {
+  type: 'input_file'
+  source: DipChatKitChatAttachmentSource
+}
+
 export type DipChatKitResponseRequestBody = Record<string, unknown>
 
 export type DipChatKitResponseStreamStatus = 'in_progress' | 'completed'
