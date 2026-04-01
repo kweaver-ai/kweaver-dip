@@ -54,10 +54,10 @@ data:
           pool-name: HikariCP
         {{- if eq .Values.depServices.rds.type "DM8" }}
         driver-class-name: dm.jdbc.driver.DmDriver
-        url: jdbc:dm://{{.Values.depServices.rds.host}}:{{.Values.depServices.rds.port}}/{{.Values.depServices.rds.database}}?genKeyNameCase=2&schema={{.Values.depServices.rds.database}}
+        url: jdbc:dm://{{.Values.depServices.rds.host}}:{{.Values.depServices.rds.port}}/af_std?genKeyNameCase=2&schema=af_std
         {{- else }}
         driver-class-name: org.mariadb.jdbc.Driver
-        url: jdbc:mariadb://{{.Values.depServices.rds.host}}:{{.Values.depServices.rds.port}}/{{.Values.depServices.rds.database}}?useUnicode=true&useSSL=false&characterEncoding=utf8mb4&serverTimezone=GMT%2B8
+        url: jdbc:mariadb://{{.Values.depServices.rds.host}}:{{.Values.depServices.rds.port}}/af_std?useUnicode=true&useSSL=false&characterEncoding=utf8mb4&serverTimezone=GMT%2B8
         {{- end }}
         username: {{ .Values.depServices.rds.user | quote }}
         password: {{ .Values.depServices.rds.password | quote }}
