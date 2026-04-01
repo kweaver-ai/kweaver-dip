@@ -54,7 +54,7 @@ const InterruptFormPanel = ({ chatItemIndex }: any) => {
     if (item.type === 'string') {
       return <Input.TextArea autoSize={{ minRows: 1, maxRows: 5 }} placeholder={`请输入${item.key}`} />;
     }
-    if (item.type === 'object' || item.type === 'dict') {
+    if (item.type === 'object' || item.type === 'dict' || item.type === 'list') {
       return (
         <AdMonacoEditor
           placeholder={`请输入${item.key}`}
@@ -96,7 +96,7 @@ const InterruptFormPanel = ({ chatItemIndex }: any) => {
     const args = fields
       .filter(field => {
         let fieldValue = formValues[field.key];
-        if (field.type === 'object' || field.type === 'dict') {
+        if (field.type === 'object' || field.type === 'dict' || field.type === 'list') {
           fieldValue = isJSONString(fieldValue) ? JSON.parse(fieldValue) : fieldValue;
         }
         return !_.isEqual(fieldValue, field.value);
@@ -104,7 +104,9 @@ const InterruptFormPanel = ({ chatItemIndex }: any) => {
       .map(field => ({
         key: field.key,
         value:
-          field.type === 'object' || field.type === 'dict' ? JSON.parse(formValues[field.key]) : formValues[field.key],
+          field.type === 'object' || field.type === 'dict' || field.type === 'list'
+            ? JSON.parse(formValues[field.key])
+            : formValues[field.key],
       }));
     const userChatItem = chatList[chatItemIndex - 1];
     const reqBody: any = {};
@@ -135,7 +137,7 @@ const InterruptFormPanel = ({ chatItemIndex }: any) => {
   };
 
   const getInitialValue = (item: any) => {
-    if (item.type === 'object' || item.type === 'dict') {
+    if (item.type === 'object' || item.type === 'dict' || item.type === 'list') {
       return JSON.stringify(item.value, null, 2);
     }
     return item.value;

@@ -48,6 +48,18 @@ const KnowledgeSource: React.FC<KnowledgeSourceProps> = () => {
   const [knExperimentNames, setKnExperimentNames] = useState<Record<string, string>>({});
   const invalidKgExperimentIds = useRef<string[]>([]);
 
+  const getDataSourceItemId = (item: any, idKey: 'metric_model_id' | 'kn_entry_id') => item?.[idKey] || item?.id;
+
+  const normalizeDataSourceItems = (items: any[], idKey: 'metric_model_id' | 'kn_entry_id') =>
+    items.map(item => {
+      const normalizedId = getDataSourceItemId(item, idKey);
+      if (!normalizedId || item?.[idKey]) return item;
+
+      const normalizedItem = { ...item, [idKey]: normalizedId };
+      delete normalizedItem.id;
+      return normalizedItem;
+    });
+
   const deleteDataSource = (
     item: any,
     options: {
@@ -62,10 +74,14 @@ const KnowledgeSource: React.FC<KnowledgeSourceProps> = () => {
     if (!canEdit) return;
 
     const currentDataSource = state.config?.data_source?.[statePath] || [];
-    const newDataSource = currentDataSource.filter(dataSourceItem => dataSourceItem[idKey] !== item[idKey]);
+    const currentDataSourceNormalized = normalizeDataSourceItems(currentDataSource, idKey);
+    const itemId = getDataSourceItemId(item, idKey);
+    const newDataSource = currentDataSourceNormalized.filter(
+      dataSourceItem => getDataSourceItemId(dataSourceItem, idKey) !== itemId
+    );
     actions.updateSpecificField(`config.data_source.${statePath}`, newDataSource);
 
-    invalidIds.current = invalidIds.current.filter(id => id !== item[idKey]);
+    invalidIds.current = invalidIds.current.filter(id => id !== itemId);
     updateInvalidFn(statePath, invalidIds.current.length > 0);
   };
 
@@ -80,8 +96,8 @@ const KnowledgeSource: React.FC<KnowledgeSourceProps> = () => {
     }
   ) => {
     const { selectorVisibleSetter, statePath, activeKeyValue, idKey, namesSetter } = options;
-    const data = Array.isArray(item) ? item : [item];
-    const currentDataSource = state.config?.data_source?.[statePath] || [];
+    const data = normalizeDataSourceItems(Array.isArray(item) ? item : [item], idKey);
+    const currentDataSource = normalizeDataSourceItems(state.config?.data_source?.[statePath] || [], idKey);
     const newDataSource = uniqBy([...currentDataSource, ...data], idKey);
 
     actions.updateSpecificField(`config.data_source.${statePath}`, newDataSource);

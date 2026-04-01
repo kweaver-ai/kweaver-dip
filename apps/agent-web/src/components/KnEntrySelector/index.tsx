@@ -1,4 +1,4 @@
-import { memo, useState, useRef, useMemo, useCallback, useEffect } from 'react';
+﻿import { memo, useState, useRef, useMemo, useCallback, useEffect } from 'react';
 import intl from 'react-intl-universal';
 import { debounce } from 'lodash';
 import { message, Modal, Select, Spin } from 'antd';
@@ -10,7 +10,7 @@ import classNames from 'classnames';
 
 interface KnEntrySelectorProps {
   onCancel: () => void;
-  onConfirm: (selectedItems: Array<{ id: string; name: string }>) => void;
+  onConfirm: (selectedItems: Array<{ kn_entry_id: string; name: string }>) => void;
 }
 
 enum LoadStatus {
@@ -18,45 +18,45 @@ enum LoadStatus {
   Empty = 'empty',
   Normal = 'normal',
   Failed = 'failed',
-  LoadingMore = 'loadingMore', // 加载更多（加载下一页的数据时）
+  LoadingMore = 'loadingMore', // 鍔犺浇鏇村锛堝姞杞戒笅涓€椤电殑鏁版嵁鏃讹級
 }
 
 const limit = 20;
 
-// 知识条目选择弹窗
+// 鐭ヨ瘑鏉＄洰閫夋嫨寮圭獥
 const KnEntrySelector = ({ onCancel, onConfirm }: KnEntrySelectorProps) => {
   const offsetRef = useRef<number>(0);
   const searchKeyRef = useRef<string>('');
   const requestRef = useRef<any>(undefined);
   const isLoadingMoreRef = useRef<boolean>(false);
-  // 是否还有数据未加载完
+  // 鏄惁杩樻湁鏁版嵁鏈姞杞藉畬
   const hasMoreRef = useRef<boolean>(true);
 
   const [data, setData] = useState<any[]>([]);
   const [loadStatus, setLoadStatus] = useState<LoadStatus>(LoadStatus.Loading);
-  const [selectedItems, setSelectedItems] = useState<Array<{ id: string; name: string }>>([]);
+  const [selectedItems, setSelectedItems] = useState<Array<{ kn_entry_id: string; name: string }>>([]);
 
-  // 获取知识条目列表数据
+  // 鑾峰彇鐭ヨ瘑鏉＄洰鍒楄〃鏁版嵁
   const fetchData = useCallback(async () => {
     if (!hasMoreRef.current) return;
 
     try {
-      // 取消上一次的请求
+      // 鍙栨秷涓婁竴娆＄殑璇锋眰
       requestRef.current?.abort?.();
-      // 重新赋值
+      // reset request
       requestRef.current = getDataDicts({
         offset: offsetRef.current,
         limit,
         name_pattern: searchKeyRef.current,
       });
       const { entries } = await requestRef.current;
-      // 设置offset
+      // 璁剧疆offset
       offsetRef.current += entries.length;
-      // 设置hasMore
+      // 璁剧疆hasMore
       hasMoreRef.current = entries.length === limit;
 
       if (isLoadingMoreRef.current) {
-        // 在现有的数据后面添加
+        // 鍦ㄧ幇鏈夌殑鏁版嵁鍚庨潰娣诲姞
         setData(prev => [...prev, ...entries.map(({ id, name }) => ({ value: name, label: name, id, name }))]);
       } else {
         setData(entries.map(({ id, name }) => ({ value: name, label: name, id, name })));
@@ -71,7 +71,7 @@ const KnEntrySelector = ({ onCancel, onConfirm }: KnEntrySelectorProps) => {
         message.error(ex.description);
       }
       if (!isLoadingMoreRef.current) {
-        // 只有第一次加载的数据，才设置loadStatus，才设置data为空
+        // 鍙湁绗竴娆″姞杞界殑鏁版嵁锛屾墠璁剧疆loadStatus锛屾墠璁剧疆data涓虹┖
         setLoadStatus(LoadStatus.Failed);
         setData([]);
       }
@@ -83,7 +83,7 @@ const KnEntrySelector = ({ onCancel, onConfirm }: KnEntrySelectorProps) => {
   const debounceFetchData = useMemo(() => debounce(fetchData, 300), [fetchData]);
 
   const handleSearch = (value: string) => {
-    // 设置搜索关键字，清空offset，设置loadStatus，清空data
+    // 璁剧疆鎼滅储鍏抽敭瀛楋紝娓呯┖offset锛岃缃甽oadStatus锛屾竻绌篸ata
     searchKeyRef.current = value;
     offsetRef.current = 0;
     hasMoreRef.current = true;
@@ -146,15 +146,15 @@ const KnEntrySelector = ({ onCancel, onConfirm }: KnEntrySelectorProps) => {
         }
         onSearch={handleSearch}
         onSelect={(_, { id, name }) => {
-          // 选中
-          setSelectedItems(prev => [...prev, { id, name }]);
+          // 閫変腑
+          setSelectedItems(prev => [...prev, { kn_entry_id: id, name }]);
         }}
         onDeselect={(_, { id }) => {
-          // 取消选中
-          setSelectedItems(prev => prev.filter(selected => selected.id !== id));
+          // 鍙栨秷閫変腑
+          setSelectedItems(prev => prev.filter(selected => selected.kn_entry_id !== id));
         }}
         onFocus={() => {
-          // 聚焦时，如果上一次搜索值不为空，则触发搜索
+          // 鑱氱劍鏃讹紝濡傛灉涓婁竴娆℃悳绱㈠€间笉涓虹┖锛屽垯瑙﹀彂鎼滅储
           if (searchKeyRef.current || loadStatus === LoadStatus.Failed) {
             handleSearch('');
           }
@@ -166,3 +166,5 @@ const KnEntrySelector = ({ onCancel, onConfirm }: KnEntrySelectorProps) => {
 };
 
 export default memo(KnEntrySelector);
+
+
