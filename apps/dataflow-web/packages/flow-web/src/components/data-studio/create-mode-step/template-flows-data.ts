@@ -435,7 +435,7 @@ export const PdfParseTemplates: IWorkflow[] = [
           category: "log",
           data_type: "user9",
           documents:
-            '{  "id": "{{__0.item_id}}",\n  "rev": "{{__0.rev}}",\n  "name": "{{__0.name}}"}',
+            '{  "document_id": "{{__0.id}}",\n  "name": "{{__0.name}}"}',
         },
       },
     ],
@@ -497,7 +497,7 @@ export const PdfParseTemplates: IWorkflow[] = [
           category: "log",
           data_type: "user9",
           documents:
-            '{  "id": "{{__0.item_id}}",\n  "rev": "{{__0.rev}}",\n  "name": "{{__0.name}}"}',
+            '{  "document_id": "{{__0.id}}",\n  "name": "{{__0.name}}"}',
         },
       },
     ],
