@@ -8,27 +8,24 @@ import logging
 
 import httpx
 
-from src.common.units import parse_host
 from src.infrastructure.config.settings import Settings
-from src.ports.deploy_manager_port import DeployManagerPort
 
 logger = logging.getLogger(__name__)
 
 
 async def register_oauth_client(
     settings: Settings,
-    deploy_manager_port: DeployManagerPort,
 ) -> tuple[str, str]:
     """
     向 Hydra Admin API 自注册 OAuth2 客户端。
 
     流程：
-    1. 通过 deploy-manager 获取外部访问地址
+    1. 使用 settings 中的外部访问地址构造回调 URL
     2. 查询是否已存在同名客户端并删除
     3. 创建新的 OAuth2 客户端
     4. 返回 (client_id, client_secret)
     """
-    base_url = f"http://dip-hub:8000"
+    base_url = f"{settings.access_address_scheme}://{settings.access_address_host}:{settings.access_address_port}"
 
     client_name = settings.oauth_client_name
     hydra_admin_url = settings.hydra_host.rstrip("/")

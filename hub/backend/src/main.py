@@ -72,7 +72,7 @@ def create_app(settings: Settings = None) -> FastAPI:
         try:
             logger.info("开始 OAuth2 客户端自注册...")
             client_id, client_secret = await register_oauth_client(
-                settings, container.deploy_manager_adapter
+                settings
             )
             object.__setattr__(settings, "oauth_client_id", client_id)
             object.__setattr__(settings, "oauth_client_secret", client_secret)
