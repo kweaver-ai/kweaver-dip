@@ -158,3 +158,6 @@ data:
       enable: true
     configuration:
       center: http://configuration-center:8133
+    session:
+      service:
+        url: http://user-management-private:30980/api/user-management/v1/users
