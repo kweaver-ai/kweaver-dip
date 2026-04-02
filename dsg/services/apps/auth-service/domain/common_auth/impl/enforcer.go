@@ -60,35 +60,13 @@ func NewAuth(
 }
 
 // Enforce 策略验证
-func (a *auth) Enforce(ctx context.Context, reqs *dto.PolicyEnforceReq, check *dto.PolicyEnforceCheck) (*dto.PolicyEnforceRes, error) {
-	enforcerResults := make(dto.PolicyEnforceRes, 0, len(*reqs))
-	for _, req := range *reqs {
-		if req.ObjectType != dto.ObjectAPI.Str() && req.ObjectType != dto.ObjectSubService.Str() && req.ObjectType != dto.ObjectSubView.Str() && req.ObjectType != dto.ObjectSubIndicator.Str() && req.ObjectType != dto.ObjectIndicator.Str() {
-			// CAUTION: original logic returned true/allow for unknown types?
-			// Previous code: if != API && != SubService { append true; continue }
-			// Now we adding SubView etc based on my understanding, or simply stick to original Logic?
-			// Original logic:
-			/*
-				            if req.ObjectType != dto.ObjectAPI.Str() && req.ObjectType != dto.ObjectSubService.Str() {
-							    enforcerResults = append(enforcerResults, true)
-							    continue
-						    }
-			*/
-			// But domain code calls it for ObjectSubView and ObjectIndicatorDimensionalRule
-			// If I keep original logic, checking SubView would always return TRUE (Allow) without checking driven?
-			// That seems WRONG if domain code expects actual check.
-			// However, removing that check enforces strict driven check.
-			// I will strictly implement driven check for all, OR trust the driven/policy engine.
-			// But to be safe and match "new auth" intent, I should probably check AccessorPolicy for everything.
-			// I'll assume driven can handle all defined types in dto.ObjectType.
-			// However, to replicate original behavior (skipping non-API/SubService), I might break things if I don't check.
-			// But clearly usage in 'indicator_dimensional_rule' implies it WANTS a check.
-			// So I will REMOVE the early return for other types, assuming 'driven' handles them.
-			// Or better, only skip if driven doesn't support it?
-
-			// Let's rely on standard logic: everything goes to driven check.
+func (a *auth) Enforce(ctx context.Context, reqs dto.PolicyEnforceReq) ([]bool, error) {
+	enforcerResults := make([]bool, 0, len(reqs))
+	for _, req := range reqs {
+		if req.ObjectType != dto.ObjectAPI.Str() && req.ObjectType != dto.ObjectSubService.Str() {
+			enforcerResults = append(enforcerResults, true)
+			continue
 		}
-
 		arg := &authorization.OperationCheckArgs{
 			Accessor: authorization.Accessor{
 				ID:   req.SubjectId,
@@ -107,21 +85,9 @@ func (a *auth) Enforce(ctx context.Context, reqs *dto.PolicyEnforceReq, check *d
 			log.Errorf("Enforce Error %v", err.Error())
 			return nil, err
 		}
-
-		effect := dto.EftDeny
-		if result.Result {
-			effect = dto.EftAllow
-		}
-		enforcerResults = append(enforcerResults, dto.PolicyEnforceEffect{
-			ObjectId:    req.ObjectId,
-			ObjectType:  req.ObjectType,
-			SubjectId:   req.SubjectId,
-			SubjectType: req.SubjectType,
-			Action:      req.Action,
-			Effect:      effect,
-		})
+		enforcerResults = append(enforcerResults, result.Result)
 	}
-	return &enforcerResults, nil
+	return enforcerResults, nil
 }
 
 // CurrentUserEnforce 当前用户的策略验证

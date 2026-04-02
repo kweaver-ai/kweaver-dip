@@ -34,7 +34,7 @@ type AuthManagement interface {
 }
 
 type Enforcer interface {
-	Enforce(ctx context.Context, reqs *dto.PolicyEnforceReq, check *dto.PolicyEnforceCheck) (*dto.PolicyEnforceRes, error)
+	Enforce(ctx context.Context, reqs dto.PolicyEnforceReq) ([]bool, error)
 	CurrentUserEnforce(ctx context.Context, req *dto.CurrentUserEnforce) (bool, error)
 	GetObjectsBySubjectId(ctx context.Context, req *dto.GetObjectsBySubjectIdReq) (res *dto.GetObjectsBySubjectIdRes, err error)
 	QueryPolicyExpiredObjects(ctx context.Context, req *dto.QueryPolicyExpiredObjectsArgs) ([]string, error)
