@@ -52,6 +52,10 @@ data:
   TOOL_LLM_OPENAI_API_KEY: {{ $agent.tool_llm_openai_api_key | default "" | quote }}
   TOOL_LLM_OPENAI_API_BASE: {{ $agent.tool_llm_openai_api_base | default "" | quote }}
 
+  KAFKA_URI: "{{ .depServices.mq.Host}}:{{ .depServices.mq.Port}}"
+  KAFKA_USERNAME: "{{ .depServices.mq.auth.username}}"
+  KAFKA_PASSWORD: "{{ .depServices.mq.auth.password}}"
+
   {{- end }}
   {{- with .Values.depServices.redis }}
   REDIS_MASTER_NAME: {{ .connectInfo.masterGroupName | quote }}

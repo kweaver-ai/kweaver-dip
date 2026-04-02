@@ -1,12 +1,12 @@
 {
     "conponentDefineType": "helm/service",
-    "name": "sailor-agent",
+    "name": "standardization",
     "version": "1.0.0",
     "configSchema": {
-        "title": "sailor-agent",
+        "title": "standardization",
         "description": "组件配置定义",
         "type": "object",
-        "properties": {
+        "properties": {         
             "resources": {
                 "type": "object",
                 "title": "容器资源控制",
@@ -49,25 +49,10 @@
     },
     "dependence": [
         {
+            "name": "af-dbo-dm-pre"
+        },
+         {
             "name": "rds"
-        },
-        {
-            "name": "redis"
-        },
-        {
-            "name": "opensearch"
-        },
-        {
-            "name": "ad_opensearch"
-        },
-        {
-            "name": "anyDataConf"
-        },
-        {
-            "name": "anyDataLLMConf"
-        },
-        {
-            "name": "mq"
         },
         {
             "name": "class-443"
