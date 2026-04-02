@@ -30,6 +30,8 @@
 ```text
 GET    /v1/config/agents/skills
 GET    /v1/config/agents/skills?agentId=<id>
+GET    /v1/config/agents/skills/<name>/tree
+GET    /v1/config/agents/skills/<name>/content?path=<relative-file-path>
 POST   /v1/config/agents/skills
 PUT    /v1/config/agents/skills
 POST   /v1/config/agents/skills/install
@@ -43,6 +45,20 @@ DELETE /v1/config/agents/skills/<name>
   - 若该 agent 在配置中显式设置了 `skills`，直接返回该数组；
   - 若未显式设置，则按发现逻辑返回该 agent 可见的 skills（JSON：`{ "agentId", "skills" }`）。
 - `POST` / `PUT`：请求体为 JSON，需包含 `agentId`（string）与 `skills`（string[]），整组写回 `agents.list[].skills`（JSON：`{ "success", "agentId", "skills" }`）。
+
+**读取技能目录树**
+
+- `GET /v1/config/agents/skills/<name>/tree`
+- 返回技能目录下的完整文件树（JSON：`{ "name", "entries" }`）。
+- `entries[].type` 为 `file` 或 `directory`；目录节点额外带 `children`。
+
+**预览技能文件**
+
+- `GET /v1/config/agents/skills/<name>/content?path=<relative-file-path>`
+- `path` 是技能目录内的相对路径，例如 `SKILL.md`、`docs/guide.md`；不传时默认 `SKILL.md`。
+- 仅允许读取普通文件；路径穿越和目录读取都会返回 `400`。
+- 成功返回：`{ "name", "path", "content", "bytes", "truncated" }`。
+- 当前文本预览上限为 `1MB`，超出部分不返回，并标记 `truncated=true`。
 
 **安装 `.skill` 包（zip）**
 
@@ -62,18 +78,8 @@ DELETE /v1/config/agents/skills/<name>
 
 ### 2. Skills 发现
 
-发现顺序（`discoverSkillNames`）：
-
-1. 扫描**仓库根目录**下的 `skills/`（与 `extensions/` 同级，由插件入口中的 `repoRoot/skills` 决定）。
-2. 扫描插件内置目录 `extensions/dip/skills/`（相对仓库根的路径为 `studio/extensions/dip/skills/`）。
-3. 合并、去重、按字典序排序。
-4. 若上述路径下没有任何可识别项，则回退到 `openclaw/plugin-sdk` 的 `listSkillCommandsForAgents`。
-
-`skills/` 下单个路径的识别规则（`listSkillNamesFromDir`）：
-
-- **子目录**：目录名即 skill id。
-- **以 `.skill` 结尾的条目**：可为目录或文件；去掉 `.skill` 后缀后作为 skill id（与 OpenClaw 对 `.skill` 包约定一致时，可由目录或单文件形式存在）。
-- 忽略以 `.` 开头的条目。
+`discoverSkillNames` 统一使用 OpenClaw 原生 SDK 的 `listSkillCommandsForAgents` 进行发现，
+并对返回的 `skillName` 做去重和字典序排序。不再通过读取仓库或插件目录来列举技能。
 
 ### 3. Archives 访问
 

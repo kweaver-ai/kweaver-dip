@@ -43,4 +43,6 @@ BE ->> BE: 用绑定 id 过滤可用条目，保留 name / description / built_i
 | 说明 | 方法 | 路径 |
 | -- | -- | -- |
 | 全局启用技能列表（含 `type`） | GET | `/api/dip-studio/v1/skills` |
+| 技能目录树 | GET | `/api/dip-studio/v1/skills/{name}/tree` |
+| 技能文件预览 | GET | `/api/dip-studio/v1/skills/{name}/content?path=<relative-file-path>` |
 | 指定数字员工已配置技能列表 | GET | `/api/dip-studio/v1/digital-human/{id}/skills` |

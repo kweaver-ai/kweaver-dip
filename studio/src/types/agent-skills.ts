@@ -72,3 +72,64 @@ export interface UninstallSkillResult {
    */
   name: string;
 }
+
+export interface SkillTreeEntry {
+  /**
+   * Basename of the file or directory.
+   */
+  name: string;
+
+  /**
+   * Skill-root-relative path using `/` separators.
+   */
+  path: string;
+
+  /**
+   * Entry kind.
+   */
+  type: "file" | "directory";
+
+  /**
+   * Nested entries for directories.
+   */
+  children?: SkillTreeEntry[];
+}
+
+export interface SkillTreeResult {
+  /**
+   * Skill id used to resolve the directory tree.
+   */
+  name: string;
+
+  /**
+   * Full skill directory tree.
+   */
+  entries: SkillTreeEntry[];
+}
+
+export interface SkillContentResult {
+  /**
+   * Skill id used to resolve the file.
+   */
+  name: string;
+
+  /**
+   * Skill-root-relative file path using `/` separators.
+   */
+  path: string;
+
+  /**
+   * UTF-8 preview content.
+   */
+  content: string;
+
+  /**
+   * File size in bytes.
+   */
+  bytes: number;
+
+  /**
+   * Whether the preview was truncated by the server-side size limit.
+   */
+  truncated: boolean;
+}

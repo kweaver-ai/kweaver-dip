@@ -240,6 +240,60 @@ GitHub：https://github.com/kweaver-ai/web
 | [\].built_in | boolean | 是否为 DIP 数字员工内置技能（`archive-protocol`、`schedule-plan`、`kweaver-core`） |
 | [\].type | string | OpenClaw `skills.status` 响应中的 `source` 字段，例如 `openclaw-bundled`、`openclaw-managed`、`agents-skills-personal` 等 |
 
+#### 获取技能目录树
+
+`GET /api/dip-studio/v1/skills/{name}/tree`
+
+路径参数：
+
+| 参数 | 类型 | 说明 |
+| -- | -- | -- |
+| name | string | 技能 ID |
+
+响应：`200 application/json`
+
+| 参数 | 类型 | 说明 |
+| -- | -- | -- |
+| name | string | 技能 ID |
+| entries | array | 技能目录树 |
+| entries[].name | string | 文件或目录名 |
+| entries[].path | string | 相对技能根目录的路径，统一使用 `/` 分隔 |
+| entries[].type | string | `file` 或 `directory` |
+| entries[].children | array | 当 `type=directory` 时返回子节点 |
+
+#### 预览技能文件内容
+
+`GET /api/dip-studio/v1/skills/{name}/content`
+
+路径参数：
+
+| 参数 | 类型 | 说明 |
+| -- | -- | -- |
+| name | string | 技能 ID |
+
+查询参数：
+
+| 参数 | 类型 | 说明 |
+| -- | -- | -- |
+| path | string | 技能目录内文件的相对路径，例如 `SKILL.md`、`docs/guide.md`；不传时默认 `SKILL.md` |
+
+说明：
+
+- 仅支持预览技能目录内的普通文件。
+- 未传 `path` 时，默认返回 `SKILL.md` 内容。
+- 路径穿越（如 `../x`）会被拒绝。
+- 返回 UTF-8 文本预览，服务端当前预览上限为 1MB；超出时 `truncated=true`。
+
+响应：`200 application/json`
+
+| 参数 | 类型 | 说明 |
+| -- | -- | -- |
+| name | string | 技能 ID |
+| path | string | 相对技能根目录的文件路径 |
+| content | string | 文件预览内容 |
+| bytes | integer | 文件实际大小（字节） |
+| truncated | boolean | 是否因预览上限被截断 |
+
 #### 安装 .skill 包（zip）
 
 `POST /api/dip-studio/v1/skills/install`

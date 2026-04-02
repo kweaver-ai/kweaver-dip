@@ -3,14 +3,20 @@ import { describe, expect, it, vi } from "vitest";
 import {
   buildOpenClawAgentSkillsUrl,
   buildOpenClawSkillInstallUrl,
+  buildOpenClawSkillContentUrl,
+  buildOpenClawSkillTreeUrl,
   buildOpenClawSkillUninstallUrl,
   createOpenClawAgentSkillsHeaders,
   createOpenClawSkillInstallFormData,
   createOpenClawAgentSkillsStatusError,
   createOpenClawSkillInstallStatusError,
+  createOpenClawSkillContentStatusError,
+  createOpenClawSkillTreeStatusError,
   DefaultOpenClawAgentSkillsHttpClient,
   normalizeOpenClawAgentSkillsError,
-  normalizeOpenClawSkillInstallError
+  normalizeOpenClawSkillContentError,
+  normalizeOpenClawSkillInstallError,
+  normalizeOpenClawSkillTreeError
 } from "./openclaw-agent-skills-http-client";
 
 describe("buildOpenClawSkillInstallUrl", () => {
@@ -45,6 +51,27 @@ describe("buildOpenClawSkillUninstallUrl", () => {
     expect(
       buildOpenClawSkillUninstallUrl("http://127.0.0.1:19001", "a.b")
     ).toBe("http://127.0.0.1:19001/v1/config/agents/skills/a.b");
+  });
+});
+
+describe("buildOpenClawSkillTreeUrl", () => {
+  it("converts gateway URL and encodes path parameter", () => {
+    expect(
+      buildOpenClawSkillTreeUrl("ws://127.0.0.1:19001/ws", "weather")
+    ).toBe("http://127.0.0.1:19001/v1/config/agents/skills/weather/tree");
+    expect(
+      buildOpenClawSkillTreeUrl("http://127.0.0.1:19001", "a.b")
+    ).toBe("http://127.0.0.1:19001/v1/config/agents/skills/a.b/tree");
+  });
+});
+
+describe("buildOpenClawSkillContentUrl", () => {
+  it("converts gateway URL and appends preview path query", () => {
+    expect(
+      buildOpenClawSkillContentUrl("ws://127.0.0.1:19001/ws", "weather", "docs/guide.md")
+    ).toBe(
+      "http://127.0.0.1:19001/v1/config/agents/skills/weather/content?path=docs%2Fguide.md"
+    );
   });
 });
 
@@ -105,6 +132,54 @@ describe("normalizeOpenClawSkillInstallError", () => {
     expect(normalizeOpenClawSkillInstallError(new Error("down"))).toMatchObject({
       statusCode: 502,
       message: "Failed to communicate with OpenClaw /v1/config/agents/skills/install: down"
+    });
+  });
+});
+
+describe("createOpenClawSkillTreeStatusError", () => {
+  it("returns a 502 error with upstream details", async () => {
+    const response = new Response("missing", { status: 404 });
+
+    await expect(createOpenClawSkillTreeStatusError(response)).resolves.toMatchObject({
+      statusCode: 502,
+      message: "OpenClaw /v1/config/agents/skills/{name}/tree returned HTTP 404: missing"
+    });
+  });
+});
+
+describe("createOpenClawSkillContentStatusError", () => {
+  it("returns a 502 error with upstream details", async () => {
+    const response = new Response("bad path", { status: 400 });
+
+    await expect(createOpenClawSkillContentStatusError(response)).resolves.toMatchObject({
+      statusCode: 502,
+      message: "OpenClaw /v1/config/agents/skills/{name}/content returned HTTP 400: bad path"
+    });
+  });
+});
+
+describe("normalizeOpenClawSkillTreeError", () => {
+  it("wraps unknown errors", async () => {
+    const { HttpError } = await import("../errors/http-error");
+    expect(normalizeOpenClawSkillTreeError(new HttpError(502, "x"))).toMatchObject({
+      statusCode: 502
+    });
+    expect(normalizeOpenClawSkillTreeError(new Error("down"))).toMatchObject({
+      statusCode: 502,
+      message: "Failed to communicate with OpenClaw /v1/config/agents/skills/{name}/tree: down"
+    });
+  });
+});
+
+describe("normalizeOpenClawSkillContentError", () => {
+  it("wraps unknown errors", async () => {
+    const { HttpError } = await import("../errors/http-error");
+    expect(normalizeOpenClawSkillContentError(new HttpError(502, "x"))).toMatchObject({
+      statusCode: 502
+    });
+    expect(normalizeOpenClawSkillContentError(new Error("down"))).toMatchObject({
+      statusCode: 502,
+      message: "Failed to communicate with OpenClaw /v1/config/agents/skills/{name}/content: down"
     });
   });
 });
@@ -226,7 +301,7 @@ describe("DefaultOpenClawAgentSkillsHttpClient", () => {
       "http://127.0.0.1:19001/v1/config/agents/skills"
     );
     expect(fetchImpl.mock.calls[0]?.[1]).toMatchObject({
-      method: "PUT",
+      method: "POST",
       body: JSON.stringify({ agentId: "a1", skills: ["weather", "search"] })
     });
   });
@@ -293,6 +368,84 @@ describe("DefaultOpenClawAgentSkillsHttpClient", () => {
     );
     expect(fetchImpl.mock.calls[0]?.[1]).toMatchObject({
       method: "DELETE"
+    });
+  });
+
+  it("reads a skill tree via GET", async () => {
+    const fetchImpl = vi.fn<typeof fetch>().mockResolvedValue(
+      new Response(
+        JSON.stringify({
+          name: "weather",
+          entries: [{ name: "SKILL.md", path: "SKILL.md", type: "file" }]
+        }),
+        {
+          status: 200,
+          headers: { "content-type": "application/json" }
+        }
+      )
+    );
+
+    const client = new DefaultOpenClawAgentSkillsHttpClient(
+      {
+        gatewayUrl: "http://127.0.0.1:19001",
+        token: "t",
+        timeoutMs: 5000
+      },
+      fetchImpl
+    );
+
+    await expect(client.getSkillTree("weather")).resolves.toEqual({
+      name: "weather",
+      entries: [{ name: "SKILL.md", path: "SKILL.md", type: "file" }]
+    });
+
+    expect(fetchImpl.mock.calls[0]?.[0]).toBe(
+      "http://127.0.0.1:19001/v1/config/agents/skills/weather/tree"
+    );
+    expect(fetchImpl.mock.calls[0]?.[1]).toMatchObject({
+      method: "GET"
+    });
+  });
+
+  it("reads skill content via GET", async () => {
+    const fetchImpl = vi.fn<typeof fetch>().mockResolvedValue(
+      new Response(
+        JSON.stringify({
+          name: "weather",
+          path: "SKILL.md",
+          content: "# Weather",
+          bytes: 9,
+          truncated: false
+        }),
+        {
+          status: 200,
+          headers: { "content-type": "application/json" }
+        }
+      )
+    );
+
+    const client = new DefaultOpenClawAgentSkillsHttpClient(
+      {
+        gatewayUrl: "http://127.0.0.1:19001",
+        token: "t",
+        timeoutMs: 5000
+      },
+      fetchImpl
+    );
+
+    await expect(client.getSkillContent("weather", "SKILL.md")).resolves.toEqual({
+      name: "weather",
+      path: "SKILL.md",
+      content: "# Weather",
+      bytes: 9,
+      truncated: false
+    });
+
+    expect(fetchImpl.mock.calls[0]?.[0]).toBe(
+      "http://127.0.0.1:19001/v1/config/agents/skills/weather/content?path=SKILL.md"
+    );
+    expect(fetchImpl.mock.calls[0]?.[1]).toMatchObject({
+      method: "GET"
     });
   });
 });

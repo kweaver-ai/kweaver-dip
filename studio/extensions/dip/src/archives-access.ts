@@ -2,7 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import type { IncomingMessage, ServerResponse } from "node:http";
 import type { OpenClawPluginApi } from "openclaw/plugin-sdk";
-import { ARCHIVES_MIME_MAP, formatTimestamp, sanitizeFileName } from "./archives-utils";
+import { ARCHIVES_MIME_MAP, formatTimestamp, sanitizeFileName } from "./archives-utils.js";
 
 /**
  * Registers `/v1/archives` HTTP route and `after_tool_call` archive compliance hook.

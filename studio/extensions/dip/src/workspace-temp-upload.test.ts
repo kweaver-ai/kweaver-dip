@@ -9,7 +9,7 @@ import {
   parseMultipartUploadFile,
   sanitizeUploadFilename,
   writeWorkspaceTempUpload
-} from "./workspace-temp-upload";
+} from "./workspace-temp-upload.js";
 
 const createdDirs: string[] = [];
 

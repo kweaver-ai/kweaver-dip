@@ -2,29 +2,9 @@ import fs from "node:fs";
 import path from "node:path";
 
 /**
- * Lists skill ids under a directory (same rules as `skills-discovery` `listSkillNamesFromDir`).
- * Implemented locally so this module does not import `skills-discovery` (which pulls `openclaw/plugin-sdk`).
- *
- * @param skillsDir Skills root path.
- * @returns Sorted unique ids are not required; only membership checks use this.
- */
-function listSkillNamesFromDirLocal(skillsDir: string): string[] {
-  if (!fs.existsSync(skillsDir)) {
-    return [];
-  }
-  return fs
-    .readdirSync(skillsDir, { withFileTypes: true })
-    .filter(
-      (dirent) => dirent.isDirectory() || dirent.name.endsWith(".skill")
-    )
-    .map((dirent) => dirent.name.replace(/\.skill$/, ""))
-    .filter((name) => !name.startsWith("."));
-}
-
-/**
  * Error codes returned by {@link uninstallSkillFromRepo} for HTTP mapping.
  */
-export type SkillUninstallErrorCode = "INVALID_NAME" | "NOT_FOUND" | "BUNDLED";
+export type SkillUninstallErrorCode = "INVALID_NAME" | "NOT_FOUND";
 
 /**
  * Thrown when a skill cannot be removed from the repository `skills/` tree.
@@ -66,17 +46,14 @@ function isPathUnderRepoSkills(
 
 /**
  * Removes `repoSkillsDir/<name>/` (or a `*.skill` entry) if present.
- * Does not remove plugin-bundled skills when they exist only under `bundledSkillsDir`.
  *
  * @param name Skill id (slug).
- * @param repoSkillsDir Absolute path to `{repoRoot}/skills`.
- * @param bundledSkillsDir Absolute path to bundled `extensions/dip/skills` (or equivalent).
+ * @param repoSkillsDir Absolute path to `{workspaceDir}/skills`.
  * @returns Confirmation payload.
  */
 export function uninstallSkillFromRepo(
   name: string,
-  repoSkillsDir: string,
-  bundledSkillsDir: string
+  repoSkillsDir: string
 ): { name: string } {
   const trimmed = name.trim();
   if (trimmed.length === 0 || !SKILL_NAME_RE.test(trimmed)) {
@@ -96,14 +73,6 @@ export function uninstallSkillFromRepo(
     return { name: trimmed };
   }
 
-  const bundledNames = new Set(listSkillNamesFromDirLocal(bundledSkillsDir));
-  if (bundledNames.has(trimmed)) {
-    throw new SkillUninstallError(
-      "BUNDLED",
-      `Skill "${trimmed}" is bundled with the plugin; it is not installed under repository skills/`
-    );
-  }
-
   throw new SkillUninstallError(
     "NOT_FOUND",
     `Skill "${trimmed}" is not installed under skills/`
@@ -120,8 +89,6 @@ export function skillUninstallErrorHttpStatus(
   code: SkillUninstallErrorCode
 ): number {
   switch (code) {
-    case "BUNDLED":
-      return 403;
     case "NOT_FOUND":
       return 404;
     default:

@@ -1,17 +1,23 @@
 import path from "node:path";
 import type { IncomingMessage, ServerResponse } from "node:http";
-import type { OpenClawPluginApi } from "openclaw/plugin-sdk";
-import { discoverSkillNames } from "./skills-discovery";
+import { type OpenClawPluginApi, resolveAgentWorkspaceDir } from "openclaw/plugin-sdk";
+import { discoverSkillNames, discoverSkillStatus } from "./skills-discovery.js";
 import {
   installSkillFromZipBuffer,
   SkillInstallError,
   skillInstallErrorHttpStatus
-} from "./skills-install";
+} from "./skills-install.js";
 import {
   SkillUninstallError,
   skillUninstallErrorHttpStatus,
   uninstallSkillFromRepo
-} from "./skills-uninstall";
+} from "./skills-uninstall.js";
+import {
+  type SkillTreeEntry,
+  SkillTreeError,
+  listSkillTreeEntries,
+  readSkillFilePreview
+} from "./skills-tree.js";
 
 /** Maximum `.skill` upload size for the Gateway install route (bytes). */
 const MAX_SKILL_INSTALL_BYTES = 32 * 1024 * 1024;
@@ -60,11 +66,8 @@ function readRequestBodyLimited(
  * @param bundledSkillsDir Plugin-relative bundled skills directory.
  */
 export function registerSkillsControl(
-  api: OpenClawPluginApi,
-  repoRoot: string,
-  bundledSkillsDir: string
+  api: OpenClawPluginApi
 ): void {
-  const repoSkillsDir = path.join(repoRoot, "skills");
 
   api.registerHttpRoute({
     path: "/v1/config/agents/skills/install",
@@ -85,12 +88,19 @@ export function registerSkillsControl(
       const url = new URL(req.url || "", "http://localhost");
       const overwrite = url.searchParams.get("overwrite") === "true";
       const nameParam = url.searchParams.get("name");
+      const agentId = url.searchParams.get("agent");
       const name =
         nameParam !== null && nameParam.trim().length > 0
           ? nameParam.trim()
           : undefined;
 
       try {
+        const config = await api.runtime.config.loadConfig();
+        const effectiveAgentId = agentId && agentId.trim().length > 0 ? agentId.trim() : null;
+        const repoSkillsDir = effectiveAgentId
+          ? path.join(resolveAgentWorkspaceDir(config, effectiveAgentId), "skills")
+          : path.join(api.runtime.state.resolveStateDir(), "skills");
+
         const body = await readRequestBodyLimited(req, MAX_SKILL_INSTALL_BYTES);
         const result = installSkillFromZipBuffer(body, repoSkillsDir, {
           overwrite,
@@ -135,15 +145,24 @@ export function registerSkillsControl(
       const sub = args[0]?.toLowerCase();
 
       if (sub === "list") {
-        const allSkillNames = discoverSkillNames(repoSkillsDir, bundledSkillsDir, ctx.config);
-        const configSkills = ctx.config.skills?.entries || {};
-        if (allSkillNames.length === 0) return { text: "No skills discovered." };
+        const skills = discoverSkillStatus(ctx.config);
+        if (skills.length === 0) return { text: "No skills discovered." };
 
-        const lines = allSkillNames.map(name => {
-          const enabled = (configSkills as any)[name]?.enabled !== false;
-          return `- ${name}: ${enabled ? "✅ enabled" : "❌ disabled"}`;
+        const rows = skills.map(s => {
+          let status = "✓ ready";
+          if (s.disabled) status = "❌ disabled";
+          else if (s.blockedByAllowlist) status = "🚫 blocked";
+          else if (!s.eligible) status = "✗ missing";
+
+          const icon = s.emoji ? `${s.emoji} ` : "";
+          const source = s.source;
+          const desc = s.description ? s.description.replace(/(\n|\r)+/g, " ").slice(0, 100) : "";
+
+          return `| ${status} | ${icon}${s.name} | ${source} | ${desc} |`;
         });
-        return { text: "Available skills:\n" + lines.join("\n") };
+
+        const header = "| Status | Skill | Source | Description |\n|---|---|---|---|";
+        return { text: "Available skills:\n\n" + header + "\n" + rows.join("\n") };
       }
 
       if (sub === "enable" || sub === "disable") {
@@ -174,14 +193,13 @@ export function registerSkillsControl(
     auth: "gateway",
     handler: async (req: IncomingMessage, res: ServerResponse) => {
       const url = new URL(req.url || "", "http://localhost");
-      const isBasePath =
-        url.pathname === "/v1/config/agents/skills" ||
-        url.pathname === "/v1/config/agents/skills/";
+      const routeTarget = extractSkillRouteTarget(url.pathname);
+      const isBasePath = routeTarget === undefined;
 
       if (req.method === "DELETE") {
-        const name = extractSkillNameFromPath(url.pathname);
+        const name = routeTarget?.name;
 
-        if (name === undefined) {
+        if (name === undefined || routeTarget?.action !== "detail") {
           res.statusCode = 400;
           res.setHeader("Content-Type", "application/json");
           res.end(
@@ -193,10 +211,16 @@ export function registerSkillsControl(
         }
 
         try {
+          const agentId = url.searchParams.get("agent");
+          const config = await api.runtime.config.loadConfig();
+          const effectiveAgentId = agentId && agentId.trim().length > 0 ? agentId.trim() : null;
+          const repoSkillsDir = effectiveAgentId
+            ? path.join(resolveAgentWorkspaceDir(config, effectiveAgentId), "skills")
+            : path.join(api.runtime.state.resolveStateDir(), "skills");
+
           const result = uninstallSkillFromRepo(
             name,
-            repoSkillsDir,
-            bundledSkillsDir
+            repoSkillsDir
           );
           res.statusCode = 200;
           res.setHeader("Content-Type", "application/json");
@@ -210,6 +234,62 @@ export function registerSkillsControl(
             return true;
           }
           api.logger.error?.(`dip skills uninstall failed: ${String(e)}`);
+          res.statusCode = 500;
+          res.setHeader("Content-Type", "application/json");
+          res.end(
+            JSON.stringify({
+              error: e instanceof Error ? e.message : String(e)
+            })
+          );
+          return true;
+        }
+      }
+
+      if (req.method === "GET" && routeTarget?.action === "tree") {
+        try {
+          const config = await api.runtime.config.loadConfig();
+          const entries = resolveSkillTreeEntries(config, routeTarget.name);
+          res.statusCode = 200;
+          res.setHeader("Content-Type", "application/json");
+          res.end(JSON.stringify({ name: routeTarget.name, entries }));
+          return true;
+        } catch (e: unknown) {
+          if (e instanceof SkillTreeError) {
+            res.statusCode = e.code === "SKILL_NOT_FOUND" ? 404 : 400;
+            res.setHeader("Content-Type", "application/json");
+            res.end(JSON.stringify({ error: e.message, code: e.code }));
+            return true;
+          }
+          api.logger.error?.(`dip skills tree failed: ${String(e)}`);
+          res.statusCode = 500;
+          res.setHeader("Content-Type", "application/json");
+          res.end(
+            JSON.stringify({
+              error: e instanceof Error ? e.message : String(e)
+            })
+          );
+          return true;
+        }
+      }
+
+      if (req.method === "GET" && routeTarget?.action === "content") {
+        try {
+          const config = await api.runtime.config.loadConfig();
+          const skillDir = resolveSkillDirectory(config, routeTarget.name);
+          const previewPath = url.searchParams.get("path") ?? "";
+          const result = readSkillFilePreview(skillDir, previewPath);
+          res.statusCode = 200;
+          res.setHeader("Content-Type", "application/json");
+          res.end(JSON.stringify({ name: routeTarget.name, ...result }));
+          return true;
+        } catch (e: unknown) {
+          if (e instanceof SkillTreeError) {
+            res.statusCode = mapSkillTreeErrorStatus(e.code);
+            res.setHeader("Content-Type", "application/json");
+            res.end(JSON.stringify({ error: e.message, code: e.code }));
+            return true;
+          }
+          api.logger.error?.(`dip skills content failed: ${String(e)}`);
           res.statusCode = 500;
           res.setHeader("Content-Type", "application/json");
           res.end(
@@ -235,7 +315,7 @@ export function registerSkillsControl(
         if (!agentId) {
           res.statusCode = 200;
           res.setHeader("Content-Type", "application/json");
-          const responseSkills = discoverSkillNames(repoSkillsDir, bundledSkillsDir, config);
+          const responseSkills = discoverSkillNames(config);
           res.end(JSON.stringify({ skills: responseSkills }));
           return true;
         }
@@ -253,7 +333,7 @@ export function registerSkillsControl(
         const agentSkills = agent.skills;
         let responseSkills = agentSkills;
         if (agentSkills === undefined) {
-          responseSkills = discoverSkillNames(repoSkillsDir, bundledSkillsDir, config, [agentId]);
+          responseSkills = discoverSkillNames(config, [agentId]);
         }
         res.end(JSON.stringify({ agentId, skills: responseSkills }));
         return true;
@@ -320,7 +400,31 @@ export function registerSkillsControl(
   });
 }
 
-function extractSkillNameFromPath(pathname: string | null): string | undefined {
+function resolveSkillTreeEntries(config: any, skillName: string): SkillTreeEntry[] {
+  return listSkillTreeEntries(resolveSkillDirectory(config, skillName));
+}
+
+function readSkillDirectoryFromStatusEntry(entry: Record<string, unknown> | undefined): string | undefined {
+  if (entry === undefined) {
+    return undefined;
+  }
+
+  const baseDir = typeof entry.baseDir === "string" ? entry.baseDir.trim() : "";
+  if (baseDir.length > 0) {
+    return baseDir;
+  }
+
+  const filePath = typeof entry.filePath === "string" ? entry.filePath.trim() : "";
+  if (filePath.length > 0) {
+    return filePath;
+  }
+
+  return undefined;
+}
+
+function extractSkillRouteTarget(
+  pathname: string | null
+): { name: string; action: "detail" | "tree" | "content" } | undefined {
   if (!pathname) {
     return undefined;
   }
@@ -328,15 +432,58 @@ function extractSkillNameFromPath(pathname: string | null): string | undefined {
   const normalized = pathname.replace(/\/+$/, "");
   const prefix = "/v1/config/agents/skills";
 
-  if (normalized.length <= prefix.length || !normalized.startsWith(prefix)) {
+  if (normalized === prefix) {
     return undefined;
   }
 
-  const suffix = normalized.slice(prefix.length);
-  if (!suffix.startsWith("/")) {
+  if (!normalized.startsWith(`${prefix}/`)) {
+    return { name: "", action: "detail" };
+  }
+
+  const suffix = normalized.slice(prefix.length + 1);
+  if (suffix.length === 0) {
     return undefined;
   }
 
-  const name = suffix.slice(1);
-  return name.length > 0 ? decodeURIComponent(name) : undefined;
+  if (suffix.endsWith("/tree")) {
+    const name = suffix.slice(0, -"/tree".length);
+    return name.length > 0
+      ? { name: decodeURIComponent(name), action: "tree" }
+      : { name: "", action: "tree" };
+  }
+
+  if (suffix.endsWith("/content")) {
+    const name = suffix.slice(0, -"/content".length);
+    return name.length > 0
+      ? { name: decodeURIComponent(name), action: "content" }
+      : { name: "", action: "content" };
+  }
+
+  return { name: decodeURIComponent(suffix), action: "detail" };
+}
+
+function resolveSkillDirectory(config: any, skillName: string): string {
+  const normalizedName = skillName.trim();
+  if (normalizedName.length === 0) {
+    throw new SkillTreeError("INVALID_NAME", "Path parameter name is required");
+  }
+
+  const entry = discoverSkillStatus(config).find((candidate) => candidate.name === normalizedName);
+  const skillDir = readSkillDirectoryFromStatusEntry(entry);
+
+  if (skillDir === undefined) {
+    throw new SkillTreeError("SKILL_NOT_FOUND", `Skill not found: ${normalizedName}`);
+  }
+
+  return skillDir;
+}
+
+function mapSkillTreeErrorStatus(code: SkillTreeError["code"]): number {
+  if (code === "SKILL_NOT_FOUND") {
+    return 404;
+  }
+  if (code === "INVALID_NAME" || code === "INVALID_PATH" || code === "NOT_A_FILE") {
+    return 400;
+  }
+  return 500;
 }

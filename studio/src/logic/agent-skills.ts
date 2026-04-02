@@ -9,6 +9,8 @@ import type {
   AgentSkillsBinding,
   AgentSkillsCatalog,
   InstallSkillResult,
+  SkillContentResult,
+  SkillTreeResult,
   UninstallSkillResult,
   UpdateAgentSkillsResult
 } from "../types/agent-skills";
@@ -17,6 +19,8 @@ import type {
   OpenClawSkillOriginType
 } from "../types/openclaw";
 import { isDefaultDigitalHumanSkillSlug } from "../utils/skills";
+
+const OPENCLAW_WORKSPACE_SOURCE = "openclaw-workspace";
 
 /**
  * Application logic used to query and update agent skill bindings.
@@ -84,6 +88,21 @@ export interface AgentSkillsLogic {
   uninstallSkill(name: string): Promise<UninstallSkillResult>;
 
   /**
+   * Lists files and directories under one skill.
+   *
+   * @param name Skill id to inspect.
+   */
+  getSkillTree(name: string): Promise<SkillTreeResult>;
+
+  /**
+   * Reads one text file preview under a skill directory.
+   *
+   * @param name Skill id to inspect.
+   * @param filePath Skill-root-relative file path.
+   */
+  getSkillContent(name: string, filePath: string): Promise<SkillContentResult>;
+
+  /**
    * Lists raw skill status entries returned by OpenClaw.
    */
   getSkillStatuses(): Promise<OpenClawSkillStatusEntry[]>;
@@ -125,7 +144,7 @@ export class DefaultAgentSkillsLogic implements AgentSkillsLogic {
   public async listDigitalHumanSkills(
     agentId: string
   ): Promise<DigitalHumanAgentSkillList> {
-    const availableEntries = await this.getAvailableSkillEntries();
+    const availableEntries = await this.getAvailableSkillEntries(agentId);
     const agentBinding = await this.client.getAgentSkills(agentId);
 
     return filterAgentSkillEntries(availableEntries, agentBinding.skills);
@@ -188,6 +207,30 @@ export class DefaultAgentSkillsLogic implements AgentSkillsLogic {
     return this.client.uninstallSkill(name);
   }
 
+  /**
+   * Reads one skill's file tree from the plugin HTTP route.
+   *
+   * @param name Skill id (slug).
+   * @returns The tree payload.
+   */
+  public async getSkillTree(name: string): Promise<SkillTreeResult> {
+    return this.client.getSkillTree(name);
+  }
+
+  /**
+   * Reads one skill file preview from the plugin HTTP route.
+   *
+   * @param name Skill id (slug).
+   * @param filePath Skill-root-relative file path.
+   * @returns The preview payload.
+   */
+  public async getSkillContent(
+    name: string,
+    filePath: string
+  ): Promise<SkillContentResult> {
+    return this.client.getSkillContent(name, filePath);
+  }
+
   public async listEnabledSkillsByQuery(name?: string): Promise<DigitalHumanSkillList> {
     const normalized = name?.trim().toLowerCase();
     const entries = await this.getAvailableSkillEntries();
@@ -228,12 +271,12 @@ export class DefaultAgentSkillsLogic implements AgentSkillsLogic {
    *
    * @returns The filtered OpenClaw skill entries.
    */
-  private async getAvailableSkillEntries(): Promise<OpenClawSkillStatusEntry[]> {
+  private async getAvailableSkillEntries(agentId?: string): Promise<OpenClawSkillStatusEntry[]> {
     if (this.openClawAgentsAdapter === undefined) {
       throw new Error("OpenClaw agents adapter is required for skill status queries");
     }
 
-    const globalEntries = await this.openClawAgentsAdapter.getSkillStatuses();
+    const globalEntries = await this.openClawAgentsAdapter.getSkillStatuses(agentId ? { agentId } : {});
 
     return mapAvailableSkillEntries(globalEntries);
   }
@@ -243,7 +286,7 @@ export class DefaultAgentSkillsLogic implements AgentSkillsLogic {
     return {
       name,
       description: getSkillEntryDescription(entry),
-      built_in: isDefaultDigitalHumanSkillSlug(entry.skillKey),
+      built_in: isDefaultDigitalHumanSkillSlug(entry.skillKey) || entry.source === OPENCLAW_WORKSPACE_SOURCE,
       type: resolveSkillEntryOriginType(entry)
     };
   }
@@ -330,7 +373,7 @@ export function filterAgentSkillEntries(
     return [{
       name,
       description: getSkillEntryDescription(entry),
-      built_in: isDefaultDigitalHumanSkillSlug(entry.skillKey),
+      built_in: isDefaultDigitalHumanSkillSlug(entry.skillKey) || entry.source === OPENCLAW_WORKSPACE_SOURCE,
       type: resolveSkillEntryOriginType(entry)
     }];
   });

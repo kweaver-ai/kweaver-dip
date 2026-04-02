@@ -1,6 +1,6 @@
 {
   "name": "@kweaver-ai/dip",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "description": "OpenClaw dip plugin: skills-control + archives-access + bundled contextloader",
   "type": "module",

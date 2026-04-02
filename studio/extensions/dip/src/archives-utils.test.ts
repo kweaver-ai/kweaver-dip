@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { formatTimestamp, sanitizeFileName } from "./archives-utils";
+import { formatTimestamp, sanitizeFileName } from "./archives-utils.js";
 
 describe("archives-utils", () => {
   it("formats timestamps with archive directory precision", () => {

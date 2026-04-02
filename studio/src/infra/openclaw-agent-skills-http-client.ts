@@ -3,6 +3,8 @@ import type {
   AgentSkillsBinding,
   AgentSkillsCatalog,
   InstallSkillResult,
+  SkillContentResult,
+  SkillTreeResult,
   UninstallSkillResult,
   UpdateAgentSkillsResult
 } from "../types/agent-skills";
@@ -76,6 +78,21 @@ export interface OpenClawAgentSkillsHttpClient {
    * @param name Skill id to remove.
    */
   uninstallSkill(name: string): Promise<UninstallSkillResult>;
+
+  /**
+   * Lists files and directories under one skill.
+   *
+   * @param name Skill id to inspect.
+   */
+  getSkillTree(name: string): Promise<SkillTreeResult>;
+
+  /**
+   * Reads one text file preview under a skill directory.
+   *
+   * @param name Skill id to inspect.
+   * @param filePath Skill-root-relative file path.
+   */
+  getSkillContent(name: string, filePath: string): Promise<SkillContentResult>;
 }
 
 /**
@@ -222,6 +239,58 @@ implements OpenClawAgentSkillsHttpClient {
 
     return (await response.json()) as UninstallSkillResult;
   }
+
+  /**
+   * Reads the directory tree of one installed or bundled skill.
+   *
+   * @param name Skill id (slug).
+   * @returns Parsed tree payload from the plugin.
+   */
+  public async getSkillTree(name: string): Promise<SkillTreeResult> {
+    const response = await this.fetchImpl(
+      buildOpenClawSkillTreeUrl(this.options.gatewayUrl, name),
+      {
+        method: "GET",
+        headers: createOpenClawAgentSkillsHeaders(this.options.token)
+      }
+    ).catch((error: unknown) => {
+      throw normalizeOpenClawSkillTreeError(error);
+    });
+
+    if (!response.ok) {
+      throw await createOpenClawSkillTreeStatusError(response);
+    }
+
+    return (await response.json()) as SkillTreeResult;
+  }
+
+  /**
+   * Reads one skill file preview through the Gateway plugin HTTP route.
+   *
+   * @param name Skill id (slug).
+   * @param filePath Skill-root-relative file path.
+   * @returns Parsed content payload from the plugin.
+   */
+  public async getSkillContent(
+    name: string,
+    filePath: string
+  ): Promise<SkillContentResult> {
+    const response = await this.fetchImpl(
+      buildOpenClawSkillContentUrl(this.options.gatewayUrl, name, filePath),
+      {
+        method: "GET",
+        headers: createOpenClawAgentSkillsHeaders(this.options.token)
+      }
+    ).catch((error: unknown) => {
+      throw normalizeOpenClawSkillContentError(error);
+    });
+
+    if (!response.ok) {
+      throw await createOpenClawSkillContentStatusError(response);
+    }
+
+    return (await response.json()) as SkillContentResult;
+  }
 }
 
 /**
@@ -309,6 +378,63 @@ export function buildOpenClawSkillUninstallUrl(
   url.pathname = `/v1/config/agents/skills/${encodeURIComponent(trimmed)}`;
   url.hash = "";
   url.search = "";
+
+  return url.toString();
+}
+
+/**
+ * Builds the OpenClaw `dip` plugin skill tree endpoint URL.
+ *
+ * @param gatewayUrl The configured OpenClaw gateway HTTP URL.
+ * @param name Skill id to inspect.
+ * @returns The derived HTTP endpoint URL.
+ */
+export function buildOpenClawSkillTreeUrl(
+  gatewayUrl: string,
+  name: string
+): string {
+  const url = new URL(gatewayUrl);
+
+  if (url.protocol === "ws:") {
+    url.protocol = "http:";
+  } else if (url.protocol === "wss:") {
+    url.protocol = "https:";
+  }
+
+  const trimmed = name.trim();
+  url.pathname = `/v1/config/agents/skills/${encodeURIComponent(trimmed)}/tree`;
+  url.hash = "";
+  url.search = "";
+
+  return url.toString();
+}
+
+/**
+ * Builds the OpenClaw `dip` plugin skill content endpoint URL.
+ *
+ * @param gatewayUrl The configured OpenClaw gateway HTTP URL.
+ * @param name Skill id to inspect.
+ * @param filePath Skill-root-relative file path.
+ * @returns The derived HTTP endpoint URL.
+ */
+export function buildOpenClawSkillContentUrl(
+  gatewayUrl: string,
+  name: string,
+  filePath: string
+): string {
+  const url = new URL(gatewayUrl);
+
+  if (url.protocol === "ws:") {
+    url.protocol = "http:";
+  } else if (url.protocol === "wss:") {
+    url.protocol = "https:";
+  }
+
+  const trimmed = name.trim();
+  url.pathname = `/v1/config/agents/skills/${encodeURIComponent(trimmed)}/content`;
+  url.hash = "";
+  url.search = "";
+  url.searchParams.set("path", filePath);
 
   return url.toString();
 }
@@ -494,5 +620,81 @@ export function normalizeOpenClawSkillUninstallError(error: unknown): HttpError 
   return new HttpError(
     502,
     `Failed to communicate with OpenClaw /v1/config/agents/skills/{name}: ${description}`
+  );
+}
+
+/**
+ * Converts an upstream non-2xx tree response into an application error.
+ *
+ * @param response Upstream fetch response.
+ * @returns A typed HTTP error.
+ */
+export async function createOpenClawSkillTreeStatusError(
+  response: Response
+): Promise<HttpError> {
+  const text = (await response.text()).trim();
+  const detail = text.length > 0 ? `: ${text}` : "";
+
+  return new HttpError(
+    502,
+    `OpenClaw /v1/config/agents/skills/{name}/tree returned HTTP ${response.status}${detail}`
+  );
+}
+
+/**
+ * Normalizes transport errors produced while calling the skill tree route.
+ *
+ * @param error Unknown thrown value.
+ * @returns A typed application error.
+ */
+export function normalizeOpenClawSkillTreeError(error: unknown): HttpError {
+  if (error instanceof HttpError) {
+    return error;
+  }
+
+  const description =
+    error instanceof Error ? error.message : "Unknown upstream error";
+
+  return new HttpError(
+    502,
+    `Failed to communicate with OpenClaw /v1/config/agents/skills/{name}/tree: ${description}`
+  );
+}
+
+/**
+ * Converts an upstream non-2xx content response into an application error.
+ *
+ * @param response Upstream fetch response.
+ * @returns A typed HTTP error.
+ */
+export async function createOpenClawSkillContentStatusError(
+  response: Response
+): Promise<HttpError> {
+  const text = (await response.text()).trim();
+  const detail = text.length > 0 ? `: ${text}` : "";
+
+  return new HttpError(
+    502,
+    `OpenClaw /v1/config/agents/skills/{name}/content returned HTTP ${response.status}${detail}`
+  );
+}
+
+/**
+ * Normalizes transport errors produced while calling the skill content route.
+ *
+ * @param error Unknown thrown value.
+ * @returns A typed application error.
+ */
+export function normalizeOpenClawSkillContentError(error: unknown): HttpError {
+  if (error instanceof HttpError) {
+    return error;
+  }
+
+  const description =
+    error instanceof Error ? error.message : "Unknown upstream error";
+
+  return new HttpError(
+    502,
+    `Failed to communicate with OpenClaw /v1/config/agents/skills/{name}/content: ${description}`
   );
 }

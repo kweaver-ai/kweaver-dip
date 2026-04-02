@@ -109,6 +109,8 @@ async function importRouterWithLogicMock(
       options?: { overwrite?: boolean; name?: string }
     ) => Promise<unknown>;
     uninstallSkill?: (name: string) => Promise<unknown>;
+    getSkillTree?: (name: string) => Promise<unknown>;
+    getSkillContent?: (name: string, path: string) => Promise<unknown>;
     getSkillStatuses?: () => Promise<
       Array<{
         skillKey: string;
@@ -137,6 +139,21 @@ async function importRouterWithLogicMock(
       uninstallSkill:
         logic.uninstallSkill ??
         vi.fn().mockResolvedValue({ name: "removed" }),
+      getSkillTree:
+        logic.getSkillTree ??
+        vi.fn().mockResolvedValue({
+          name: "default",
+          entries: []
+        }),
+      getSkillContent:
+        logic.getSkillContent ??
+        vi.fn().mockResolvedValue({
+          name: "default",
+          path: "SKILL.md",
+          content: "",
+          bytes: 0,
+          truncated: false
+        }),
       getSkillStatuses:
         logic.getSkillStatuses ??
         vi.fn().mockResolvedValue([
@@ -154,6 +171,8 @@ async function importRouterWithLogicMock(
 
 describe("createSkillsRouter", () => {
   const skillsPath = "/api/dip-studio/v1/skills";
+  const skillTreePath = "/api/dip-studio/v1/skills/:name/tree";
+  const skillContentPath = "/api/dip-studio/v1/skills/:name/content";
   const skillsInstallPath = "/api/dip-studio/v1/skills/install";
   const digitalHumanSkillsPath = "/api/dip-studio/v1/digital-human/:id/skills";
 
@@ -177,6 +196,167 @@ describe("createSkillsRouter", () => {
     expect(
       findHandler(router, "delete", "/api/dip-studio/v1/skills/:name")
     ).toBeDefined();
+  });
+
+  it("registers GET /api/dip-studio/v1/skills/:name/tree", async () => {
+    const { createSkillsRouter } = await importRouterWithLogicMock({
+      listEnabledSkills: async () => []
+    });
+    const router = createSkillsRouter() as Router;
+
+    expect(findHandler(router, "get", skillTreePath)).toBeDefined();
+  });
+
+  it("registers GET /api/dip-studio/v1/skills/:name/content", async () => {
+    const { createSkillsRouter } = await importRouterWithLogicMock({
+      listEnabledSkills: async () => []
+    });
+    const router = createSkillsRouter() as Router;
+
+    expect(findHandler(router, "get", skillContentPath)).toBeDefined();
+  });
+
+  it("returns skill tree by name", async () => {
+    const getSkillTree = vi.fn().mockResolvedValue({
+      name: "weather",
+      entries: [
+        { name: "SKILL.md", path: "SKILL.md", type: "file" },
+        {
+          name: "docs",
+          path: "docs",
+          type: "directory",
+          children: [{ name: "guide.md", path: "docs/guide.md", type: "file" }]
+        }
+      ]
+    });
+    const { createSkillsRouter } = await importRouterWithLogicMock({
+      listEnabledSkills: async () => [],
+      getSkillTree
+    });
+    const router = createSkillsRouter() as Router;
+    const handler = findHandler(router, "get", skillTreePath);
+    const response = createResponseDouble();
+    const next = vi.fn<NextFunction>();
+
+    await handler?.(
+      { params: { name: "weather" }, query: {} } as unknown as Request,
+      response,
+      next
+    );
+
+    expect(getSkillTree).toHaveBeenCalledWith("weather");
+    expect(response.status).toHaveBeenCalledWith(200);
+    expect(response.json).toHaveBeenCalledWith({
+      name: "weather",
+      entries: [
+        { name: "SKILL.md", path: "SKILL.md", type: "file" },
+        {
+          name: "docs",
+          path: "docs",
+          type: "directory",
+          children: [{ name: "guide.md", path: "docs/guide.md", type: "file" }]
+        }
+      ]
+    });
+    expect(next).not.toHaveBeenCalled();
+  });
+
+  it("rejects invalid skill id in tree path", async () => {
+    const getSkillTree = vi.fn();
+    const { createSkillsRouter } = await importRouterWithLogicMock({
+      listEnabledSkills: async () => [],
+      getSkillTree
+    });
+    const router = createSkillsRouter() as Router;
+    const handler = findHandler(router, "get", skillTreePath);
+    const response = createResponseDouble();
+    const next = vi.fn<NextFunction>();
+
+    await handler?.(
+      { params: { name: "bad name" }, query: {} } as unknown as Request,
+      response,
+      next
+    );
+
+    expect(getSkillTree).not.toHaveBeenCalled();
+    expect(next).toHaveBeenCalledWith(
+      expect.objectContaining({
+        statusCode: 400
+      })
+    );
+  });
+
+  it("returns skill content by name and path", async () => {
+    const getSkillContent = vi.fn().mockResolvedValue({
+      name: "weather",
+      path: "docs/guide.md",
+      content: "guide",
+      bytes: 5,
+      truncated: false
+    });
+    const { createSkillsRouter } = await importRouterWithLogicMock({
+      listEnabledSkills: async () => [],
+      getSkillContent
+    });
+    const router = createSkillsRouter() as Router;
+    const handler = findHandler(router, "get", skillContentPath);
+    const response = createResponseDouble();
+    const next = vi.fn<NextFunction>();
+
+    await handler?.(
+      {
+        params: { name: "weather" },
+        query: { path: "docs/guide.md" }
+      } as unknown as Request,
+      response,
+      next
+    );
+
+    expect(getSkillContent).toHaveBeenCalledWith("weather", "docs/guide.md");
+    expect(response.status).toHaveBeenCalledWith(200);
+    expect(response.json).toHaveBeenCalledWith({
+      name: "weather",
+      path: "docs/guide.md",
+      content: "guide",
+      bytes: 5,
+      truncated: false
+    });
+    expect(next).not.toHaveBeenCalled();
+  });
+
+  it("defaults to SKILL.md when path is missing in skill content query", async () => {
+    const getSkillContent = vi.fn().mockResolvedValue({
+      name: "weather",
+      path: "SKILL.md",
+      content: "# Weather",
+      bytes: 9,
+      truncated: false
+    });
+    const { createSkillsRouter } = await importRouterWithLogicMock({
+      listEnabledSkills: async () => [],
+      getSkillContent
+    });
+    const router = createSkillsRouter() as Router;
+    const handler = findHandler(router, "get", skillContentPath);
+    const response = createResponseDouble();
+    const next = vi.fn<NextFunction>();
+
+    await handler?.(
+      { params: { name: "weather" }, query: {} } as unknown as Request,
+      response,
+      next
+    );
+
+    expect(getSkillContent).toHaveBeenCalledWith("weather", "SKILL.md");
+    expect(response.status).toHaveBeenCalledWith(200);
+    expect(response.json).toHaveBeenCalledWith({
+      name: "weather",
+      path: "SKILL.md",
+      content: "# Weather",
+      bytes: 9,
+      truncated: false
+    });
+    expect(next).not.toHaveBeenCalled();
   });
 
   it("uninstalls skill from path parameter", async () => {

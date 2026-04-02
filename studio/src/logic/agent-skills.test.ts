@@ -16,7 +16,9 @@ describe("DefaultAgentSkillsLogic", () => {
         getAgentSkills: vi.fn(),
         updateAgentSkills: vi.fn(),
         installSkill: vi.fn(),
-        uninstallSkill: vi.fn()
+        uninstallSkill: vi.fn(),
+        getSkillTree: vi.fn(),
+        getSkillContent: vi.fn()
       },
       {
         listAgents: vi.fn(),
@@ -47,7 +49,9 @@ describe("DefaultAgentSkillsLogic", () => {
         getAgentSkills: vi.fn(),
         updateAgentSkills: vi.fn(),
         installSkill: vi.fn(),
-        uninstallSkill: vi.fn()
+        uninstallSkill: vi.fn(),
+        getSkillTree: vi.fn(),
+        getSkillContent: vi.fn()
       },
       {
         listAgents: vi.fn(),
@@ -77,7 +81,9 @@ describe("DefaultAgentSkillsLogic", () => {
         getAgentSkills: vi.fn(),
         updateAgentSkills: vi.fn(),
         installSkill: vi.fn(),
-        uninstallSkill: vi.fn()
+        uninstallSkill: vi.fn(),
+        getSkillTree: vi.fn(),
+        getSkillContent: vi.fn()
       },
       {
         listAgents: vi.fn(),
@@ -120,7 +126,9 @@ describe("DefaultAgentSkillsLogic", () => {
         getAgentSkills: vi.fn(),
         updateAgentSkills: vi.fn(),
         installSkill: vi.fn(),
-        uninstallSkill: vi.fn()
+        uninstallSkill: vi.fn(),
+        getSkillTree: vi.fn(),
+        getSkillContent: vi.fn()
       },
       {
         listAgents: vi.fn(),
@@ -162,7 +170,9 @@ describe("DefaultAgentSkillsLogic", () => {
         getAgentSkills,
         updateAgentSkills: vi.fn(),
         installSkill: vi.fn(),
-        uninstallSkill: vi.fn()
+        uninstallSkill: vi.fn(),
+        getSkillTree: vi.fn(),
+        getSkillContent: vi.fn()
       },
       {
         listAgents: vi.fn(),
@@ -210,7 +220,9 @@ describe("DefaultAgentSkillsLogic", () => {
         getAgentSkills,
         updateAgentSkills: vi.fn(),
         installSkill: vi.fn(),
-        uninstallSkill: vi.fn()
+        uninstallSkill: vi.fn(),
+        getSkillTree: vi.fn(),
+        getSkillContent: vi.fn()
       },
       {
         listAgents: vi.fn(),
@@ -240,7 +252,9 @@ describe("DefaultAgentSkillsLogic", () => {
       getAgentSkills: vi.fn(),
       updateAgentSkills: vi.fn(),
       installSkill: vi.fn(),
-      uninstallSkill: vi.fn()
+      uninstallSkill: vi.fn(),
+      getSkillTree: vi.fn(),
+      getSkillContent: vi.fn()
     });
 
     await expect(logic.listAvailableSkills()).resolves.toEqual({
@@ -257,7 +271,9 @@ describe("DefaultAgentSkillsLogic", () => {
       }),
       updateAgentSkills: vi.fn(),
       installSkill: vi.fn(),
-      uninstallSkill: vi.fn()
+      uninstallSkill: vi.fn(),
+      getSkillTree: vi.fn(),
+      getSkillContent: vi.fn()
     });
 
     await expect(logic.getAgentSkills("agent-1")).resolves.toEqual({
@@ -276,7 +292,9 @@ describe("DefaultAgentSkillsLogic", () => {
         skills: ["weather", "search"]
       }),
       installSkill: vi.fn(),
-      uninstallSkill: vi.fn()
+      uninstallSkill: vi.fn(),
+      getSkillTree: vi.fn(),
+      getSkillContent: vi.fn()
     });
 
     await expect(
@@ -298,7 +316,9 @@ describe("DefaultAgentSkillsLogic", () => {
       getAgentSkills: vi.fn(),
       updateAgentSkills: vi.fn(),
       installSkill,
-      uninstallSkill: vi.fn()
+      uninstallSkill: vi.fn(),
+      getSkillTree: vi.fn(),
+      getSkillContent: vi.fn()
     });
 
     const buf = Buffer.from([0x50, 0x4b]);
@@ -316,13 +336,64 @@ describe("DefaultAgentSkillsLogic", () => {
       getAgentSkills: vi.fn(),
       updateAgentSkills: vi.fn(),
       installSkill: vi.fn(),
-      uninstallSkill
+      uninstallSkill,
+      getSkillTree: vi.fn(),
+      getSkillContent: vi.fn()
     });
 
     await expect(logic.uninstallSkill("weather")).resolves.toEqual({
       name: "weather"
     });
     expect(uninstallSkill).toHaveBeenCalledWith("weather");
+  });
+
+  it("delegates getSkillTree to the client", async () => {
+    const getSkillTree = vi.fn().mockResolvedValue({
+      name: "weather",
+      entries: [{ name: "SKILL.md", path: "SKILL.md", type: "file" }]
+    });
+    const logic = new DefaultAgentSkillsLogic({
+      listAvailableSkills: vi.fn(),
+      getAgentSkills: vi.fn(),
+      updateAgentSkills: vi.fn(),
+      installSkill: vi.fn(),
+      uninstallSkill: vi.fn(),
+      getSkillTree
+    });
+
+    await expect(logic.getSkillTree("weather")).resolves.toEqual({
+      name: "weather",
+      entries: [{ name: "SKILL.md", path: "SKILL.md", type: "file" }]
+    });
+    expect(getSkillTree).toHaveBeenCalledWith("weather");
+  });
+
+  it("delegates getSkillContent to the client", async () => {
+    const getSkillContent = vi.fn().mockResolvedValue({
+      name: "weather",
+      path: "SKILL.md",
+      content: "# Weather",
+      bytes: 9,
+      truncated: false
+    });
+    const logic = new DefaultAgentSkillsLogic({
+      listAvailableSkills: vi.fn(),
+      getAgentSkills: vi.fn(),
+      updateAgentSkills: vi.fn(),
+      installSkill: vi.fn(),
+      uninstallSkill: vi.fn(),
+      getSkillTree: vi.fn(),
+      getSkillContent
+    });
+
+    await expect(logic.getSkillContent("weather", "SKILL.md")).resolves.toEqual({
+      name: "weather",
+      path: "SKILL.md",
+      content: "# Weather",
+      bytes: 9,
+      truncated: false
+    });
+    expect(getSkillContent).toHaveBeenCalledWith("weather", "SKILL.md");
   });
 
   it("getSkillEntryName prefers name and trims whitespace", () => {

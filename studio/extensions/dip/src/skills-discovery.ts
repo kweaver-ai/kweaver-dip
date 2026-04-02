@@ -1,44 +1,46 @@
-import fs from "node:fs";
-import { listSkillCommandsForAgents } from "openclaw/plugin-sdk";
+import {
+  buildWorkspaceSkillStatus,
+  resolveAgentWorkspaceDir,
+  resolveDefaultAgentId,
+  type OpenClawConfig,
+  type SkillStatusEntry,
+} from "openclaw/plugin-sdk";
 
 /**
- * Lists skill directory names under one filesystem path.
+ * Resolves skill ids via OpenClaw native SDK discovery.
  *
- * @param skillsDir Absolute or relative skills root.
- * @returns Sorted unique skill ids from directory entries.
+ * @param config OpenClaw config object.
+ * @param agentId Optional agent ID to scope discovery
+ * @returns Sorted skill ids.
  */
-export function listSkillNamesFromDir(skillsDir: string): string[] {
-  if (!fs.existsSync(skillsDir)) return [];
-  return fs
-    .readdirSync(skillsDir, { withFileTypes: true })
-    .filter(dirent => dirent.isDirectory() || dirent.name.endsWith(".skill"))
-    .map(dirent => dirent.name.replace(/\.skill$/, ""))
-    .filter(name => !name.startsWith("."));
+export function discoverSkillStatus(
+  config: OpenClawConfig,
+  agentId?: string
+): SkillStatusEntry[] {
+  const effectiveAgentId = agentId ? agentId.trim() : resolveDefaultAgentId(config);
+  const workspaceDir = resolveAgentWorkspaceDir(config, effectiveAgentId);
+  console.log("workspaceDir", workspaceDir);
+  const report = buildWorkspaceSkillStatus(workspaceDir, { config });
+  return report.skills;
 }
 
 /**
- * Resolves skill ids from repo `skills/`, bundled `extensions/dip/skills/`, then SDK discovery.
+ * Resolves skill ids via OpenClaw native SDK discovery.
  *
- * @param repoSkillsDir Path to workspace/repo `skills` directory.
- * @param bundledSkillsDir Path to plugin-bundled `skills` directory.
- * @param config OpenClaw config object for SDK fallback.
+ * @param config OpenClaw config object.
  * @param agentIds Optional agent scope for SDK discovery.
  * @returns Sorted skill ids.
  */
 export function discoverSkillNames(
-  repoSkillsDir: string,
-  bundledSkillsDir: string,
-  config: unknown,
+  config: OpenClawConfig,
   agentIds?: string[]
 ): string[] {
-  try {
-    const fromRepo = listSkillNamesFromDir(repoSkillsDir);
-    const fromBundled = listSkillNamesFromDir(bundledSkillsDir);
-    const merged = [...new Set([...fromRepo, ...fromBundled])].sort();
-    if (merged.length > 0) return merged;
-  } catch {
-    // fall through to SDK
-  }
-  const specs = listSkillCommandsForAgents({ cfg: config as any, agentIds });
-  return Array.from(new Set(specs.map(s => s.skillName))).sort();
+  const agentId = agentIds && agentIds.length > 0 ? agentIds[0] : undefined;
+  const skills = discoverSkillStatus(config, agentId);
+
+  // Currently we just return all discovered skills, whether enabled or disabled.
+  // The caller is responsible for separating disabled vs enabled skills if needed,
+  // or the caller uses the raw string list.
+  const allNames = skills.map((s) => s.name);
+  return Array.from(new Set(allNames)).sort();
 }

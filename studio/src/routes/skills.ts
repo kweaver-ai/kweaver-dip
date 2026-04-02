@@ -132,6 +132,15 @@ function parseSkillSlugFromMultipartBody(body: Request["body"]): string | undefi
   return undefined;
 }
 
+function parseSkillFilePathQuery(query: Request["query"]): string {
+  const raw = query?.path as string | string[] | undefined;
+  const value = Array.isArray(raw) ? raw[0] : raw;
+  if (typeof value !== "string" || value.trim().length === 0) {
+    return "SKILL.md";
+  }
+  return value.trim();
+}
+
 /**
  * Builds the skills router.
  *
@@ -158,6 +167,65 @@ export function createSkillsRouter(): Router {
           error instanceof HttpError
             ? error
             : new HttpError(502, "Failed to query enabled skills")
+        );
+      }
+    }
+  );
+
+  router.get(
+    "/api/dip-studio/v1/skills/:name/tree",
+    async (
+      request: Request,
+      response: Response,
+      next: NextFunction
+    ): Promise<void> => {
+      try {
+        const raw = request.params.name;
+        const name = decodeURIComponent(
+          Array.isArray(raw) ? String(raw[0]) : String(raw ?? "")
+        ).trim();
+
+        if (!isValidSkillSlug(name)) {
+          throw new HttpError(400, "Path parameter name must be a valid skill id");
+        }
+
+        const result = await agentSkillsLogic.getSkillTree(name);
+        response.status(200).json(result);
+      } catch (error) {
+        next(
+          error instanceof HttpError
+            ? error
+            : new HttpError(502, "Failed to query skill tree")
+        );
+      }
+    }
+  );
+
+  router.get(
+    "/api/dip-studio/v1/skills/:name/content",
+    async (
+      request: Request,
+      response: Response,
+      next: NextFunction
+    ): Promise<void> => {
+      try {
+        const raw = request.params.name;
+        const name = decodeURIComponent(
+          Array.isArray(raw) ? String(raw[0]) : String(raw ?? "")
+        ).trim();
+
+        if (!isValidSkillSlug(name)) {
+          throw new HttpError(400, "Path parameter name must be a valid skill id");
+        }
+
+        const filePath = parseSkillFilePathQuery(request.query);
+        const result = await agentSkillsLogic.getSkillContent(name, filePath);
+        response.status(200).json(result);
+      } catch (error) {
+        next(
+          error instanceof HttpError
+            ? error
+            : new HttpError(502, "Failed to query skill content")
         );
       }
     }

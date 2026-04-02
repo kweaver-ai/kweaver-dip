@@ -59,7 +59,8 @@ function isSafeSegment(name: string): boolean {
 function extractZipWithSystemTools(zipPath: string, destDir: string): void {
   fs.mkdirSync(destDir, { recursive: true });
 
-  const tar = spawnSync("tar", ["-xf", zipPath, "-C", destDir], {
+  // Use --force-local to prevent tar from treating 'C:' in Windows paths as a remote host.
+  const tar = spawnSync("tar", ["--force-local", "-xf", zipPath, "-C", destDir], {
     encoding: "utf8",
     maxBuffer: 32 * 1024 * 1024
   });
@@ -73,7 +74,8 @@ function extractZipWithSystemTools(zipPath: string, destDir: string): void {
     maxBuffer: 32 * 1024 * 1024
   });
 
-  if (unzip.status === 0) {
+  // unzip returns 0 for success, 1 for warnings (like 'extra bytes' which are often harmless).
+  if (unzip.status === 0 || unzip.status === 1) {
     return;
   }
 
