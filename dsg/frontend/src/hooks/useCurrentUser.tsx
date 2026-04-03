@@ -1,13 +1,13 @@
-import { useEffect, useState, useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { getInnerUrl } from '@/utils'
-import { getUserInfo, formatError } from '@/core'
+import { getUserInfo, type IUserInfo } from '@/core'
 import { loginRoutePath } from '@/routers/config'
 
-let globalUserInfo = null
-let pendingPromise: Promise<boolean> | null = null
+let globalUserInfo: IUserInfo | null = null
+let pendingPromise: Promise<IUserInfo | null> | null = null
 
 export const useCurrentUser = (attr?: string): any => {
-    const [user, setUser] = useState(globalUserInfo)
+    const [user, setUser] = useState<IUserInfo | null>(globalUserInfo)
     const pathname = getInnerUrl(window.location.pathname)
 
     const getUser = async () => {

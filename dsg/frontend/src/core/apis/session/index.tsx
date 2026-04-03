@@ -2,18 +2,127 @@ import requests from '@/utils/request'
 
 const { get, post } = requests
 
+export interface IUserParentDep {
+    path_id: string
+    path: string
+}
+
 export interface IUserInfo {
     Account: string
     Authenticated: boolean
     CsfLevel: number
-    Email: boolean
+    Email: string
     Frozen: boolean
     ID: string
     Roles: any
     Telephone: string
     ThirdAttr: string
     ThirdID: string
+    UserType: number
     VisionName: string
+    Groups: any[] | null
+    ParentDeps: IUserParentDep[]
+}
+
+interface INewUserDirectDep {
+    depid?: string
+    name?: string
+}
+
+interface INewUserRoleInfo {
+    id?: string
+    name?: string
+}
+
+interface INewUserInfoResponse {
+    account?: string
+    agreedtotermsofuse?: boolean
+    csflevel?: number
+    csflevel2?: number
+    csflevel2_name?: string
+    csflevel_name?: string
+    directdepinfos?: INewUserDirectDep[] | null
+    freezestatus?: boolean
+    ismanager?: boolean
+    leakproofvalue?: number
+    mail?: string
+    name?: string
+    needrealnameauth?: boolean
+    needsecondauth?: boolean
+    pwdcontrol?: number
+    roleinfos?: INewUserRoleInfo[]
+    roletypes?: string[]
+    telnumber?: string
+    type?: string
+    userid?: string
+    usertype?: number
+}
+
+const normalizeValue = (value?: string) => value?.trim() || ''
+
+const formatParentDeps = (
+    directdepinfos?: INewUserDirectDep[] | null,
+): IUserParentDep[] => {
+    const validDeps = (directdepinfos || []).reduce<
+        Array<{ depid: string; name: string }>
+    >((acc, item) => {
+        const depid = normalizeValue(item?.depid)
+        const name = normalizeValue(item?.name)
+
+        if (!depid && !name) {
+            return acc
+        }
+
+        const prev = acc[acc.length - 1]
+        if (prev && prev.depid === depid && prev.name === name) {
+            return acc
+        }
+
+        const duplicate = acc.some(
+            (dep) => dep.depid === depid && dep.name === name,
+        )
+        if (duplicate) {
+            return acc
+        }
+
+        acc.push({ depid, name })
+        return acc
+    }, [])
+
+    if (!validDeps.length) {
+        return []
+    }
+
+    const pathIds = validDeps.map((item) => item.depid).filter(Boolean)
+    const pathNames = validDeps.map((item) => item.name).filter(Boolean)
+
+    return [
+        {
+            // 按“数组第一个是顶层、最后一个是底层”拼接路径，
+            // 过滤空项并去重后，保持 split('/').pop() 仍然取到最后一级有效组织 ID。
+            path_id: pathIds.join('/'),
+            path: pathNames.join('/'),
+        },
+    ]
+}
+
+const transformUserInfo = (data: INewUserInfoResponse): IUserInfo => {
+    return {
+        Account: data?.account || '',
+        Authenticated: !!data?.userid,
+        CsfLevel: data?.csflevel ?? 0,
+        Email: data?.mail || '',
+        Frozen: !!data?.freezestatus,
+        ID: data?.userid || '',
+        Roles: data?.roleinfos || [],
+        Telephone: data?.telnumber || '',
+        ThirdAttr: '',
+        ThirdID: '',
+        UserType: data?.usertype ?? 0,
+        VisionName: data?.name || data?.account || '',
+        Groups: null,
+        ParentDeps: formatParentDeps(data?.directdepinfos),
+    }
 }
 
 export interface IRole {
@@ -36,7 +145,7 @@ export const refreshToken = () => {
 
 // 获取用户信息
 export const getUserInfo = () => {
-    return get(`/af/api/session/v1/userinfo`)
+    return get(`/api/eacp/v1/user/get`).then(transformUserInfo)
 }
 
 /*

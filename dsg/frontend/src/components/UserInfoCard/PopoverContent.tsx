@@ -26,20 +26,7 @@ interface IPopoverContent {
 
 function PopoverContent({ userInfo }: IPopoverContent) {
     const [roleList, setRoleList] = useState<Array<IRole>>()
-    const { microAppProps } = useMicroAppProps()
-    const isMicroApp = isRuntimeMicroApp()
 
-    const handleLogout = () => {
-        // 如果是微应用环境,且主应用提供了logout方法,则调用主应用的logout
-        if (isMicroApp && microAppProps?.logout) {
-            microAppProps.logout()
-            return
-        }
-
-        // 非微应用环境或主应用未提供logout方法时,使用原有逻辑
-        Cookies.remove('af.oauth2_token')
-        window.location.href = getActualUrl('/')
-    }
     const platform = getPlatformNumber()
     const [menus] = useMenus()
     const { checkPermission } = useUserPermCtx()
@@ -157,17 +144,6 @@ function PopoverContent({ userInfo }: IPopoverContent) {
                         </a>
                     </div>
                 )}
-                <div className={styles.item}>
-                    <a
-                        className={styles.logoutLink}
-                        href={
-                            isMicroApp ? undefined : '/af/api/session/v1/logout'
-                        }
-                        onClick={handleLogout}
-                    >
-                        {__('退出登录')}
-                    </a>
-                </div>
             </div>
         </div>
     )

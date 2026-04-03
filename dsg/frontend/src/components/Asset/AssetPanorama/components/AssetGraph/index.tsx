@@ -1,7 +1,13 @@
 import { Graph } from '@antv/x6'
 import { useDebounce, useUnmount } from 'ahooks'
-import { Button } from 'antd'
-import { memo, useEffect, useMemo, useRef, useState } from 'react'
+import {
+    memo,
+    useEffect,
+    useMemo,
+    useRef,
+    useState,
+    type CSSProperties,
+} from 'react'
 import ReactJoyride, {
     CallBackProps,
     STATUS,
@@ -30,33 +36,94 @@ import {
 } from './helper'
 import styles from './styles.module.less'
 
-const CustomToolTip = ({
-    backProps,
-    continuous,
-    index,
-    isLastStep,
-    primaryProps,
-    skipProps,
-    step,
-    tooltipProps,
-}: TooltipRenderProps) => {
+const guideTooltipStyles = {
+    wrapper: {
+        position: 'relative',
+        top: 12,
+        display: 'flex',
+        width: 306,
+        height: 263,
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        padding: '20px 40px 32px',
+        background: '#fff',
+        borderRadius: 10,
+    } as const,
+    line: {
+        position: 'absolute',
+        top: -36,
+        left: 153,
+        width: 2,
+        height: 36,
+        background: '#fff',
+    } as const,
+    dot: {
+        position: 'absolute',
+        top: -36,
+        left: 149,
+        width: 9,
+        height: 9,
+        background: '#fff',
+        borderRadius: '50%',
+        boxShadow: '0 0 0 4px rgb(255 255 255 / 50%)',
+    } as const,
+    icon: {
+        display: 'grid',
+        width: 98,
+        height: 98,
+        alignContent: 'center',
+        fontSize: 56,
+    } as const,
+    content: {
+        color: 'rgb(0 0 0 / 85%)',
+        fontSize: 16,
+        fontWeight: 400,
+        lineHeight: '24px',
+        textAlign: 'center',
+    } as const,
+    button: {
+        minWidth: 88,
+        padding: '4px 15px',
+        border: 'none',
+        outline: 'none',
+        background: '#126ee3',
+        borderRadius: 6,
+        boxShadow: 'none',
+        color: '#fff',
+        fontSize: 14,
+        lineHeight: '22px',
+        cursor: 'pointer',
+        appearance: 'none',
+        WebkitAppearance: 'none',
+    } as const,
+}
+
+const CustomToolTip = ({ primaryProps, tooltipProps }: TooltipRenderProps) => {
+    const tooltipStyle = {
+        ...(tooltipProps as typeof tooltipProps & { style?: CSSProperties })
+            .style,
+        ...guideTooltipStyles.wrapper,
+    }
+
     return (
-        <div {...tooltipProps} className={styles['guide-pop']}>
-            <div className={styles.icon}>
+        <div {...tooltipProps} style={tooltipStyle}>
+            <div style={guideTooltipStyles.line} />
+            <div style={guideTooltipStyles.dot} />
+            <div style={guideTooltipStyles.icon}>
                 <AssetCardClickOutlined style={{ color: '#3E75FF' }} />
             </div>
-            <div className={styles.content}>
+            <div style={guideTooltipStyles.content}>
                 <div>{__('点击L1卡片')}</div>
                 <div>{__('切换查看不同主题域分组下内容')}</div>
             </div>
-            <Button
-                type="primary"
+            <button
                 {...primaryProps}
-                title=""
-                className={styles.button}
+                type="button"
+                style={guideTooltipStyles.button}
             >
                 {__('我知道了')}
-            </Button>
+            </button>
         </div>
     )
 }
