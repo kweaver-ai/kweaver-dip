@@ -19,10 +19,10 @@ releases:
     stage: pre
   anyfabric-frontend:
     chart: anyfabric-frontend
-    version: 0.4.0-main.20260403.1
+    version: 0.4.0-main.20260403.2
   dip-frontend:
     chart: dip-frontend
-    version: 0.4.0-main.ad032c5
+    version: 0.4.0-main.41dfacf
   auth-service:
     chart: auth-service
     version: 0.4.0-main.20260402.1
