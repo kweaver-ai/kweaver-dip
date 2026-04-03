@@ -1,7 +1,8 @@
 import fs from "node:fs";
 import path from "node:path";
 import type { IncomingMessage, ServerResponse } from "node:http";
-import { type OpenClawPluginApi, resolveAgentWorkspaceDir } from "openclaw/plugin-sdk";
+import { type OpenClawPluginApi } from "openclaw/plugin-sdk";
+import { resolveAgentWorkspaceDir } from "./skills-utils.js";
 import { ARCHIVES_MIME_MAP } from "./archives-utils.js";
 import { discoverSkillNames, discoverSkillStatus } from "./skills-discovery.js";
 import {
@@ -101,7 +102,7 @@ export function registerSkillsControl(
         const config = await api.runtime.config.loadConfig();
         const effectiveAgentId = agentId && agentId.trim().length > 0 ? agentId.trim() : null;
         const repoSkillsDir = effectiveAgentId
-          ? path.join(resolveAgentWorkspaceDir(config, effectiveAgentId), "skills")
+          ? path.join(resolveAgentWorkspaceDir(config, effectiveAgentId, api), "skills")
           : path.join(api.runtime.state.resolveStateDir(), "skills");
 
         const body = await readRequestBodyLimited(req, MAX_SKILL_INSTALL_BYTES);
@@ -148,7 +149,7 @@ export function registerSkillsControl(
       const sub = args[0]?.toLowerCase();
 
       if (sub === "list") {
-        const skills = discoverSkillStatus(ctx.config);
+        const skills = discoverSkillStatus(ctx.config, api);
         if (skills.length === 0) return { text: "No skills discovered." };
 
         const rows = skills.map(s => {
@@ -218,7 +219,7 @@ export function registerSkillsControl(
           const config = await api.runtime.config.loadConfig();
           const effectiveAgentId = agentId && agentId.trim().length > 0 ? agentId.trim() : null;
           const repoSkillsDir = effectiveAgentId
-            ? path.join(resolveAgentWorkspaceDir(config, effectiveAgentId), "skills")
+            ? path.join(resolveAgentWorkspaceDir(config, effectiveAgentId, api), "skills")
             : path.join(api.runtime.state.resolveStateDir(), "skills");
 
           const result = uninstallSkillFromRepo(
@@ -251,7 +252,7 @@ export function registerSkillsControl(
       if (req.method === "GET" && routeTarget?.action === "tree") {
         try {
           const config = await api.runtime.config.loadConfig();
-          const entries = resolveSkillTreeEntries(config, routeTarget.name);
+          const entries = resolveSkillTreeEntries(config, api, routeTarget.name);
           res.statusCode = 200;
           res.setHeader("Content-Type", "application/json");
           res.end(JSON.stringify({ name: routeTarget.name, entries }));
@@ -278,7 +279,7 @@ export function registerSkillsControl(
       if (req.method === "GET" && routeTarget?.action === "content") {
         try {
           const config = await api.runtime.config.loadConfig();
-          const skillDir = resolveSkillDirectory(config, routeTarget.name);
+          const skillDir = resolveSkillDirectory(config, api, routeTarget.name);
           const previewPath = url.searchParams.get("path") ?? "";
           const result = readSkillFilePreview(skillDir, previewPath);
           res.statusCode = 200;
@@ -307,7 +308,7 @@ export function registerSkillsControl(
       if (req.method === "GET" && routeTarget?.action === "download") {
         try {
           const config = await api.runtime.config.loadConfig();
-          const skillDir = resolveSkillDirectory(config, routeTarget.name);
+          const skillDir = resolveSkillDirectory(config, api, routeTarget.name);
           const filePath = url.searchParams.get("path") ?? "";
           const file = resolveSkillFilePath(skillDir, filePath);
           const ext = path.extname(file.absolutePath).toLowerCase();
@@ -355,7 +356,7 @@ export function registerSkillsControl(
         if (!agentId) {
           res.statusCode = 200;
           res.setHeader("Content-Type", "application/json");
-          const responseSkills = discoverSkillNames(config);
+          const responseSkills = discoverSkillNames(config, api);
           res.end(JSON.stringify({ skills: responseSkills }));
           return true;
         }
@@ -373,7 +374,7 @@ export function registerSkillsControl(
         const agentSkills = agent.skills;
         let responseSkills = agentSkills;
         if (agentSkills === undefined) {
-          responseSkills = discoverSkillNames(config, [agentId]);
+          responseSkills = discoverSkillNames(config, api, [agentId]);
         }
         res.end(JSON.stringify({ agentId, skills: responseSkills }));
         return true;
@@ -440,8 +441,8 @@ export function registerSkillsControl(
   });
 }
 
-function resolveSkillTreeEntries(config: any, skillName: string): SkillTreeEntry[] {
-  return listSkillTreeEntries(resolveSkillDirectory(config, skillName));
+function resolveSkillTreeEntries(config: any, api: OpenClawPluginApi, skillName: string): SkillTreeEntry[] {
+  return listSkillTreeEntries(resolveSkillDirectory(config, api, skillName));
 }
 
 function readSkillDirectoryFromStatusEntry(entry: Record<string, unknown> | undefined): string | undefined {
@@ -464,7 +465,7 @@ function readSkillDirectoryFromStatusEntry(entry: Record<string, unknown> | unde
 
 function extractSkillRouteTarget(
   pathname: string | null
-): { name: string; action: "detail" | "tree" | "content" } | undefined {
+): { name: string; action: "detail" | "tree" | "content" | "download" } | undefined {
   if (!pathname) {
     return undefined;
   }
@@ -509,13 +510,13 @@ function extractSkillRouteTarget(
   return { name: decodeURIComponent(suffix), action: "detail" };
 }
 
-function resolveSkillDirectory(config: any, skillName: string): string {
+function resolveSkillDirectory(config: any, api: OpenClawPluginApi, skillName: string): string {
   const normalizedName = skillName.trim();
   if (normalizedName.length === 0) {
     throw new SkillTreeError("INVALID_NAME", "Path parameter name is required");
   }
 
-  const entry = discoverSkillStatus(config).find((candidate) => candidate.name === normalizedName);
+  const entry = discoverSkillStatus(config, api).find((candidate) => candidate.name === normalizedName);
   const skillDir = readSkillDirectoryFromStatusEntry(entry);
 
   if (skillDir === undefined) {

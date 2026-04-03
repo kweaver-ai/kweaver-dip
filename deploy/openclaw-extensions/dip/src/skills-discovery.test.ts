@@ -6,7 +6,7 @@ const { buildWorkspaceSkillStatus, resolveAgentWorkspaceDir, resolveDefaultAgent
   resolveDefaultAgentId: vi.fn().mockReturnValue("default-agent")
 }));
 
-vi.mock("openclaw/plugin-sdk", () => ({
+vi.mock("./skills-utils.js", () => ({
   buildWorkspaceSkillStatus,
   resolveAgentWorkspaceDir,
   resolveDefaultAgentId
@@ -15,6 +15,18 @@ vi.mock("openclaw/plugin-sdk", () => ({
 import { discoverSkillNames } from "./skills-discovery.js";
 
 describe("skills-discovery", () => {
+  const mockApi = {
+    resolvePath: vi.fn((p) => p),
+    runtime: {
+      state: {
+        resolveStateDir: vi.fn().mockReturnValue("/mock/state")
+      },
+      config: {
+        loadConfig: vi.fn()
+      }
+    }
+  } as any;
+
   beforeEach(() => {
     buildWorkspaceSkillStatus.mockReset();
   });
@@ -32,12 +44,12 @@ describe("skills-discovery", () => {
       ]
     });
 
-    const result = discoverSkillNames({ any: "config" } as any);
+    const result = discoverSkillNames({ any: "config" } as any, mockApi);
 
     expect(result).toEqual(["archive-protocol", "schedule-plan"]);
     expect(buildWorkspaceSkillStatus).toHaveBeenCalledWith(
       expect.any(String),
-      { config: { any: "config" } }
+      { config: { any: "config" }, api: mockApi }
     );
   });
 
@@ -50,7 +62,7 @@ describe("skills-discovery", () => {
       ]
     });
 
-    const result = discoverSkillNames({ cfg: true } as any, ["agent-1"]);
+    const result = discoverSkillNames({ cfg: true } as any, mockApi, ["agent-1"]);
 
     expect(result).toEqual(["contextloader", "schedule-plan"]);
   });
