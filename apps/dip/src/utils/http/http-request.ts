@@ -28,7 +28,15 @@ function getCommonHttpHeaders() {
 
 const createHttpRequest = curry((method: string, url: string, options: OptionsType | undefined) => {
   const fullUrl = `${window.location.protocol}//${window.location.hostname}:${window.location.port}${url}`
-  const { body, headers, timeout = 60000, params, returnFullResponse, responseType } = options || {}
+  const {
+    body,
+    headers,
+    timeout = 60000,
+    params,
+    returnFullResponse,
+    responseType,
+    skipAuthRefreshOn401,
+  } = options || {}
 
   const CancelToken = axios.CancelToken
   let cancel: (message?: string) => void
@@ -49,6 +57,7 @@ const createHttpRequest = curry((method: string, url: string, options: OptionsTy
     cancelToken: new CancelToken((c: any) => {
       cancel = c
     }),
+    ...(skipAuthRefreshOn401 ? { skipAuthRefreshOn401: true } : {}),
     transformRequest: [
       (data: any) => {
         if (data) {

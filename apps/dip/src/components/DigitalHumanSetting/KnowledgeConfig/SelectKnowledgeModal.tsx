@@ -1,5 +1,5 @@
 import type { ModalProps } from 'antd'
-import { Checkbox, Modal, message, Spin, Tabs } from 'antd'
+import { Checkbox, Modal, Spin, Tabs } from 'antd'
 import clsx from 'clsx'
 import { useEffect, useState } from 'react'
 import { type BknKnowledgeNetworkInfo, getBknKnowledgeNetworks } from '@/apis'
@@ -28,7 +28,6 @@ const SelectKnowledgeModal = ({
   const [status, setStatus] = useState<LoadStatus>(LoadStatus.Empty)
   const [knowledgeList, setKnowledgeList] = useState<BknKnowledgeNetworkInfo[]>([])
   const [selectedList, setSelectedList] = useState<BknKnowledgeNetworkInfo[]>([])
-  const [messageApi, messageContextHolder] = message.useMessage()
 
   useEffect(() => {
     setSelectedList(knowledgeList.filter((item) => defaultSelectedIds?.includes(item.id)))
@@ -42,8 +41,8 @@ const SelectKnowledgeModal = ({
       const result = await getBknKnowledgeNetworks({ limit: -1 })
       setKnowledgeList(result.entries)
       setStatus(result.total_count > 0 ? LoadStatus.Normal : LoadStatus.Empty)
-    } catch (error: any) {
-      messageApi.error(error?.description || '获取知识网络列表失败')
+    } catch {
+      // messageApi.error(error?.description || '获取知识网络列表失败')
       setKnowledgeList([])
       setStatus(LoadStatus.Failed)
     }
@@ -153,52 +152,49 @@ const SelectKnowledgeModal = ({
   }
 
   return (
-    <>
-      {messageContextHolder}
-      <Modal
-        title="新建知识网络"
-        open={open}
-        onOk={handleOk}
-        onCancel={onCancel}
-        closable
-        centered
-        mask={{ closable: false }}
-        destroyOnHidden
-        width={744}
-        okText="确定"
-        cancelText="取消"
-        footer={(_, { OkBtn, CancelBtn }) => (
-          <>
-            <OkBtn />
-            <CancelBtn />
-          </>
-        )}
-      >
-        <div className="flex flex-col">
-          {/* <AiPromptInput
+    <Modal
+      title="添加知识"
+      open={open}
+      onOk={handleOk}
+      onCancel={onCancel}
+      closable
+      centered
+      mask={{ closable: false }}
+      destroyOnHidden
+      width={744}
+      okText="确定"
+      cancelText="取消"
+      footer={(_, { OkBtn, CancelBtn }) => (
+        <>
+          <OkBtn />
+          <CancelBtn />
+        </>
+      )}
+    >
+      <div className="flex flex-col">
+        {/* <AiPromptInput
             employeeOptions={[]}
             placeholder="可以直接输入你想要创建的业务知识网络，也可以直接选择下方的业务知识网络"
             onSubmit={handleSubmit}
             autoSize={{ minRows: 2, maxRows: 2 }}
           /> */}
-          <Tabs
-            size="small"
-            items={[
-              {
-                key: 'all',
-                label: '全部业务知识网络',
-              },
-            ]}
-            activeKey="all"
-          />
-          <ScrollBarContainer className="mx-[-24px] px-6">
-            <div className="flex-1 grid max-h-[400px] overflow-y-auto relative min-h-[180px]">
-              {renderContent()}
-            </div>
-          </ScrollBarContainer>
-        </div>
-      </Modal>
-    </>
+        <Tabs
+          size="small"
+          items={[
+            {
+              key: 'all',
+              label: '全部业务知识网络',
+            },
+          ]}
+          activeKey="all"
+        />
+        <ScrollBarContainer className="mx-[-24px] px-6">
+          <div className="flex-1 grid max-h-[400px] overflow-y-auto relative min-h-[180px]">
+            {renderContent()}
+          </div>
+        </ScrollBarContainer>
+      </div>
+    </Modal>
   )
 }
 

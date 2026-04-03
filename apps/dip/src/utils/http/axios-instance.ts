@@ -12,6 +12,9 @@ axiosInstance.interceptors.response.use(
   (res) => res,
   async (err) => {
     if (httpConfig.refreshToken && err.response && err.response.status === 401) {
+      if ((err.config as { skipAuthRefreshOn401?: boolean } | undefined)?.skipAuthRefreshOn401) {
+        return Promise.reject(err)
+      }
       try {
         if (!isRefreshing) {
           isRefreshing = true

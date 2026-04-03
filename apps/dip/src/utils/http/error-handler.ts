@@ -71,6 +71,10 @@ export async function handleError({
   const { status, data } = error.response
 
   if (status === 401 && httpConfig.onTokenExpired) {
+    if ((error as { config?: { skipAuthRefreshOn401?: boolean } }).config?.skipAuthRefreshOn401) {
+      reject(data)
+      return
+    }
     httpConfig.onTokenExpired(data?.code)
     handleReject(status)
     return

@@ -52,6 +52,7 @@ export const getBknKnowledgeNetworks = (
 ): Promise<BknKnowledgeNetworksListResponse> => {
   const p1 = get(`${BASE}/knowledge-networks`, {
     params: cleanParams(params as Record<string, unknown> | undefined),
+    skipAuthRefreshOn401: true,
   })
 
   const p2 = p1.then((result: unknown) => {
