@@ -57,9 +57,9 @@ func main() {
 	if settings.ConfigInstance.Doc.Host == "" {
 		settings.ConfigInstance.Doc.Host = "127.0.0.1:8000"
 	}
-	if settings.ConfigInstance.Config.Oauth.OauthClientID == "" || settings.ConfigInstance.Config.Oauth.OauthClientSecret == "" {
-		getOauth()
-	}
+	// if settings.ConfigInstance.Config.Oauth.OauthClientID == "" || settings.ConfigInstance.Config.Oauth.OauthClientSecret == "" {
+	// 	getOauth()
+	// }
 	expireTime, err := strconv.Atoi(settings.ConfigInstance.Config.SessionExpireSecond)
 	if err != nil {
 		fmt.Println("session expireTime use default 2h")

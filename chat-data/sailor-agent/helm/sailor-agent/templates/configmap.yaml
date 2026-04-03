@@ -9,7 +9,7 @@ data:
   MYSQL_HOST: "{{ .depServices.rds.host}}:{{ .depServices.rds.port}}"
   MYSQL_USERNAME: {{ .depServices.rds.user | quote }}
   MYSQL_PASSWORD: {{ .depServices.rds.password | quote }}
-  MYSQL_DB: {{ .depServices.rds.database | quote }}
+  MYSQL_DB: "af_cognitive_assistant"
   DB_TYPE: {{ .depServices.rds.type | quote }}
   TRACE_ENABLED: {{.service.telemetry.trace.enabled| quote }}
   TRACE_URL: {{.service.telemetry.trace.endpoint | quote }}
@@ -51,6 +51,10 @@ data:
   TOOL_LLM_MODEL_NAME: {{ $agent.tool_llm_model_name | default "" | quote }}
   TOOL_LLM_OPENAI_API_KEY: {{ $agent.tool_llm_openai_api_key | default "" | quote }}
   TOOL_LLM_OPENAI_API_BASE: {{ $agent.tool_llm_openai_api_base | default "" | quote }}
+
+  KAFKA_URI: "{{ .depServices.mq.mqHost}}:{{ .depServices.mq.mqPort}}"
+  KAFKA_USERNAME: "{{ .depServices.mq.auth.username}}"
+  KAFKA_PASSWORD: "{{ .depServices.mq.auth.password}}"
 
   {{- end }}
   {{- with .Values.depServices.redis }}

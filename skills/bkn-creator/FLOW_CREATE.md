@@ -15,7 +15,7 @@
 1. 阶段一：建模意图澄清
 2. 阶段二：生成 BKN 草案
 3. 阶段三：环境检查（执行前）
-4. 阶段四：数据视图绑定
+4. 阶段四：数据视图绑定与属性回灌
 5. 阶段五：推送与验证
 
 ## 阶段门禁
@@ -25,7 +25,7 @@
 | 阶段一 | 用户确认进入新增流程 | 视角确认（A1/B1）+ 清单确认（A2/B2 或 C1）+ 业务规则检查完成（或用户确认带风险继续） |
 | 阶段二 | 阶段一完成 | `kweaver bkn validate` 通过 + 用户确认草案 |
 | 阶段三 | 阶段二完成 | 连通性完成 + GKN 情况记录完成 |
-| 阶段四 | 阶段三完成 | 绑定率 `>= 80%` 或用户确认“跳过未绑定对象并继续” + 用户确认绑定结果 |
+| 阶段四 | 阶段三完成 | 完成“绑定决议 -> Step 4.5 属性二次生成 -> Step 4.7 完备性放行 -> 回填确认”全链路 + 用户确认阶段四结果 |
 | 阶段五 | 阶段四完成 | 推送成功 + 完整性检查 + 孤悬检查反馈 |
 
 > 详细确认语义与全局约束见 `./COMMON_RULES.md`。对用户可见输出必须使用“用户回显模板（统一格式）”。
@@ -36,6 +36,17 @@
 - 同一轮仅允许一种主展示格式，禁止同一数据同时用表格与 YAML/JSON 重复展示
 - 仅当用户明确请求时才输出详情（如“展开详情”“导出 YAML”“给我表格”）
 - 详情输出一次仅允许一种格式（表格 或 YAML/JSON）
+- 涉及内部编码枚举的对用户展示，统一遵循 `./COMMON_RULES.md` 的“字段显示词典（用户可见）”
+
+## 用户文案去术语化（MUST）
+
+- 对用户回显时，Never 直接展示内部流程编号（如 `A1/B1/A2/B2/C1`）
+- 对用户回显时，Never 使用“门禁”一词，统一改为“确认步骤”或“确认请求”
+- 推荐替换映射：
+  - `A1/B1` -> `建模视角确认`
+  - `A2/B2/C1` -> `建模清单确认`
+  - `阶段四门禁确认` -> `阶段四结果确认`
+- 内部文档可保留编号用于执行控制，但用户可见文案必须采用业务可读表达
 
 ## 阶段一：建模意图澄清
 
@@ -49,14 +60,14 @@
 
 ### 路径 A（结构化文档）
 
-1. 声明采用单一建模视角（如实体-关系）
+1. 默认采用“对象-属性-视图映射”主视角（Object-Property-View）
 2. 门禁确认 A1：用户确认视角后再提取
 3. 提取对象类/关系类清单（先经 `./references/DOMAIN_ROUTING.md` 统一调度）
 4. 门禁确认 A2：用户确认清单后进入阶段二
 
 ### 路径 B（部分信息）
 
-1. 提出 2-3 个建模视角并对比
+1. 先给出主视角（对象-属性-视图映射），再按需补充 1-2 个候选视角对比
 2. 门禁确认 B1：用户确认所选视角
 3. 提取对象类/关系类清单
 4. 门禁确认 B2：用户确认清单后进入阶段二
@@ -64,7 +75,26 @@
 ### A1/B1 门禁硬约束（MUST）
 
 - 在 A1 或 B1 未确认前，Never 执行任何对象类/关系类提取动作
-- 若误执行了提取，必须立即中止并回滚到 A1/B1 确认步骤
+- 在 A1 或 B1 未确认前，Never 执行领域识别（DOMAIN_ROUTING）或展示领域识别结果
+- A1/B1 视角确认必须单独占一轮对话，该轮 **仅** 输出视角确认请求，不得同时输出领域识别、提取结果或其他门禁确认
+- 若误执行了提取或领域识别，必须立即中止并回滚到 A1/B1 确认步骤
+
+### 视角选择策略（MUST）
+
+- 默认主视角：`对象-属性-视图映射`，用于对象属性定义、字段映射与可用性判定
+- `实体-关系（ER）` 视角降级为“条件触发的补充视角”，不作为默认主视角
+- ER 触发条件（满足任一即可启用）：
+  - 预计关系类数量 `> 5`
+  - 出现 `N:M` 关系或“关系本身有属性”
+  - 存在跨对象关键约束（审批链、层级/BOM、跨流程一致性）
+- 启用 ER 时的输出边界（MUST）：
+  - 仅用于关系骨架梳理（关系方向、基数、约束）
+  - 不主导对象属性生成
+  - 不替代阶段四的属性映射完备性检查与可用性判定
+- 进入 A1/B1 视角确认时，MUST 在回显中明确：
+  - `selected_view`（最终主视角）
+  - `er_triggered`（`是 | 否`）
+  - `er_trigger_reasons`（当 `er_triggered=是` 时必填）
 
 ### 路径 C（委托建模顾问）
 
@@ -79,7 +109,9 @@
 2. 接收建模清单（对象/关系/操作）
 3. 门禁确认 C1：展示并确认后进入阶段二
 
-### 领域识别与统一调度（并行规则）
+### 领域识别与统一调度（A1/B1 确认后触发）
+
+仅在用户回复明确确认 A1/B1 之后的下一轮才可执行领域识别。Never 在 A1/B1 确认请求的同一轮输出中执行领域路由。
 
 若 A1/B1 已确认，MUST 先读取 `./references/DOMAIN_ROUTING.md` 进行领域识别与路由，再执行提取：
 
@@ -123,15 +155,16 @@ rule_extraction_check:
 ## 阶段二：生成 BKN 草案
 
 - MUST 读取并委托：`../create-bkn/SKILL.md`
-- MUST：目录与落盘位置仅按 `bkn-creator` 内置规则执行（`./COMMON_RULES.md` + 本文件）；禁止引用外部目录类 skill/规则
-- 输出目录（统一目录管理）：`network_dir = archives/{ARCHIVE_ID}/{TIMESTAMP}/{NETWORK_DIR_NAME}`
-- 生成目录前必须先拿到 `ARCHIVE_ID` 与 `TIMESTAMP`；任一缺失则中止并回执 `ARCHIVE_STATUS: BLOCKED`
+- MUST：目录与落盘位置统一遵循并直接委托 skill `archive-protocol`，不在本流程内定义 `archives/*` 规则
+- 输出目录（`network_dir`）由 `archive-protocol` 提供与校验
 - 质量检查：
   - `network.bkn` 的 `id` 留空（阶段五回填）
   - `network.bkn` MUST 补齐默认样式：`icon: icon-dip-graph`、`color: #0e5fc5`
   - 所有 `object_types/*.bkn` MUST 设置 `color`，按“随机颜色”策略分配（可复现即可，不要求真正随机源）
   - 对象类 Data Source 标记为“待绑定”，映射字段留空
   - `comment` / Description 完整
+  - Description 文案纯净：仅描述稳定业务语义，不得写入映射过程信息（如“视图衍生”“待核实”“视图中使用 xxx”）
+  - 映射相关不确定信息统一写入独立字段（如 `mapping_note` / `mapping_confidence` / `verify_status`），不得混入 Description
 - 样式补齐门禁（MUST）：
   - 未完成网络默认样式或对象类颜色分配前，不得进入阶段三
   - 若对象类已有颜色且用户未要求覆盖，保持原值不改
@@ -147,52 +180,110 @@ rule_extraction_check:
 - 执行：`kweaver bkn list --limit 200`
 - 输出：连通性状态、GKN 存在性、可用 `kn_id` 列表（完整 ID）
 - 说明：若环境检查失败，保留已生成草案并暂停阶段四/五执行
+- 回显模板：
 
-## 阶段四：数据视图绑定
+```text
+### 环境检查结果（阶段三 | 结果）
+说明：
+- 连通性：{connected | failed}
+- GKN 状态：{gkn_exists | gkn_not_found}
+- 可用网络数：{available_kn_count}
+- 同名/相似网络：{similar_network_summary | 无}
+下一步：环境就绪，可回复"继续"进入阶段四；如有异常需先处理。
+```
 
-执行步骤（严格顺序）：
+## 阶段四：数据视图绑定与属性回灌
+
+### 设计目标（重排后）
+
+- 将阶段四从“单线串行”改为“绑定决议线 -> 属性回灌线 -> 放行确认线”
+- `Step 4.5` 改为阶段四的硬门槛，不再作为可被统计或确认步骤绕过的中间项
+- 所有阶段四对外确认都统一后置到 `Step 4.10`，禁止提前确认
+
+### 执行状态机（MUST，禁止跳步）
+
+按以下状态顺序推进，前一状态未达成不得进入下一状态：
+
+`S4_BIND_EVIDENCE -> S4_BIND_DECISION -> S4_PROPERTY_REGEN -> S4_MAPPING_GATE -> S4_DIFF_CONFIRM -> S4_STAGE_CONFIRM`
+
+状态与步骤映射：
+
+- `S4_BIND_EVIDENCE`：Step 4.1 ~ Step 4.3
+- `S4_BIND_DECISION`：Step 4.4
+- `S4_PROPERTY_REGEN`：Step 4.5（关键重排点）
+- `S4_MAPPING_GATE`：Step 4.6 ~ Step 4.8
+- `S4_DIFF_CONFIRM`：Step 4.9
+- `S4_STAGE_CONFIRM`：Step 4.10
+
+若尝试从 `Step 4.4`、`Step 4.6`、`Step 4.8` 直接输出“阶段四结果确认”，必须立即回退到缺失状态补齐后再继续。
+
+### 执行步骤（严格顺序）
 
 1. **Step 4.1：数据源线索提取**
-   - 从输入文档与上下文提取已明确的数据视图线索
-   - 产出 `data_source_map = { object_id: view_id | null }`
-   - 线索值（名称/技术名/别名）仅可作为候选，不得直接写入绑定字段
-2. **Step 4.2：现有视图匹配（MUST）**
-   - 读取并委托 `../kweaver-core/SKILL.md` 执行视图查询与匹配
-   - 视图存在性校验 MUST 使用 `kweaver dataview` 命令族执行，不得用网络/对象查询替代
-   - 命中后绑定对应视图 `id`，并记录匹配依据与置信度
-   - 对“对象类型中已存在的视图标识（如 `mdl_id` / 技术名）”，MUST 先通过 `kweaver dataview` 解析为视图 `id`，再做存在性校验并记录结果（`exists | not_found | ambiguous`）
-   - 若原值为名称/技术名且已解析出视图 `id`，MUST 标记为“待回填替换”（`old_value -> dataview_id`）
-   - 仅 `exists` 可计入“已绑定”；`not_found` / `ambiguous` 必须转入“待绑定（待修复）”
-3. **Step 4.3：语义匹配（补充）**
-   - 对仍未绑定对象，读取并委托 `../data-semantic/SKILL.md` 执行语义匹配
-   - 记录候选视图、匹配来源与置信度
-4. **Step 4.4：GKN 补充匹配**
-   - 对前述仍未命中的对象，从 GKN 的对象类“业务对象”中筛选可复用视图（`mdl_id`）
-5. **Step 4.5：绑定率统计与分组**
-   - 输出 `binding_summary`（`total_objects` / `bound_objects` / `unbound_objects` / `binding_rate`）
-   - 绑定率统计口径 MUST 基于“已通过存在性校验的绑定结果”，不得将未校验或校验失败项计入 `bound_objects`
-   - 输出“已匹配组 / 未匹配组”与来源拆解（现有系统 / `data-semantic` / `GKN` / `manual`）
-6. **Step 4.6：门禁确认**
-   - 当 `binding_rate >= 80%`：发起确认请求，用户确认后进入阶段五
-   - 当 `binding_rate < 80%`：必须暂停并要求用户选择“手动提供 / 跳过未绑定对象并继续 / 中止流程”
-7. **Step 4.7：回填与差异确认**
-   - 绑定视图后如有变更（新增绑定、替换绑定、解绑），MUST 先展示拟回填差异并发起确认请求
-   - 已通过校验但当前值仍为名称/技术名的对象，MUST 在本步骤回填为视图 `id`（替换型变更），不得维持名称/技术名
+   - 从输入文档与上下文提取数据视图线索，形成 `data_source_clues`
+   - 产出 `data_source_map = { object_id: clue_value | null }`
+   - 线索值（名称/技术名/别名）仅作为候选，不得直接写入最终绑定字段
+2. **Step 4.2：现有视图匹配与存在性校验（MUST）**
+   - 读取并委托 `../kweaver-core/SKILL.md`，使用 `kweaver dataview` 命令族完成匹配
+   - 对已有绑定值（如 `mdl_id` / 技术名）先解析为视图 `id`，再校验存在性，状态仅允许：`exists | not_found | ambiguous`
+   - 仅 `exists` 计入“已绑定”；其余一律转入“待决策”
+   - 若原值为名称/技术名且已解析出视图 `id`，记录 `backfill_replace_candidate`
+3. **Step 4.3：补充匹配（语义 + GKN）**
+   - 对仍未命中的对象，先委托 `../data-semantic/SKILL.md` 语义匹配，再做 GKN 复用匹配
+   - 输出候选清单并记录来源：`system | semantic | gkn | manual`
+4. **Step 4.4：绑定决议快照（MUST）**
+   - 汇总 `binding_decision_list`：`bound` / `pending` / `rejected`
+   - 生成 `binding_summary_pre_regen`（阶段四中间统计，仅内部使用）
+   - Never 在本步骤发起“阶段四结果确认”；本步骤只做“绑定决议”不做放行
+5. **Step 4.5：对象类属性二次生成（视图回灌，MUST）**
+   - 以“用户原始业务文本 + Step 4.4 已确认绑定决议 + 视图字段”重建对象属性候选
+   - 二次生成结果必须分层：`core_business` / `view_derived` / `technical_excluded`
+   - 必须输出差异动作：`keep` / `add` / `rename` / `merge` / `drop_candidate`
+   - 对用户展示时使用中文标签：`核心业务/视图衍生/技术排除` 与 `保留/新增/重命名/合并/建议移除`
+   - Description 与映射备注必须分离：稳定业务语义写 Description，不确定映射写映射备注字段
+   - 当“无已绑定视图”时也不得跳过本步骤：必须输出 `step_4_5_summary`（可为空差异）并标注 `reason=no_bound_view`
+6. **Step 4.6：属性映射草案生成（MUST）**
+   - 基于 Step 4.5 的“对象属性定稿候选”生成 `property_mapping_draft`
+   - 每个属性都必须进入三态之一：`mapped` / `waived` / `blocked`
+   - `mapped` 必填：`view_id`、`field_path`、`confidence`、类型校验结果
+   - `waived` 必填：`waive_reason`
+   - `blocked` 必填：`block_reason`
+7. **Step 4.7：属性映射完备性放行检查（MUST）**
+   - 计算 `coverage = (mapped + waived) / total_properties`
+   - 放行条件必须同时满足：`blocked_count = 0` 且 `coverage = 100%`
+   - 未满足放行条件时必须暂停，并输出互斥策略包（3选1）：
+     - 策略 A（BKN优先）：保留核心业务属性，仅补充必要映射后重跑 Step 4.6 -> Step 4.7
+     - 策略 B（视图优先）：按视图重构属性，采纳 `add/rename/merge` 后重跑 Step 4.5 -> Step 4.7
+     - 策略 C（混合治理）：仅对高价值差异增补，其余豁免后重跑 Step 4.6 -> Step 4.7
+8. **Step 4.8：阶段四统计与完整性证据（MUST）**
+   - 输出最终 `binding_summary`（`total_objects` / `bound_objects` / `unbound_objects` / `binding_rate`）
+   - 输出并校验以下证据齐备：
+     - `step_4_5_summary`（至少含 `keep/add/rename/merge/drop_candidate`）
+     - `step_4_7_summary`（至少含“已映射/已豁免/待处理”与 `coverage`）
+     - `binding_decision_list`（至少含 `bound/pending/rejected` 分组）
+   - 任一证据缺失时禁止进入 Step 4.9
+9. **Step 4.9：统一差异清单与回填确认（MUST）**
+   - 将绑定变更、属性变更、映射状态合并成一份统一差异清单后再请求确认
+   - 对已解析出视图 `id` 但仍是名称/技术名绑定值的对象，必须纳入“替换回填”清单
    - 仅当用户明确确认“执行回填”后，才可写入 BKN 文件；Never 自动回填
+10. **Step 4.10：阶段四结果确认（唯一确认出口）**
+   - 当 `binding_rate >= 80%`：发起阶段四确认，用户确认后进入阶段五
+   - 当 `binding_rate < 80%`：暂停并要求用户选择“手动提供 / 跳过未绑定对象并继续 / 中止流程”
+   - “阶段四结果确认”只能在本步骤输出，其他步骤输出一律视为流程违规
 
 阶段四退出条件（MUST）：
 
-- 绑定率 `>= 80%` 或用户明确确认“跳过未绑定对象并继续”
-- 未绑定对象清单已完整展示
-- 已绑定对象的视图存在性校验已完成并输出结果
-- 已解析出视图 `id` 的对象均已完成（或已确认）回填替换，不得残留名称/技术名绑定值
-- 用户已确认绑定结果
+- 已产出并保留：`binding_decision_list`、`step_4_5_summary`、`step_4_7_summary`、`binding_summary`
+- 放行条件成立：`blocked_count = 0` 且 `coverage = 100%`
+- 统一差异清单已回显，且回填已获用户确认
+- 阶段四结果仅在 Step 4.10 确认一次
 
 语义约束（MUST）：
 
-- “跳过未绑定对象并继续”仅表示未绑定对象维持未绑定状态进入阶段五
-- 已绑定对象的 `mdl_id` 必须保留；除非用户明确要求，不得执行解绑
-- 绑定值必须是视图 `id`；名称、技术名、别名不得作为最终绑定值
+- `Step 4.5` 是硬门槛步骤，不得因“绑定率已达标”或“用户催促进入推送”而跳过
+- “跳过未绑定对象并继续”仅影响未绑定对象，不影响 `Step 4.5 ~ Step 4.8` 的必执行性
+- 绑定值最终必须是视图 `id`；名称、技术名、别名不得作为最终绑定值
+- `waived` 是有依据豁免，不计阻断；`blocked` 必须清零后方可进入阶段五
 
 ## 阶段五：推送与验证
 
@@ -211,16 +302,55 @@ kweaver bkn create --name "名称" --comment "描述"
 kweaver bkn push <network_dir> --branch main
 ```
 
-### 归档回执（MUST）
-
-- 失败回执：`ARCHIVE_STATUS: BLOCKED` | `ARCHIVE_REASON: <原因>`
-- 成功回执：`ARCHIVE_STATUS: OK` | `ARCHIVE_ROOT: archives/{ARCHIVE_ID}/`
-- 若返回 WebUI 卡片，`archive_grid` 必须使用 `json` 围栏代码块，且仅返回一个目录级代码块
-
-推送后必须执行：
+推送结果后必须执行（MUST，成功/失败均执行）：
 
 1. 完整性检查（草案 vs 线上）
-2. 孤悬对象类检查（无关系连接）
+2. 生成业务知识网络 HTML 报告（构建统计 + 可用性评估）
+
+执行口径（MUST）：
+
+- 当推送成功时：按标准口径执行“草案 vs 线上”完整性检查，并生成完整报告
+- 当推送失败时：仍必须执行上述两步；完整性检查改为“草案 vs 最近可获取线上快照/已知状态”并标注 `integrity_mode: degraded`
+- 当推送失败且无法获取任何线上快照时：完整性检查不得跳过，需输出 `integrity_status: unavailable` 与原因；报告仍必须生成，并显式记录“推送失败 + 线上快照不可用”
+- 无论推送成功或失败，都必须在上述两步完成后给出阶段五执行回执
+- 归档回执与归档一致性规则由 `archive-protocol` 统一负责，本流程不重复定义
+
+### HTML 报告生成规范（MUST）
+
+- 报告文件路径：`{network_dir}/reports/bkn_report.html`
+- 报告生成前 MUST 先汇总结构化统计数据，并落一份同源 JSON：`{network_dir}/reports/bkn_report_data.json`
+- 推荐优先复用模板：`./references/bkn_report_template.html`（允许在不改变统计口径的前提下做样式微调）
+- 报告统计口径 MUST 至少包含：
+  - 网络概览：`network_name`、`network_id`、`generated_at`、`branch`
+  - 结构统计：`object_count`、`relation_count`、`action_count`、`property_total`
+  - 映射统计：`mapped_count`、`waived_count`、`blocked_count`、`coverage`
+  - 绑定统计：`total_objects`、`bound_objects`、`unbound_objects`、`binding_rate`
+  - 风险统计：`unresolved_diffs`、`orphan_objects`、`warnings`
+  - 对象展开统计：`object_binding_details[]`（每个对象至少含 `object_name`、`mapped_count`、`waived_count`、`blocked_count`、`coverage`、`binding_view`、`property_rows[]`）
+  - 待核实明细：`pending_verification_details[]`（每项至少含 `object_name`、`property_name`、`mapped_field`、`verification_point`、`suggestion`）
+  - 可用性解释：`availability_reason`、`availability_judgement[]`（逐条说明“已满足项/待改进项/阻断项”）
+- 报告可用性结论 MUST 使用三态：`AVAILABLE` / `PARTIAL` / `UNAVAILABLE`
+  - `AVAILABLE`：`coverage = 100%` 且 `blocked_count = 0` 且 `binding_rate >= 80%`
+  - `PARTIAL`：`blocked_count = 0` 且（`coverage < 100%` 或 `binding_rate < 80%` 或 `warnings > 0`）
+  - `UNAVAILABLE`：`blocked_count > 0` 或关键完整性检查失败
+- 页面样式 MUST 可读且美观，至少包含：
+  - 顶部摘要区（网络信息 + 结论状态色：绿/黄/红）
+  - 可用性判定说明区（明确“为什么是可用/部分可用/不可用”）
+  - 核心指标卡片区（结构、映射、绑定、风险）
+  - 覆盖率与绑定率进度条
+  - 对象类/关系类统计表
+  - 属性映射明细表（状态显示为“已映射/已豁免/待处理”，并附原因）
+  - 对象类可展开详情区（点击对象类展开属性映射统计与明细）
+  - 待核实属性展开区（按对象分组，逐条列出待核实属性与核实要点）
+  - 风险与建议区（按高/中/低优先级）
+- 样式约束（MUST）：
+  - 使用内联 CSS（单文件可离线打开），不得依赖外部 CDN
+  - 字体、颜色、间距保持统一，不得出现难辨识对比色
+  - 报告中所有百分比统一保留 1 位小数
+- 报告输出前 MUST 回读校验：文件存在、非空、包含 `<html` 与关键统计字段
+- 若报告生成失败，必须在阶段五回执中明确失败原因与补救建议，不得宣告流程完整成功
+- 当状态为 `PARTIAL` 或 `UNAVAILABLE` 时，报告中 MUST 给出可执行改进项（按优先级）以及“达到 AVAILABLE 还缺什么”
+- 若仅生成了 `bkn_report_data.json` 而未生成 `bkn_report.html`，视为报告未完成，必须阻断归档成功回执
 
 ## 常见失败恢复
 
@@ -233,31 +363,45 @@ kweaver bkn push <network_dir> --branch main
 ### 模板：流程路由确认（验证阶段）
 
 ```text
-### 流程路由确认（confirm | 确认请求）
-内容：
-- 识别结果：新增（Create）
-- 路由目标：FLOW_CREATE
-- 输入摘要：{input_summary}
-- 说明：本阶段仅做流程路由，不进入具体执行步骤
-下一步：请确认是否进入新增流程（回复：确认进入新增流程 / 先调整输入）。
+### 流程路由确认（验证阶段 | 请确认）
+说明：
+- 当前识别：这是“新建知识网络”请求
+- 将进入流程：新增流程（FLOW_CREATE）
+- 你提供的信息摘要：{input_summary}
+- 说明：这一步只确认流程方向，还不会开始提取或写入
+下一步：你可以回复“确认进入新增流程”，或先补充/修改输入后再继续。
 ```
 
 ### 模板：建模意图澄清（阶段一）
 
 ```text
-### 建模意图澄清（confirm | 确认请求）
-内容：
-- 当前路径：{A | B | C}
-- 建模视角：{selected_view}
-- 选择依据：{reason_summary}
-下一步：请确认是否采用该视角继续（回复：确认采用该视角 / 重新选择视角）。
+### 建模视角确认（阶段一 | 请确认）
+说明：
+- 当前处理路径：{A | B | C}
+- 建议主视角：{selected_view}
+- 是否启用 ER 补充视角：{er_triggered}
+- ER 触发依据：{er_trigger_reasons | 无}
+- 选择理由：{reason_summary}
+下一步：如果你认可这个视角，请回复“确认采用该视角”；如果不认可，我可以马上重选。
+```
+
+### 模板：视角确认回执（阶段一）
+
+```text
+### 视角确认结果（阶段一 | 结果）
+说明：
+- 主视角：对象-属性-视图映射
+- ER 是否启用：{是 | 否}
+- ER 触发依据：{关系较复杂（>5） | 存在多对多或关系带属性 | 存在跨对象关键约束 | 无}
+- 说明：ER 仅用于关系骨架梳理，不参与属性映射放行判定
+下一步：如无异议，你可以回复“确认清单”，我继续进入清单确认。
 ```
 
 ### 模板：草案确认（阶段二）
 
 ```text
-### BKN 草案确认（confirm | 确认请求）
-内容：
+### BKN 草案确认（阶段二 | 请确认）
+说明：
 - 草案目录：{network_dir}
 - 校验结果：{validate_summary}
 - 关键差异：{draft_highlights}
@@ -265,34 +409,33 @@ kweaver bkn push <network_dir> --branch main
   - `{network_dir}/network.bkn`
   - `{network_dir}/object_types/*.bkn`
   - `{network_dir}/relation_types/*.bkn`
-- 说明：如需调整，请直接修改上述 `.bkn` 文件
-下一步：请回复“确认草案”进入阶段三，或在修改完成后回复“已完成草案修改”。如需详情可回复：展开草案详情 / 导出 YAML。
+- 说明：如果有要调整的内容，直接修改上述 `.bkn` 文件即可
+下一步：你可以回复“确认草案”进入阶段三；如果改过文件，回复“已完成草案修改”后我再继续。需要更多细节可说“展开草案详情”或“导出 YAML”。
 ```
 
-### 模板：归档失败回执（阶段五）
+### 模板：阶段四结果确认（阶段四）
 
 ```text
-ARCHIVE_STATUS: BLOCKED
-ARCHIVE_REASON: {blocked_reason}
+### 阶段四结果确认（阶段四 | 请确认）
+说明：
+- 绑定率：{binding_rate}（{bound_objects}/{total_objects} 对象类已绑定）
+- Step 4.5 摘要：{step_4_5_summary}
+- Step 4.7 摘要：{step_4_7_summary}
+- 关键风险：{risk_summary}
+- 执行结论：{pass | warning | blocked}
+下一步：如你确认进入推送阶段，请回复“确认”；如需先修复，请回复“先修复”并说明优先项。
 ```
 
-### 模板：归档成功回执（阶段五）
+### 模板：BKN 报告回执（阶段五）
 
 ```text
-ARCHIVE_STATUS: OK
-ARCHIVE_ROOT: archives/{ARCHIVE_ID}/
+### BKN 报告结果（阶段五 | 结果）
+说明：
+- 报告文件：{network_dir}/reports/bkn_report.html
+- 数据文件：{network_dir}/reports/bkn_report_data.json
+- 可用性结论：{可用 | 部分可用 | 不可用}
+- 关键统计：对象类 {object_count} / 关系类 {relation_count} / 属性 {property_total} / 覆盖率 {coverage}
+- 风险摘要：阻断项 {blocked_count} / 未决差异 {unresolved_diffs} / 孤悬对象 {orphan_objects}
+下一步：如果你希望我继续处理报告中的高优先级问题，直接说“继续修复”就行。
 ```
 
-### 模板：archive_grid（WebUI，目录示例）
-
-```json
-{
-  "type": "archive_grid",
-  "data": {
-    "type": "folder",
-    "archive_root": "archives/{ARCHIVE_ID}",
-    "subpath": "{NETWORK_DIR_NAME}",
-    "name": "{NETWORK_DIR_NAME}"
-  }
-}
-```

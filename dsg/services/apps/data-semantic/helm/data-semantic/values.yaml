@@ -74,7 +74,7 @@ depServices:
     privatePort: 30980
   af-sailor-service:
     protocol: http
-    host: af-sailor-agent
+    host: sailor-agent
     port: 9595
   mq:
     auth:

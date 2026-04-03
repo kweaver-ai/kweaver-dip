@@ -9,8 +9,6 @@ metadata:
   annotations:
     nginx.ingress.kubernetes.io/enable-cors: "true"
     nginx.ingress.kubernetes.io/cors-allow-origin: "*"
-    nginx.ingress.kubernetes.io/configuration-snippet: |
-      if ($request_uri ~* "/internal/")  { return 404; }
 
 spec:
   ingressClassName: {{ index .Values.depServices "class-443" "ingressClass" }}

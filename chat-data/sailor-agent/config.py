@@ -55,6 +55,7 @@ class Settings(BaseSettings):
     # Kafka 配置
     KAFKA_BOOTSTRAP_SERVERS: str = os.getenv("KAFKA_URI", "kafka-headless.resource:9097")
     KAFKA_DATA_UNDERSTAND_RESULT_TOPIC: str = os.getenv("KAFKA_DATA_UNDERSTAND_RESULT_TOPIC", "data-understanding-responses")
+	KAFKA_USER: str = os.getenv("KAFKA_USERNAME", "kafkauser")
     KAFKA_PASSWORD: str = os.getenv("KAFKA_PASSWORD", "")
 
 

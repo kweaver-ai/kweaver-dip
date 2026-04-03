@@ -75,10 +75,10 @@ headers = {"Authorization": TOKEN}
 
 # ========== 步骤 1: 获取用户信息（获取 responsible_uid） ==========
 user_response = requests.get(
-    f"{BASE_URL}/af/api/session/v1/userinfo",
+    f"{BASE_URL}/api/eacp/v1/user/get",
     headers=headers
 )
-responsible_uid = user_response.json()["ID"]
+responsible_uid = user_response.json()["userid"]
 print(f"获取到用户 ID: {responsible_uid}")
 
 # ========== 步骤 2: 准备工单参数 ==========
@@ -153,10 +153,10 @@ headers = {"Authorization": TOKEN}
 
 # 获取用户信息
 user_response = requests.get(
-    f"{BASE_URL}/af/api/session/v1/userinfo",
+    f"{BASE_URL}/api/eacp/v1/user/get",
     headers=headers
 )
-responsible_uid = user_response.json()["ID"]
+responsible_uid = user_response.json()["userid"]
 
 # 构建 remark（form_view_ids 为空数组，表示检测数据源下所有视图）
 remark_data = {

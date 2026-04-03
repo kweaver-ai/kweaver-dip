@@ -22,14 +22,6 @@ spec:
       labels:
         {{- toYaml .Values.labels.pod | nindent 8}}
     spec:
-      volumes:
-      - name: cms-release-config-oauth-registry-info
-        secret:
-          defaultMode: 420
-          items:
-          - key: default.yaml
-            path: oauth-registry-info.yaml
-          secretName: cms-release-config-oauth-registry-info
       containers:
         - name: {{.Values.name}}
           image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
@@ -43,9 +35,6 @@ spec:
           envFrom:
             - configMapRef:
                 name: {{ .Values.name }}-cm
-          volumeMounts:
-          - mountPath: /etc/globalConfig/oauth
-            name: cms-release-config-oauth-registry-info
           env:
               - name: HOST_IP
                 valueFrom:

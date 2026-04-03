@@ -96,15 +96,6 @@ excel:
     template:
       dict: template/template_dict.xlsx
       de: template/template_de.xlsx
-anyshare:
-  password: xxx
-  account: a6bab599-a9dd-46d9-9222-01b3ed2df0f4
-  url: https://10.2.184.163:443
-  basedir: gns://4C86CE07A5704459BCD9C7FC7620749A
-  basedir_name: AnyShare://af_std_file
-  temp_basedir: gns://4C86CE07A5704459BCD9C7FC7620749A
-  temp_basedir_name: AnyShare://af_std_file
-  temp_file_clean_interval_hours: 24
 
 nsq:
   lookup-hosts: 10.4.129.68:4161
@@ -177,7 +168,7 @@ oss:
 
 session:
   service:
-    url: http://10.4.134.47:8113/af/api/session/v1/userinfo
+    url: http://user-management-private:30980/api/user-management/v1/users
 
 # 开启 swagger api 文档页面增强
 knife4j:

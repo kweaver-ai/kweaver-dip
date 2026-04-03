@@ -24,7 +24,7 @@ description: "数据质量管理详细指南，包含完整工作流和高级功
 - [Data View API](../reference/api/api_data_view.md)
 - [Task Center API](../reference/api/api_task_center.md)
 - [Knowledge Network API](../reference/api/api_knowledge_network.md)
-- [Session API](../reference/api/api_session.md)
+- [Session API](../reference/api/api_eacp.md)
 - [Standardization API](../reference/api/api_std.md)
 
 ### 参考
@@ -162,7 +162,7 @@ description: "数据质量管理详细指南，包含完整工作流和高级功
 | `name` | string | 必填，全局唯一 | 建议格式：`{视图名}_{数据源}_{时间戳}` |
 | `type` | string | **固定值** | `data_quality_audit` |
 | `source_type` | string | **固定值** | `standalone` |
-| `responsible_uid` | string | 必填 | 从用户信息接口获取 `ID` 字段 |
+| `responsible_uid` | string | 必填 | 从用户信息接口获取 `userid` 字段 |
 | `draft` | boolean | **固定值** | `false` |
 | `remark` | string | 必填，JSON 字符串 | 包含数据源信息 |
 

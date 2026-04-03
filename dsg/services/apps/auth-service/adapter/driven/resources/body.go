@@ -1,6 +1,7 @@
 package resources
 
 import (
+	auth_service "github.com/kweaver-ai/idrm-go-common/rest/auth-service"
 	"github.com/kweaver-ai/idrm-go-common/rest/authorization"
 )
 

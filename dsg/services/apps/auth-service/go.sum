@@ -508,10 +508,8 @@ github.com/kweaver-ai/TelemetrySDK-Go/exporter/v2 v2.10.2 h1:s3B2J5i5VKnERWxJFri
 github.com/kweaver-ai/TelemetrySDK-Go/exporter/v2 v2.10.2/go.mod h1:Khw6Fbtv7Mwp9oE4q5ZGXByuvgr3TlrDF8LY3sn4G0Y=
 github.com/kweaver-ai/TelemetrySDK-Go/span/v2 v2.10.3 h1:RfDAVWBrQ9Beu5kNBCga3HcwWnTjoUSHDX5cxw6DZfI=
 github.com/kweaver-ai/TelemetrySDK-Go/span/v2 v2.10.3/go.mod h1:JrfEsKeZEQG5cic8RTCYqk9L2jBr/T9GhtS9gYini0A=
-github.com/kweaver-ai/idrm-go-common v0.1.5-0.20260327081834-ffea580bb6b8 h1:XOU0Xzhi9B2vYtYST2eFLz6EmH1+22f5JGBEFOUTWYQ=
-github.com/kweaver-ai/idrm-go-common v0.1.5-0.20260327081834-ffea580bb6b8/go.mod h1:qWBkonR50N+R6TRlU+QqZVD1DqAzjHkjDk4s3aQMJdA=
-github.com/kweaver-ai/idrm-go-common v0.1.5 h1:Ch6Z5moyHyHdR10wm+LotpD4D/U3fhe4tntMiHvQdhI=
-github.com/kweaver-ai/idrm-go-common v0.1.5/go.mod h1:qWBkonR50N+R6TRlU+QqZVD1DqAzjHkjDk4s3aQMJdA=
+github.com/kweaver-ai/idrm-go-common v0.1.6-0.20260327102030-245426ff3085 h1:atYxheqi0yfPQcGVC6msSOos//YSpv5D1/arrI9XlKI=
+github.com/kweaver-ai/idrm-go-common v0.1.6-0.20260327102030-245426ff3085/go.mod h1:qWBkonR50N+R6TRlU+QqZVD1DqAzjHkjDk4s3aQMJdA=
 github.com/kweaver-ai/idrm-go-frame v0.1.4-0.20260227065704-e2e78cd5f96e h1:+YZu1yWLkcUwnS5+aE7VXbVsEc1drcatEKbJCxifqCA=
 github.com/kweaver-ai/idrm-go-frame v0.1.4-0.20260227065704-e2e78cd5f96e/go.mod h1:mrpLd/gIqMdnlaImAMq7T4HA4orcDTQIrN/o0H3wj7A=
 github.com/kweaver-ai/proton-mq-sdk-go v1.9.1 h1:pYRw/GS2lqdY41V8W2Kpj0H2Y9mx0aNMzxl36xIgy5Q=
@@ -896,8 +894,8 @@ golang.org/x/exp v0.0.0-20191227195350-da58074b4299/go.mod h1:2RIsYlXP63K8oxa1u0
 golang.org/x/exp v0.0.0-20200119233911-0405dc783f0a/go.mod h1:2RIsYlXP63K8oxa1u096TMicItID8zy7Y6sNkU49FU4=
 golang.org/x/exp v0.0.0-20200207192155-f17229e696bd/go.mod h1:J/WKrq2StrnmMY6+EHIKF9dgMWnmCNThgcyBT1FY9mM=
 golang.org/x/exp v0.0.0-20200224162631-6cc2880d07d6/go.mod h1:3jZMyOhIsHpP37uCMkUooju7aAi5cS1Q23tOzKc+0MU=
-golang.org/x/exp v0.0.0-20240823005443-9b4947da3948 h1:kx6Ds3MlpiUHKj7syVnbp57++8WpuKPcR5yjLBjvLEA=
-golang.org/x/exp v0.0.0-20240823005443-9b4947da3948/go.mod h1:akd2r19cwCdwSwWeIdzYQGa/EZZyqcOdwWiwj5L5eKQ=
+golang.org/x/exp v0.0.0-20231110203233-9a3e6036ecaa h1:FRnLl4eNAQl8hwxVVC17teOw8kdjVDVAiFMtgUdTSRQ=
+golang.org/x/exp v0.0.0-20231110203233-9a3e6036ecaa/go.mod h1:zk2irFbV9DP96SEBUUAy67IdHUaZuSnrz1n472HUCLE=
 golang.org/x/image v0.0.0-20190227222117-0694c2d4d067/go.mod h1:kZ7UVZpmo3dzQBMxlp+ypCbDeSB+sBbTgSJuh5dn5js=
 golang.org/x/image v0.0.0-20190802002840-cff245a6509b/go.mod h1:FeLwcggjj3mMvU+oOTbSwawSJRM1uh48EjtB4UJZlP0=
 golang.org/x/lint v0.0.0-20181026193005-c67002cb31c3/go.mod h1:UVdnD1Gm6xHRNCYTkRU2/jEulfH38KcIWyp/GAMgvoE=

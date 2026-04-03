@@ -243,7 +243,7 @@ const AssetComponent = memo(({ node, graph }: { node: Node; graph: Graph }) => {
                         </span>
                         <span className={styles.text}>{interface_count}</span>
                     </div>
-                    <div
+                    {/* <div
                         className={classnames({
                             [styles['data-item']]: true,
                             [styles['data-item-selected']]:
@@ -267,7 +267,7 @@ const AssetComponent = memo(({ node, graph }: { node: Node; graph: Graph }) => {
                             />
                         </span>
                         <span className={styles.text}>{indicator_count}</span>
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </ConfigProvider>

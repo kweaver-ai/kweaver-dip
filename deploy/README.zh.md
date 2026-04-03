@@ -90,7 +90,7 @@ Approved cc8d2143cf8fcd04161ade9e5161006c410a0bee65f835e2629792aa584bb119 (3ef17
 
 | 项目 | 最低配置 | 推荐配置 |
 | --- | --- | --- |
-| OS | CentOS 7/8+, RHEL 8 | CentOS 7 |
+| OS | CentOS 8+, OpenEuler 23+ | CentOS 8+ |
 | CPU | 16 核 | 24 核 |
 | 内存 | 48 GB | 64 GB |
 | 磁盘 | 200 GB | 500 GB |
@@ -117,17 +117,6 @@ Approved cc8d2143cf8fcd04161ade9e5161006c410a0bee65f835e2629792aa584bb119 (3ef17
 3. 检查 `isf` 和 `kweaver-core` 是否已就绪，缺失时自动安装。
 4. 部署 KWeaver DIP 应用层 chart。
 
-当前 DIP 应用层包含的数据智能相关 chart 主要有：
-
-- `dip-frontend`
-- `anyfabric-frontend`
-- `data-catalog`
-- `data-subject`
-- `data-view`
-- `data-semantic`
-- `data-exploration-service`
-- `sailor` / `sailor-agent` / `sailor-service`
-- `task-center`
 
 补充说明：
 

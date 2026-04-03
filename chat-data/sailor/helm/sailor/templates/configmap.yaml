@@ -8,7 +8,7 @@ data:
   MYSQL_HOST: "{{ .depServices.rds.host}}:{{ .depServices.rds.port}}"
   MYSQL_USERNAME: {{ .depServices.rds.user | quote }}
   MYSQL_PASSWORD: {{ .depServices.rds.password | quote }}
-  MYSQL_DB: {{ .depServices.rds.database | quote }}
+  MYSQL_DB: "af_cognitive_assistant"
   TRACE_ENABLED: {{.service.telemetry.trace.enabled| quote }}
   TRACE_URL: {{.service.telemetry.trace.endpoint | quote }}
   LOG_LEVEL: {{.service.telemetry.log.level | quote }}
@@ -39,7 +39,7 @@ data:
   LLM_NAME: {{ .depServices.anyDataLLMConf.llm_name | quote}}
   TABLE_COMPLETION_LLM_NAME:  {{ .depServices.anyDataLLMConf.table_completion_llm_name | quote}}
   RECOMMEND_LLM_NAME:  {{ .depServices.anyDataLLMConf.recommend_llm_name | quote}}
-  KAFKA_MQ_HOST: "{{ .depServices.mq.Host}}:{{ .depServices.mq.Port}}"
+  KAFKA_MQ_HOST: "{{ .depServices.mq.mqHost}}:{{ .depServices.mq.mqPort}}"
   KAFKA_MQ_USENAME: "{{ .depServices.mq.auth.username}}"
   KAFKA_MQ_PASSWORD: "{{ .depServices.mq.auth.password}}"
   KAFKA_MQ_MECHANISM: {{ .depServices.mq.auth.mechanism}}

@@ -54,6 +54,12 @@
 
 补全结果在确认阶段必须分组回显并请求用户确认。
 
+## 主键候选提示
+
+- 编码类：`project_code`、`milestone_id`、`task_id`、`deliverable_id`
+- 单据类：`risk_no`、`issue_no`
+- 人员/资源类：`resource_id`、`timesheet_id`
+
 ## 输出建议结构
 
 ```yaml

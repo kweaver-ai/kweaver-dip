@@ -54,16 +54,16 @@ data:
           pool-name: HikariCP
         {{- if eq .Values.depServices.rds.type "DM8" }}
         driver-class-name: dm.jdbc.driver.DmDriver
-        url: jdbc:dm://{{.Values.depServices.rds.host}}:{{.Values.depServices.rds.port}}/{{.Values.depServices.rds.database}}?genKeyNameCase=2&schema={{.Values.depServices.rds.database}}
+        url: jdbc:dm://{{.Values.depServices.rds.host}}:{{.Values.depServices.rds.port}}/af_std?genKeyNameCase=2&schema=af_std
         {{- else }}
         driver-class-name: org.mariadb.jdbc.Driver
-        url: jdbc:mariadb://{{.Values.depServices.rds.host}}:{{.Values.depServices.rds.port}}/{{.Values.depServices.rds.database}}?useUnicode=true&useSSL=false&characterEncoding=utf8mb4&serverTimezone=GMT%2B8
+        url: jdbc:mariadb://{{.Values.depServices.rds.host}}:{{.Values.depServices.rds.port}}/af_std?useUnicode=true&useSSL=false&characterEncoding=utf8mb4&serverTimezone=GMT%2B8
         {{- end }}
         username: {{ .Values.depServices.rds.user | quote }}
         password: {{ .Values.depServices.rds.password | quote }}
         data-type: {{ .Values.depServices.rds.type }}
       kafka:
-        bootstrap-servers: {{ .Values.depServices.mq.Host}}:{{ .Values.depServices.mq.Port}}
+        bootstrap-servers: {{ .Values.depServices.mq.mqHost}}:{{ .Values.depServices.mq.mqPort}}
         producer:
           properties:
             sasl.jaas.config: org.apache.kafka.common.security.plain.PlainLoginModule required username="{{ .Values.depServices.mq.auth.username}}" password="{{ .Values.depServices.mq.auth.password}}";
@@ -86,15 +86,6 @@ data:
         template:
           dict: template/template_dict.xlsx
           de: template/template_de.xlsx
-    anyshare:
-      password: xxx
-      account: a6bab599-a9dd-46d9-9222-01b3ed2df0f4
-      url: https://10.2.184.163:443
-      basedir: gns://4C86CE07A5704459BCD9C7FC7620749A
-      basedir_name: AnyShare://af_std_file
-      temp_basedir: gns://4C86CE07A5704459BCD9C7FC7620749A
-      temp_basedir_name: AnyShare://af_std_file
-      temp_file_clean_interval_hours: 24
     nsq:
       lookup-hosts: proton-mq-nsq-nsqlookupd.resource:4161
       nsqd-host: proton-mq-nsq-nsqd.resource:4150
@@ -158,3 +149,6 @@ data:
       enable: true
     configuration:
       center: http://configuration-center:8133
+    session:
+      service:
+        url: http://user-management-private:30980/api/user-management/v1/users

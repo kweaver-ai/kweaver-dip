@@ -138,13 +138,13 @@ export const TopItems = [
         tip: __('仅统计关联到主题的资源数量'),
         icon: AssetIcons[AssetNodes.INTERFACE],
     },
-    {
-        key: 'indicator',
-        label: __('指标'),
-        value: 'total_indicator',
-        tip: __('仅统计关联到主题的资源数量'),
-        icon: AssetIcons[AssetNodes.INDICATOR],
-    },
+    // {
+    //     key: 'indicator',
+    //     label: __('指标'),
+    //     value: 'total_indicator',
+    //     tip: __('仅统计关联到主题的资源数量'),
+    //     icon: AssetIcons[AssetNodes.INDICATOR],
+    // },
 ]
 
 /**

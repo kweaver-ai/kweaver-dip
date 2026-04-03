@@ -3,25 +3,21 @@ package custom
 import (
 	"github.com/kweaver-ai/dsg/services/apps/auth-service/adapter/driven/gorm"
 	"github.com/kweaver-ai/dsg/services/apps/auth-service/common/constant"
-	"github.com/kweaver-ai/dsg/services/apps/auth-service/domain/dwh_data_auth_request"
 	"github.com/kweaver-ai/idrm-go-common/workflow"
 )
 
 type WFConsumerRegister struct {
-	wf                        workflow.WorkflowInterface
-	authRequestRepo           gorm.ConsumeAuthRequestRepo
-	dwhDataApplicationUseCase dwh_data_auth_request.UseCase
+	wf              workflow.WorkflowInterface
+	authRequestRepo gorm.ConsumeAuthRequestRepo
 }
 
 func NewWFConsumerRegister(
 	wf workflow.WorkflowInterface,
 	authRequestRepo gorm.ConsumeAuthRequestRepo,
-	dwhDataApplicationUseCase dwh_data_auth_request.UseCase,
 ) (*WFConsumerRegister, error) {
 	r := &WFConsumerRegister{
-		wf:                        wf,
-		authRequestRepo:           authRequestRepo,
-		dwhDataApplicationUseCase: dwhDataApplicationUseCase,
+		wf:              wf,
+		authRequestRepo: authRequestRepo,
 	}
 	err := r.registerConsumeHandlers()
 	if err != nil {
@@ -37,12 +33,6 @@ func (r *WFConsumerRegister) registerConsumeHandlers() error {
 		r.authRequestRepo.ConsumerWorkflowAuditMsg,
 		r.authRequestRepo.ConsumerWorkflowAuditResultRequest,
 		r.authRequestRepo.ConsumerWorkflowAuditProcDeleteRequest,
-	)
-	r.wf.RegistConusmeHandlers(
-		constant.DWHDataAuthRequestForm,
-		r.dwhDataApplicationUseCase.ConsumerWorkflowAuditMsg,
-		r.dwhDataApplicationUseCase.ConsumerWorkflowAuditResultRequest,
-		r.dwhDataApplicationUseCase.ConsumerWorkflowAuditProcDeleteRequest,
 	)
 	return r.wf.Start()
 }

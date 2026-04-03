@@ -8,20 +8,13 @@
 
 # KWeaver DIP
 
-KWeaver DIP is an AI-native platform for developing and managing digital employees, built on business knowledge networks for understandable, executable, and governable enterprise intelligence.
+KWeaver DIP is an AI-native platform for developing and managing digital employees. It builds an application stack for digital employees that is understandable, executable, and governable, centered on business knowledge networks.
 
-## Project Goals
-
-- Build a scalable platform for enterprise digital employee development.
-- Unify business semantics, rules, and execution paths through a business knowledge network.
-- Connect capability development, application presentation, and runtime governance end to end.
+The platform is an enterprise digital employee platform built on the **KWeaver Core** open-source project. You can build and use agents through decision agents on a business knowledge network, or build and use digital worker on top of **Openclaw**.
 
 ## Quick Links
 
 - 🌐 [Live Demo](https://dip-poc.aishu.cn/studio/agent/development/my-agent-list) — Try KWeaver online (username: `kweaver`, password: `111111`)
-- 🤝 [Contributing](rules/CONTRIBUTING.md) — How to contribute to this project
-- 🚢 [Deployment](deploy/README.md) — One-click deploy to Kubernetes
-- 📄 [License](LICENSE) — Apache License 2.0
 
 ## Quick Start
 
@@ -47,46 +40,10 @@ After deployment, open:
 
 For full installation requirements, config details, flags, and offline deployment options, see [deploy/README.md](deploy/README.md).
 
-## Platform Architecture
-
-<p align="center">
-  <img alt="KWeaver DIP platform architecture" src="./assets/kweaver-dip-architecture%20.png" />
-</p>
-
-## Key Concepts
-
-| Concept name | Description |
-| :--- | :--- |
-| **Data semantic governance** | Data semantic governance. |
-| **Digital employee** | Digital employee development. |
-| **Application store** | Application presentation layer code for digital employees. |
-| **Data analyst** | Intelligent data discovery and Q&A. |
-| **BKN Creator** | Builder for the organization-wide business knowledge network. |
-
 ## Community Reading Path
 
-1. Read this file to understand project goals and scope.
-2. Open `docs/README.md` and choose documentation by role.
-3. Read `docs/PROJECT_STRUCTURE.md` for code module boundaries.
-4. Go into business module directories for module-level `README.md` files.
-
-## Contributing
-
-We welcome contributions! See our [Contributing Guide](rules/CONTRIBUTING.md) for how to get involved.
-
-Quick start:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-When submitting changes in this repository, please also update: module-level `README.md`, `docs/PROJECT_STRUCTURE.md` (directory responsibilities), and `release-notes/` (version change log).
-
-## License
-
-This project is licensed under the Apache License 2.0. See the [LICENSE](LICENSE) file for details.
+1. Read this file for an overall view of the project’s value, goals, and scope of capabilities.
+2. Open each business module directory and read its `README.md` to learn what each module does.
 
 ## 💬 Community
 

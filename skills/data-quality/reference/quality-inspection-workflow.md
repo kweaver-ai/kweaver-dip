@@ -305,7 +305,7 @@ GET /api/data-view/v1/explore-task?work_order_id={工单ID}
 
 | 序号 | API端点 | 方法 | 用途 |
 |------|---------|------|------|
-| 1 | `/af/api/session/v1/userinfo` | GET | 配置验证 |
+| 1 | `/api/eacp/v1/user/get` | GET | 配置验证 |
 | 2 | `/api/data-view/v1/form-view` | GET | 获取视图列表 |
 | 3 | `/api/data-view/v1/explore-rule` | GET | 扫描视图规则 |
 | 4 | `/api/data-view/v1/logic-view/field/multi` | POST | 获取字段列表 |

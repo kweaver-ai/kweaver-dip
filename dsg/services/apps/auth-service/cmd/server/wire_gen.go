@@ -10,19 +10,14 @@ import (
 	"github.com/google/wire"
 	"github.com/kweaver-ai/dsg/services/apps/auth-service/adapter/driven/database"
 	"github.com/kweaver-ai/dsg/services/apps/auth-service/adapter/driven/gorm"
-	"github.com/kweaver-ai/dsg/services/apps/auth-service/adapter/driven/microservice"
 	"github.com/kweaver-ai/dsg/services/apps/auth-service/adapter/driven/mq"
 	"github.com/kweaver-ai/dsg/services/apps/auth-service/adapter/driven/mq/views"
 	"github.com/kweaver-ai/dsg/services/apps/auth-service/adapter/driven/resources"
 	"github.com/kweaver-ai/dsg/services/apps/auth-service/adapter/driven/workflow/custom"
 	"github.com/kweaver-ai/dsg/services/apps/auth-service/adapter/driver"
-	"github.com/kweaver-ai/dsg/services/apps/auth-service/adapter/driver/v1/dwh_auth_request_form"
-	"github.com/kweaver-ai/dsg/services/apps/auth-service/adapter/driver/v1/indicator_dimensional_rule"
 	"github.com/kweaver-ai/dsg/services/apps/auth-service/adapter/driver/v2/auth"
 	"github.com/kweaver-ai/dsg/services/apps/auth-service/common/settings"
 	impl7 "github.com/kweaver-ai/dsg/services/apps/auth-service/domain/common_auth/impl"
-	impl10 "github.com/kweaver-ai/dsg/services/apps/auth-service/domain/dwh_data_auth_request/impl"
-	impl8 "github.com/kweaver-ai/dsg/services/apps/auth-service/domain/indicator_dimensional_rule/impl"
 	"github.com/kweaver-ai/dsg/services/apps/auth-service/infrastructure/mq/kafka"
 	"github.com/kweaver-ai/dsg/services/apps/auth-service/infrastructure/repository/db"
 	"github.com/kweaver-ai/dsg/services/apps/auth-service/infrastructure/repository/redis"
@@ -38,7 +33,6 @@ import (
 	impl6 "github.com/kweaver-ai/idrm-go-common/rest/indicator_management/impl"
 	impl20 "github.com/kweaver-ai/idrm-go-common/rest/studio_web/impl"
 	"github.com/kweaver-ai/idrm-go-common/rest/user_management"
-	impl9 "github.com/kweaver-ai/idrm-go-common/rest/workflow/impl"
 	"github.com/kweaver-ai/idrm-go-common/trace"
 	"github.com/kweaver-ai/idrm-go-common/workflow"
 	idrm_go_frame "github.com/kweaver-ai/idrm-go-frame"
@@ -74,10 +68,7 @@ func InitApp(s *settings.Settings) (*AppRunner, func(), error) {
 	}
 	databaseClient := database.New(gormDBWithoutDatabase)
 	common_authAuth := impl7.NewAuth(authorizationDriven, redisClient, indicatorDimensionalRuleInterface, driven, data_application_serviceDriven, data_viewDriven, indicator_managementDriven, databaseClient, drivenUserMgnt)
-	useCase := impl8.NewIndicatorDimensionalRuleInterface(indicatorDimensionalRuleInterface, common_authAuth)
-	controller := indicator_dimensional_rule.New(useCase)
 	authController := auth.NewController(common_authAuth)
-	dataAuthRequestFormRepo := gorm.NewDataApplicationFormRepo(gormDB)
 	mqConf, err := settings.WorkflowMQConfFor(s)
 	if err != nil {
 		return nil, nil, err
@@ -86,15 +77,9 @@ func InitApp(s *settings.Settings) (*AppRunner, func(), error) {
 	if err != nil {
 		return nil, nil, err
 	}
-	dataViewRepo := microservice.NewDataViewRepo()
-	workflowDriven := impl9.NewWorkflowDriven(client)
-	dwh_data_auth_requestUseCase := impl10.NewUseCase(dataAuthRequestFormRepo, workflowInterface, driven, data_viewDriven, dataViewRepo, workflowDriven, common_authAuth)
-	dwh_auth_request_formController := dwh_auth_request_form.NewAuthController(dwh_data_auth_requestUseCase)
 	router := &driver.Router{
-		Middleware:                         middleware,
-		IndicatorDimensionalRuleController: controller,
-		AuthV2Controller:                   authController,
-		DWHController:                      dwh_auth_request_formController,
+		Middleware:       middleware,
+		AuthV2Controller: authController,
 	}
 	server := driver.NewHttpServer(s, router)
 	consumer := kafka.NewConsumer()
@@ -103,7 +88,7 @@ func InitApp(s *settings.Settings) (*AppRunner, func(), error) {
 	kafkaConsumer := mq.NewKafkaConsumer(consumer, subViewHandler)
 	app := newApp(server, kafkaConsumer)
 	consumeAuthRequestRepo := gorm.NewConsumeAuthRequestRepo(gormDB, client)
-	wfConsumerRegister, err := custom.NewWFConsumerRegister(workflowInterface, consumeAuthRequestRepo, dwh_data_auth_requestUseCase)
+	wfConsumerRegister, err := custom.NewWFConsumerRegister(workflowInterface, consumeAuthRequestRepo)
 	if err != nil {
 		return nil, nil, err
 	}

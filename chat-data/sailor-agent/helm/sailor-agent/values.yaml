@@ -55,7 +55,7 @@ depServices:
     port: 3330
     user: anyshare
     password: xxx
-    database: af_main
+    database: af_cognitive_assistant
     type: dm8
   redis:
     connectInfo:
@@ -105,7 +105,14 @@ depServices:
     tool_llm_model_name: "Tome-pro"
     tool_llm_openai_api_key: "EMPTY"
     tool_llm_openai_api_base: "http://mf-model-api:9898/api/private/mf-model-api/v1/"
-
+  mq:
+    mqHost: 'kafka.resource.svc.cluster.local'
+    mqPort: 9092
+    mqType: kafka
+    auth:
+      username: kafkaclient
+      password: eisoo.com123
+      mechanism: "PLAIN"
 
 # 修改pod资源限制：cpu示例:0.5/500m/1/1000m;memory示例:512Mi/1Gi
 resources:

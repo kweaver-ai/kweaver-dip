@@ -30,12 +30,6 @@ export async function mount(props) {
 export async function unmount(props) {
     const { container } = props
 
-    try {
-        await logout()
-    } catch (error) {
-        // console.log(error)
-    }
-
     ReactDOM.unmountComponentAtNode(
         container
             ? container.querySelector('#af-plugin-framework-for-as')

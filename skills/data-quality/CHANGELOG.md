@@ -1,5 +1,27 @@
 # CHANGELOG
 
+## [2.2.0] - 2026-04-01
+
+### Changed - API 接口变更
+
+#### 用户信息接口更新
+- **文件重命名**: `api_session.md` → `api_eacp.md`
+- **接口路径变更**: `/af/api/session/v1/userinfo` → `/api/eacp/v1/user/get`
+- **响应字段变更**: `ID` → `userid`
+
+#### 更新文件列表
+| 文件 | 修改内容 |
+|------|----------|
+| SKILL.md | 验证接口路径更新 |
+| api-overview.md | Session 基础 URL 和文档链接更新 |
+| detailed-guide.md | Session API 链接和字段说明更新 |
+| quickstart.md | 用户信息接口路径和字段更新 |
+| knowledge-network-workflow.md | 用户信息接口路径和字段更新 |
+| quality-inspection-workflow.md | API 调用顺序表更新 |
+| api-usage-guide.md | Session 基础 URL 更新 |
+| api_task_center.md | 前置条件、示例、响应字段更新 |
+| basic-usage.md | 用户信息接口路径和字段更新 |
+
 ## [2.1.0] - 2026-03-26
 
 ### Optimized - P0 Priority

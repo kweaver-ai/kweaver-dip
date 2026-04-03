@@ -1,0 +1,39 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    meta.helm.sh/release-name: session
+    meta.helm.sh/release-namespace: kweaver
+    nginx.ingress.kubernetes.io/cors-allow-origin: '*'
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+  creationTimestamp: "2026-03-31T01:31:44Z"
+  generation: 1
+  labels:
+    app.kubernetes.io/managed-by: Helm
+  name: session
+  namespace: kweaver
+  resourceVersion: "3886"
+  uid: 692c415b-90ca-4349-aba7-ae029106d063
+spec:
+  ingressClassName: class-443
+  rules:
+  - http:
+      paths:
+      - backend:
+          service:
+            name: session
+            port:
+              number: 8113
+        path: /af/api/session
+        pathType: ImplementationSpecific
+      - backend:
+          service:
+            name: session
+            port:
+              number: 8113
+        path: /swagger/session
+        pathType: ImplementationSpecific
+status:
+  loadBalancer:
+    ingress:
+    - ip: 10.107.56.190

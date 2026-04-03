@@ -18,7 +18,7 @@ data:
   DB_PORT: {{ .Values.depServices.rds.port | quote}}
   DB_USERNAME: {{ .Values.depServices.rds.user | quote }}
   DB_PASSWORD: {{ .Values.depServices.rds.password | quote }}
-  DB_NAME: {{ .Values.depServices.rds.database | quote }}
+  DB_NAME: "data_application_service"
   REDIS_HOST: "{{ $redisHost }}"
   REDIS_PASSWORD: "{{ $redisPassword }}"
   KAFKA_TYPE: "{{ .Values.depServices.mq.mqType }}"

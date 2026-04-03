@@ -83,8 +83,8 @@ extract_output_contract:
 ### 模板：直接命中主领域（需确认）
 
 ```text
-### 领域识别确认（confirm | 确认请求）
-内容：
+### 领域识别确认（领域识别 | 请确认）
+说明：
 - 主领域：{top_domain}
 - 原始得分：{raw_score_top}/{domain_max_score_top}（次高：{raw_score_second}/{domain_max_score_second}）
 - 归一化得分：{normalized_top}%（次高：{normalized_second}%）
@@ -96,8 +96,8 @@ extract_output_contract:
 ### 模板：候选冲突（需用户确认）
 
 ```text
-### 领域识别冲突确认（confirm | 确认请求）
-内容：
+### 领域识别冲突确认（领域识别 | 请确认）
+说明：
 - 候选 1：{top_domain}（{raw_score_top}/{domain_max_score_top}，{normalized_top}%）
 - 候选 2：{second_domain}（{raw_score_second}/{domain_max_score_second}，{normalized_second}%）
 - 主要证据：{evidence_summary}
@@ -107,8 +107,8 @@ extract_output_contract:
 ### 模板：未识别（走通用流程）
 
 ```text
-### 领域未命中处理（preview | 风险提示）
-内容：
+### 领域未命中处理（领域识别 | 风险提示）
+说明：
 - 最高得分：{raw_score_top}/{domain_max_score_top}（{normalized_top}%）
 - 判定依据：未达到高置信阈值（`normalized >= 20` 且领先 `>= 8`）
 - 主要证据：{evidence_summary}

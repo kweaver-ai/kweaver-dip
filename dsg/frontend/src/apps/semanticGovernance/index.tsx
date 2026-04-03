@@ -122,13 +122,6 @@ export async function mount(props: any) {
 export async function unmount(props: any) {
     const { container } = props || {}
 
-    try {
-        // 调用logout清理资源
-        await logout()
-    } catch (error) {
-        // console.error('[AnyFabric微应用-semanticGovernance] unmount时logout出错:', error)
-    }
-
     ReactDOM.unmountComponentAtNode(
         container
             ? container.querySelector('#semantic-governance')

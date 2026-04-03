@@ -1,0 +1,60 @@
+{
+  "name": "smart-search-tables",
+  "version": "1.0.0",
+  "base_url": "https://dip-poc.aishu.cn",
+  "openclaw": {
+    "skillKey": "smart_search_tables"
+  },
+  "description": "找表/找数编排：query_object_instance（元数据/表实例）→ department_duty_query（相关部门职责）→ 总结",
+  "defaults": {
+    "user_id": "f6713976-1cf6-11f1-b2cd-d6e9efdbcbb2",
+    "x_business_domain": "bd_public"
+  },
+  "tools": {
+    "query_object_instance": {
+      "url_path": "/api/agent-operator-integration/v1/tool-box/db4da399-af91-4214-afd9-1762d07c942d/tool/0f2b2b86-8af3-4fcc-9d8f-810a4f3fa6ce/debug",
+      "kn_id": "idrm_metadata_kn_object_lbb",
+      "default_query": {
+        "ot_id": "metadata",
+        "include_logic_params": false,
+        "include_type_info": false
+      },
+      "envelope_header": {
+        "x-account-id": "f6713976-1cf6-11f1-b2cd-d6e9efdbcbb2",
+        "x-account-type": "user"
+      }
+    },
+    "department_duty_query": {
+      "url_path": "/api/af-sailor-agent/v1/assistant/tools/department_duty_query",
+      "kn_id": "duty"
+    },
+    "custom_search_strategy": {
+      "url_path": "/api/af-sailor-agent/v1/assistant/tools/custom_search_strategy",
+      "kn_id": ""
+    },
+    "datasource_rerank": {
+      "url_path": "/api/af-sailor-agent/v1/assistant/tools/datasource_rerank",
+      "kn_id": ""
+    }
+  },
+  "pipeline": [
+    {
+      "step": 1,
+      "role": "find_table_metadata",
+      "tool_skill": "query_object_instance",
+      "skill_path": "skills/query_object_instance/SKILL.md",
+      "config_path": "skills/query_object_instance/config.json",
+      "defaults_key": "query_object_instance",
+      "reference": "skills/smart-search-tables/references/query-object-instance.md"
+    },
+    {
+      "step": 2,
+      "role": "department_duty",
+      "tool_skill": "department_duty_query",
+      "skill_path": "skills/department_duty_query/SKILL.md",
+      "config_path": "skills/department_duty_query/config.json",
+      "defaults_key": "department_duty_query",
+      "reference": "skills/smart-search-tables/references/department-duty-query.md"
+    }
+  ]
+}

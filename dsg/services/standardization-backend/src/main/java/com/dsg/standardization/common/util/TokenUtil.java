@@ -7,7 +7,9 @@ import com.dsg.standardization.vo.*;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonElement;
 
+import com.google.gson.JsonPrimitive;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.*;
@@ -177,16 +179,71 @@ public class TokenUtil {
         return headers;
     }
 
-    public static UserInfo getUserInfo(String serssionServicieUrl, String token, String traceParent) {
+    /**
+     * 从 JsonArray 中取出一条 JsonObject：有 userId 时按 id 匹配，否则取首个对象。
+     */
+    private static JsonObject pickUserJsonObject(JsonArray jsonArray, String userId) {
+        if (jsonArray == null || jsonArray.size() == 0) {
+            return null;
+        }
+        if (CustomUtil.isNotEmpty(userId)) {
+            for (int i = 0; i < jsonArray.size(); i++) {
+                JsonElement el = jsonArray.get(i);
+                if (!el.isJsonObject()) {
+                    continue;
+                }
+                JsonObject row = el.getAsJsonObject();
+                if (userId.equals(jsonPrimitiveAsString(row.get("id")))) {
+                    return row;
+                }
+            }
+            logger.warn("用户信息 JsonArray 中未匹配到 id=userId({})，条目数={}", userId, jsonArray.size());
+            return null;
+        }
+        JsonElement first = jsonArray.get(0);
+        return first.isJsonObject() ? first.getAsJsonObject() : null;
+    }
+
+    private static String jsonPrimitiveAsString(JsonElement el) {
+        if (el == null || el.isJsonNull() || !el.isJsonPrimitive()) {
+            return null;
+        }
+        JsonPrimitive p = el.getAsJsonPrimitive();
+        if (p.isString()) {
+            return p.getAsString();
+        }
+        if (p.isNumber()) {
+            return p.getAsNumber().toString();
+        }
+        return null;
+    }
+
+    public static UserInfo getUserInfo(String serssionServicieUrl,String userId, String token, String traceParent) {
         UserInfo userInfo = new UserInfo();
         try {
             if (CustomUtil.isNotEmpty(serssionServicieUrl) && CustomUtil.isNotEmpty(token)) {
-                HttpResponseVo responseVo = httpGet(serssionServicieUrl, null, createTokenHeader(token), traceParent);
+                HttpResponseVo responseVo = httpGet(serssionServicieUrl+"/"+userId+"/account,name", null, createTokenHeader(token), traceParent);
                 if (responseVo != null && responseVo.isSucesss()) {
-                    Map<String, Object> data = JsonUtils.json2Obj(responseVo.getResult(), Map.class);
-                    userInfo.setUserId((String) data.get("ID"));
-                    userInfo.setUserName((String) data.get("Account"));
-                    userInfo.setNickName((String) data.get("VisionName"));
+                    // Map<String, Object> data = JsonUtils.json2Obj(responseVo.getResult(), Map.class);
+                    // userInfo.setUserId((String) data.get("id"));
+                    // userInfo.setUserName((String) data.get("account"));
+                    // userInfo.setNickName((String) data.get("name"));
+                    String body = responseVo.getResult();
+                    if (CustomUtil.isNotEmpty(body)) {
+                        JsonElement root = JsonParser.parseString(body.trim());
+                        JsonObject userJson = null;
+                        if (root.isJsonArray()) {
+                            JsonArray jsonArray = root.getAsJsonArray();
+                            userJson = pickUserJsonObject(jsonArray, userId);
+                        } else if (root.isJsonObject()) {
+                            userJson = root.getAsJsonObject();
+                        }
+                        if (userJson != null) {
+                            userInfo.setUserId(jsonPrimitiveAsString(userJson.get("id")));
+                            userInfo.setUserName(jsonPrimitiveAsString(userJson.get("account")));
+                            userInfo.setNickName(jsonPrimitiveAsString(userJson.get("name")));
+                        }
+                    }
                 } else {
                     logger.error("获取用户信息失败，url:{}", serssionServicieUrl);
                 }
@@ -372,8 +429,8 @@ public class TokenUtil {
                 if (responseVo != null && responseVo.isSucesss() && StringUtils.isNotEmpty(responseVo.getResult())) {
                     List<Department> lists =  JsonUtils.json2List(responseVo.getResult(), Department.class);
                     for (Department dept : lists) {
-                       String deptId = StringUtil.PathSplitAfter(dept.getId());
-                       HttpResponseVo respDeptVo = httpGet(configurationUrl+"/api/internal/configuration-center/v1/objects/department/"+deptId, null,null, null);
+                        String deptId = StringUtil.PathSplitAfter(dept.getId());
+                        HttpResponseVo respDeptVo = httpGet(configurationUrl+"/api/internal/configuration-center/v1/objects/department/"+deptId, null,null, null);
                         if (respDeptVo != null && respDeptVo.isSucesss() && StringUtils.isNotEmpty(respDeptVo.getResult())) {
                             Department department = JsonUtils.json2Obj(respDeptVo.getResult(), Department.class);
                             dept.setThirdDeptId(department.getThirdDeptId());

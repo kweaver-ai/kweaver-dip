@@ -73,8 +73,8 @@
 
 ##### 前置条件
 创建工单前，必须先调用用户信息接口获取当前用户ID：
-1. 调用 `GET {DATA_QUALITY_BASE_URL}/af/api/session/v1/userinfo` 获取用户ID
-2. 将返回的 `ID` 字段值作为 `responsible_uid` 参数
+1. 调用 `GET {DATA_QUALITY_BASE_URL}/api/eacp/v1/user/get` 获取用户ID
+2. 将返回的 `userid` 字段值作为 `responsible_uid` 参数
 
 ##### 请求参数
 | 参数名 | 位置 | 类型 | 必填 | 描述 |
@@ -439,14 +439,14 @@ curl -X GET "{DATA_QUALITY_BASE_URL}/api/task-center/work-order/created-by-me?st
 
 #### 前置步骤：获取用户信息
 ```http
-GET {DATA_QUALITY_BASE_URL}/af/api/session/v1/userinfo
+GET {DATA_QUALITY_BASE_URL}/api/eacp/v1/user/get
 Authorization: {DATA_QUALITY_AUTH_TOKEN}
 ```
 
 **响应**：
 ```json
 {
-  "ID": "550e8400-e29b-41d4-a716-446655440000"
+  "userid": "550e8400-e29b-41d4-a716-446655440000"
 }
 ```
 

@@ -79,12 +79,12 @@ for var in required_env_vars:
 
 #### 1.2 验证Token有效性
 ```http
-GET {DATA_QUALITY_BASE_URL}/af/api/session/v1/userinfo
+GET {DATA_QUALITY_BASE_URL}/api/eacp/v1/user/get
 Authorization: {DATA_QUALITY_AUTH_TOKEN}
 ```
 
 #### 1.3 获取当前用户ID
-从响应中提取 `ID` 字段，用于后续工单创建的 `responsible_uid` 参数。
+从响应中提取 `userid` 字段，用于后续工单创建的 `responsible_uid` 参数。
 
 ### 阶段2: 知识网络识别与加载（目标识别）
 

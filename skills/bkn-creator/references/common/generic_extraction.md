@@ -46,8 +46,8 @@
 ### 歧义回显模板（对用户）
 
 ```text
-### 关系方向确认（confirm | 确认请求）
-内容：
+### 关系方向确认（通用提取 | 请确认）
+说明：
 - 关系：{relation_name}
 - 候选方向A：{direction_a}（{reason_a}）
 - 候选方向B：{direction_b}（{reason_b}）

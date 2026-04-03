@@ -1,0 +1,98 @@
+{
+  "name": "smart-ask-data",
+  "version": "1.0.0",
+  "base_url": "https://dip-poc.aishu.cn",
+  "openclaw": {
+    "skillKey": "smart_ask_data"
+  },
+  "description": "问数编排：kn_select → text2sql(show_ds → gen_exec) → execute_code_sync（可选）→ json2plot（可选）→ 总结",
+  "defaults": {
+    "user_id": "f6713976-1cf6-11f1-b2cd-d6e9efdbcbb2",
+    "x_business_domain": "bd_public"
+  },
+  "tools": {
+    "kn_select": {
+      "url_path": "/api/af-sailor-agent/v1/assistant/tools/kn_select",
+      "kn_ids": [],
+      "forbidden_ask_data_kn_ids": ["idrm_metadata_kn_object_lbb"]
+    },
+    "text2sql": {
+      "url_path": "/api/af-sailor-agent/v1/assistant/tools/text2sql",
+      "kn_id": "",
+      "background": {
+        "show_ds": "",
+        "gen_exec_template": "注册资金单位为万"
+      },
+      "inner_llm": {
+        "id": "1951511743712858112",
+        "name": "deepseek_v3",
+        "temperature": 0.1,
+        "top_k": 1,
+        "top_p": 1,
+        "frequency_penalty": 0,
+        "presence_penalty": 0,
+        "max_tokens": 20000
+      }
+    },
+    "execute_code_sync": {
+      "url_path": "/api/v1/executions/sessions/sess-agent-default/execute-sync",
+      "kn_id": ""
+    },
+    "json2plot": {
+      "url_path": "/api/af-sailor-agent/v1/assistant/tools/json2plot",
+      "kn_id": ""
+    }
+  },
+  "pipeline": [
+    {
+      "step": 1,
+      "role": "resolve_kn",
+      "tool_skill": "kn_select",
+      "skill_path": "skills/kn_select/SKILL.md",
+      "config_path": "skills/kn_select/config.json",
+      "defaults_key": "kn_select",
+      "reference": "skills/smart-ask-data/references/kn-select.md"
+    },
+    {
+      "step": 2,
+      "role": "discover_schema",
+      "tool_skill": "text2sql",
+      "action": "show_ds",
+      "skill_path": "skills/text2sql/SKILL.md",
+      "config_path": "skills/text2sql/config.json",
+      "defaults_key": "text2sql",
+      "reference": "skills/smart-ask-data/references/text2sql.md"
+    },
+    {
+      "step": 3,
+      "role": "query_data",
+      "tool_skill": "text2sql",
+      "action": "gen_exec",
+      "background_from": "tools.text2sql.background.gen_exec_template",
+      "skill_path": "skills/text2sql/SKILL.md",
+      "config_path": "skills/text2sql/config.json",
+      "defaults_key": "text2sql",
+      "reference": "skills/smart-ask-data/references/text2sql.md"
+    },
+    {
+      "step": 4,
+      "role": "post_process",
+      "tool_skill": "execute_code_sync",
+      "optional": true,
+      "skill_path": "skills/execute_code_sync/SKILL.md",
+      "config_path": "skills/execute_code_sync/config.json",
+      "defaults_key": "execute_code_sync",
+      "reference": "skills/smart-ask-data/references/execute-code-sync.md"
+    },
+    {
+      "step": 5,
+      "role": "chart",
+      "tool_skill": "json2plot",
+      "optional": true,
+      "skill_path": "skills/json2plot/SKILL.md",
+      "config_path": "skills/json2plot/config.json",
+      "defaults_key": "json2plot",
+      "reference": "skills/smart-ask-data/references/json2plot.md"
+    }
+  ]
+}

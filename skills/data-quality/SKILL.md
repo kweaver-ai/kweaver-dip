@@ -80,7 +80,7 @@ DATA_QUALITY_BASE_URL=https://10.4.134.26
 DATA_QUALITY_AUTH_TOKEN=Bearer xxxxxx
 ```
 
-**验证**: `GET {BASE_URL}/af/api/session/v1/userinfo`
+**验证**: `GET {BASE_URL}/api/eacp/v1/user/get`
 
 ## 关键约束
 
@@ -132,7 +132,7 @@ data-quality/
 │       ├── api_data_view.md
 │       ├── api_task_center.md
 │       ├── api_knowledge_network.md
-│       ├── api_session.md
+│       ├── api_eacp.md
 │       └── api_std.md
 │
 └── examples/                   # 代码示例

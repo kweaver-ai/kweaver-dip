@@ -12,12 +12,12 @@ description: "数据质量管理快速开始指南，包含详细示例。当用
 
 ### 1. 验证配置
 ```http
-GET {DATA_QUALITY_BASE_URL}/af/api/session/v1/userinfo
+GET {DATA_QUALITY_BASE_URL}/api/eacp/v1/user/get
 Authorization: {DATA_QUALITY_AUTH_TOKEN}
 ```
 
 ### 2. 获取用户信息
-响应中的 `ID` 字段用于 `responsible_uid`
+响应中的 `userid` 字段用于 `responsible_uid`
 
 ## 常用操作
 
@@ -277,7 +277,7 @@ Authorization: {AUTH_TOKEN}
 
 **步骤 1: 获取用户信息（获取 responsible_uid）**
 ```http
-GET {BASE_URL}/af/api/session/v1/userinfo
+GET {BASE_URL}/api/eacp/v1/user/get
 Authorization: {AUTH_TOKEN}
 ```
 

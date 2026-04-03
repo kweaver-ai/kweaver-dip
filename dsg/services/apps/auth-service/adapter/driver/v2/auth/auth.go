@@ -198,7 +198,7 @@ func (s *Controller) Enforce(c *gin.Context) {
 		return
 	}
 
-	res, err := s.authDomain.Enforce(c.Request.Context(), req, nil)
+	res, err := s.authDomain.Enforce(c.Request.Context(), *req)
 	if err != nil {
 		c.Writer.WriteHeader(http.StatusBadRequest)
 		ginx.ResErrJson(c, err)

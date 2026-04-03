@@ -59,28 +59,22 @@ MUST 在"流程路由确认（验证阶段）"通过前，Never 进入任何 `FL
 
 ## 顶层约束（路由阶段即生效）
 
-以下约束在加载任何 `FLOW_*.md` 之前即生效；子流程级约束见 `./COMMON_RULES.md`。
+以下约束在加载任何 `FLOW_*.md` 之前即生效；细则统一以 `./COMMON_RULES.md` 为准：
 
-- MUST：任何写操作在用户明确确认前 Never 执行
-- MUST：流程路由确认未通过时，仅允许输出"流程路由识别结果 + 确认请求"，Never 输出任一子流程阶段内容
-- MUST：凡需要执行 `kweaver` CLI，先读取 `../kweaver-core/SKILL.md` 并委托执行，Never 直接执行
-- MUST：提取流程中当 `pending_objects` 非空时，必须先完成"待确认对象处理"，不得直接进入"清单确认"
-- MUST：关系类 `name` 使用中文业务名；英文仅可放 `relation_id` 作为技术标识
-- MUST：新增流程在“输入模糊”之外，若出现“领域冲突未决 / `pending_objects >= 3` / 清单质量不足”，也必须委托 `../bkn-modeling-advisor/SKILL.md`
-- MUST：对用户可见输出 Never 使用 emoji 或表情符号
+- MUST：流程路由确认未通过时，仅允许输出“流程路由识别结果 + 确认请求”
+- MUST：任何写操作必须先完成确认步骤
+- MUST：凡需执行 CLI，统一委托 `../kweaver-core/SKILL.md`
+- MUST：对用户输出使用专业文本，不使用 emoji
 
 ## 统一目录与回执（顶层强制）
 
-- MUST：目录与落盘位置规则仅以 `bkn-creator` 内置文档为准（`./COMMON_RULES.md`、`./FLOW_CREATE.md`）
-- Never：为目录/落盘决策读取或委托任何外部 skill/规则（包括但不限于 `archive-protocol`）
-- MUST：凡写文件（含 `.bkn`）先获取 `ARCHIVE_ID` 与 `TIMESTAMP`
-- MUST：`ARCHIVE_ID` 来自 `session_status.sessionKey` 按 `:` 切分后的最后一段
-- MUST：归档根路径首段固定为 `archives/`；禁止 `arch/`、`archive/`、`arch/archives/`
-- MUST：新增流程草案目录统一为 `archives/{ARCHIVE_ID}/{TIMESTAMP}/{NETWORK_DIR_NAME}`
-- MUST：写入后先回读校验（存在性、路径、非空、关键字段）再宣告成功
-- MUST：失败回执为 `ARCHIVE_STATUS: BLOCKED` + `ARCHIVE_REASON`
-- MUST：成功回执为 `ARCHIVE_STATUS: OK` + `ARCHIVE_ROOT: archives/{ARCHIVE_ID}/`
-- MUST：如输出 WebUI 卡片，`archive_grid` 使用 `json` 围栏代码块，且仅输出一个目录级 JSON 块
+目录、落盘、归档回执规则统一以 `./COMMON_RULES.md` 与 `./FLOW_CREATE.md` 为准，不在本文件重复定义。
+
+## 流程衔接
+
+- 提取流程（Extract）的结果可作为新增流程（Create）的快速输入：若用户在完成提取后希望创建知识网络，可将提取清单直接带入新增流程，跳过阶段一的重复提取，从清单确认（A2/B2/C1）开始
+- 查找流程（Read）完成后，若用户希望修改或删除结果，可直接发起流程路由切换到更新或删除流程
+- 跨流程切换时仍需经过流程路由确认门禁
 
 ## 失败回退
 
@@ -114,3 +108,4 @@ MUST 在"流程路由确认（验证阶段）"通过前，Never 进入任何 `FL
 - `../kweaver-core/SKILL.md`
 - `../create-bkn/SKILL.md`
 - `../bkn-modeling-advisor/SKILL.md`
+- `../data-semantic/SKILL.md`

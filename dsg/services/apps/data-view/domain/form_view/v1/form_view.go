@@ -1804,7 +1804,7 @@ func (f *formViewUseCase) GetFields(ctx context.Context, req *form_view.GetField
 	// 检查是否收藏
 	err1, resp := f.CheckFavorite(ctx, formView)
 	if err1 != nil {
-		return nil, err1
+		log.WithContext(ctx).Warn("CheckFavorite failed, fallback to not favored", zap.Error(err1), zap.String("form_view_id", formView.ID))
 	}
 	if resp != nil {
 		if resp.FavorID == 0 {
@@ -1908,44 +1908,74 @@ func (f *formViewUseCase) AssignField(ctx context.Context, field *model.FormView
 }
 func (f *formViewUseCase) AssignCodeTable(ctx context.Context, res *[]*form_view.FieldsRes, fieldSlice []string) (err error) {
 	data := make(map[string]standardization.DictResp)
+	// if len(fieldSlice) > 0 {
+	// 	if data, err = f.standardDriven.GetStandardDict(ctx, fieldSlice); err != nil {
+	// 		return err
+	// 	}
+	// }
+	// for _, fieldsRes := range *res {
+	// 	if fieldsRes.CodeTableID != "" && fieldsRes.CodeTable == "" { //使用非标准带的码表
+	// 		if value, ok := data[fieldsRes.CodeTableID]; ok {
+	// 			fieldsRes.CodeTable = value.NameZh
+	// 			fieldsRes.CodeTableStatus = util.CE(value.Deleted, "deleted", value.State).(string)
+	// 		}
+	// 	}
+	// }
 	if len(fieldSlice) > 0 {
-		if data, err = f.standardDriven.GetStandardDict(ctx, fieldSlice); err != nil {
-			return err
-		}
-	}
-	for _, fieldsRes := range *res {
-		if fieldsRes.CodeTableID != "" && fieldsRes.CodeTable == "" { //使用非标准带的码表
-			if value, ok := data[fieldsRes.CodeTableID]; ok {
-				fieldsRes.CodeTable = value.NameZh
-				fieldsRes.CodeTableStatus = util.CE(value.Deleted, "deleted", value.State).(string)
+		if data, err = f.standardDriven.GetStandardDict(ctx, fieldSlice); err == nil {
+			for _, fieldsRes := range *res {
+				if fieldsRes.CodeTableID != "" && fieldsRes.CodeTable == "" { //使用非标准带的码表
+					if value, ok := data[fieldsRes.CodeTableID]; ok {
+						fieldsRes.CodeTable = value.NameZh
+						fieldsRes.CodeTableStatus = util.CE(value.Deleted, "deleted", value.State).(string)
+					}
+				}
 			}
 		}
 	}
-	return
+	return nil
 }
 
 func (f *formViewUseCase) AssignStandard(ctx context.Context, res *[]*form_view.FieldsRes, fieldSlice []string) (err error) {
 	data := make(map[string]*standardization.DataResp)
+	// if len(fieldSlice) > 0 {
+	// 	if data, err = f.standardDriven.GetStandardMapByCode(ctx, fieldSlice...); err != nil {
+	// 		return err
+	// 	}
+	// }
+	// for _, fieldsRes := range *res {
+	// 	if standardInfo, exist := data[fieldsRes.StandardCode]; exist {
+	// 		fieldsRes.Standard = standardInfo.NameCn
+	// 		fieldsRes.StandardType = strconv.Itoa(standardInfo.DataType) //0也是一种类型，故用字符串区分 "0" 和 ""
+	// 		fieldsRes.StandardTypeName = standardInfo.DataTypeName
+	// 		fieldsRes.StandardStatus = util.CE(standardInfo.Deleted, "deleted", standardInfo.State).(string)
+	// 		if standardInfo.DictID != "" {
+	// 			fieldsRes.CodeTableID = standardInfo.DictID
+	// 			fieldsRes.CodeTable = standardInfo.DictNameCN
+	// 			fieldsRes.CodeTableStatus = util.CE(standardInfo.DictDeleted, "deleted", standardInfo.DictState).(string)
+	// 		}
+	// 	}
+
+	// }
 	if len(fieldSlice) > 0 {
-		if data, err = f.standardDriven.GetStandardMapByCode(ctx, fieldSlice...); err != nil {
-			return err
-		}
-	}
-	for _, fieldsRes := range *res {
-		if standardInfo, exist := data[fieldsRes.StandardCode]; exist {
-			fieldsRes.Standard = standardInfo.NameCn
-			fieldsRes.StandardType = strconv.Itoa(standardInfo.DataType) //0也是一种类型，故用字符串区分 "0" 和 ""
-			fieldsRes.StandardTypeName = standardInfo.DataTypeName
-			fieldsRes.StandardStatus = util.CE(standardInfo.Deleted, "deleted", standardInfo.State).(string)
-			if standardInfo.DictID != "" {
-				fieldsRes.CodeTableID = standardInfo.DictID
-				fieldsRes.CodeTable = standardInfo.DictNameCN
-				fieldsRes.CodeTableStatus = util.CE(standardInfo.DictDeleted, "deleted", standardInfo.DictState).(string)
+		if data, err = f.standardDriven.GetStandardMapByCode(ctx, fieldSlice...); err == nil {
+			for _, fieldsRes := range *res {
+				if standardInfo, exist := data[fieldsRes.StandardCode]; exist {
+					fieldsRes.Standard = standardInfo.NameCn
+					fieldsRes.StandardType = strconv.Itoa(standardInfo.DataType) //0也是一种类型，故用字符串区分 "0" 和 ""
+					fieldsRes.StandardTypeName = standardInfo.DataTypeName
+					fieldsRes.StandardStatus = util.CE(standardInfo.Deleted, "deleted", standardInfo.State).(string)
+					if standardInfo.DictID != "" {
+						fieldsRes.CodeTableID = standardInfo.DictID
+						fieldsRes.CodeTable = standardInfo.DictNameCN
+						fieldsRes.CodeTableStatus = util.CE(standardInfo.DictDeleted, "deleted", standardInfo.DictState).(string)
+					}
+				}
+
 			}
 		}
-
 	}
-	return
+	return nil
 }
 
 func (f *formViewUseCase) GetAttributInfos(ctx context.Context, fields []*model.FormViewField) (map[string]form_view.AttributeInfo, error) {

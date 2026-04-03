@@ -5,12 +5,9 @@ import (
 	"context"
 	"strings"
 
-	"github.com/kweaver-ai/dsg/services/apps/auth-service/adapter/driver/v1/dwh_auth_request_form"
-
 	"github.com/gin-gonic/gin"
 	"github.com/google/wire"
 
-	"github.com/kweaver-ai/dsg/services/apps/auth-service/adapter/driver/v1/indicator_dimensional_rule"
 	auth_v2 "github.com/kweaver-ai/dsg/services/apps/auth-service/adapter/driver/v2/auth"
 	"github.com/kweaver-ai/idrm-go-common/interception"
 	"github.com/kweaver-ai/idrm-go-common/middleware"
@@ -50,10 +47,8 @@ type IRouter interface {
 }
 
 type Router struct {
-	Middleware                         middleware.Middleware
-	IndicatorDimensionalRuleController *indicator_dimensional_rule.Controller //指标维度规则
-	AuthV2Controller                   *auth_v2.Controller
-	DWHController                      *dwh_auth_request_form.Controller // 数仓数据授权申请
+	Middleware       middleware.Middleware
+	AuthV2Controller *auth_v2.Controller
 }
 
 func (r *Router) Register(engine *gin.Engine) error {
@@ -106,37 +101,6 @@ func (r *Router) RegisterApi(engine *gin.Engine) {
 		routerInternal.POST("/rule/enforce", setContextWithToken, r.AuthV2Controller.RuleEnforce)                  //数据策略验证
 		routerInternal.POST("/menu-resource/enforce", setContextWithToken, r.AuthV2Controller.MenuResourceEnforce) //权限资源验证, 废弃
 		routerInternal.GET("/menu-resource/actions", setContextWithToken, r.AuthV2Controller.MenuResourceActions)  //查询菜单资源的允许的操作
-	}
-	// 指标维度规则
-	{
-		subIndicator := router.Group("indicator-dimensional-rules")
-		subIndicator.POST("", r.IndicatorDimensionalRuleController.Create)            // 创建
-		subIndicator.DELETE(":id", r.IndicatorDimensionalRuleController.Delete)       // 删除
-		subIndicator.PUT(":id/spec", r.IndicatorDimensionalRuleController.UpdateSpec) // 更新 Spec
-		subIndicator.GET(":id", r.IndicatorDimensionalRuleController.Get)             // 获取一个
-		subIndicator.GET("", r.IndicatorDimensionalRuleController.List)               // 获取列表
-		// 内部接口：获取列表
-		subIndicatorInternal := routerInternal.Group("indicator-dimensional-rules")
-		subIndicatorInternal.GET("", r.IndicatorDimensionalRuleController.List)                                          //获取指标授权维度列表
-		subIndicatorInternal.GET("/indicators", r.IndicatorDimensionalRuleController.GetIndicatorDimensionalRules)       //根据ID批量获取指标授权维度列表
-		subIndicatorInternal.GET("/batch", r.IndicatorDimensionalRuleController.GetIndicatorDimensionalRulesByIndicator) //获取指标的维度规则列表
-	}
-	//数仓数据权限申请
-	{
-		//管理
-		dwhDataAuthReqRouter := router.Group("dwh-data-auth-request")
-		dwhDataAuthReqRouter.POST("", r.DWHController.Create)      //新建申请单
-		dwhDataAuthReqRouter.PUT(":id", r.DWHController.Update)    //更新申请单
-		dwhDataAuthReqRouter.GET(":id", r.DWHController.Get)       //获取申请单详情
-		dwhDataAuthReqRouter.DELETE(":id", r.DWHController.Delete) //删除申请单
-		dwhDataAuthReqRouter.GET("", r.DWHController.List)         //获取申请单列表
-		//审核
-		dwhDataAuthReqRouter.PUT("audit/:id", r.DWHController.CancelAudit) //取消审核
-		dwhDataAuthReqRouter.GET("audit", r.DWHController.AuditList)       //审核列表
-		//内部接口
-		dwhDataAuthReqInternalRouter := routerInternal.Group("dwh-data-auth-request")
-		dwhDataAuthReqInternalRouter.GET("", r.DWHController.QueryApplicantDWHAuthReqFormInfo) //查询用户的申请单状态
-		dwhDataAuthReqInternalRouter.POST("/test", r.DWHController.TestAuditMsg)               //查询用户的申请单状态
 	}
 
 }

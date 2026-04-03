@@ -19,7 +19,7 @@ data:
   DB_PORT: {{ .depServices.rds.port | quote}}
   DB_USERNAME: {{ .depServices.rds.user | quote }}
   DB_PASSWORD: {{ .depServices.rds.password | quote }}
-  DB_NAME: {{ .depServices.rds.database | quote }}
+  DB_NAME: "af_data_catalog"
   CONFIGURATION_CENTER_HOST: "http://{{ index .depServices "configuration-center" "host"}}:{{ index .depServices "configuration-center" "port"}}"
   TASK_CENTER_HOST: "http://{{index .depServices "task-center" "host"}}:{{index .depServices "task-center" "port"}}"
   INDICATOR_MANAGEMENT_HOST: "http://{{index .depServices "indicator-management" "host"}}:{{index .depServices "indicator-management" "port"}}"

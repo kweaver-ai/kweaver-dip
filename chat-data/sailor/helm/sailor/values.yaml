@@ -55,7 +55,7 @@ depServices:
     port: 3330
     user: anyshare
     password: xxx
-    database: af_business
+    database: af_cognitive_assistant
   redis:
     connectInfo:
       masterGroupName: mymaster
@@ -95,9 +95,9 @@ depServices:
     embedding_llm_addr: "http://10.4.118.205:8302"
     recommend_llm_name: "L40-Qwen2-72B-Chat"
   mq:
-    Host: kafka-external-31000.resource
-    Port: 9098
-    Type: "kafka"
+    mqHost: 'kafka.resource.svc.cluster.local'
+    mqPort: 9092
+    mqType: kafka
     auth:
       username: kafkaclient
       password: xxx

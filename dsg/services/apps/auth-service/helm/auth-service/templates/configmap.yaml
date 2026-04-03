@@ -14,7 +14,7 @@ data:
   DB_PORT: {{ .Values.depServices.rds.port | quote}}
   DB_USERNAME: {{ .Values.depServices.rds.user | quote }}
   DB_PASSWORD: {{ .Values.depServices.rds.password | quote }}
-  DB_NAME: {{ .Values.depServices.rds.database | quote }}
+  DB_NAME: "af_main"
   REDIS_HOST: "{{ $redisConnectInfo.sentinelHost }}:{{ $redisConnectInfo.sentinelPort }}"
   REDIS_PASSWORD: "{{ $redisConnectInfo.password }}"
   REDIS_MASTER_NAME: "{{ $redisMasterName }}"

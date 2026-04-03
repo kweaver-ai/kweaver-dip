@@ -47,7 +47,7 @@ public abstract class WebTokenFilter extends TokenCheckConfig implements Filter 
     Integer tokenAccessControlResourceCode;
 
 
-    @Value("${session.service.url:http://session:8113/af/api/session/v1/userinfo}")
+    @Value("${session.service.url:http://user-management-private:30980/api/user-management/v1/users}")
     String serssionServicieUrl;
 
     @Value("${configuration.center:http://configuration-center:8133}")
@@ -109,7 +109,11 @@ public abstract class WebTokenFilter extends TokenCheckConfig implements Filter 
 //      String traceparent = (String) request.getAttribute(ARTraceHelper.Keys.KEY_TRACE_PARENT);
         String traceparent = null;
         CustomHttpServletRequest mutableRequest = new CustomHttpServletRequest(request);
-        UserInfo userInfo = TokenUtil.getUserInfo(serssionServicieUrl, token, traceparent);
+        HydraUser hydraUser = TokenUtil.getHydraUser(tokenCheckUrl, token, traceparent);
+        UserInfo userInfo = new UserInfo();
+        if (hydraUser!=null){
+            userInfo = TokenUtil.getUserInfo(serssionServicieUrl,hydraUser.getSub(), token, traceparent);
+        }
         mutableRequest.addHeader("userId", userInfo.getUserId());
         mutableRequest.addHeader("userName", userInfo.getUserName());
         mutableRequest.addHeader("nickName", userInfo.getNickName());
@@ -118,7 +122,7 @@ public abstract class WebTokenFilter extends TokenCheckConfig implements Filter 
             if (!getIgnoreFilterFlag(uri) && uri.matches(URI_REGEX)) {
                 log.info("===请求地址=={}",uri);
                 if (tokenCheckEnable) {
-                    HydraUser hydraUser = TokenUtil.getHydraUser(tokenCheckUrl, token, traceparent);
+//                    HydraUser hydraUser = TokenUtil.getHydraUser(tokenCheckUrl, token, traceparent);
                     checkToken(hydraUser);
                     //校验client_id和sub是否相同，不同为web登陆，相同为第三方client登录
                     if(StringUtils.isNotEmpty(hydraUser.getClient_id()) && hydraUser.getClient_id().equals(hydraUser.getSub())){

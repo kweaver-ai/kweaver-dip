@@ -48,9 +48,9 @@ depServices:
     database: af_std
     type: DM8
   mq:
-    Host: kafka-external-31000.resource
-    Port: 9098
-    Type: "kafka"
+    mqHost: 'kafka.resource.svc.cluster.local'
+    mqPort: 9092
+    mqType: kafka
     auth:
       username: kafkaclient
       password: xxx
@@ -72,8 +72,7 @@ serviceAccount:
 
 podAnnotations: {}
 
-podSecurityContext:
-  {}
+podSecurityContext: {}
   # fsGroup: 2000
 
 securityContext:

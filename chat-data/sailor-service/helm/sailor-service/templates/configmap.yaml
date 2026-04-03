@@ -90,7 +90,7 @@ data:
       port: {{.Values.depServices.rds.port | quote }}
       username: {{.Values.depServices.rds.user}}
       password: {{.Values.depServices.rds.password}}
-      database: {{.Values.depServices.rds.database}}
+      database: "af_cognitive_assistant"
       max-idle-connections: 5
       max-open-connections: 50
       max-connection-idle-time: 300

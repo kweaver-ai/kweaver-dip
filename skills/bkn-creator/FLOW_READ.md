@@ -55,20 +55,20 @@ kweaver bkn relation-type list <kn_id>
 ### 模板：流程路由确认（验证阶段）
 
 ```text
-### 流程路由确认（confirm | 确认请求）
-内容：
-- 识别结果：查找（Read）
-- 路由目标：FLOW_READ
-- 输入摘要：{input_summary}
-- 说明：本阶段仅做流程路由，不进入具体执行步骤
-下一步：请确认是否进入查找流程（回复：确认进入查找流程 / 先调整查询目标）。
+### 流程路由确认（验证阶段 | 请确认）
+说明：
+- 当前识别：这是"查找知识网络"请求
+- 将进入流程：查找流程（FLOW_READ）
+- 你提供的信息摘要：{input_summary}
+- 说明：这一步只确认流程方向，还不会开始查询
+下一步：你可以回复"确认进入查找流程"，或先调整查询目标后再继续。
 ```
 
 ### 模板：查询计划确认
 
 ```text
-### 查询计划确认（confirm | 确认请求）
-内容：
+### 查询计划确认（查找流程 | 请确认）
+说明：
 - 查询目标：{target_name_or_id}
 - 查询范围：{network_level | object_level | relation_level}
 - 查询方式：{name_pattern | exact_id}
@@ -78,8 +78,8 @@ kweaver bkn relation-type list <kn_id>
 ### 模板：查询结果回执
 
 ```text
-### 查询结果回执（report | 结果回显）
-内容：
+### 查询结果（查找流程 | 结果）
+说明：
 - 网络级：{network_summary}
 - 对象级：{object_summary}
 - 关系级：{relation_summary}
@@ -89,8 +89,8 @@ kweaver bkn relation-type list <kn_id>
 ### 模板：结果为空
 
 ```text
-### 查询结果为空（report | 风险提示）
-内容：
+### 查询结果为空（查找流程 | 风险提示）
+说明：
 - 可能原因：{possible_reason_1}；{possible_reason_2}
 - 已执行检索：{executed_query_scope}
 下一步：建议改用名称关键词、完整 `kn_id` 或扩大检索范围后重试。

@@ -25,8 +25,8 @@ kweaver auth delete <url|alias> [-y]           # 删除平台凭证
 ## 说明
 
 - `login` 支持两种方式：
-  - **OAuth2 授权码登录**（默认，平台支持时）：获取 `access_token` + `refresh_token`，**支持自动刷新**，token 过期时 CLI 自动用 refresh_token 换取新 token
-  - **Playwright cookie 登录**（回退方式）：通过 headless 浏览器提取 cookie token，**不支持自动刷新**，过期后需重新 `auth login`
+  - **OAuth2 授权码登录**（默认，平台支持时）：获取 `access_token` + `refresh_token`。**续期时的默认操作**是：用保存的 `refresh_token` 调用 OAuth2 `refresh_token` 授权换发新的 `access_token`（CLI / SDK 在 token 过期或临近过期时自动执行，无需手动开关）
+  - **Playwright cookie 登录**（回退方式）：通过 headless 浏览器提取 cookie token，通常**无** `refresh_token`，**不会**走上述换发，过期后需重新 `auth login`
 - Token 有效期 1 小时
 - 支持多平台，用 `--alias` 设置短名称方便切换
 - `--insecure` / `-k`：跳过 TLS 证书校验（仅用于自签名/内网 HTTPS）；会写入 `token.json`，后续 CLI 对该平台同样生效。生产环境请使用受信任证书

@@ -53,6 +53,12 @@
 
 补全结果必须在确认阶段分组回显，允许用户删除不采纳项。
 
+## 主键候选提示
+
+- 编码类：`customer_code`、`lead_code`、`opportunity_code`
+- 单据类：`quotation_no`、`contract_no`、`order_no`、`payment_no`
+- 人员类：`sales_rep_id`、`employee_id`
+
 ## 输出建议结构
 
 ```yaml

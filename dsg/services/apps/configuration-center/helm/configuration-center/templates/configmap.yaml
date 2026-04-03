@@ -38,7 +38,7 @@ data:
   DB_PORT: {{ .depServices.rds.port | quote}}
   DB_USERNAME: {{ .depServices.rds.user | quote }}
   DB_PASSWORD: {{ .depServices.rds.password | quote }}
-  DB_NAME: {{ .depServices.rds.database | quote }}
+  DB_NAME: "af_configuration"
   MQ_TYPE: {{ .depServices.mq.mqType | quote }}
   MQ_HOST: {{ .depServices.mq.mqHost| quote }}
   MQ_PORT: {{ .depServices.mq.mqPort | quote }}
