@@ -5,8 +5,7 @@ import {
   UpOutlined,
 } from '@ant-design/icons'
 import { Bubble, CodeHighlighter, Mermaid, Think, ThoughtChain } from '@ant-design/x'
-import XMarkdown, { type ComponentProps as MarkdownComponentProps } from '@ant-design/x-markdown'
-import '@ant-design/x-markdown/dist/x-markdown.css'
+import type { ComponentProps as MarkdownComponentProps } from '@ant-design/x-markdown'
 import { Button, Collapse, Tag, Tooltip } from 'antd'
 import clsx from 'clsx'
 import isEmpty from 'lodash/isEmpty'
@@ -15,6 +14,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import intl from 'react-intl-universal'
 import IconFont from '@/components/IconFont'
 import type { DipChatKitAnswerEvent, DipChatKitAnswerTimelineItem } from '../../../../types'
+import MarkdownRenderer from '../../../MarkdownRenderer'
 import MessageActions from '../MessageActions'
 import type { MessageAction } from '../MessageActions/types'
 import ArtifactMessageCard from './ArtifactMessageCard'
@@ -533,26 +533,6 @@ const AiAnswerBubble: React.FC<AiAnswerBubbleProps> = ({
   }, [onOpenPreview, turn.sessionKey])
 
   const toolCardMarkdownComponents = useMemo(() => {
-    const ToolCardCodeRenderer: React.FC<MarkdownComponentProps> = ({
-      children,
-      lang,
-      block,
-      className,
-    }) => {
-      const language = normalizeLanguage(lang)
-      const codeText = normalizeMarkdownText(children)
-
-      if (!block) {
-        return <code className={clsx(styles.inlineCode, className)}>{codeText}</code>
-      }
-
-      if (isMermaidLanguage(language)) {
-        return <Mermaid>{codeText}</Mermaid>
-      }
-
-      return <CodeHighlighter lang={language || 'text'}>{codeText}</CodeHighlighter>
-    }
-
     const ToolCardLinkRenderer: React.FC<MarkdownComponentProps> = ({
       children,
       className,
@@ -567,7 +547,6 @@ const AiAnswerBubble: React.FC<AiAnswerBubbleProps> = ({
     }
 
     return {
-      code: ToolCardCodeRenderer,
       a: ToolCardLinkRenderer,
     }
   }, [])
@@ -677,28 +656,28 @@ const AiAnswerBubble: React.FC<AiAnswerBubbleProps> = ({
           {showPreview && (
             <div className={styles.chatToolCardPreview}>
               {shouldRenderResultMarkdown ? (
-                <XMarkdown
+                <MarkdownRenderer
                   className={styles.toolCardMarkdown}
+                  variant="tool"
                   components={toolCardMarkdownComponents}
-                >
-                  {toolCard.text}
-                </XMarkdown>
+                  content={toolCard.text}
+                />
               ) : (
-                <pre>{toolCard.previewText}</pre>
+                <pre className={styles.chatToolCardPreviewText}>{toolCard.previewText}</pre>
               )}
             </div>
           )}
           {showInline && (
             <div className={styles.chatToolCardInline}>
               {shouldRenderResultMarkdown ? (
-                <XMarkdown
+                <MarkdownRenderer
                   className={styles.toolCardMarkdown}
+                  variant="tool"
                   components={toolCardMarkdownComponents}
-                >
-                  {toolCard.text}
-                </XMarkdown>
+                  content={toolCard.text}
+                />
               ) : (
-                <span>{toolCard.inlineText}</span>
+                <span className={styles.chatToolCardInlineText}>{toolCard.inlineText}</span>
               )}
             </div>
           )}
@@ -832,15 +811,21 @@ const AiAnswerBubble: React.FC<AiAnswerBubbleProps> = ({
             blink={turn.answerStreaming}
             defaultExpanded={false}
           >
-            <XMarkdown className={styles.thinkingMarkdown} components={markdownComponents}>
-              {thinkingText}
-            </XMarkdown>
+            <MarkdownRenderer
+              className={styles.thinkingMarkdown}
+              variant="thinking"
+              components={markdownComponents}
+              content={thinkingText}
+            />
           </Think>
         )}
         {!!answerText && (
-          <XMarkdown className={styles.markdownRoot} components={markdownComponents}>
-            {answerText}
-          </XMarkdown>
+          <MarkdownRenderer
+            className={styles.markdownRoot}
+            variant="answer"
+            components={markdownComponents}
+            content={answerText}
+          />
         )}
       </div>
     )

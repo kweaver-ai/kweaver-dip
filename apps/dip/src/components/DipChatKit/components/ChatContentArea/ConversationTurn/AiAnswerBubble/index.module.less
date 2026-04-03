@@ -11,97 +11,6 @@
 
 .markdownRoot {
   color: #101828;
-  line-height: 22px;
-
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    margin: 16px 0 10px;
-    color: #101828;
-    font-weight: 600;
-    line-height: 1.35;
-  }
-
-  h1 {
-    font-size: 24px;
-  }
-
-  h2 {
-    font-size: 20px;
-  }
-
-  h3 {
-    font-size: 18px;
-  }
-
-  h4 {
-    font-size: 16px;
-  }
-
-  h5 {
-    font-size: 14px;
-  }
-
-  h6 {
-    font-size: 13px;
-  }
-
-  h1:first-child,
-  h2:first-child,
-  h3:first-child,
-  h4:first-child,
-  h5:first-child,
-  h6:first-child {
-    margin-top: 0;
-  }
-
-  p {
-    margin: 0 0 10px;
-  }
-
-  p:last-child {
-    margin-bottom: 0;
-  }
-
-  ul,
-  ol {
-    margin: 0 0 10px;
-    padding-inline-start: 20px;
-  }
-
-  li + li {
-    margin-top: 2px;
-  }
-
-  pre {
-    margin: 10px 0;
-    overflow: auto;
-    border-radius: 8px;
-  }
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 10px 0;
-    background: #ffffff;
-  }
-
-  th,
-  td {
-    border: 1px solid #d0d5dd;
-    padding: 8px;
-    text-align: left;
-    vertical-align: top;
-  }
-
-  th {
-    background: #f2f4f7;
-    color: #344054;
-    font-weight: 500;
-  }
 }
 
 .streamingThought {
@@ -120,18 +29,6 @@
 
 .thinkingMarkdown {
   color: #475467;
-  font-size: 13px;
-  line-height: 20px;
-
-  :global {
-    p {
-      margin: 0 0 6px;
-    }
-
-    p:last-child {
-      margin-bottom: 0;
-    }
-  }
 }
 
 .inlineCode {
@@ -421,17 +318,16 @@
   padding: 8px 10px;
   background: #f2f4f7;
   border-radius: 6px;
-  white-space: pre-wrap;
   line-height: 1.4;
   border: 1px solid #eaecf0;
 }
 
-.chatToolCardPreview > pre {
+.chatToolCardPreviewText {
   margin: 0;
   font-size: inherit;
   line-height: inherit;
   white-space: pre-wrap;
-  word-break: break-word;
+  overflow-wrap: anywhere;
 }
 
 .chatToolCardInline {
@@ -441,65 +337,15 @@
   padding: 6px 8px;
   background: #f2f4f7;
   border-radius: 4px;
+}
+
+.chatToolCardInlineText {
   white-space: pre-wrap;
-  word-break: break-word;
+  overflow-wrap: anywhere;
 }
 
 .toolCardMarkdown {
   width: 100%;
-  font-size: inherit;
-  line-height: 1.45;
-  color: inherit;
-  word-break: break-word;
-  overflow-wrap: anywhere;
-
-  :global {
-    p,
-    ul,
-    ol,
-    pre {
-      margin: 0;
-    }
-
-    p + p,
-    p + pre,
-    pre + p,
-    ul + p,
-    ol + p {
-      margin-top: 6px;
-    }
-
-    ul,
-    ol {
-      padding-inline-start: 16px;
-    }
-
-    li + li {
-      margin-top: 2px;
-    }
-
-    pre {
-      padding: 6px 8px;
-      border: 1px solid #d0d5dd;
-      border-radius: 4px;
-      background: #f8f9fb;
-      font-size: 11px;
-      line-height: 1.4;
-      white-space: pre-wrap;
-    }
-
-    code {
-      font-size: 11px;
-      white-space: pre-wrap;
-      word-break: break-word;
-    }
-
-    pre code {
-      padding: 0;
-      border: none;
-      background: transparent;
-    }
-  }
 }
 
 .chatToolMsgCollapse {
