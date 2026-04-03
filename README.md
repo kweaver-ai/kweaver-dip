@@ -10,7 +10,7 @@
 
 KWeaver DIP is an AI-native platform for developing and managing digital employees. It builds an application stack for digital employees that is understandable, executable, and governable, centered on business knowledge networks.
 
-The platform is an enterprise digital employee platform built on the open-source projects **KWeaver Core** and **Openclaw**.
+The platform is an enterprise digital employee platform built on the **KWeaver Core** open-source project. You can build and use agents through decision agents on a business knowledge network, or build and use digital employees on top of **Openclaw**.
 
 ## Quick Links
 
