@@ -22,7 +22,7 @@ releases:
     version: 0.4.0-main.20260331.2
   dip-frontend:
     chart: dip-frontend
-    version: 0.4.0-main.1ccff2a
+    version: 0.4.0-main.51f13cb
   auth-service:
     chart: auth-service
     version: 0.4.0-main.20260402.1

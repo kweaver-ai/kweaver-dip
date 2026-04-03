@@ -10,6 +10,34 @@ This `deploy` directory is organized around `kweaver-dip` as the default product
 
 ## 🚀 Quick Start
 
+### OpenClaw requirements
+
+DIP Studio requires OpenClaw to be installed and running:
+
+1. Deploy [OpenClaw](https://openclaw.ai) first. The support version is `v2026.3.11`. You can also use the preparation notes in [kweaver-ai/dip-studio/studio/README.md](https://github.com/kweaver-ai/dip-studio/blob/main/studio/README.md).
+2. Start OpenClaw Gateway.
+3. Copy `gateway.auth.token` from `openclaw.json`, then run `openclaw gateway status` and record the gateway bind address and port.
+4. Run `openclaw config set gateway.http.endpoints.responses.enabled true` to enable the `POST /v1/responses` HTTP endpoint.
+5. Make sure the machine running `deploy.sh` can access the OpenClaw config file and workspace directory. If you want to preconfigure them, set `dipStudio.openClaw.configHostPath` and `dipStudio.openClaw.workspaceHostPath` in `deploy/conf/config.yaml` or in your custom config file.
+
+### Host prerequisites
+
+Run install commands as `root` or through `sudo`.
+
+```bash
+# 1. Disable firewall
+systemctl stop firewalld && systemctl disable firewalld
+
+# 2. Disable swap
+swapoff -a && sed -i '/ swap / s/^/#/' /etc/fstab
+
+# 3. Set SELinux to permissive if needed
+setenforce 0
+
+# 4. Install containerd.io
+dnf install containerd.io
+```
+
 ```bash
 # 1. Clone the repository
 git clone https://github.com/kweaver-ai/kweaver-dip.git
@@ -37,24 +65,6 @@ Initial password: `eisoo.com`
 | CPU | 16 cores | 24 cores |
 | Memory | 48 GB | 64 GB |
 | Disk | 200 GB | 500 GB |
-
-### Host prerequisites
-
-Run install commands as `root` or through `sudo`.
-
-```bash
-# 1. Disable firewall
-systemctl stop firewalld && systemctl disable firewalld
-
-# 2. Disable swap
-swapoff -a && sed -i '/ swap / s/^/#/' /etc/fstab
-
-# 3. Set SELinux to permissive if needed
-setenforce 0
-
-# 4. Install containerd.io
-dnf install containerd.io
-```
 
 ### Network requirements
 

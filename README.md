@@ -27,7 +27,7 @@ KWeaver DIP is an AI-native platform for developing and managing digital employe
 
 Before deploying KWeaver DIP, prepare OpenClaw first:
 
-1. Deploy [OpenClaw](https://openclaw.ai) first. The recommended version is `v2026.3.11`. You can also use the preparation notes in [kweaver-ai/dip-studio/studio/README.md](https://github.com/kweaver-ai/dip-studio/blob/main/studio/README.md).
+1. Deploy [OpenClaw](https://openclaw.ai) first. The support version is `v2026.3.11`. You can also use the preparation notes in [kweaver-ai/dip-studio/studio/README.md](https://github.com/kweaver-ai/dip-studio/blob/main/studio/README.md).
 2. Start OpenClaw Gateway.
 3. Copy `gateway.auth.token` from `openclaw.json`, then run `openclaw gateway status` and record the gateway bind address and port.
 4. Run `openclaw config set gateway.http.endpoints.responses.enabled true` to enable the `POST /v1/responses` HTTP endpoint.

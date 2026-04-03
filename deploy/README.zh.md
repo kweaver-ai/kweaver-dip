@@ -10,6 +10,34 @@
 
 ## 🚀 Quick Start
 
+### OpenClaw 要求
+
+DIP Studio 需要安装并运行 OpenClaw：
+
+1. 先部署 [OpenClaw](https://openclaw.ai)。支持的版本是 `v2026.3.11`。你也可以参考 [kweaver-ai/dip-studio/studio/README.md](https://github.com/kweaver-ai/dip-studio/blob/main/studio/README.md) 中的准备说明。
+2. 启动 OpenClaw Gateway。
+3. 从 `openclaw.json` 复制 `gateway.auth.token`，然后运行 `openclaw gateway status` 并记录网关绑定地址和端口。
+4. 运行 `openclaw config set gateway.http.endpoints.responses.enabled true` 来启用 `POST /v1/responses` HTTP 端点。
+5. 确保运行 `deploy.sh` 的机器可以访问 OpenClaw 配置文件和工作空间目录。如果要预配置，请在 `deploy/conf/config.yaml` 或你的自定义配置文件中设置 `dipStudio.openClaw.configHostPath` 和 `dipStudio.openClaw.workspaceHostPath`。
+
+### 主机前置条件
+
+安装命令需要以 `root` 用户执行，或通过 `sudo` 执行。
+
+```bash
+# 1. 关闭防火墙
+systemctl stop firewalld && systemctl disable firewalld
+
+# 2. 关闭 Swap
+swapoff -a && sed -i '/ swap / s/^/#/' /etc/fstab
+
+# 3. 调整 SELinux（脚本可处理，但建议预先设为宽松）
+setenforce 0
+
+# 4. 安装 containerd.io
+dnf install containerd.io
+```
+
 ```bash
 # 1. 克隆仓库
 git clone https://github.com/kweaver-ai/kweaver-dip.git
@@ -37,24 +65,6 @@ sudo ./deploy.sh kweaver-dip install
 | CPU | 16 核 | 24 核 |
 | 内存 | 48 GB | 64 GB |
 | 磁盘 | 200 GB | 500 GB |
-
-### 主机前置条件
-
-安装命令需要以 `root` 用户执行，或通过 `sudo` 执行。
-
-```bash
-# 1. 关闭防火墙
-systemctl stop firewalld && systemctl disable firewalld
-
-# 2. 关闭 Swap
-swapoff -a && sed -i '/ swap / s/^/#/' /etc/fstab
-
-# 3. 调整 SELinux（脚本可处理，但建议预先设为宽松）
-setenforce 0
-
-# 4. 安装 containerd.io
-dnf install containerd.io
-```
 
 ### 网络要求
 
