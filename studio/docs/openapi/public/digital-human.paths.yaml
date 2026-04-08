@@ -1,0 +1,218 @@
+openapi: 3.1.0
+
+info:
+  title: DIP Studio 公开接口
+  version: 0.1.0
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+
+security:
+  - BearerAuth: []
+
+servers:
+  - url: /api/dip-studio/v1
+  
+paths:
+  /digital-human/built-in:
+    get:
+      operationId: getBuiltInDigitalHumanList
+      summary: 获取预置数字员工模板列表
+      responses:
+        "200":
+          description: 预置数字员工模板列表
+          content:
+            application/json:
+              schema:
+                $ref: './digital-human.schemas.yaml#/components/schemas/BuiltInDigitalHumanList'
+        "401":
+          $ref: '../common.schemas.yaml#/errors/Unauthorized'
+        "403":
+          $ref: '../common.schemas.yaml#/errors/Forbidden'
+        "500":
+          $ref: '../common.schemas.yaml#/errors/InternalServerError'
+  /digital-human/built-in/{ids}:
+    put:
+      operationId: createBuiltInDigitalHuman
+      summary: 根据模板 ID 创建或更新预置数字员工
+      parameters:
+        - name: ids
+          in: path
+          required: true
+          description: 预置数字员工模板 ID，多个值使用英文逗号分隔
+          schema:
+            type: string
+      responses:
+        "201":
+          description: 创建或更新成功
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: './digital-human.schemas.yaml#/components/schemas/CreateDigitalHumanResponse'
+        "400":
+          $ref: '../common.schemas.yaml#/errors/InvalidParameter'
+        "401":
+          $ref: '../common.schemas.yaml#/errors/Unauthorized'
+        "403":
+          $ref: '../common.schemas.yaml#/errors/Forbidden'
+        "500":
+          $ref: '../common.schemas.yaml#/errors/InternalServerError'
+        "502":
+          $ref: '../common.schemas.yaml#/errors/BadGateway'
+
+  /digital-human:
+    get:
+      operationId: getDigitalHumanList
+      summary: 获取数字员工列表
+      responses:
+        "200":
+          description: 数字员工列表
+          content:
+            application/json:
+              schema:
+                $ref: './digital-human.schemas.yaml#/components/schemas/DigitalHumanList'
+        "400":
+          $ref: '../common.schemas.yaml#/errors/InvalidParameter'
+        "401":
+          $ref: '../common.schemas.yaml#/errors/Unauthorized'
+        "403":
+          $ref: '../common.schemas.yaml#/errors/Forbidden'
+        "404":
+          $ref: '../common.schemas.yaml#/errors/NotFound'
+        "409":
+          $ref: '../common.schemas.yaml#/errors/Conflict'
+        "502":
+          $ref: '../common.schemas.yaml#/errors/BadGateway'
+        "500":
+          $ref: '../common.schemas.yaml#/errors/InternalServerError'
+    post:
+      operationId: createDigitalHuman
+      summary: 创建数字员工
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './digital-human.schemas.yaml#/components/schemas/CreateDigitalHumanRequest'
+      responses:
+        "201":
+          description: 创建成功
+          content:
+            application/json:
+              schema:
+                $ref: './digital-human.schemas.yaml#/components/schemas/CreateDigitalHumanResponse'
+        "400":
+          $ref: '../common.schemas.yaml#/errors/InvalidParameter'
+        "401":
+          $ref: '../common.schemas.yaml#/errors/Unauthorized'
+        "403":
+          $ref: '../common.schemas.yaml#/errors/Forbidden'
+        "404":
+          $ref: '../common.schemas.yaml#/errors/NotFound'
+        "409":
+          $ref: '../common.schemas.yaml#/errors/Conflict'
+        "502":
+          $ref: '../common.schemas.yaml#/errors/BadGateway'
+        "500":
+          $ref: '../common.schemas.yaml#/errors/InternalServerError'
+
+  /digital-human/{id}:
+    get:
+      operationId: getDigitalHumanDetail
+      summary: 获取单个数字员工详情
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: 数字员工 ID（与 OpenClaw agent id 一致）
+          schema:
+            type: string
+      responses:
+        "200":
+          description: 详情
+          content:
+            application/json:
+              schema:
+                $ref: './digital-human.schemas.yaml#/components/schemas/DigitalHumanDetail'
+        "400":
+          $ref: '../common.schemas.yaml#/errors/InvalidParameter'
+        "401":
+          $ref: '../common.schemas.yaml#/errors/Unauthorized'
+        "403":
+          $ref: '../common.schemas.yaml#/errors/Forbidden'
+        "404":
+          $ref: '../common.schemas.yaml#/errors/NotFound'
+        "502":
+          $ref: '../common.schemas.yaml#/errors/BadGateway'
+        "500":
+          $ref: '../common.schemas.yaml#/errors/InternalServerError'
+    put:
+      operationId: updateDigitalHuman
+      summary: 更新数字员工（部分字段）
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './digital-human.schemas.yaml#/components/schemas/UpdateDigitalHumanRequest'
+      responses:
+        "200":
+          description: 更新后的数字员工
+          content:
+            application/json:
+              schema:
+                $ref: './digital-human.schemas.yaml#/components/schemas/UpdateDigitalHumanResponse'
+        "400":
+          $ref: '../common.schemas.yaml#/errors/InvalidParameter'
+        "401":
+          $ref: '../common.schemas.yaml#/errors/Unauthorized'
+        "403":
+          $ref: '../common.schemas.yaml#/errors/Forbidden'
+        "404":
+          $ref: '../common.schemas.yaml#/errors/NotFound'
+        "502":
+          $ref: '../common.schemas.yaml#/errors/BadGateway'
+        "500":
+          $ref: '../common.schemas.yaml#/errors/InternalServerError'
+    delete:
+      operationId: deleteDigitalHuman
+      summary: 删除数字员工
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: deleteFiles
+          in: query
+          required: false
+          description: 是否删除工作区文件（默认 true）；传 false 保留仅删除 agent 配置
+          schema:
+            type: string
+            enum: ["true", "false"]
+      responses:
+        "204":
+          description: 删除成功，无响应体
+        "400":
+          $ref: '../common.schemas.yaml#/errors/InvalidParameter'
+        "401":
+          $ref: '../common.schemas.yaml#/errors/Unauthorized'
+        "403":
+          $ref: '../common.schemas.yaml#/errors/Forbidden'
+        "404":
+          $ref: '../common.schemas.yaml#/errors/NotFound'
+        "502":
+          $ref: '../common.schemas.yaml#/errors/BadGateway'
+        "500":
+          $ref: '../common.schemas.yaml#/errors/InternalServerError'

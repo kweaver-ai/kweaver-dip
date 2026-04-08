@@ -1,0 +1,198 @@
+paths:
+  agents:
+    image:
+      put:
+        tags:
+          - 安装部署
+        summary: 上传镜像
+        description: 上传镜像文件，格式仅支持 oci-archive，也就是符合 oci 布局的 tar 文件
+        requestBody:
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+          required: true
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    images:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          from:
+                            type: string
+                            title: 镜像原始名
+                          to:
+                            type: string
+                            title: 镜像最终名
+                        required:
+                          - from
+                          - to
+                      title: 上传的镜像列表
+                  required:
+                    - images
+          '500':
+            content:
+              application/json:
+                schema:
+                  $ref: './deploy-installer.schemas.yaml#/components/schemas/InternalError'
+    chart:
+      put:
+        tags:
+          - 安装部署
+        summary: 上传Chart
+        description: 上传Chart文件，仅支持标准helm chart (v2) 文件
+        requestBody:
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+          required: true
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    chart:
+                      $ref: './deploy-installer.schemas.yaml#/components/schemas/ChartInfo'
+                    values:
+                      type: object
+                      title: Chart默认值
+                  required:
+                    - chart
+                    - values
+          '500':
+            content:
+              application/json:
+                schema:
+                  $ref: './deploy-installer.schemas.yaml#/components/schemas/InternalError'
+    releases:
+      post:
+        tags:
+          - 安装部署
+        summary: 应用实例（安装/更新）
+        description: |-
+          chart要求能够使用此结构配置镜像仓库地址
+          ```yaml
+          image:
+            registry: docker.io
+          ```
+        parameters:
+          - name: release-name
+            in: path
+            description: 实例名
+            required: true
+            example: demo
+            schema:
+              type: string
+          - name: namespace
+            in: query
+            description: 实例所在命名空间
+            required: true
+            example: anyshare
+            schema:
+              type: string
+          - name: set-registry
+            in: query
+            description: 是否配置镜像仓库地址：默认配置
+            required: false
+            example: 'true'
+            schema:
+              type: boolean
+        requestBody:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    title: Chart名
+                  version:
+                    type: string
+                    title: Chart版本
+                  values:
+                    type: object
+                    properties: {}
+                    title: 配置
+                required:
+                  - name
+                  - version
+                  - values
+              examples: {}
+          required: true
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    values:
+                      type: object
+                      properties: {}
+                      title: 当前配置
+                  required:
+                    - values
+          '400':
+            content:
+              application/json:
+                schema:
+                  $ref: './deploy-installer.schemas.yaml#/components/schemas/ParameterError'
+          '500':
+            content:
+              application/json:
+                schema:
+                  $ref: './deploy-installer.schemas.yaml#/components/schemas/InternalError'
+      delete:
+        tags:
+          - 安装部署
+        summary: 删除实例
+        description: ''
+        parameters:
+          - name: release-name
+            in: path
+            description: 实例名
+            required: true
+            example: demo
+            schema:
+              type: string
+          - name: namespace
+            in: query
+            description: 实例所在命名空间
+            required: true
+            schema:
+              type: string
+        responses:
+          '200':
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    values:
+                      type: object
+                      properties: {}
+                      title: 配置
+                      description: 实例最终配置值
+                  required:
+                    - values
+          '400':
+            content:
+              application/json:
+                schema:
+                  $ref: './deploy-installer.schemas.yaml#/components/schemas/ParameterError'
+          '500':
+            content:
+              application/json:
+                schema:
+                  $ref: './deploy-installer.schemas.yaml#/components/schemas/InternalError'

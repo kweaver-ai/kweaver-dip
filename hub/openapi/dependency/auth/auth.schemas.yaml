@@ -1,0 +1,776 @@
+components:
+  schemas:
+    Error:
+      description: 接口调用错误信息结构基类
+      type: object
+      required:
+        - code
+        - description
+      properties:
+        code:
+          description: 业务错误码
+          type: string
+        description:
+          description: 错误描述
+          type: string
+        solution:
+          description: 错误处理建议
+          type: string
+        detail:
+          description: 错误辅助信息
+          type: object
+        link:
+          description: 错误信息地址
+          type: string
+
+    ResourceTypeInfo:
+      description: 资源类型信息
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          description: 资源类型名称
+          type: string
+        instance_url:
+          description: 资源实例URL
+          type: string
+        data_struct:
+          description: 资源类型数据结构
+          type: string
+        operation:
+          $ref: '#/components/schemas/ResourceTypeOperation'
+
+    GetResourceTypeInfo:
+      description: 获取资源类型信息响应
+      type: object
+      properties:
+        id:
+          description: 资源类型唯一标识
+          type: string
+        name:
+          description: 资源类型名称
+          type: string
+        instance_url:
+          description: 资源实例URL
+          type: string
+        data_struct:
+          description: 资源类型数据结构
+          type: string
+        operation:
+          $ref: '#/components/schemas/ResourceTypeOperation'
+
+    ListResourceTypeInfo:
+      description: 资源类型列表
+      type: object
+      required:
+        - entries
+        - total_count
+      properties:
+        entries:
+          description: 资源类型条目列表
+          type: array
+          items:
+            $ref: '#/components/schemas/GetResourceTypeInfo'
+        total_count:
+          format: int64
+          description: 总条目数
+          type: integer
+
+    ResourceTypeOperation:
+      description: 资源类型操作
+      type: object
+      properties:
+        type:
+          description: 资源类型操作
+          type: array
+          items:
+            $ref: '#/components/schemas/OperationInfo'
+        instance:
+          description: 资源实例操作
+          type: array
+          items:
+            $ref: '#/components/schemas/OperationInfo'
+
+    OperationInfo:
+      description: 操作信息
+      type: object
+      properties:
+        id:
+          description: 操作唯一ID
+          type: string
+        name:
+          description: 操作名称
+          type: string
+        description:
+          description: 操作描述
+          type: string
+
+    ResourceTypeOperationArray:
+      description: 资源类型操作数组
+      type: array
+      items:
+        $ref: '#/components/schemas/OperationInfo'
+
+    Roles:
+      description: 角色列表
+      type: object
+      required:
+        - entries
+        - total_count
+      properties:
+        entries:
+          description: 角色条目列表
+          type: array
+          items:
+            $ref: '#/components/schemas/Role'
+        total_count:
+          format: int64
+          description: 总条目数
+          type: integer
+
+    Role:
+      description: 角色信息
+      type: object
+      required:
+        - id
+        - name
+        - source
+        - description
+        - resource_type_scope
+      properties:
+        id:
+          description: 角色唯一标识
+          type: string
+        name:
+          description: 角色名称
+          type: string
+        source:
+          description: 角色来源
+          enum:
+            - system
+            - business
+            - user
+          type: string
+        description:
+          description: 描述
+          type: string
+        resource_type_scope:
+          $ref: '#/components/schemas/ResourceTypeScope'
+
+    ResourceTypeScope:
+      description: 资源类型范围
+      type: object
+      required:
+        - unlimited
+        - types
+      properties:
+        unlimited:
+          description: 是否无限制
+          type: boolean
+        types:
+          description: 资源类型列表
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                description: 资源类型唯一标识
+                type: string
+              name:
+                description: 资源类型名称
+                type: string
+
+    RoleWithResourceInfo:
+      description: 包含资源信息的角色
+      type: object
+      required:
+        - id
+        - name
+        - source
+        - description
+        - resource_type_scope
+      properties:
+        id:
+          description: 角色唯一标识
+          type: string
+        name:
+          description: 角色名称
+          type: string
+        source:
+          description: 角色来源
+          enum:
+            - system
+            - business
+            - user
+          type: string
+        description:
+          description: 描述
+          type: string
+        resource_type_scope:
+          description: 资源类型范围
+          type: object
+          properties:
+            unlimited:
+              description: 是否无限制
+              type: boolean
+            types:
+              description: 资源类型范围
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    description: 资源类型唯一标识
+                    type: string
+                  name:
+                    description: 资源类型名称
+                    type: string
+                  instance_url:
+                    description: 资源实例URL
+                    type: string
+                  data_struct:
+                    description: 资源类型数据结构
+                    type: string
+                  operation:
+                    $ref: '#/components/schemas/ResourceTypeOperation'
+
+    CreateRoleInfo:
+      description: 创建角色信息
+      type: object
+      required:
+        - name
+        - resource_type_scope
+      properties:
+        name:
+          description: 角色名称
+          type: string
+        description:
+          description: 描述
+          type: string
+        resource_type_scope:
+          description: 资源类型范围
+          type: object
+          required:
+            - unlimited
+          properties:
+            unlimited:
+              description: 是否无限制
+              type: boolean
+            types:
+              description: 资源类型列表
+              type: array
+              items:
+                type: object
+                required:
+                  - id
+                properties:
+                  id:
+                    description: 资源类型唯一标识
+                    type: string
+
+    RoleIDInfo:
+      description: 角色ID信息
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          description: 角色唯一标识
+          type: string
+
+    RoleInfoNoRequired:
+      description: 非必填的角色信息
+      type: object
+      properties:
+        name:
+          description: 角色名称
+          type: string
+        description:
+          description: 描述
+          type: string
+        resource_type_scope:
+          description: 资源类型范围
+          type: object
+          properties:
+            unlimited:
+              description: 是否无限制
+              type: boolean
+            types:
+              description: 资源类型列表
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    description: 资源类型唯一标识
+                    type: string
+
+    ResourceTypeRoles:
+      description: 资源类型角色列表
+      type: object
+      required:
+        - entries
+        - total_count
+      properties:
+        entries:
+          description: 角色条目列表
+          type: array
+          items:
+            $ref: '#/components/schemas/ResourceTypeRole'
+        total_count:
+          format: int64
+          description: 总条目数
+          type: integer
+
+    ResourceTypeRole:
+      description: 角色信息
+      type: object
+      required:
+        - id
+        - name
+        - description
+      properties:
+        id:
+          description: 角色唯一标识
+          type: string
+        name:
+          description: 角色名称
+          type: string
+        description:
+          description: 描述
+          type: string
+
+    MemberInfos:
+      description: 成员信息列表
+      type: object
+      required:
+        - entries
+        - total_count
+      properties:
+        entries:
+          description: 成员条目列表
+          type: array
+          items:
+            $ref: '#/components/schemas/MemberInfo'
+        total_count:
+          format: int64
+          description: 总条目数
+          type: integer
+
+    MemberInfo:
+      description: 成员信息
+      type: object
+      properties:
+        id:
+          description: 成员唯一标识
+          type: string
+        name:
+          description: 成员名称
+          type: string
+        type:
+          description: 成员类型
+          enum:
+            - user
+            - department
+            - group
+            - app
+          type: string
+
+    MemberRelations:
+      description: 成员关系信息
+      type: object
+      required:
+        - method
+        - members
+      properties:
+        method:
+          description: 方法名
+          enum:
+            - POST
+            - DELETE
+          type: string
+        members:
+          description: 成员信息
+          type: array
+          items:
+            $ref: '#/components/schemas/MemberRelation'
+
+    MemberRelation:
+      description: 成员关系
+      type: object
+      required:
+        - id
+        - type
+      properties:
+        id:
+          description: 成员唯一标识
+          type: string
+        type:
+          description: 成员类型
+          enum:
+            - user
+            - department
+            - group
+            - app
+          type: string
+
+    ListPolicyInfo:
+      description: 策略列表
+      type: object
+      required:
+        - entries
+        - total_count
+      properties:
+        entries:
+          description: 策略条目列表
+          type: array
+          items:
+            $ref: '#/components/schemas/PolicyInfo'
+        total_count:
+          format: int64
+          description: 总条目数
+          type: integer
+
+    PolicyInfo:
+      description: 策略信息
+      type: object
+      properties:
+        id:
+          description: 策略唯一标识
+          type: string
+        accessor:
+          $ref: '#/components/schemas/AccessorInfo'
+        effect:
+          description: 策略效果
+          enum:
+            - allow
+            - deny
+          type: string
+        operations:
+          description: 操作列表
+          type: array
+          items:
+            type: string
+
+    AccessorInfo:
+      description: 访问者信息
+      type: object
+      properties:
+        id:
+          description: 访问者唯一标识
+          type: string
+        name:
+          description: 访问者名称
+          type: string
+        type:
+          description: 访问者类型
+          enum:
+            - user
+            - department
+            - group
+            - role
+            - app
+          type: string
+
+    CreatePolicyInfos:
+      description: 创建策略信息
+      type: object
+      required:
+        - resource_id
+        - resource_type
+        - policies
+      properties:
+        resource_id:
+          description: 资源唯一标识
+          type: string
+        resource_type:
+          description: 资源类型
+          type: string
+        policies:
+          description: 策略列表
+          type: array
+          items:
+            $ref: '#/components/schemas/CreatePolicyItem'
+
+    CreatePolicyItem:
+      description: 创建策略项
+      type: object
+      required:
+        - accessor
+        - effect
+        - operations
+      properties:
+        accessor:
+          $ref: '#/components/schemas/AccessorRef'
+        effect:
+          description: 策略效果
+          enum:
+            - allow
+            - deny
+          type: string
+        operations:
+          description: 操作列表
+          type: array
+          items:
+            type: string
+
+    AccessorRef:
+      description: 访问者引用
+      type: object
+      required:
+        - id
+        - type
+      properties:
+        id:
+          description: 访问者唯一标识
+          type: string
+        type:
+          description: 访问者类型
+          enum:
+            - user
+            - department
+            - group
+            - role
+            - app
+          type: string
+
+    PolicyIDInfos:
+      description: 策略ID信息
+      type: object
+      required:
+        - ids
+      properties:
+        ids:
+          description: 策略唯一标识列表
+          type: array
+          items:
+            type: string
+
+    UpdatePolicyInfos:
+      description: 更新策略信息
+      type: object
+      required:
+        - policies
+      properties:
+        policies:
+          description: 策略列表
+          type: array
+          items:
+            $ref: '#/components/schemas/UpdatePolicyItem'
+
+    UpdatePolicyItem:
+      description: 更新策略项
+      type: object
+      properties:
+        effect:
+          description: 策略效果
+          enum:
+            - allow
+            - deny
+          type: string
+        operations:
+          description: 操作列表
+          type: array
+          items:
+            type: string
+
+    ListResourcePolicyInfo:
+      description: 资源策略列表
+      type: object
+      required:
+        - entries
+        - total_count
+      properties:
+        entries:
+          description: 策略条目列表
+          type: array
+          items:
+            $ref: '#/components/schemas/ResourcePolicyInfo'
+        total_count:
+          format: int64
+          description: 总条目数
+          type: integer
+
+    ResourcePolicyInfo:
+      description: 资源策略信息
+      type: object
+      properties:
+        id:
+          description: 策略唯一标识
+          type: string
+        accessor:
+          $ref: '#/components/schemas/AccessorInfo'
+        effect:
+          description: 策略效果
+          type: string
+        operations:
+          description: 操作列表
+          type: array
+          items:
+            type: string
+
+    ListAccessorPolicyInfo:
+      description: 访问者策略列表
+      type: object
+      required:
+        - entries
+        - total_count
+      properties:
+        entries:
+          description: 策略条目列表
+          type: array
+          items:
+            $ref: '#/components/schemas/AccessorPolicyInfo'
+        total_count:
+          format: int64
+          description: 总条目数
+          type: integer
+
+    AccessorPolicyInfo:
+      description: 访问者策略信息
+      type: object
+      properties:
+        id:
+          description: 策略唯一标识
+          type: string
+        resource_id:
+          description: 资源唯一标识
+          type: string
+        resource_type:
+          description: 资源类型
+          type: string
+        effect:
+          description: 策略效果
+          type: string
+        operations:
+          description: 操作列表
+          type: array
+          items:
+            type: string
+
+    CheckReq:
+      description: 决策请求
+      type: object
+      required:
+        - accessor
+        - resource
+        - operation
+      properties:
+        accessor:
+          $ref: '#/components/schemas/AccessorRef'
+        resource:
+          $ref: '#/components/schemas/ResourceRef'
+        operation:
+          description: 操作ID
+          type: string
+
+    ResourceRef:
+      description: 资源引用
+      type: object
+      required:
+        - id
+        - type
+      properties:
+        id:
+          description: 资源唯一标识
+          type: string
+        type:
+          description: 资源类型
+          type: string
+
+    CheckResult:
+      description: 决策结果
+      type: object
+      required:
+        - allowed
+      properties:
+        allowed:
+          description: 是否允许
+          type: boolean
+
+    ResourceOperationReq:
+      description: 资源操作请求
+      type: object
+      required:
+        - accessor
+        - resources
+      properties:
+        accessor:
+          $ref: '#/components/schemas/AccessorRef'
+        resources:
+          description: 资源列表
+          type: array
+          items:
+            $ref: '#/components/schemas/ResourceRef'
+
+    ResourceOperationResult:
+      description: 资源操作结果
+      type: object
+      properties:
+        resources:
+          description: 资源操作列表
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                description: 资源唯一标识
+                type: string
+              type:
+                description: 资源类型
+                type: string
+              operations:
+                description: 可执行操作列表
+                type: array
+                items:
+                  type: string
+
+    ResourceTypeOperationReq:
+      description: 资源类型操作请求
+      type: object
+      required:
+        - accessor
+        - resource_types
+      properties:
+        accessor:
+          $ref: '#/components/schemas/AccessorRef'
+        resource_types:
+          description: 资源类型列表
+          type: array
+          items:
+            type: string
+
+    ResourceTypeOperationResult:
+      description: 资源类型操作结果
+      type: object
+      properties:
+        resource_types:
+          description: 资源类型操作列表
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                description: 资源类型
+                type: string
+              operations:
+                description: 可执行操作列表
+                type: array
+                items:
+                  type: string
+
+  responses:
+    RespStd400:
+      description: 请求参数错误
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    RespStd500:
+      description: 服务器内部错误
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'

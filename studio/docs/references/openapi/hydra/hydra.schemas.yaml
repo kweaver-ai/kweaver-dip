@@ -1,0 +1,137 @@
+components:
+  schemas:
+    Err:
+      title: 错误响应
+      description: 错误响应结构
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          description: 错误名称
+          type: string
+        error_description:
+          description: 描述包含有关错误性质的更多信息
+          type: string
+        error_hint:
+          description: 提示以帮助解决该错误
+          type: string
+        status_code:
+          format: int64
+          description: 错误状态代码
+          type: integer
+
+    IntrospectToken:
+      description: 令牌内省请求
+      type: object
+      required:
+        - token
+      properties:
+        token:
+          description: 令牌
+          type: string
+        scope:
+          description: 令牌拥有的权限。选择填写此参数时，如果参数值是令牌拥有权限的子集，内省将返回令牌附带信息，否则将返回令牌失效。它的值是以空格分隔的字符串。
+          type: string
+
+    OKTokenIntrospection:
+      title: 令牌内省响应
+      type: object
+      properties:
+        active:
+          description: 令牌是否活跃
+          type: boolean
+        scope:
+          description: 令牌的范围（空格分隔的列表）
+          type: string
+        client_id:
+          description: 请求此令牌的OAuth 2.0客户端标识符
+          type: string
+        sub:
+          description: 授权此令牌的资源所有者的机器可读标识符
+          type: string
+        exp:
+          format: int64
+          description: 令牌过期时间（Unix时间戳）
+          type: integer
+        iat:
+          format: int64
+          description: 令牌发布时间（Unix时间戳）
+          type: integer
+        aud:
+          description: 令牌的目标受众列表
+          type: array
+          items:
+            type: string
+        iss:
+          description: 令牌发行者
+          type: string
+        token_type:
+          description: 令牌类型（access_token或refresh_token）
+          type: string
+        ext:
+          $ref: '#/components/schemas/Ext'
+        username:
+          description: 资源所有者的可读标识符
+          type: string
+
+    Ext:
+      description: 会话设置的任意数据
+      type: object
+      properties:
+        account_type:
+          description: 登录账号类型
+          enum:
+            - id_card
+            - other
+          type: string
+        client_type:
+          description: 设备类型
+          enum:
+            - unknown
+            - ios
+            - android
+            - windows_phone
+            - windows
+            - mac_os
+            - web
+            - mobile_web
+            - console_web
+            - deploy_web
+            - linux
+          type: string
+        login_ip:
+          description: 登录IP
+          type: string
+        udid:
+          description: 设备ID
+          type: string
+        visitor_type:
+          description: 访问者类型
+          enum:
+            - realname
+            - anonymous
+          type: string
+      additionalProperties: true
+
+  responses:
+    StatusCode200TokenIntrospection:
+      description: 令牌内省成功
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OKTokenIntrospection'
+
+    Unauthorized:
+      description: 未授权
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Err'
+
+    InternalServerError:
+      description: 服务器内部错误
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Err'

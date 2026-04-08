@@ -1,0 +1,972 @@
+paths:
+    
+  /mdl-data-model/v1/metric-model-groups:
+    get:
+      tags:
+        - 数据模型管理
+      parameters:
+      - name: sort
+        description: 排序类型，默认是group_name
+        schema:
+          enum:
+          - group_name
+          type: string
+        in: query
+      - name: direction
+        description: '排序结果方向，可选asc、desc。
+          默认asc'
+        schema:
+          enum:
+          - asc
+          - desc
+          type: string
+        in: query
+      - name: offset
+        description: "开始响应的项目的偏移量\t\n范围需大于等于0，默认值0"
+        schema:
+          format: int64
+          type: integer
+        in: query
+      - name: limit
+        description: '每页最多可返回的项目数；
+
+          分页可选1-1000，-1表示不分页；
+
+          默认值10'
+        schema:
+          format: int64
+          type: integer
+        in: query
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: ./mdl-data-model.schemas.yaml#/components/schemas/ListGroupWithCount
+              examples:
+                exp1:
+                  value:
+                    entries:
+                    - id: '111'
+                      name: 系统
+                      metric_model_count: 51
+                      comment: some text
+                      update_time: '2022-11-24 17:06:43'
+                    - id: '81'
+                      name: some text
+                      metric_model_count: 35
+                      comment: some text
+                      update_time: 1748398506313
+                    total_count: 2
+          description: 查询分组列表成功
+        '400':
+          $ref: ./mdl-data-model.schemas.yaml#/components/responses/400BadRequest
+        '500':
+          $ref: ./mdl-data-model.schemas.yaml#/components/responses/500GroupInternalError
+      summary: 查询分组列表
+    post:
+      tags:
+        - 数据模型管理
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: ./mdl-data-model.schemas.yaml#/components/schemas/ReqCreateGroup
+            examples:
+              创建分组:
+                value:
+                  name: some text
+                  comment: some text
+        required: true
+      responses:
+        '201':
+          headers:
+            Location:
+              schema:
+                format: uri
+                type: string
+              description: '`/api/data-model/v1/metric-models-groups/{group_id}`'
+          content:
+            application/json:
+              schema:
+                $ref: ./mdl-data-model.schemas.yaml#/components/schemas/GroupID
+              examples:
+                新建分组的Id:
+                  value:
+                    id: '76'
+          description: 创建成功
+        '400':
+          $ref: ./mdl-data-model.schemas.yaml#/components/responses/400BadRequestGroup
+        '500':
+          $ref: ./mdl-data-model.schemas.yaml#/components/responses/500GroupInternalError
+      summary: 创建分组
+      description: ''
+  /mdl-data-model/v1/metric-model-groups/{group_id}:
+    put:
+      tags:
+        - 数据模型管理
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: ./mdl-data-model.schemas.yaml#/components/schemas/ReqGroup
+            examples:
+              exp:
+                value:
+                  name: some text
+                  comment: some text
+        required: true
+      responses:
+        '204':
+          description: 修改成功
+        '400':
+          $ref: ./mdl-data-model.schemas.yaml#/components/responses/400BadRequestGroup
+        '404':
+          $ref: ./mdl-data-model.schemas.yaml#/components/responses/404GroupNotFound
+        '500':
+          $ref: ./mdl-data-model.schemas.yaml#/components/responses/500GroupInternalError
+      summary: 修改分组
+      description: 修改分组
+    delete:
+      tags:
+        - 数据模型管理
+      parameters:
+      - name: force
+        description: 'force为false时，若分组内有指标模型就禁止删除，若没有就删除分组;
+
+          force为true时，同时删除分组内的所有指标模型;
+
+          默认为false；'
+        schema:
+          type: boolean
+        in: query
+        required: false
+      responses:
+        '204':
+          description: 删除成功
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: ./mdl-data-model.schemas.yaml#/components/schemas/Error
+              examples:
+                无效的force参数:
+                  value:
+                    error_code: MetricModelGroup.InvalidParameter.Force
+                    error_detail: some text
+                    error_link: some text
+                    description: some text
+                    solution: some text
+          description: 参数错误
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: ./mdl-data-model.schemas.yaml#/components/schemas/Error
+              examples:
+                分组不为空，禁止删除:
+                  value:
+                    description: some text
+                    error_code: DataModel_MetricModelGroup_GroupNotEmpty
+                    error_detail: some text
+                    error_link: some text
+                    solution: some text
+          description: 禁止删除
+        '404':
+          $ref: ./mdl-data-model.schemas.yaml#/components/responses/404GroupNotFound
+        '500':
+          $ref: ./mdl-data-model.schemas.yaml#/components/responses/500GroupInternalError
+      summary: 删除分组
+    parameters:
+    - name: group_id
+      description: 分组ID
+      schema:
+        type: string
+      in: path
+      required: true
+  /mdl-data-model/v1/metric-model-groups/{group_name}/metric-models/{model_name}:
+    get:
+      tags:
+        - 数据模型管理
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: ./mdl-data-model.schemas.yaml#/components/schemas/DataMetricModelDetail
+              examples:
+                exp:
+                  value:
+                    id: 72
+                    name: some text
+                    measure_name: __m.aaa
+                    metric_type: atomic
+                    data_view_id: some text
+                    data_view_name: some text
+                    data_view:
+                      indices:
+                      - some text
+                      - some text
+                      must_filters: some text
+                      fields:
+                        '@timestamp': date
+                        '@version': text
+                    query_type: promql
+                    formula: avg(irate(node_cpu_seconds_total{name=~"node-14-35",mode="system"}[5m]))by(name)
+                    date_field: '@timestamp'
+                    date_format: epoch_millis
+                    measure_field: value
+                    unit_type: storeUnit
+                    unit: Mbps
+                    custom_attribute: {}
+                    comment: some text
+                    update_time: some text
+                    group_id: 111
+                    group_name: 分组111
+                    calendar_persist:
+                      is_open: true
+                      index_base: some text
+                    task:
+                      id: 93
+                      name: task1
+                      model_id: 73
+                      schedule:
+                        time_type: FIX_RATE
+                        frequency: 5m
+                      variables: {}
+                      steps:
+                      - 5m
+                      index_base: indexbasetype1
+                      index_base_name: indexbasename1
+                      retrace_duration: 10d
+                      comment: some text
+                      task_schedule_id: '12333'
+                      schedule_status: ok
+                      schedule_sync_status: 完成
+          description: 查询成功
+        '400':
+          $ref: ./mdl-data-model.schemas.yaml#/components/responses/400BadRequest
+        '500':
+          $ref: ./mdl-data-model.schemas.yaml#/components/responses/500InternalError
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: ./mdl-data-model.schemas.yaml#/components/schemas/Error
+              examples:
+                metric_model_not_found:
+                  value:
+                    description: ''
+                    error_code: MetricModel.MetricModelNotFound
+                    error_detail: some text
+                    error_link: some text
+                    solution: some text
+          description: 未找到
+      summary: 根据名称获取指标模型对象信息
+    parameters:
+    - name: group_name
+      description: 分组名称，若要查询默认分组下的模型，group_name应传空字符串
+      schema:
+        type: string
+      in: path
+      required: true
+    - name: model_name
+      description: 指标模型名称
+      schema:
+        type: string
+      in: path
+      required: true
+  /mdl-data-model/v1/metric-models:
+    get:
+      tags:
+        - 数据模型管理
+      parameters:
+      - name: name_pattern
+        description: 根据指标模型名称模糊查询，默认为空. 与 name 不能同时存在
+        schema:
+          type: string
+        in: query
+      - name: name
+        description: 根据指标模型名称精确过滤，默认为空.与 name_pattern 不能同时存在(Deprecated )
+        schema:
+          type: string
+        in: query
+      - name: metric_type
+        description: 指标类型，默认为空
+        schema:
+          enum:
+          - atomic
+          - complex
+          type: string
+        in: query
+      - name: query_type
+        description: 指标查询语言，默认为空
+        schema:
+          enum:
+          - promql
+          - dsl
+          type: string
+        in: query
+      - name: sort
+        description: 排序类型，默认是update_time
+        schema:
+          enum:
+          - update_time
+          - model_name
+          - group_name
+          type: string
+        in: query
+      - name: direction
+        description: '排序结果方向，可选asc、desc。
+
+          默认desc'
+        schema:
+          enum:
+          - asc
+          - desc
+          type: string
+        in: query
+      - name: offset
+        description: "开始响应的项目的偏移量\t\n范围需大于等于0，默认值0"
+        schema:
+          format: int64
+          type: integer
+        in: query
+      - name: limit
+        description: '每页最多可返回的项目数；
+
+          分页可选1-1000，-1表示不分页；
+
+          默认值10'
+        schema:
+          format: int64
+          type: integer
+        in: query
+      - name: simple_info
+        description: 是否查询指标模型简单信息；true表示查询指标模型部分字段（id,name,tags,metric_type,query_type,update_time）；flase表示查询返回指标模型所有字段信息；默认值flase。（可接受
+          1, t, T, TRUE, true, True, 0, f, F, FALSE, false, False）
+        schema:
+          type: boolean
+        in: query
+      - name: tag
+        description: 根据指标模型标签精准查询，默认为空.
+        schema:
+          type: string
+        in: query
+        required: false
+      - name: group_id
+        description: 分组ID，查询该分组内指标模型，可以不填，不填则查询所有指标模型；
+        schema:
+          type: integer
+        in: query
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: ./mdl-data-model.schemas.yaml#/components/schemas/ListMetricModels
+              examples:
+                list_metric_models:
+                  value:
+                    entries:
+                    - id: '86'
+                      name: 主机cpu使用率
+                      measure_name: __m.d0j9igtae41jejvae4l0
+                      metric_type: atomic
+                      query_type: promql
+                      formula: avg(irate(node_cpu_seconds_total{name=~"node-14-35",mode="system"}[5m]))by(name)
+                      date_field: '@timestamp'
+                      date_format: epoch_millis
+                      measure_field: value
+                      unit_type: timeUnit
+                      unit: ms
+                      builtin: false
+                      is_calendar_interval: 1
+                      comment: 主机cpu使用率
+                      group_id: '1123'
+                      group_name: 系统CPU使用率
+                      create_time: 1747360067146
+                      update_time: 1747360067146
+                    total_count: 1
+                list_simple_metric_models:
+                  value:
+                    entries:
+                    - id: '86'
+                      name: 主机cpu使用率
+                      group_id: '490390573723745164'
+                      group_name: MH
+                      metric_type: atomic
+                      query_type: promql
+                      builtin: false
+                      is_calendar_interval: 0
+                      create_time: 1748315380390
+                      update_time: 1748316236366
+                    total_count: 1
+          description: 查询成功，返回指标模型的列表
+        '400':
+          $ref: ./mdl-data-model.schemas.yaml#/components/responses/400BadRequest
+        '500':
+          $ref: ./mdl-data-model.schemas.yaml#/components/responses/500InternalError
+      summary: 查询指标模型列表
+    post:
+      tags:
+        - 数据模型管理
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: ./mdl-data-model.schemas.yaml#/components/schemas/ReqMetricModel
+            examples:
+              import multiple:
+                value:
+                - name: 主机cpu使用率
+                  metric_type: atomic
+                  data_source:
+                    type: data_view
+                    id: 视图id
+                  query_type: promql
+                  formula: avg(irate(node_cpu_seconds_total{name=~"node-14-35",mode="system"}[5m]))by(name)
+                  date_field: '@timestamp'
+                  date_format: epoch_millis
+                  measure_field: value
+                  timeUnit: timeUnit
+                  unit: ms
+                  comment: 主机cpu使用率
+                  group_name: 主机监控
+                  task:
+                    name: task1
+                    schedule:
+                      type: FIX_RATE
+                      expression: 1h
+                    variables: {}
+                    steps:
+                    - 1h
+                    index_base: indexbasetype1
+                    retrace_duration: 10d
+                    comment: some text
+                - name: 主机-cpu使用率-DSL
+                  measure_name: __m.cpu_usage_dsl
+                  metric_type: 原子指标
+                  data_source:
+                    type: data_view
+                    id: 视图id
+                  query_type: dsl
+                  formula: '{"size":0,"query":{"bool":{"filter":[{"range":{"metrics.node_cpu_seconds_total":{"gte":0}}}]}},"aggs":{"ip":{"terms":{"field":"labels.mode.keyword","size":10000},"aggs":{"time":{"date_histogram":{"field":"@timestamp","fixed_interval":"{{__interval}}","min_doc_count":1,"order":{"_key":"asc"}},"aggs":{"value":{"avg":{"field":"metrics.node_cpu_seconds_total"}}}}}}}}'
+                  date_field: time
+                  date_format: epoch_millis
+                  measure_field: value
+                  unit_type: timeUnit
+                  unit: ms
+                  comment: 主机cpu使用率
+                  group_name: 主机监控
+                  task:
+                    name: task1
+                    schedule:
+                      type: FIX_RATE
+                      expression: 30m
+                    variables: {}
+                    time_windows:
+                    - 5m
+                    - 1h
+                    steps:
+                    - 5m
+                    index_base: indexbasetype1
+                    retrace_duration: 10d
+                    comment: some text
+              add a new one(dsl):
+                value:
+                - name: 主机-cpu使用率-DSL
+                  measure_name: __m.cpu_usage
+                  metric_type: 原子指标
+                  data_source:
+                    type: data_view
+                    id: 视图id
+                  query_type: dsl
+                  formula: '{"size":0,"query":{"bool":{"filter":[{"range":{"metrics.node_cpu_seconds_total":{"gte":0}}}]}},"aggs":{"ip":{"terms":{"field":"labels.mode.keyword","size":10000},"aggs":{"time":{"date_histogram":{"field":"@timestamp","fixed_interval":"{{__interval}}","min_doc_count":1,"order":{"_key":"asc"}},"aggs":{"value":{"avg":{"field":"metrics.node_cpu_seconds_total"}}}}}}}}'
+                  date_field: time
+                  date_format: epoch_millis
+                  measure_field: value
+                  unit_type: timeUnit
+                  unit: ms
+                  comment: 主机cpu使用率
+                  group_name: 主机监控
+                  task:
+                    name: task1
+                    schedule:
+                      type: FIX_RATE
+                      expression: 30m
+                    variables: {}
+                    time_windows:
+                    - 5m
+                    - 1h
+                    steps:
+                    - 5m
+                    index_base: indexbasetype1
+                    retrace_duration: 10d
+                    comment: some text
+              add a new one(promql):
+                value:
+                - name: 主机-cpu使用率
+                  measure_name: __m.cpu_usage
+                  metric_type: 原子指标
+                  data_source:
+                    type: data_view
+                    id: 视图id
+                  query_type: promql
+                  formula: avg(irate(node_cpu_seconds_total{name=~"node-14-35",mode="system"}[5m]))by(name)
+                  date_field: '@timestamp'
+                  date_format: epoch_millis
+                  measure_field: value
+                  unit_type: timeUnit
+                  unit: ms
+                  comment: 主机cpu使用率
+                  group_name: 主机监控
+                  task:
+                    name: task1
+                    schedule:
+                      type: FIX_RATE
+                      expression: 30m
+                    variables: {}
+                    steps:
+                    - 5m
+                    index_base: indexbasetype1
+                    retrace_duration: 10d
+                    comment: some text
+        required: true
+      responses:
+        '201':
+          headers:
+            Location:
+              schema:
+                format: uri
+                type: string
+              description: '`/api/data-model/v1/metric_models/{ids}`'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: ./mdl-data-model.schemas.yaml#/components/schemas/MetricModelId
+              examples:
+                import multiple:
+                  value:
+                  - id: '17'
+                  - id: '96'
+                add a new one(dsl):
+                  value:
+                  - id: '69'
+                add a new one(promql):
+                  value:
+                  - id: '70'
+          description: 新增/导入成功
+        '400':
+          $ref: ./mdl-data-model.schemas.yaml#/components/responses/400BadRequest
+        '500':
+          $ref: ./mdl-data-model.schemas.yaml#/components/responses/500InternalError
+      summary: 创建指标模型
+      description: 创建指标模型，支持批量创建
+  /mdl-data-model/v1/metric-models/{id}:
+    put:
+      tags:
+        - 数据模型管理
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: ./mdl-data-model.schemas.yaml#/components/schemas/UpdateMetricModel
+            examples:
+              update promql model:
+                value:
+                  name: 主机-cpu使用率
+                  data_source:
+                    type: data_view
+                    id: 视图1
+                  metric_type: 原子指标
+                  query_type: promql
+                  formula: avg(irate(node_cpu_seconds_total{name=~"node-14-35",mode="system"}[5m]))by(name)
+                  date_field: '@timestamp'
+                  date_format: epoch_millis
+                  measure_field: value
+                  unit_type: timeUnit
+                  unit: ms
+                  comment: 主机cpu使用率
+                  group_name: 主机监控
+                  task:
+                    name: task1
+                    schedule:
+                      type: FIX_RATE
+                      expression: 30m
+                    variables: {}
+                    steps:
+                    - 5m
+                    index_base: indexbasetype1
+                    retrace_duration: 10d
+                    comment: some text
+              update dsl model:
+                value:
+                  name: 主机-cpu使用率-DSL
+                  data_source:
+                    type: data_view
+                    id: 视图1
+                  metric_type: 原子指标
+                  query_type: dsl
+                  formula: '{"size":0,"query":{"bool":{"filter":[{"range":{"metrics.node_cpu_seconds_total":{"gte":0}}}]}},"aggs":{"ip":{"terms":{"field":"labels.mode.keyword","size":10000},"aggs":{"time":{"date_histogram":{"field":"@timestamp","fixed_interval":"{{__interval}}","min_doc_count":1,"order":{"_key":"asc"}},"aggs":{"value":{"avg":{"field":"metrics.node_cpu_seconds_total"}}}}}}}}'
+                  date_field: time
+                  date_format: epoch_millis
+                  measure_field: value
+                  unit_type: timeUnit
+                  unit: ms
+                  comment: 主机cpu使用率
+                  group_name: 主机监控
+                  task:
+                    name: task1
+                    schedule:
+                      type: FIX_RATE
+                      expression: 30m
+                    variables: {}
+                    time_windows:
+                    - 5m
+                    - 1h
+                    steps:
+                    - 5m
+                    index_base: indexbasetype1
+                    comment: some text
+        required: true
+      parameters:
+      - name: id
+        description: 指标模型 id
+        schema:
+          type: string
+        in: path
+        required: true
+      responses:
+        '204':
+          description: 修改成功
+        '400':
+          $ref: ./mdl-data-model.schemas.yaml#/components/responses/400BadRequest
+        '404':
+          $ref: ./mdl-data-model.schemas.yaml#/components/responses/404MetricModelNotFound
+        '500':
+          $ref: ./mdl-data-model.schemas.yaml#/components/responses/500InternalError
+      summary: 修改指标模型
+    get:
+      tags:
+        - 数据模型管理
+      parameters:
+      - name: include_view
+        description: 是否包含视图的详细信息，true 表示查询结果包含视图的详细信息；false 表示查询结果不包含视图的详细信息；false。
+        schema:
+          type: boolean
+        in: query
+        required: false
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: ./mdl-data-model.schemas.yaml#/components/schemas/DataMetricModelDetail
+              examples:
+                exp:
+                  value:
+                  - id: '72'
+                    name: some text
+                    measure_name: __m.aaa
+                    data_source:
+                      type: data_view
+                      id: view1
+                    metric_type: atomic
+                    data_view:
+                      indices:
+                      - some text
+                      - some text
+                      must_filters: some text
+                      fields:
+                        '@timestamp': date
+                        '@version': text
+                    query_type: promql
+                    formula: avg(irate(node_cpu_seconds_total{name=~"node-14-35",mode="system"}[5m]))by(name)
+                    date_field: '@timestamp'
+                    date_format: epoch_millis
+                    measure_field: value
+                    unit_type: storeUnit
+                    unit: Mbps
+                    comment: some text
+                    update_time: 1748398506313
+                    group_id: '111'
+                    group_name: 分组111
+                    task:
+                      id: '93'
+                      type: fixed
+                      name: task1
+                      model_id: '73'
+                      schedule:
+                        time_type: FIX_RATE
+                        frequency: 5m
+                      variables: {}
+                      steps:
+                      - 5m
+                      index_base: indexbasetype1
+                      index_base_name: indexbasename1
+                      retrace_duration: 10d
+                      comment: some text
+                      task_schedule_id: '12333'
+                      schedule_status: ok
+                      schedule_sync_status: 完成
+                  - id: '73'
+                    name: some text
+                    measure_name: __m.bbb
+                    data_source:
+                      type: data_view
+                      id: view1
+                    metric_type: atomic
+                    data_view:
+                      indices:
+                      - some text
+                      - some text
+                      must_filters: some text
+                      fields:
+                        '@timestamp': date
+                        '@version': text
+                    query_type: dsl
+                    formula: '{"size":0,"query":{"bool":{"filter":[{"range":{"metrics.node_cpu_seconds_total":{"gte":0}}}]}},"aggs":{"ip":{"terms":{"field":"labels.mode.keyword","size":10000},"aggs":{"time":{"date_histogram":{"field":"@timestamp","fixed_interval":"{{__interval}}","min_doc_count":1,"order":{"_key":"asc"}},"aggs":{"value":{"avg":{"field":"metrics.node_cpu_seconds_total"}}}}}}}}'
+                    date_field: time
+                    date_format: epoch_millis
+                    measure_field: value
+                    unit_type: storeUnit
+                    unit: Mbps
+                    comment: some text
+                    update_time: 1748398506313
+                    group_id: '111'
+                    group_name: 分组111
+                    task:
+                      id: '93'
+                      type: fixed
+                      name: task1
+                      model_id: '73'
+                      schedule:
+                        time_type: FIX_RATE
+                        frequency: 5m
+                      variables: {}
+                      time_windows:
+                      - 5m
+                      - 1h
+                      steps:
+                      - 5m
+                      index_base: indexbasetype1
+                      index_base_name: indexbasename1
+                      retrace_duration: 10d
+                      comment: some text
+                      task_schedule_id: '12333'
+                      schedule_status: ok
+                      schedule_sync_status: 完成
+          description: OK
+        '400':
+          $ref: ./mdl-data-model.schemas.yaml#/components/responses/400BadRequest
+        '404':
+          $ref: ./mdl-data-model.schemas.yaml#/components/responses/404MetricModelNotFound
+        '500':
+          $ref: ./mdl-data-model.schemas.yaml#/components/responses/500InternalError
+      summary: 按 ids 批量取指标模型对象信息
+    delete:
+      tags:
+        - 数据模型管理
+      parameters:
+      - examples:
+          exp:
+            value: <1,15,56>
+        name: ids
+        description: 指标模型id数组
+        schema:
+          type: array
+          items:
+            type: string
+        in: path
+        required: true
+      responses:
+        '204':
+          description: 删除成功
+        '404':
+          $ref: ./mdl-data-model.schemas.yaml#/components/responses/404MetricModelNotFound
+        '500':
+          $ref: ./mdl-data-model.schemas.yaml#/components/responses/500InternalError
+      summary: 删除指标模型
+      description: 按 id 删除，可批量删除
+    parameters:
+    - examples:
+        exp:
+          value: <1,15,56>
+      name: id
+      description: 指标模型id数组
+      schema:
+        type: array
+        items:
+          type: string
+      in: path
+      required: true
+  /mdl-data-model/v1/metric-models/{id}/attributes:
+    put:
+      tags:
+        - 数据模型管理
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: ./mdl-data-model.schemas.yaml#/components/schemas/GroupNameFullName
+        required: true
+      responses:
+        '204':
+          description: 修改成功
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: ./mdl-data-model.schemas.yaml#/components/schemas/Error
+              examples:
+                model name existed:
+                  value:
+                    description: some text
+                    error_code: MetricModel.ModelNameExisted
+                    error_detail: some text
+                    error_link: some text
+                    solution: some text
+                Invalid Group Name:
+                  value:
+                    description: some text
+                    error_code: MetricModelGroup.InvalidParameter
+                    error_detail: some text
+                    error_link: some text
+                    solution: some text
+          description: 参数错误
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: ./mdl-data-model.schemas.yaml#/components/schemas/Error
+              examples:
+                metric model not found:
+                  value:
+                    description: some text
+                    error_code: MetricModel.MetricModelNotFound
+                    error_detail: some text
+                    error_link: some text
+                    solution: some text
+          description: 未找到
+        '500':
+          $ref: ./mdl-data-model.schemas.yaml#/components/responses/500GroupInternalError
+      summary: 批量修改指标模型分组
+    parameters:
+    - examples:
+        exp:
+          value:
+          - 2
+          - 4
+      name: id
+      description: 指标模型ID数组
+      schema:
+        type: array
+        items:
+          type: string
+      in: path
+      required: true
+  /mdl-data-model/v1/metric-models/{id}/fields:
+    summary: 获取指标模型所绑定的数据源的字段列表
+    description: 获取指标模型所绑定的数据源的字段列表。当前数据源是日志分组，所以把日志分组选定的索引库的字段列表返回，字段类型与索引库中保持一致，指标模型中不做加工；索引库中的字段名重复时，保留第一个，后面的放弃。
+    get:
+      tags:
+        - 数据模型管理
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: ./mdl-data-model.schemas.yaml#/components/schemas/Field
+              examples:
+                metric-model-fields:
+                  value:
+                  - name: xxx
+                    type: keyword
+                  - name: yyy
+                    type: date
+          description: OK
+        '400':
+          $ref: ./mdl-data-model.schemas.yaml#/components/responses/400BadRequest
+        '404':
+          $ref: ./mdl-data-model.schemas.yaml#/components/responses/404MetricModelNotFound
+        '500':
+          $ref: ./mdl-data-model.schemas.yaml#/components/responses/500InternalError
+      summary: 获取指标模型所绑定的数据源的字段列表
+    parameters:
+    - name: id
+      description: 指标模型id
+      schema:
+        type: string
+      in: path
+      required: true
+  /mdl-data-model/v1/metric-tasks/{id}:
+    summary: 按任务id获取指标模型中持久化任务对象信息
+    description: 按任务id获取指标模型中持久化任务对象信息
+    get:
+      tags:
+        - 数据模型管理
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: ./mdl-data-model.schemas.yaml#/components/schemas/Task
+          description: OK
+        '400':
+          $ref: ./mdl-data-model.schemas.yaml#/components/responses/400BadRequest
+        '404':
+          $ref: ./mdl-data-model.schemas.yaml#/components/responses/404MetricModelNotFound
+        '500':
+          $ref: ./mdl-data-model.schemas.yaml#/components/responses/500InternalError
+      summary: 按任务id获取持久化任务信息
+    parameters:
+    - name: id
+      description: 持久化任务id
+      schema:
+        type: string
+      in: path
+      required: true
+  /mdl-data-model/v1/metric-tasks/{id}/attr:
+    summary: 按任务id修改指标模型中持久化任务对象信息
+    description: 按任务id修改指标模型中持久化任务对象信息
+    put:
+      tags:
+        - 数据模型管理
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: ./mdl-data-model.schemas.yaml#/components/schemas/UpdateTaskPlanTime
+            examples:
+              更新任务计划执行时间:
+                value:
+                  plan_times:
+                  - 1698978600000
+                  execute_status: 4
+        required: true
+      responses:
+        '204':
+          description: 修改成功
+        '400':
+          $ref: ./mdl-data-model.schemas.yaml#/components/responses/400BadRequest
+        '404':
+          $ref: ./mdl-data-model.schemas.yaml#/components/responses/404MetricModelNotFound
+        '500':
+          $ref: ./mdl-data-model.schemas.yaml#/components/responses/500InternalError
+      summary: 修改任务计划时间和执行状态
+    parameters:
+    - name: id
+      description: 持久化任务id
+      schema:
+        type: string
+      in: path
+      required: true

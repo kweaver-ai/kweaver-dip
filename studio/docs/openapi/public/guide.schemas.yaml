@@ -1,0 +1,98 @@
+components:
+  schemas:
+    GuideStatusResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - state
+        - ready
+        - missing
+      properties:
+        state:
+          type: string
+          enum:
+            - ready
+            - pending
+        ready:
+          type: boolean
+        missing:
+          type: array
+          items:
+            type: string
+            enum:
+              - envFile
+              - gatewayProtocol
+              - gatewayHost
+              - gatewayPort
+              - gatewayToken
+              - workspaceDir
+              - privateKey
+              - publicKey
+
+    OpenClawDetectedConfig:
+      type: object
+      additionalProperties: false
+      required:
+        - protocol
+        - host
+        - port
+        - token
+      properties:
+        protocol:
+          type: string
+          enum:
+            - ws
+            - wss
+        host:
+          type: string
+        port:
+          type: integer
+          minimum: 1
+        token:
+          type: string
+          description: 从运行时注入环境变量中读取的 Gateway Token
+
+    GuideInitializeRequest:
+      type: object
+      additionalProperties: false
+      required:
+        - openclaw_address
+        - openclaw_token
+      properties:
+        openclaw_address:
+          type: string
+          description: 完整 OpenClaw Gateway 地址，例如 `ws://127.0.0.1:19001`
+        openclaw_token:
+          type: string
+        kweaver_base_url:
+          type: string
+          description: KWeaver 服务地址；为空时表示禁用 KWeaver 配置
+        kweaver_token:
+          type: string
+          description: KWeaver Token；当 `kweaver_base_url` 非空时必填
+    GuideInitializeResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - initialized
+        - state
+        - envFilePath
+        - assetsDir
+        - workspaceDir
+      properties:
+        initialized:
+          type: boolean
+          const: true
+        state:
+          type: string
+          const: ready
+        envFilePath:
+          type: string
+        assetsDir:
+          type: string
+        configPath:
+          type: string
+        stateDir:
+          type: string
+        workspaceDir:
+          type: string

@@ -1,0 +1,88 @@
+/api/dip-studio/v1/knowledge-networks:
+  get:
+    summary: 获取业务知识网络列表
+    description: 透传到 BKN Backend 的业务知识网络列表查询接口。
+    parameters:
+      - name: x-business-domain
+        in: header
+        required: false
+        schema:
+          type: string
+          default: bd_public
+        description: 透传到 BKN Backend 的 `x-business-domain`；未传或为空时服务端默认使用 `bd_public`。
+      - name: name_pattern
+        in: query
+        schema:
+          type: string
+      - name: sort
+        in: query
+        schema:
+          type: string
+          enum:
+            - update_time
+            - name
+      - name: direction
+        in: query
+        schema:
+          type: string
+          enum:
+            - asc
+            - desc
+      - name: offset
+        in: query
+        schema:
+          type: integer
+      - name: limit
+        in: query
+        schema:
+          type: integer
+      - name: tag
+        in: query
+        schema:
+          type: string
+    responses:
+      '200':
+        description: 上游 BKN Backend 原样返回
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+
+/api/dip-studio/v1/knowledge-networks/{kn_id}:
+  parameters:
+    - name: kn_id
+      in: path
+      required: true
+      schema:
+        type: string
+  get:
+    summary: 获取业务知识网络详情
+    description: 透传到 BKN Backend 的业务知识网络详情接口。
+    parameters:
+      - name: x-business-domain
+        in: header
+        required: false
+        schema:
+          type: string
+          default: bd_public
+        description: 透传到 BKN Backend 的 `x-business-domain`；未传或为空时服务端默认使用 `bd_public`。
+      - name: mode
+        in: query
+        schema:
+          type: string
+          enum:
+            - ""
+            - export
+      - name: include_statistics
+        in: query
+        schema:
+          type: boolean
+    responses:
+      '200':
+        description: 上游 BKN Backend 原样返回
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true

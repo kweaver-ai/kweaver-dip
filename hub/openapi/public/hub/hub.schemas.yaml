@@ -1,0 +1,462 @@
+components:
+  schemas:
+    # ============ 微应用信息 Schema ============
+    MicroApp:
+      summary: 微应用信息
+      description: 微应用配置信息，对应 manifest.yaml 中的 micro-app 配置
+      type: object
+      properties:
+        name:
+          type: string
+          title: 微应用包名
+          description: 微应用的包名
+        entry:
+          type: string
+          title: 微应用入口路径
+          description: 微应用的入口路径
+        headless:
+          type: boolean
+          title: 是否不显示导航头
+          description: "false: 显示导航头，true: 不显示导航头"
+          default: false
+      required:
+        - name
+        - entry
+      example:
+        name: 'intelligent_fault_analysis'
+        entry: '/intelligent_fault_analysis'
+        headless: false
+
+    # ============ 应用信息 Schema ============
+    Application:
+      summary: 应用信息
+      description: 对应数据库表 t_application
+      type: object
+      properties:
+        key:
+          type: string
+          title: 应用唯一标识
+          description: 应用包的唯一标识符
+          maxLength: 32
+        name:
+          type: string
+          title: 应用名称
+          maxLength: 128
+        description:
+          type: string
+          title: 应用描述
+          maxLength: 800
+        icon:
+          type: string
+          title: 应用图标
+          description: Base64 编码的图标数据
+        category:
+          type: string
+          title: 应用所属分组
+          maxLength: 128
+        version:
+          type: string
+          title: 应用版本号
+          description: 必须符合语义版本号规范
+          maxLength: 128
+        micro_app:
+          $ref: '#/components/schemas/MicroApp'
+        release_config:
+          type: array
+          title: 应用安装配置
+          description: 记录应用安装了哪些 helm release
+          items:
+            type: string
+          example: ["release1", "release2"]
+        ontology_config:
+          type: array
+          title: 业务知识网络配置
+          description: 业务知识网络配置列表
+          items:
+            $ref: '#/components/schemas/OntologyConfigItem'
+          example:
+            - id: "201"
+              is_config: true
+            - id: "202"
+              is_config: false
+        agent_config:
+          type: array
+          title: 智能体配置
+          description: 智能体配置列表
+          items:
+            $ref: '#/components/schemas/AgentConfigItem'
+          example:
+            - id: "201"
+              is_config: true
+            - id: "202"
+              is_config: false
+        is_config:
+          type: boolean
+          title: 是否完成配置
+          description: 是否完成业务知识网络以及智能体配置
+          default: false
+        pinned:
+          type: boolean
+          title: 是否被钉
+          description: 是否被钉（置顶）
+          default: false
+        updated_by:
+          type: string
+          title: 更新者用户 ID
+          maxLength: 36
+        updated_at:
+          type: string
+          format: date-time
+          title: 更新时间
+      required:
+        - key
+        - name
+        - release_config
+        - is_config
+        - updated_by
+        - updated_at
+      example:
+        key: 'A9F3D12C7B8E90F4A6C1E2B7D8F0A3C5'
+        name: '智能故障分析'
+        description: 'DIP for ITOps 运维大脑应用'
+        version: '1.0.0'
+        icon: 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=='
+        category: 'DIP for ITOps'
+        micro_app:
+          name: 'intelligent_fault_analysis'
+          entry: '/intelligent_fault_analysis'
+          headless: false
+        release_config: ['app-release-1']
+        ontology_config:
+          - id: "201"
+            is_config: true
+          - id: "202"
+            is_config: false
+        agent_config:
+          - id: "201"
+            is_config: true
+        is_config: true
+        updated_by: 'user-uuid-1234'
+        updated_at: '2025-12-13T12:00:00Z'
+
+    ApplicationList:
+      summary: 应用列表
+      type: array
+      items:
+        $ref: '#/components/schemas/Application'
+
+    # ============ 应用基础信息 Schema ============
+    ApplicationBasicInfo:
+      summary: 应用基础信息
+      description: 应用的基本信息，包括名称、描述、版本、是否配置视图
+      type: object
+      properties:
+        key:
+          type: string
+          title: 应用唯一标识
+        name:
+          type: string
+          title: 应用名称
+        description:
+          type: string
+          title: 应用描述
+        version:
+          type: string
+          title: 应用版本号
+        icon:
+          type: string
+          title: 应用图标
+        category:
+          type: string
+          title: 应用所属分组
+        micro_app:
+          $ref: '#/components/schemas/MicroApp'
+        is_config:
+          type: boolean
+          title: 是否完成配置
+        pinned:
+          type: boolean
+          title: 是否被钉
+          description: 是否被钉（置顶）
+          default: false
+        updated_by:
+          type: string
+          title: 更新者用户 ID
+        updated_at:
+          type: string
+          format: date-time
+          title: 更新时间
+      required:
+        - key
+        - name
+        - is_config
+        - updated_by
+        - updated_at
+
+    # ============ 设置被钉状态请求 Schema ============
+    SetPinnedRequest:
+      summary: 设置被钉状态请求
+      description: 设置应用是否被钉的请求体
+      type: object
+      required:
+        - pinned
+      properties:
+        pinned:
+          type: boolean
+          description: 是否被钉
+
+    # ============ 业务知识网络配置项 Schema ============
+    OntologyConfigItem:
+      summary: 业务知识网络配置项
+      type: object
+      properties:
+        id:
+          type: string
+          title: 业务知识网络 ID
+        is_config:
+          type: boolean
+          title: 是否已配置
+          default: false
+      required:
+        - id
+
+    AgentConfigItem:
+      summary: 智能体配置项
+      type: object
+      properties:
+        id:
+          type: string
+          title: 智能体 ID
+        is_config:
+          type: boolean
+          title: 是否已配置
+          default: false
+      required:
+        - id
+
+    # ============ 业务知识网络配置 Schema ============
+    OntologyInfo:
+      summary: 业务知识网络信息
+      type: object
+      properties:
+        id:
+          type: integer
+          title: 业务知识网络 ID
+        name:
+          type: string
+          title: 业务知识网络名称
+        description:
+          type: string
+          title: 业务知识网络描述
+      required:
+        - id
+
+    OntologyList:
+      summary: 业务知识网络列表
+      type: object
+      properties:
+        ontologies:
+          type: array
+          items:
+            $ref: '#/components/schemas/OntologyInfo'
+
+    # ============ 智能体配置 Schema ============
+    AgentInfo:
+      summary: 智能体信息
+      type: object
+      properties:
+        id:
+          type: integer
+          title: Data Agent 智能体 ID
+        name:
+          type: string
+          title: 智能体名称
+        description:
+          type: string
+          title: 智能体描述
+      required:
+        - id
+
+    AgentList:
+      summary: 智能体列表
+      type: object
+      properties:
+        agents:
+          type: array
+          items:
+            $ref: '#/components/schemas/AgentInfo'
+
+    # ============ 应用配置请求 Schema ============
+    ApplicationConfigRequest:
+      summary: 应用配置请求体
+      description: 用于配置应用的业务知识网络和智能体
+      type: object
+      properties:
+        ontology_config:
+          type: array
+          title: 业务知识网络配置列表
+          items:
+            $ref: '#/components/schemas/OntologyConfigItem'
+        agent_config:
+          type: array
+          title: 智能体配置列表
+          items:
+            $ref: '#/components/schemas/AgentConfigItem'
+
+    # ============ 错误响应 Schema ============
+    ErrorResponse:
+      description: 接口错误信息
+      type: object
+      properties:
+        code:
+          description: 业务错误码
+          type: string
+        description:
+          description: 错误描述
+          type: string
+        solution:
+          description: 错误处理建议
+          type: string
+        detail:
+          description: 错误详细信息
+          type: object
+        link:
+          description: 错误帮助地址
+          type: string
+      required:
+        - code
+        - description
+
+    # ============ 刷新令牌响应 Schema ============
+    RefreshTokenResponse:
+      summary: 刷新令牌响应
+      description: 刷新令牌接口的响应
+      type: object
+      properties:
+        session_id:
+          type: string
+          title: Session ID
+          description: 会话 ID
+          example: "550e8400-e29b-41d4-a716-446655440000"
+        access_token:
+          type: string
+          title: Access Token
+          description: 新的访问令牌
+          example: "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9..."
+      required:
+        - session_id
+        - access_token
+
+    # ============ 用户信息 Schema ============
+    UserInfo:
+      summary: 用户信息
+      description: 用户基本信息（完整结构，与 session 项目一致）
+      type: object
+      properties:
+        id:
+          type: string
+          title: 用户 ID
+          description: 用户的唯一标识符
+          example: "user-uuid-1234"
+        account:
+          type: string
+          title: 账号
+          description: 用户账号
+          example: "admin"
+        vision_name:
+          type: string
+          title: 显示名称
+          description: 用户的显示名称
+          example: "管理员"
+        csf_level:
+          type: integer
+          title: 密级
+          description: 用户密级
+          example: 0
+        frozen:
+          type: boolean
+          title: 冻结状态
+          description: 用户是否被冻结
+          example: false
+        roles:
+          type: object
+          title: 角色
+          description: 用户角色映射，key 为角色名称，value 为 true
+          additionalProperties:
+            type: boolean
+          example:
+            normal_user: true
+            org_manager: true
+        email:
+          type: string
+          format: email
+          title: 邮箱
+          description: 用户邮箱地址
+          example: "admin@example.com"
+        telephone:
+          type: string
+          title: 电话号码
+          description: 用户电话号码
+          example: "13800138000"
+        third_attr:
+          type: string
+          title: 第三方应用属性
+          description: 第三方应用属性
+          example: ""
+        third_id:
+          type: string
+          title: 第三方应用 ID
+          description: 第三方应用 ID
+          example: ""
+        user_type:
+          type: integer
+          title: 用户类型
+          description: 访问者类型，1 表示用户
+          example: 1
+        groups:
+          type: array
+          title: 用户组
+          description: 用户及其所属部门所在的用户组
+          items:
+            type: object
+          example: []
+        parent_deps:
+          type: array
+          title: 组织结构
+          description: 用户的父部门信息
+          items:
+            type: object
+          example: []
+      required:
+        - id
+        - account
+        - vision_name
+
+  errors:
+    ParameterError:
+      description: 请求参数错误
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+    NotFoundError:
+      description: 资源不存在
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+    ConflictError:
+      description: 资源冲突（如版本号冲突）
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+    InternalServerError:
+      description: 服务器内部错误
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'

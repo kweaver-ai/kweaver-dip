@@ -1,0 +1,7 @@
+{
+    "type": "digital-human",
+    "id": "__bkn_creator__",
+    "name": "BKN Creator",
+    "description": "BKN Creator 是一个专门用于创建和管理业务知识网络的数字员工。",
+    "is_builtin": true
+}

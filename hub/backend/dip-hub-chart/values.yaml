@@ -1,0 +1,144 @@
+# 名称空间，服务都要在同一个空间。
+namespace: kweaver
+
+# 1 修改标签
+labels:
+  deployment:
+    name: dip-hub
+  pod:
+    app: dip-hub
+  service:
+    app: dip-hub
+
+# 2 修改仓库服务的镜像地址：不同的项目记得修改repository中af后的项目名和tag
+image:
+  registry: swr.cn-east-3.myhuaweicloud.com/kweaver-ai
+  repository: dip/dip-hub
+  tag: "0.4.0-main-2026040101"
+  pullPolicy: IfNotPresent
+
+#3 修改容器副本数量
+replicaCount: 1
+
+#4 修改deployment的名称
+name: dip-hub-deployment
+
+nodeSelector: { }
+
+#需要暴露的端口号列表
+#containerPort容器需要监听的端口号
+#protocol端口协议，支持TCP和UDP，默认TCP
+ports:
+  name: server-port
+  containerPort: 8000
+
+accessAddress:
+  host: 192.168.40.113
+  port: 443
+  scheme: https
+  path: /
+
+# 修改service的名字、端口，nodePort是对外的端口。
+service:
+  name: dip-hub
+  type: ClusterIP
+  port: 8000
+  version: "1.0"
+  oauthClientName: "dip-hub"
+  telemetry:
+    log:
+      enabled: true
+      endpoint: "http://10.4.104.243/api/feed_ingester/v1/jobs/otl-test4-log/events"
+      level: "info"
+    trace:
+      enabled: true
+      endpoint: "http://10.4.104.243/api/feed_ingester/v1/jobs/otl-test3/events"
+    audit:
+      enabled: true
+      endpoint: "http://10.4.104.243/api/feed_ingester/v1/jobs/otl-test3/events"
+
+depServices:
+  class-443:
+    ingressClass: class-443
+  rds:
+    system_id: ""
+    host: mariadb-proton-mariadb.resource.svc.cluster.local
+    port: 3306
+    database: "adp"
+    user: "adp"
+    password: "3Ci72ILMVn"
+    type: "MariaDB"
+  redis:
+    connectInfo:
+      host: ""
+      port: 26379
+      masterHost: ""
+      masterPort: 26379
+      slaveHost: ""
+      slavePort: 26379
+      masterGroupName: mymaster
+      password: NSRP4sUULP
+      sentinelHost: redis-proton-redis-sentinel.resource.svc.cluster.local
+      sentinelPassword: NSRP4sUULP
+      sentinelPort: 26379
+      sentinelUsername: root
+      username: root
+      database: 1
+    connectType: sentinel
+    enableSSL: false
+  user-management:
+    publicHost: user-management-public
+    publicPort: 30980
+    privateHost: user-management-private
+    privatePort: 30980
+  logPath: /opt/log/af
+  hydra:
+    publicHost: hydra-public
+    publicPort: 4444
+    administrativeHost: hydra-admin
+    administrativePort: 4445
+  anyRobotTraceUrl: http://10.4.128.131/api/feed_ingester/v1/jobs/job-dd62796517d6dc66/events
+  mq:
+    kafka:
+      type: kafka
+      host: kafka.resource.svc.cluster.local
+      port: 9092
+      lookupdHost: ""
+      lookupdPort: 0
+      username: kafkauser
+      password: cRVPpQThsP
+      mechanism: PLAIN
+  auth-service:
+    host: auth-service
+    port: 8155
+  # Proton 部署服务配置
+  proton:
+    url: http://deploy-installer:9090
+    timeout: 300
+  # Ontology Manager 服务配置
+  ontology-manager:
+    url: http://ontology-manager-svc:13014
+    timeout: 60
+  # Agent Factory 服务配置
+  agent-factory:
+    url: http://agent-factory:13020
+    timeout: 60
+  # Deploy Manager 服务配置
+  deploy-management:
+    host: deploy-service
+    port: 9703
+  # Session Cookie 配置（参考 session-chart 的 config.sessionExpireSecond）
+  cookie:
+    domain: ""
+    timeout: 7200
+
+# 修改pod资源限制：cpu示例:0.5/500m/1/1000m;memory示例:512Mi/1Gi
+# 内存配置已调高以支持处理几个G的压缩包
+resources:
+  requests:
+    cpu: 140m
+    memory: 512Mi
+  limits:
+    cpu: 1
+    memory: 4Gi
+

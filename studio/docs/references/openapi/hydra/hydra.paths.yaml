@@ -1,0 +1,39 @@
+openapi: 3.0.1
+
+info:
+  title: Hydra OAuth2.0 端点
+  version: 1.0.0
+
+servers:
+  - url: /
+
+components: 
+  securitySchemes: 
+    BearerAuth:
+      type: http
+      scheme: bearer
+      
+security: 
+  - BearerAuth: []
+
+paths:
+  /admin/oauth2/introspect:
+    post:
+      operationId: introspectToken
+      summary: 令牌内省
+      description: 内省端点允许检查令牌（刷新和访问）是否处于活动状态。活动令牌既不会过期也不会被撤销。如果令牌是活动的，则将包含有关令牌的其他信息。
+      tags:
+        - OAuth2.0端点
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: './hydra.schemas.yaml#/components/schemas/IntrospectToken'
+      responses:
+        '200':
+          $ref: './hydra.schemas.yaml#/components/responses/StatusCode200TokenIntrospection'
+        '401':
+          $ref: './hydra.schemas.yaml#/components/responses/Unauthorized'
+        '500':
+          $ref: './hydra.schemas.yaml#/components/responses/InternalServerError'

@@ -1,0 +1,1538 @@
+paths:
+  /api/mdl-uniquery/v1/health:
+    get:
+      tags:
+        - 数据模型查询
+      responses:
+        '200':
+          description: ok
+      summary: health
+      description: 健康检查API, AnyRobot 3.0.18.1版本及以上支持
+  /api/mdl-uniquery/v1/metric-model:
+    summary: 基于指标模型的数据预览
+    post:
+      tags:
+        - 数据模型查询
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: ./mdl-uniquery.schemas.yaml#/components/schemas/ReqMetricModelSimulate
+            examples:
+              范围查询-promql-预览:
+                value:
+                  metric_type: atomic
+                  data_source:
+                    type: view_1
+                    id: wretrtyuiol675342rfgf
+                  query_type: promql
+                  formula: avg(irate(node_cpu_seconds_total{name=~"node-14-35",mode="system"}[5m]))by(name)
+                  instant: false
+                  start: 1646360670123
+                  end: 1646471470123
+                  step: 1m
+              即时查询-promql-预览: 
+                value:
+                  metric_type: atomic
+                  data_source:
+                    type: view_1
+                    id: wretrtyuiol675342rfgf
+                  query_type: promql
+                  formula: avg(irate(node_cpu_seconds_total{name=~"node-14-35",mode="system"}[5m]))by(name)
+                  instant: true
+                  start: 1669779900123
+                  end: 1669789900123
+              范围查询-dsl-预览:
+                value:
+                  metric_type: atomic
+                  data_source:
+                    type: view_1
+                    id: wretrtyuiol675342rfgf
+                  query_type: dsl
+                  formula: '{    "size":0,    "query":{        "bool":{            "filter":[                {                    "range":{                        "labels.cpu.keyword":{                            "lte":"2"                        }                    }                },                {                    "range":{                        "metrics.node_cpu_seconds_total":{                            "gte":0                        }                    }                }            ]        }    },    "sort":[        {            "@timestamp":{                "order":"desc"            }        }    ],    "aggregations":{        "cpu2":{            "terms":{                "field":"labels.cpu.keyword",                "size":10000            },            "aggs":{                "mode":{                    "terms":{                        "field":"labels.mode.keyword",                        "size":100000                    },                    "aggs":{                        "time2":{                            "date_histogram":{                                "field":"@timestamp",                                "fixed_interval":"1h",                                "format":"yyyy-MM-dd
+                    HH:mm:ss.SSS",                                "min_doc_count":1,                                "order":{                                    "_key":"asc"                                }                            },                            "aggs":{                                "cnt_v":{                                    "value_count":{                                        "field":"@timestamp"                                    }                                }                            }                        }                    }                }            }        }    }}'
+                  measure_field: value
+                  instant: false
+                  start: 1646360670123
+                  end: 1646471470123
+                  step: 1m
+              即时查询-dsl-预览:
+                value:
+                  metric_type: atomic
+                  data_source:
+                    type: view_1
+                    id: wretrtyuiol675342rfgf
+                  query_type: dsl
+                  formula: '{    "size":0,    "query":{        "bool":{            "filter":[                {                    "range":{                        "labels.cpu.keyword":{                            "lte":"2"                        }                    }                },                {                    "range":{                        "metrics.node_cpu_seconds_total":{                            "gte":0                        }                    }                }            ]        }    },    "sort":[        {            "@timestamp":{                "order":"desc"            }        }    ],    "aggregations":{        "cpu2":{            "terms":{                "field":"labels.cpu.keyword",                "size":10000            },            "aggs":{                "mode":{                    "terms":{                        "field":"labels.mode.keyword",                        "size":100000                    },                    "aggs":{                        "time2":{                            "date_histogram":{                                "field":"@timestamp",                                "fixed_interval":"1h",                                "format":"yyyy-MM-dd
+                    HH:mm:ss.SSS",                                "min_doc_count":1,                                "order":{                                    "_key":"asc"                                }                            },                            "aggs":{                                "cnt_v":{                                    "value_count":{                                        "field":"@timestamp"                                    }                                }                            }                        }                    }                }            }        }    }}'
+                  measure_field: value
+                  instant: true
+                  start: 1669779900123
+                  end: 1669789900123
+        required: true
+      parameters:
+      - name: X-HTTP-Method-Override
+        description: 重载 post，实际上是 get 方法
+        schema:
+          enum:
+          - GET
+          type: string
+        in: header
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: ./mdl-uniquery.schemas.yaml#/components/schemas/MetricResultsSimulate
+              examples:
+                范围查询-promql-预览:
+                  value:
+                    datas:
+                    - labels:
+                        cpu: '1'
+                        instance: 10.4.68.120:9101
+                      times:
+                      - 1669789800123
+                      - 1669789900123
+                      values:
+                      - 10
+                      - 11
+                    - labels:
+                        cpu: '2'
+                        instance: 10.4.68.120:9101
+                      times:
+                      - 1669789800123
+                      - 1669789900123
+                      values:
+                      - 10
+                      - 11
+                    step: 1m
+                    is_variable: false
+                即时查询-promql-预览:
+                  value:
+                    datas:
+                    - labels:
+                        cpu: '1'
+                        instance: 10.4.68.120:9101
+                      times:
+                      - 1669789900123
+                      values:
+                      - 10
+                    - labels:
+                        cpu: '2'
+                        instance: 10.4.68.120:9101
+                      times:
+                      - 1669789900123
+                      values:
+                      - 10
+                    step: ''
+                    is_variable: false
+                范围查询-dsl-预览:
+                  value:
+                    datas:
+                    - labels:
+                        cpu: '1'
+                        mode: idle
+                      times:
+                      - 1669789800123
+                      - 1669789900123
+                      values:
+                      - 100
+                      - 11
+                    - labels:
+                        cpu: '1'
+                        mode: iowait
+                      times:
+                      - 1669789800123
+                      - 1669789900123
+                      values:
+                      - 10
+                      - 11
+                    step: 1h
+                    is_variable: false
+                即时查询-dsl-预览:
+                  value:
+                    datas:
+                    - labels:
+                        cpu: '1'
+                        mode: idle
+                      times:
+                      - 1669789900123
+                      values:
+                      - 10
+                    - labels:
+                        cpu: '2'
+                        model: iowait
+                      times:
+                      - 1669789900123
+                      values:
+                      - 10
+                    step: ''
+                    is_variable: false
+          description: OK
+        '400':
+          $ref: ./mdl-uniquery.schemas.yaml#/components/responses/400BadRequest
+        '500':
+          $ref: ./mdl-uniquery.schemas.yaml#/components/responses/500InternalError
+      summary: metric-model
+      description: 基于指标模型的数据预览
+  /api/mdl-uniquery/v1/metric-models/{ids}:
+    post:
+      tags:
+        - 数据模型查询
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: ./mdl-uniquery.schemas.yaml#/components/schemas/ReqMetricModel
+            examples:
+              范围查询 - 请求单个模型:
+                value:
+                  instant: false
+                  start: 1646360670123
+                  end: 1646471470123
+                  step: 1m
+                  filters:
+                  - name: labels.host
+                    value:
+                    - 10.2.12.23
+                    - 10.21.2.3
+                    operation: in
+                  - name: labels.job
+                    value: prometheus
+                    operation: '='
+                  - name: labels.namespace
+                    value: as
+                    operation: '!='
+                  - name: metrics.node_cpu_seconds_total
+                    value:
+                    - 0
+                    - 5
+                    operation: range
+                  - name: metrics.node_memory_MemTotal_bytes
+                    value:
+                    - 1024
+                    - 2048
+                    operation: out_range
+              即时查询 - 请求单个模型:
+                value:
+                  instant: true
+                  start: 1669779900123
+                  end: 1669789900123
+                  filters:
+                  - name: labels.host
+                    value:
+                    - 10.2.12.23
+                    - 10.21.2.3
+                    operation: in
+                  - name: labels.job
+                    value: prometheus
+                    operation: '='
+                  - name: labels.namespace
+                    value: as
+                    operation: '!='
+                  - name: metrics.node_cpu_seconds_total
+                    value:
+                    - 0
+                    - 5
+                    operation: range
+                  - name: metrics.node_memory_MemTotal_bytes
+                    value:
+                    - 1024
+                    - 2048
+                    operation: out_range
+              范围查询 - 请求多个模型:
+                value:
+                - instant: false
+                  start: 1646360670123
+                  end: 1646471470123
+                  step: 1m
+                  filters:
+                  - name: labels.host
+                    value:
+                    - 10.2.12.23
+                    - 10.21.2.3
+                    operation: in
+                  - name: labels.job
+                    value: prometheus
+                    operation: '='
+                  - name: labels.namespace
+                    value: as
+                    operation: '!='
+                  - name: metrics.node_cpu_seconds_total
+                    value:
+                    - 0
+                    - 5
+                    operation: range
+                  - name: metrics.node_memory_MemTotal_bytes
+                    value:
+                    - 1024
+                    - 2048
+                    operation: out_range
+                - instant: false
+                  start: 1646360670123
+                  end: 1646471470123
+                  step: 5m
+                  filters:
+                  - name: labels.host
+                    value:
+                    - 10.2.12.23
+                    - 10.21.2.3
+                    operation: in
+              即时查询 - 请求多个模型:
+                value:
+                - instant: true
+                  start: 1669789900123
+                  end: 1669789900123
+                  filters:
+                  - name: labels.host
+                    value:
+                    - 10.2.12.23
+                    - 10.21.2.3
+                    operation: in
+                  - name: labels.job
+                    value: prometheus
+                    operation: '='
+                  - name: labels.namespace
+                    value: as
+                    operation: '!='
+                  - name: metrics.node_cpu_seconds_total
+                    value:
+                    - 0
+                    - 5
+                    operation: range
+                  - name: metrics.node_memory_MemTotal_bytes
+                    value:
+                    - 1024
+                    - 2048
+                    operation: out_range
+                - instant: true
+                  start: 1669779900123
+                  end: 1669789900123
+                  filters:
+                  - name: labels.host
+                    value:
+                    - 10.2.12.23
+                    - 10.21.2.3
+                    operation: in
+        required: true
+      parameters:
+      - name: X-HTTP-Method-Override
+        description: 重载 post，实际上是 get 方法
+        schema:
+          enum:
+          - GET
+          type: string
+        in: header
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: ./mdl-uniquery.schemas.yaml#/components/schemas/MetricResults
+              examples:
+                范围查询 - 请求单个模型:
+                  value:
+                    model:
+                      id: 0
+                      name: some text
+                      measure_name: some text
+                      metric_type: atomic
+                      data_view_id: some text
+                      data_view_name: some text
+                      query_type: dsl
+                      formula: some text
+                      date_field: some text
+                      date_format: epoch_millis
+                      measure_field: some text
+                      unit_type: timeUnit
+                      unit: h
+                      custom_attribute: {}
+                      comment: some text
+                      update_time: some text
+                      group_id: 78
+                      group_name: some text
+                      is_calendar_interval: 37
+                      task:
+                        id: 33
+                        type: calendar
+                        name: some text
+                        model_id: 39
+                        schedule:
+                          type: CRON
+                          expression: some text
+                        time_windows:
+                        - some text
+                        - some text
+                        steps:
+                        - some text
+                        - some text
+                        plan_times:
+                        - 38
+                        - 47
+                        index_base_name: some text
+                        index_base: some text
+                        retrace_duration: some text
+                        comment: some text
+                        task_schedule_id: 32
+                        schedule_status: 0
+                        schedule_sync_status: 38
+                        execute_status: 89
+                        update_time: some text
+                        measure_name: some text
+                    datas:
+                    - labels:
+                        cpu: '1'
+                        instance: 10.4.68.120:9101
+                      times:
+                      - 1669789800123
+                      - 1669789900123
+                      values:
+                      - 10
+                      - 11
+                    - labels:
+                        cpu: '2'
+                        instance: 10.4.68.120:9101
+                      times:
+                      - 1669789800123
+                      - 1669789900123
+                      values:
+                      - 10
+                      - 11
+                    step: 1m
+                    is_variable: false
+                    is_calendar: false
+                    status_code: 200
+                即时查询 - 请求单个模型:
+                  value:
+                    model:
+                      id: 0
+                      name: some text
+                      measure_name: some text
+                      metric_type: atomic
+                      data_view_id: some text
+                      data_view_name: some text
+                      query_type: dsl
+                      formula: some text
+                      date_field: some text
+                      date_format: epoch_millis
+                      measure_field: some text
+                      unit_type: timeUnit
+                      unit: h
+                      custom_attribute: {}
+                      comment: some text
+                      update_time: some text
+                      group_id: 78
+                      group_name: some text
+                      is_calendar_interval: 37
+                      task:
+                        id: 33
+                        type: calendar
+                        name: some text
+                        model_id: 39
+                        schedule:
+                          type: CRON
+                          expression: some text
+                        time_windows:
+                        - some text
+                        - some text
+                        steps:
+                        - some text
+                        - some text
+                        plan_times:
+                        - 38
+                        - 47
+                        index_base_name: some text
+                        index_base: some text
+                        retrace_duration: some text
+                        comment: some text
+                        task_schedule_id: 32
+                        schedule_status: 0
+                        schedule_sync_status: 38
+                        execute_status: 89
+                        update_time: some text
+                        measure_name: some text
+                    datas:
+                    - labels:
+                        cpu: '1'
+                        instance: 10.4.68.120:9101
+                      times:
+                      - 1669789900123
+                      values:
+                      - 11
+                    - labels:
+                        cpu: '2'
+                        instance: 10.4.68.120:9101
+                      times:
+                      - 1669789900123
+                      values:
+                      - 11
+                    step: ''
+                    is_variable: false
+                    is_calendar: false
+                    status_code: 200
+                范围查询 - 请求多个模型:
+                  value:
+                  - model:
+                      id: 0
+                      name: some text
+                      measure_name: some text
+                      metric_type: atomic
+                      data_view_id: some text
+                      data_view_name: some text
+                      query_type: dsl
+                      formula: some text
+                      date_field: some text
+                      date_format: epoch_millis
+                      measure_field: some text
+                      unit_type: timeUnit
+                      unit: h
+                      custom_attribute: {}
+                      comment: some text
+                      update_time: some text
+                      group_id: 78
+                      group_name: some text
+                      is_calendar_interval: 37
+                      task:
+                        id: 33
+                        type: calendar
+                        name: some text
+                        model_id: 39
+                        schedule:
+                          type: CRON
+                          expression: some text
+                        time_windows:
+                        - some text
+                        - some text
+                        steps:
+                        - some text
+                        - some text
+                        plan_times:
+                        - 38
+                        - 47
+                        index_base_name: some text
+                        index_base: some text
+                        retrace_duration: some text
+                        comment: some text
+                        task_schedule_id: 32
+                        schedule_status: 0
+                        schedule_sync_status: 38
+                        execute_status: 89
+                        update_time: some text
+                        measure_name: some text
+                    datas:
+                    - labels:
+                        cpu: '1'
+                        instance: 10.4.68.120:9101
+                      times:
+                      - 1669789800123
+                      - 1669789900123
+                      values:
+                      - 10
+                      - 11
+                    - labels:
+                        cpu: '2'
+                        instance: 10.4.68.120:9101
+                      times:
+                      - 1669789800123
+                      - 1669789900123
+                      values:
+                      - 10
+                      - 11
+                    step: 1m
+                    is_variable: false
+                    is_calendar: false
+                    status_code: 200
+                  - model:
+                      id: 0
+                      name: some text
+                      measure_name: some text
+                      metric_type: atomic
+                      data_view_id: some text
+                      data_view_name: some text
+                      query_type: dsl
+                      formula: some text
+                      date_field: some text
+                      date_format: epoch_millis
+                      measure_field: some text
+                      unit_type: timeUnit
+                      unit: h
+                      custom_attribute: {}
+                      comment: some text
+                      update_time: some text
+                      group_id: 78
+                      group_name: some text
+                      is_calendar_interval: 37
+                      task:
+                        id: 33
+                        type: calendar
+                        name: some text
+                        model_id: 39
+                        schedule:
+                          type: CRON
+                          expression: some text
+                        time_windows:
+                        - some text
+                        - some text
+                        steps:
+                        - some text
+                        - some text
+                        plan_times:
+                        - 38
+                        - 47
+                        index_base_name: some text
+                        index_base: some text
+                        retrace_duration: some text
+                        comment: some text
+                        task_schedule_id: 32
+                        schedule_status: 0
+                        schedule_sync_status: 38
+                        execute_status: 89
+                        update_time: some text
+                        measure_name: some text
+                    datas:
+                    - labels:
+                        cpu: '1'
+                        instance: 10.4.68.120:9101
+                      times:
+                      - 1669789800123
+                      - 1669789900123
+                      values:
+                      - 10
+                      - 11
+                    - labels:
+                        cpu: '2'
+                        instance: 10.4.68.120:9101
+                      times:
+                      - 1669789800123
+                      - 1669789900123
+                      values:
+                      - 10
+                      - 11
+                    step: 5m
+                    is_variable: false
+                    is_calendar: false
+                    status_code: 200
+                即时查询 - 请求多个模型:
+                  value:
+                  - model:
+                      id: 0
+                      name: some text
+                      measure_name: some text
+                      metric_type: atomic
+                      data_view_id: some text
+                      data_view_name: some text
+                      query_type: dsl
+                      formula: some text
+                      date_field: some text
+                      date_format: epoch_millis
+                      measure_field: some text
+                      unit_type: timeUnit
+                      unit: h
+                      custom_attribute: {}
+                      comment: some text
+                      update_time: some text
+                      group_id: 78
+                      group_name: some text
+                      is_calendar_interval: 37
+                      task:
+                        id: 33
+                        type: calendar
+                        name: some text
+                        model_id: 39
+                        schedule:
+                          type: CRON
+                          expression: some text
+                        time_windows:
+                        - some text
+                        - some text
+                        steps:
+                        - some text
+                        - some text
+                        plan_times:
+                        - 38
+                        - 47
+                        index_base_name: some text
+                        index_base: some text
+                        retrace_duration: some text
+                        comment: some text
+                        task_schedule_id: 32
+                        schedule_status: 0
+                        schedule_sync_status: 38
+                        execute_status: 89
+                        update_time: some text
+                        measure_name: some text
+                    datas:
+                    - labels:
+                        cpu: '1'
+                        instance: 10.4.68.120:9101
+                      times:
+                      - 1669789900123
+                      values:
+                      - 11
+                    - labels:
+                        cpu: '2'
+                        instance: 10.4.68.120:9101
+                      times:
+                      - 1669789900123
+                      values:
+                      - 11
+                    step: ''
+                    is_variable: false
+                    is_calendar: false
+                    status_code: 200
+                  - model:
+                      id: '345'
+                      name: model2
+                      metric_type: atomic
+                      data_view_name: xxx
+                      query_type: promql
+                      formula: cpu_second_total{}
+                      date_field: '@timestamp'
+                      date_format: epoch_millis
+                      measure_field: value
+                      unit_type: timeUnit
+                      unit: s
+                      group_id: 1111
+                      group_name: 系统CPU监控
+                    datas:
+                    - labels:
+                        cpu: '1'
+                        instance: 10.4.68.120:9101
+                      times:
+                      - 1669789900123
+                      values:
+                      - 11
+                    - labels:
+                        cpu: '2'
+                        instance: 10.4.68.120:9101
+                      times:
+                      - 1669789900123
+                      values:
+                      - 11
+                    step: ''
+                    is_variable: false
+                    is_calendar: false
+                    status_code: 200
+          description: OK
+        '207':
+          content:
+            application/json:
+              examples:
+                exp1:
+                  value:
+                  - model:
+                      id: '493734055943078059'
+                      name: DSL日历间隔为1天-d8e655d3b-a
+                      measure_name: __m.493734055943078059
+                      metric_type: atomic
+                      data_view_name: metricModel10451398-a
+                      query_type: dsl
+                      formula: '{"size":0,"aggs":{"date_histogram_name":{"date_histogram":{"field":"@timestamp","calendar_interval":"1d"},"aggs":{"metric-aggs-name":{"value_count":{"field":"@timestamp"}}}}}}'
+                      date_field: date_histogram_name
+                      date_format: epoch_millis
+                      measure_field: metric-aggs-name
+                      unit_type: storeUnit
+                      unit: MB
+                      group_id: '493768343925293227'
+                      group_name: DSL
+                    datas:
+                    - labels: {}
+                      times:
+                      - 1704338561588
+                      values:
+                      - 1775802
+                    step: ''
+                    is_variable: false
+                    is_calendar: true
+                    status_code: 200
+                  - status_code: 404
+                    error_code: Uniquery.MetricModel.MetricModelNotFound
+                    description: The Metric Model Does Not Exist
+                    solution: Please check whether the parameter is correct.
+                    error_link: None
+                    error_details: ''
+                exp2:
+                  value:
+                  - status_code: 404
+                    error_code: Uniquery.MetricModel.MetricModelNotFound
+                    description: The Metric Model Does Not Exist
+                    solution: Please check whether the parameter is correct.
+                    error_link: None
+                    error_details: ''
+                  - status_code: 404
+                    error_code: Uniquery.MetricModel.MetricModelNotFound
+                    description: The Metric Model Does Not Exist
+                    solution: Please check whether the parameter is correct.
+                    error_link: None
+                    error_details: ''
+        '404':
+          content:
+            application/json:
+              examples:
+                exp1:
+                  value:
+                    error_code: Uniquery.MetricModel.MetricModelNotFound
+                    description: The Metric Model Does Not Exist
+                    solution: Please check whether the parameter is correct.
+                    error_link: None
+                    error_details: ''
+      summary: metric-models/{ids}
+      description: 根据指标模型 id 查询指标数据。可支持单个指标查询和多个指标查询。若是需要查询大于1个的指标模型的数据，则需要提交一个查询请求参数的数组，请求参数的作用域与模型id顺序对应。返回的是多个模型的数据结果的数组，数据与模型id也是顺序对应的。
+    parameters:
+    - name: ids
+      description: 指标模型id
+      schema:
+        type: integer
+      in: path
+      required: true
+    - name: ignoring_store_cache
+      description: 是否查询持久化缓存下来的数据。默认为 false，不忽略
+      schema:
+        type: boolean
+      in: query
+      required: false
+    - name: include_model
+      description: 是否返回指标模型信息。默认为false。
+      schema:
+        type: boolean
+      in: query
+    - name: filter_mode
+      description: 过滤模式
+      schema:
+        enum:
+        - normal
+        - error
+        - ignore
+        type: string
+      in: query
+    - name: fill_null
+      description: 是否补空，默认为true，即补null
+      schema:
+        type: boolean
+      in: query
+    - name: ignoring_memory_cache
+      description: 是否忽略内存缓存数据，默认为false，不忽略
+      schema:
+        type: boolean
+      in: query
+    - name: ignoring_hcts
+      description: 是否忽略高基查询。默认为false，不忽略
+      schema:
+        type: boolean
+      in: query
+  /api/mdl-uniquery/v1/metric-model-groups/{group_name}/metric-models:
+    post:
+      tags:
+        - 数据模型查询
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: ./mdl-uniquery.schemas.yaml#/components/schemas/ReqMetricModelForGroup
+            examples:
+              query range-request single model:
+                value:
+                - instant: false
+                  start: 1646360670123
+                  end: 1646471470123
+                  step: 1m
+                  model_name: 系统CPU利用率
+                  filters:
+                  - name: labels.host
+                    value:
+                    - 10.2.12.23
+                    - 10.21.2.3
+                    operation: in
+                  - name: labels.job
+                    value: prometheus
+                    operation: '='
+                  - name: labels.namespace
+                    value: as
+                    operation: '!='
+                  - name: metrics.node_cpu_seconds_total
+                    value:
+                    - 0
+                    - 5
+                    operation: range
+                  - name: metrics.node_memory_MemTotal_bytes
+                    value:
+                    - 1024
+                    - 2048
+                    operation: out_range
+              query-request single model:
+                value:
+                - instant: true
+                  start: 1669779900123
+                  end: 1669789900123
+                  model_name: 系统CPU利用率
+                  filters:
+                  - name: labels.host
+                    value:
+                    - 10.2.12.23
+                    - 10.21.2.3
+                    operation: in
+                  - name: labels.job
+                    value: prometheus
+                    operation: '='
+                  - name: labels.namespace
+                    value: as
+                    operation: '!='
+                  - name: metrics.node_cpu_seconds_total
+                    value:
+                    - 0
+                    - 5
+                    operation: range
+                  - name: metrics.node_memory_MemTotal_bytes
+                    value:
+                    - 1024
+                    - 2048
+                    operation: out_range
+              query range-request multiple models:
+                value:
+                - instant: false
+                  start: 1646360670123
+                  end: 1646471470123
+                  step: 1m
+                  model_name: 系统CPU使用
+                  filters:
+                  - name: labels.host
+                    value:
+                    - 10.2.12.23
+                    - 10.21.2.3
+                    operation: in
+                  - name: labels.job
+                    value: prometheus
+                    operation: '='
+                  - name: labels.namespace
+                    value: as
+                    operation: '!='
+                  - name: metrics.node_cpu_seconds_total
+                    value:
+                    - 0
+                    - 5
+                    operation: range
+                  - name: metrics.node_memory_MemTotal_bytes
+                    value:
+                    - 1024
+                    - 2048
+                    operation: out_range
+                - instant: false
+                  start: 1646360670123
+                  end: 1646471470123
+                  step: 5m
+                  model_name: 系统内存使用
+                  filters:
+                  - name: labels.host
+                    value:
+                    - 10.2.12.23
+                    - 10.21.2.3
+                    operation: in
+              query-request multiple models:
+                value:
+                - instant: true
+                  start: 1669779900123
+                  end: 1669789900123
+                  model_name: 系统内存使用
+                  filters:
+                  - name: labels.host
+                    value:
+                    - 10.2.12.23
+                    - 10.21.2.3
+                    operation: in
+                  - name: labels.job
+                    value: prometheus
+                    operation: '='
+                  - name: labels.namespace
+                    value: as
+                    operation: '!='
+                  - name: metrics.node_cpu_seconds_total
+                    value:
+                    - 0
+                    - 5
+                    operation: range
+                  - name: metrics.node_memory_MemTotal_bytes
+                    value:
+                    - 1024
+                    - 2048
+                    operation: out_range
+                - instant: true
+                  start: 1669779900123
+                  end: 1669789900123
+                  model_name: 系统CPU使用
+                  filters:
+                  - name: labels.host
+                    value:
+                    - 10.2.12.23
+                    - 10.21.2.3
+                    operation: in
+        required: true
+      parameters:
+      - name: X-HTTP-Method-Override
+        description: 重载 post，实际上是 get 方法
+        schema:
+          enum:
+          - GET
+          type: string
+        in: header
+        required: true
+      - name: filter_mode
+        description: 过滤模式
+        schema:
+          enum:
+          - normal
+          - error
+          - ignore
+          type: string
+        in: query
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: ./mdl-uniquery.schemas.yaml#/components/schemas/MetricResults
+              examples:
+                query range-request single model:
+                  value:
+                  - model:
+                      id: 0
+                      name: some text
+                      measure_name: some text
+                      metric_type: atomic
+                      data_view_id: some text
+                      data_view_name: some text
+                      query_type: dsl
+                      formula: some text
+                      date_field: some text
+                      date_format: epoch_millis
+                      measure_field: some text
+                      unit_type: timeUnit
+                      unit: h
+                      custom_attribute: {}
+                      comment: some text
+                      update_time: some text
+                      group_id: 78
+                      group_name: some text
+                      is_calendar_interval: 37
+                      task:
+                        id: 33
+                        type: calendar
+                        name: some text
+                        model_id: 39
+                        schedule:
+                          type: CRON
+                          expression: some text
+                        time_windows:
+                        - some text
+                        - some text
+                        steps:
+                        - some text
+                        - some text
+                        plan_times:
+                        - 38
+                        - 47
+                        index_base_name: some text
+                        index_base: some text
+                        retrace_duration: some text
+                        comment: some text
+                        task_schedule_id: 32
+                        schedule_status: 0
+                        schedule_sync_status: 38
+                        execute_status: 89
+                        update_time: some text
+                        measure_name: some text
+                    datas:
+                    - labels:
+                        cpu: '1'
+                        instance: 10.4.68.120:9101
+                      times:
+                      - 1669789800123
+                      - 1669789900123
+                      values:
+                      - 10
+                      - 11
+                    - labels:
+                        cpu: '2'
+                        instance: 10.4.68.120:9101
+                      times:
+                      - 1669789800123
+                      - 1669789900123
+                      values:
+                      - 10
+                      - 11
+                    step: 1m
+                    is_variable: false
+                    is_calendar: false
+                    status_code: 200
+                query-request single model:
+                  value:
+                  - model:
+                      id: 0
+                      name: some text
+                      measure_name: some text
+                      metric_type: atomic
+                      data_view_id: some text
+                      data_view_name: some text
+                      query_type: dsl
+                      formula: some text
+                      date_field: some text
+                      date_format: epoch_millis
+                      measure_field: some text
+                      unit_type: timeUnit
+                      unit: h
+                      custom_attribute: {}
+                      comment: some text
+                      update_time: some text
+                      group_id: 78
+                      group_name: some text
+                      is_calendar_interval: 37
+                      task:
+                        id: 33
+                        type: calendar
+                        name: some text
+                        model_id: 39
+                        schedule:
+                          type: CRON
+                          expression: some text
+                        time_windows:
+                        - some text
+                        - some text
+                        steps:
+                        - some text
+                        - some text
+                        plan_times:
+                        - 38
+                        - 47
+                        index_base_name: some text
+                        index_base: some text
+                        retrace_duration: some text
+                        comment: some text
+                        task_schedule_id: 32
+                        schedule_status: 0
+                        schedule_sync_status: 38
+                        execute_status: 89
+                        update_time: some text
+                        measure_name: some text
+                    datas:
+                    - labels:
+                        cpu: '1'
+                        instance: 10.4.68.120:9101
+                      times:
+                      - 1669789900123
+                      values:
+                      - 11
+                    - labels:
+                        cpu: '2'
+                        instance: 10.4.68.120:9101
+                      times:
+                      - 1669789900123
+                      values:
+                      - 11
+                    step: ''
+                    is_variable: false
+                    is_calendar: false
+                    status_code: 200
+                query range-request multiple models:
+                  value:
+                  - model:
+                      id: 0
+                      name: some text
+                      measure_name: some text
+                      metric_type: atomic
+                      data_view_id: some text
+                      data_view_name: some text
+                      query_type: dsl
+                      formula: some text
+                      date_field: some text
+                      date_format: epoch_millis
+                      measure_field: some text
+                      unit_type: timeUnit
+                      unit: h
+                      custom_attribute: {}
+                      comment: some text
+                      update_time: some text
+                      group_id: 78
+                      group_name: some text
+                      is_calendar_interval: 37
+                      task:
+                        id: 33
+                        type: calendar
+                        name: some text
+                        model_id: 39
+                        schedule:
+                          type: CRON
+                          expression: some text
+                        time_windows:
+                        - some text
+                        - some text
+                        steps:
+                        - some text
+                        - some text
+                        plan_times:
+                        - 38
+                        - 47
+                        index_base_name: some text
+                        index_base: some text
+                        retrace_duration: some text
+                        comment: some text
+                        task_schedule_id: 32
+                        schedule_status: 0
+                        schedule_sync_status: 38
+                        execute_status: 89
+                        update_time: some text
+                        measure_name: some text
+                    datas:
+                    - labels:
+                        cpu: '1'
+                        instance: 10.4.68.120:9101
+                      times:
+                      - 1669789800123
+                      - 1669789900123
+                      values:
+                      - 10
+                      - 11
+                    - labels:
+                        cpu: '2'
+                        instance: 10.4.68.120:9101
+                      times:
+                      - 1669789800123
+                      - 1669789900123
+                      values:
+                      - 10
+                      - 11
+                    step: 1m
+                    is_variable: false
+                    is_calendar: false
+                    status_code: 200
+                  - model:
+                      id: '345'
+                      name: model2
+                      metric_type: atomic
+                      data_view_name: xxx
+                      query_type: promql
+                      formula: memory_used_total{}
+                      date_field: '@timestamp'
+                      date_format: epoch_millis
+                      measure_field: value
+                      unit_type: timeUnit
+                      unit: s
+                      group_id: 1111
+                      group_name: 系统CPU监控
+                    datas:
+                    - labels:
+                        cpu: '1'
+                        instance: 10.4.68.120:9101
+                      times:
+                      - 1669789800123
+                      - 1669789900123
+                      values:
+                      - 10
+                      - 11
+                    - labels:
+                        cpu: '2'
+                        instance: 10.4.68.120:9101
+                      times:
+                      - 1669789800123
+                      - 1669789900123
+                      values:
+                      - 10
+                      - 11
+                    step: 5m
+                    is_variable: false
+                    is_calendar: false
+                    status_code: 200
+                query-request multiple models:
+                  value:
+                  - model:
+                      id: 0
+                      name: some text
+                      measure_name: some text
+                      metric_type: atomic
+                      data_view_id: some text
+                      data_view_name: some text
+                      query_type: dsl
+                      formula: some text
+                      date_field: some text
+                      date_format: epoch_millis
+                      measure_field: some text
+                      unit_type: timeUnit
+                      unit: h
+                      custom_attribute: {}
+                      comment: some text
+                      update_time: some text
+                      group_id: 78
+                      group_name: some text
+                      is_calendar_interval: 37
+                      task:
+                        id: 33
+                        type: calendar
+                        name: some text
+                        model_id: 39
+                        schedule:
+                          type: CRON
+                          expression: some text
+                        time_windows:
+                        - some text
+                        - some text
+                        steps:
+                        - some text
+                        - some text
+                        plan_times:
+                        - 38
+                        - 47
+                        index_base_name: some text
+                        index_base: some text
+                        retrace_duration: some text
+                        comment: some text
+                        task_schedule_id: 32
+                        schedule_status: 0
+                        schedule_sync_status: 38
+                        execute_status: 89
+                        update_time: some text
+                        measure_name: some text
+                    datas:
+                    - labels:
+                        cpu: '1'
+                        instance: 10.4.68.120:9101
+                      times:
+                      - 1669789900123
+                      values:
+                      - 11
+                    - labels:
+                        cpu: '2'
+                        instance: 10.4.68.120:9101
+                      times:
+                      - 1669789900123
+                      values:
+                      - 11
+                    step: ''
+                    is_variable: false
+                    is_calendar: false
+                    status_code: 200
+                  - model:
+                      id: '345'
+                      name: model2
+                      metric_type: atomic
+                      data_view_name: xxx
+                      query_type: promql
+                      formula: cpu_second_total{}
+                      date_field: '@timestamp'
+                      date_format: epoch_millis
+                      measure_field: value
+                      unit_type: timeUnit
+                      unit: s
+                      group_id: 1111
+                      group_name: 系统CPU监控
+                    datas:
+                    - labels:
+                        cpu: '1'
+                        instance: 10.4.68.120:9101
+                      times:
+                      - 1669789900123
+                      values:
+                      - 11
+                    - labels:
+                        cpu: '2'
+                        instance: 10.4.68.120:9101
+                      times:
+                      - 1669789900123
+                      values:
+                      - 11
+                    step: ''
+                    is_variable: false
+                    is_calendar: false
+                    status_code: 200
+          description: 查询成功
+        '207':
+          content:
+            application/json:
+              examples:
+                exp1:
+                  value:
+                  - model:
+                      id: '493734055943078059'
+                      name: DSL日历间隔为1天-d8e655d3b-a
+                      measure_name: __m.493734055943078059
+                      metric_type: atomic
+                      data_view_name: metricModel10451398-a
+                      query_type: dsl
+                      formula: '{"size":0,"aggs":{"date_histogram_name":{"date_histogram":{"field":"@timestamp","calendar_interval":"1d"},"aggs":{"metric-aggs-name":{"value_count":{"field":"@timestamp"}}}}}}'
+                      date_field: date_histogram_name
+                      date_format: epoch_millis
+                      measure_field: metric-aggs-name
+                      unit_type: storeUnit
+                      unit: MB
+                      group_id: '493768343925293227'
+                      group_name: DSL
+                    datas:
+                    - labels: {}
+                      times:
+                      - 1704338561588
+                      values:
+                      - 1775802
+                    step: ''
+                    is_variable: false
+                    is_calendar: true
+                    status_code: 200
+                  - status_code: 404
+                    error_code: Uniquery.MetricModel.MetricModelNotFound
+                    description: The Metric Model Does Not Exist
+                    solution: Please check whether the parameter is correct.
+                    error_link: None
+                    error_details: ''
+                exp2:
+                  value:
+                  - status_code: 404
+                    error_code: Uniquery.MetricModel.MetricModelNotFound
+                    description: The Metric Model Does Not Exist
+                    solution: Please check whether the parameter is correct.
+                    error_link: None
+                    error_details: ''
+                  - status_code: 404
+                    error_code: Uniquery.MetricModel.MetricModelNotFound
+                    description: The Metric Model Does Not Exist
+                    solution: Please check whether the parameter is correct.
+                    error_link: None
+                    error_details: ''
+        '404':
+          content:
+            application/json:
+              examples:
+                exp1:
+                  value:
+                    error_code: Uniquery.MetricModel.MetricModelNotFound
+                    description: The Metric Model Does Not Exist
+                    solution: Please check whether the parameter is correct.
+                    error_link: None
+                    error_details: ''
+      summary: metric-model-groups/{group_name}/metric-models
+      description: 根据分组名称和指标模型名称查询指标数据(以数组形式接受请求体参数)
+    parameters:
+    - name: group_name
+      description: 分组名称
+      schema:
+        type: string
+      in: path
+      required: true
+    - name: ignoring_store_cache
+      description: 是否查询持久化缓存下来的数据。默认为 false，不忽略
+      schema:
+        type: boolean
+      in: query
+    - name: include_model
+      description: 是否返回指标模型信息。默认为false
+      schema: {}
+      in: query
+    - name: ignoring_memory_cache
+      description: 是否忽略内存缓存数据，默认为false，不忽略
+      schema:
+        type: boolean
+      in: query
+    - name: ignoring_hcts
+      description: 是否忽略高基查询。默认为false，不忽略
+      schema:
+        type: boolean
+      in: query
+    - name: filter_mode
+      description: 过滤模式。默认为normal
+      schema:
+        enum:
+        - normal
+        - error
+        - ignore
+        type: string
+      in: query
+    - name: fill_null
+      description: 是否补空，默认为true，即补null
+      schema:
+        type: boolean
+      in: query
+  /api/mdl-uniquery/v1/metric-models/{id}/fields:
+    summary: 基于指标模型id获取字段列表
+    get:
+      tags:
+        - 数据模型查询
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              examples:
+                字段列表:
+                  value:
+                  - field_1
+                  - field_2
+          description: ok
+      summary: 基于指标模型id获取字段列表
+    parameters:
+    - name: id
+      description: 指标模型id
+      schema:
+        type: string
+      in: path
+      required: true
+  /api/mdl-uniquery/v1/metric-models/{id}/field_values/{field_name}:
+    summary: 基于指标模型id获取字段的值列表
+    get:
+      tags:
+        - 数据模型查询
+      parameters:
+      - name: id
+        description: 指标模型id
+        schema:
+          type: string
+        in: path
+        required: true
+      - name: field_name
+        description: 字段名称
+        schema:
+          type: string
+        in: path
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: ./mdl-uniquery.schemas.yaml#/components/schemas/FieldValues
+              examples:
+                字段列表:
+                  value:
+                    type: keyword
+                    values:
+                    - v1
+                    - v2
+                    - v3
+          description: ok
+      summary: 基于指标模型id获取字段的值列表
+  /api/mdl-uniquery/v1/metric-models/{id}/labels:
+    summary: 基于指标模型id获取维度字段列表
+    get:
+      tags:
+        - 数据模型查询
+      parameters:
+      - name: id
+        in: path
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              examples:
+                指标结果维度字段:
+                  value:
+                  - labels_1
+                  - labels_2
+          description: ok
+      summary: 基于指标模型id获取维度字段列表

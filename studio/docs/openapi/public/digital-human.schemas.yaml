@@ -1,0 +1,253 @@
+components:
+  schemas:
+    BknEntry:
+      type: object
+      properties:
+        name:
+          type: string
+          title: 知识源名称
+        url:
+          type: string
+          title: 知识源 URL
+      required:
+        - name
+        - url
+
+    ChannelConfig:
+      type: object
+      description: |
+        绑定 IM 渠道到 OpenClaw agent。后端会写入 `openclaw.json` 的 `bindings` 与 `channels`：
+        - `type: feishu`（或省略）→ `match.channel: "feishu"` 与 `channels.feishu`
+        - `type: dingtalk` → `match.channel: "dingtalk"` 与 `channels.dingtalk`
+        需已安装对应 OpenClaw 渠道插件（钉钉需安装如 `openclaw-dingtalk`），否则仅写配置仍可能无法在网关侧生效。
+      properties:
+        type:
+          type: string
+          enum:
+            - feishu
+            - dingtalk
+          description: 渠道类型；省略时按飞书处理，响应中通常会规范为 `feishu`
+        appId:
+          type: string
+          description: 应用/客户端 ID（飞书/钉钉开放平台）
+        appSecret:
+          type: string
+          description: 应用密钥
+      required:
+        - appId
+        - appSecret
+
+    DigitalHumanList:
+      summary: 数字员工列表
+      description: 每个元素与详情接口返回结构一致
+      type: array
+      items:
+        $ref: '#/components/schemas/DigitalHumanDetail'
+
+    DigitalHuman:
+      summary: 数字员工信息
+      type: object
+      properties:
+        id:
+          type: string
+          title: 数字员工 ID
+        name:
+          type: string
+          title: 数字员工名称
+        creature:
+          type: string
+          title: 岗位 / 角色（IDENTITY.md Creature）
+        icon_id:
+          type: string
+          title: 图标 ID（IDENTITY.md Icon ID）
+      required:
+        - id
+        - name
+
+    BuiltInDigitalHuman:
+      summary: 预置数字员工模板
+      type: object
+      properties:
+        id:
+          type: string
+          title: 预置数字员工模板 ID
+        name:
+          type: string
+          title: 预置数字员工名称
+        description:
+          type: string
+          title: 预置数字员工描述
+      required:
+        - id
+        - name
+
+    BuiltInDigitalHumanList:
+      summary: 预置数字员工模板列表
+      type: array
+      items:
+        $ref: '#/components/schemas/BuiltInDigitalHuman'
+
+    DigitalHumanDetail:
+      summary: 数字员工详情
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        creature:
+          type: string
+        icon_id:
+          type: string
+          title: 图标 ID（IDENTITY.md Icon ID）
+        soul:
+          type: string
+        bkn:
+          type: array
+          items:
+            $ref: '#/components/schemas/BknEntry'
+        skills:
+          type: array
+          description: |
+            当前绑定的技能 id 列表（含内置默认 `archive-protocol`、`schedule-plan`、`kweaver-core` 等）；无绑定时省略。
+          items:
+            type: string
+        channel:
+          $ref: '#/components/schemas/ChannelConfig'
+          description: 已绑定的渠道凭证（与创建/更新一致；无绑定时省略）。响应中 `type` 通常显式为 `feishu` 或 `dingtalk`
+      required:
+        - id
+        - name
+        - soul
+
+    CreateDigitalHumanRequest:
+      summary: 创建数字员工请求
+      description: |
+        后端通过 OpenClaw `agents.create` 创建 agent：内部注册名优先使用请求中的 `id`，未提供时使用 UUID，展示名写在 `IDENTITY.md`。
+        `channel` 写入本机 `OPENCLAW_CONFIG_PATH` 指向的 `openclaw.json`（非 Gateway `config.patch`）。
+      type: object
+      properties:
+        id:
+          type: string
+          title: 数字员工 ID
+          description: 可选；未提供时服务端自动生成 UUID
+        name:
+          type: string
+          title: 展示名称（IDENTITY.md Name）
+        creature:
+          type: string
+          title: 岗位 / 角色（IDENTITY.md Creature）
+        icon_id:
+          type: string
+          title: 图标 ID（IDENTITY.md Icon ID）
+        soul:
+          type: string
+          title: SOUL.md 正文
+        skills:
+          type: array
+          title: 额外技能目录名列表
+          description: |
+            与默认技能合并后写入 agent。服务端始终先绑定 `archive-protocol`、`schedule-plan`、`kweaver-core`，再追加本数组中的名称（去重）。
+          items:
+            type: string
+        bkn:
+          type: array
+          items:
+            $ref: '#/components/schemas/BknEntry'
+        channel:
+          $ref: '#/components/schemas/ChannelConfig'
+      required:
+        - name
+
+    CreateDigitalHumanResponse:
+      summary: 创建数字员工响应
+      description: |
+        与请求字段对应；`skills` 为合并默认技能与请求中额外技能后的**完整**绑定列表（含 `archive-protocol`、`schedule-plan`、`kweaver-core`）。
+        若请求中传了 `channel`，响应会带上 `type`（省略时规范为 `feishu`）
+      type: object
+      properties:
+        id:
+          type: string
+          description: 数字员工 ID（与 OpenClaw agent id 一致；未显式指定时通常为 UUID）
+        name:
+          type: string
+        creature:
+          type: string
+        icon_id:
+          type: string
+          title: 图标 ID
+        soul:
+          type: string
+        skills:
+          type: array
+          description: 当前绑定的完整技能 id 列表（含内置默认）。
+          items:
+            type: string
+        bkn:
+          type: array
+          items:
+            $ref: '#/components/schemas/BknEntry'
+        channel:
+          $ref: '#/components/schemas/ChannelConfig'
+      required:
+        - id
+        - name
+
+    UpdateDigitalHumanRequest:
+      summary: 更新数字员工（部分字段）
+      description: |
+        至少提供以下字段之一：`name`、`creature`、`icon_id`、`soul`、`skills`、`bkn`、`channel`（仅出现上述键之一即可，其他未知键不计入）。
+        若 `skills` / `bkn` 出现在 body 中，表示**整组替换**（可为空数组以清空）。
+      type: object
+      properties:
+        name:
+          type: string
+        creature:
+          type: string
+        icon_id:
+          type: string
+          title: 图标 ID（IDENTITY.md Icon ID）
+        soul:
+          type: string
+        skills:
+          type: array
+          items:
+            type: string
+        bkn:
+          type: array
+          items:
+            $ref: '#/components/schemas/BknEntry'
+        channel:
+          $ref: '#/components/schemas/ChannelConfig'
+
+    UpdateDigitalHumanResponse:
+      summary: 更新数字员工响应
+      description: |
+        `skills` 为当前完整绑定列表（含内置默认）；与创建响应语义一致。
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        creature:
+          type: string
+        icon_id:
+          type: string
+          title: 图标 ID
+        soul:
+          type: string
+        skills:
+          type: array
+          description: 当前绑定的完整技能 id 列表（含内置默认）。
+          items:
+            type: string
+        bkn:
+          type: array
+          items:
+            $ref: '#/components/schemas/BknEntry'
+        channel:
+          $ref: '#/components/schemas/ChannelConfig'
+      required:
+        - id
+        - name

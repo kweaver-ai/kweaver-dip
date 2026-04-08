@@ -1,0 +1,73 @@
+schemas:
+  ErrorResponse:
+    description: 接口错误信息
+    type: object
+    properties:
+      code:
+        description: 业务错误码
+        type: string
+      description:
+        description: 错误描述
+        type: string
+      solution:
+        description: 错误处理建议
+        type: string
+      detail:
+        description: 错误详细信息
+        type: object
+      link:
+        description: 错误帮助地址
+        type: string
+    required:
+      - code
+      - description
+
+errors:
+  InvalidParameter:
+    description: 请求参数错误
+    content:
+      application/json:
+        schema:
+          $ref: '#/schemas/ErrorResponse'
+  
+  Unauthorized:
+    description: 未授权访问
+    content:
+      application/json:
+        schema:
+          $ref: '#/schemas/ErrorResponse'
+
+  Forbidden:
+    description: 操作权限不足
+    content:
+      application/json:
+        schema:
+          $ref: '#/schemas/ErrorResponse'
+
+  NotFound:
+    description: 资源不存在
+    content:
+      application/json:
+        schema:
+          $ref: '#/schemas/ErrorResponse'
+
+  Conflict:
+    description: 资源冲突
+    content:
+      application/json:
+        schema:
+          $ref: '#/schemas/ErrorResponse'
+
+  BadGateway:
+    description: 上游 OpenClaw Gateway 不可用、RPC 失败或 OpenClaw 返回错误（如创建 agent 失败）
+    content:
+      application/json:
+        schema:
+          $ref: '#/schemas/ErrorResponse'
+
+  InternalServerError:
+    description: 服务器内部错误
+    content:
+      application/json:
+        schema:
+          $ref: '#/schemas/ErrorResponse'

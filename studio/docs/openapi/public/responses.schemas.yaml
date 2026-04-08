@@ -1,0 +1,133 @@
+components:
+  schemas:
+    CreateSessionKeyRequest:
+      summary: 创建会话键请求
+      type: object
+      properties:
+        agentId:
+          type: string
+          description: 生成会话键时使用的 Agent ID
+      required:
+        - agentId
+
+    CreateSessionKeyResponse:
+      summary: 创建会话键响应
+      type: object
+      properties:
+        sessionKey:
+          type: string
+          description: 新生成的会话键，格式为 `agent:<agentId>:user:<userid>:direct:<chatId>`
+      required:
+        - sessionKey
+
+    ChatAgentInputTextContentPart:
+      summary: Chat Agent 输入文本片段
+      type: object
+      additionalProperties: false
+      properties:
+        type:
+          type: string
+          enum:
+            - input_text
+            - text
+        text:
+          type: string
+      required:
+        - type
+        - text
+
+    ChatAgentMessageInputItem:
+      summary: Chat Agent 输入消息项
+      type: object
+      additionalProperties: false
+      properties:
+        type:
+          type: string
+          const: message
+        role:
+          type: string
+          enum:
+            - system
+            - developer
+            - user
+            - assistant
+        content:
+          oneOf:
+            - type: string
+            - type: array
+              items:
+                $ref: './responses.schemas.yaml#/components/schemas/ChatAgentInputTextContentPart'
+      required:
+        - type
+        - role
+        - content
+
+    ChatAgentAttachment:
+      summary: Chat Agent 附件
+      type: object
+      additionalProperties: false
+      properties:
+        type:
+          type: string
+          const: input_file
+        source:
+          type: object
+          additionalProperties: false
+          properties:
+            type:
+              type: string
+              const: path
+            path:
+              type: string
+              description: 文件路径（当前可传工作区相对路径或可访问 URL）
+          required:
+            - type
+            - path
+      required:
+        - type
+        - source
+
+    ChatUploadRequest:
+      summary: Chat 上传请求
+      type: object
+      additionalProperties: false
+      properties:
+        file:
+          type: string
+          format: binary
+          description: 本地上传文件（二进制）
+      required:
+        - file
+
+    ChatUploadResponse:
+      summary: Chat 上传响应
+      type: object
+      additionalProperties: false
+      properties:
+        path:
+          type: string
+          description: 工作区相对路径，可用于后续 `POST /chat/agent` attachments
+      required:
+        - path
+
+    ChatAgentRequest:
+      summary: 基于 OpenResponse 风格的 Chat Agent 请求
+      type: object
+      additionalProperties: true
+      properties:
+        input:
+          oneOf:
+            - type: string
+            - type: array
+              items:
+                $ref: './responses.schemas.yaml#/components/schemas/ChatAgentMessageInputItem'
+        attachments:
+          type: array
+          items:
+            $ref: './responses.schemas.yaml#/components/schemas/ChatAgentAttachment'
+      required:
+        - input
+
+    DigitalHumanResponseStream:
+      summary: Chat Agent 响应事件流
+      type: string

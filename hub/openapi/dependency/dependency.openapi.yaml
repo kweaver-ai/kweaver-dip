@@ -1,0 +1,185 @@
+openapi: 3.0.1
+
+info:
+  title: DIP-Hub 依赖的外部 API
+  description: DIP-Hub 依赖的外部 API
+  version: 1.0.0
+
+paths:
+  # ============ Deploy Installer API ============
+  /internal/api/deploy-installer/v1/agents/image:
+    $ref: './deploy-installer/deploy-installer.paths.yaml#/paths/agents/image'
+  /internal/api/deploy-installer/v1/agents/chart:
+    $ref: './deploy-installer/deploy-installer.paths.yaml#/paths/agents/chart'
+  /internal/api/deploy-installer/v1/agents/release/{release-name}:
+    $ref: './deploy-installer/deploy-installer.paths.yaml#/paths/agents/releases'
+
+  # ============ Agent Factory API ============
+  /api/agent-factory/v3/agent:
+    $ref: './agent-factory/agent-factory.paths.yaml#/paths/agent'
+
+  # ============ Ontology Manager API ============
+  # Knowledge Networks
+  /api/ontology-manager/v1/knowledge-networks:
+    $ref: './ontology-manager/ontology-manager.paths.yaml#/paths/knowledge-networks'
+  /api/ontology-manager/v1/knowledge-networks/{kn_id}:
+    $ref: './ontology-manager/ontology-manager.paths.yaml#/paths/knowledge-networks-id'
+  # Object Types
+  /api/ontology-manager/v1/knowledge-networks/{kn_id}/object-types:
+    $ref: './ontology-manager/ontology-manager.paths.yaml#/paths/object-types'
+  # Relation Types
+  /api/ontology-manager/v1/knowledge-networks/{kn_id}/relation-types:
+    $ref: './ontology-manager/ontology-manager.paths.yaml#/paths/relation-types'
+  # Action Types
+  /api/ontology-manager/v1/knowledge-networks/{kn_id}/action-types:
+    $ref: './ontology-manager/ontology-manager.paths.yaml#/paths/action-types'
+
+  # ============ Hydra OAuth2 API ============
+  /admin/oauth2/introspect:
+    $ref: './hydra/hydra.paths.yaml#/paths/introspect'
+
+  # ============ Authorization API ============
+  # 资源类型管理
+  /api/authorization/v1/resource_type/{id}:
+    $ref: './auth/auth.paths.yaml#/paths/resource-type'
+  /api/authorization/v1/resource_type:
+    $ref: './auth/auth.paths.yaml#/paths/resource-types'
+  /api/authorization/v1/resource_all_operation:
+    $ref: './auth/auth.paths.yaml#/paths/resource-all-operation'
+  # 角色管理
+  /api/authorization/v1/roles:
+    $ref: './auth/auth.paths.yaml#/paths/roles'
+  /api/authorization/v1/roles/{id}:
+    $ref: './auth/auth.paths.yaml#/paths/roles-id'
+  /api/authorization/v1/roles/{id}/{fields}:
+    $ref: './auth/auth.paths.yaml#/paths/roles-id-fields'
+  /api/authorization/v1/resource_type_roles:
+    $ref: './auth/auth.paths.yaml#/paths/resource-type-roles'
+  # 角色成员管理
+  /api/authorization/v1/role-members/{id}:
+    $ref: './auth/auth.paths.yaml#/paths/role-members'
+  # 策略配置
+  /api/authorization/v1/policy:
+    $ref: './auth/auth.paths.yaml#/paths/policy'
+  /api/authorization/v1/policy/{ids}:
+    $ref: './auth/auth.paths.yaml#/paths/policy-ids'
+  /api/authorization/v1/resource-policy:
+    $ref: './auth/auth.paths.yaml#/paths/resource-policy'
+  /api/authorization/v1/accessor-policy:
+    $ref: './auth/auth.paths.yaml#/paths/accessor-policy'
+  # 策略决策
+  /api/authorization/v1/operation-check:
+    $ref: './auth/auth.paths.yaml#/paths/operation-check'
+  /api/authorization/v1/resource-operation:
+    $ref: './auth/auth.paths.yaml#/paths/resource-operation'
+  /api/authorization/v1/resource-type-operation:
+    $ref: './auth/auth.paths.yaml#/paths/resource-type-operation'
+
+  # ============ MDL Data Model API ============
+  /mdl-data-model/v1/metric-model-groups:
+    $ref: './mdl-data-model/mdl-data-model.paths.yaml#/paths/~1mdl-data-model~1v1~1metric-model-groups'
+  /mdl-data-model/v1/metric-model-groups/{group_id}:
+    $ref: './mdl-data-model/mdl-data-model.paths.yaml#/paths/~1mdl-data-model~1v1~1metric-model-groups~1{group_id}'
+  /mdl-data-model/v1/metric-model-groups/{group_name}/metric-models/{model_name}:
+    $ref: './mdl-data-model/mdl-data-model.paths.yaml#/paths/~1mdl-data-model~1v1~1metric-model-groups~1{group_name}~1metric-models~1{model_name}'
+  /mdl-data-model/v1/metric-models:
+    $ref: './mdl-data-model/mdl-data-model.paths.yaml#/paths/~1mdl-data-model~1v1~1metric-models'
+  /mdl-data-model/v1/metric-models/{id}:
+    $ref: './mdl-data-model/mdl-data-model.paths.yaml#/paths/~1mdl-data-model~1v1~1metric-models~1{id}'
+  /mdl-data-model/v1/metric-models/{id}/attributes:
+    $ref: './mdl-data-model/mdl-data-model.paths.yaml#/paths/~1mdl-data-model~1v1~1metric-models~1{id}~1attributes'
+  /mdl-data-model/v1/metric-models/{id}/fields:
+    $ref: './mdl-data-model/mdl-data-model.paths.yaml#/paths/~1mdl-data-model~1v1~1metric-models~1{id}~1fields'
+  /mdl-data-model/v1/metric-tasks/{id}:
+    $ref: './mdl-data-model/mdl-data-model.paths.yaml#/paths/~1mdl-data-model~1v1~1metric-tasks~1{id}'
+  /mdl-data-model/v1/metric-tasks/{id}/attr:
+    $ref: './mdl-data-model/mdl-data-model.paths.yaml#/paths/~1mdl-data-model~1v1~1metric-tasks~1{id}~1attr'
+
+  # ============ MDL Uniquery API ============
+  /api/mdl-uniquery/v1/health:
+    $ref: './mdl-uniquery/mdl-uniquery.paths.yaml#/paths/~1api~1mdl-uniquery~1v1~1health'
+  /api/mdl-uniquery/v1/metric-model:
+    $ref: './mdl-uniquery/mdl-uniquery.paths.yaml#/paths/~1api~1mdl-uniquery~1v1~1metric-model'
+  /api/mdl-uniquery/v1/metric-models/{ids}:
+    $ref: './mdl-uniquery/mdl-uniquery.paths.yaml#/paths/~1api~1mdl-uniquery~1v1~1metric-models~1{ids}'
+  /api/mdl-uniquery/v1/metric-model-groups/{group_name}/metric-models:
+    $ref: './mdl-uniquery/mdl-uniquery.paths.yaml#/paths/~1api~1mdl-uniquery~1v1~1metric-model-groups~1{group_name}~1metric-models'
+  /api/mdl-uniquery/v1/metric-models/{id}/fields:
+    $ref: './mdl-uniquery/mdl-uniquery.paths.yaml#/paths/~1api~1mdl-uniquery~1v1~1metric-models~1{id}~1fields'
+  /api/mdl-uniquery/v1/metric-models/{id}/field_values/{field_name}:
+    $ref: './mdl-uniquery/mdl-uniquery.paths.yaml#/paths/~1api~1mdl-uniquery~1v1~1metric-models~1{id}~1field_values~1{field_name}'
+  /api/mdl-uniquery/v1/metric-models/{id}/labels:
+    $ref: './mdl-uniquery/mdl-uniquery.paths.yaml#/paths/~1api~1mdl-uniquery~1v1~1metric-models~1{id}~1labels'
+
+
+components:
+  schemas:
+    # Deploy Installer Schemas
+    InternalError:
+      $ref: './deploy-installer/deploy-installer.schemas.yaml#/components/schemas/InternalError'
+    ParameterError:
+      $ref: './deploy-installer/deploy-installer.schemas.yaml#/components/schemas/ParameterError'
+
+    # Agent Factory Schemas
+    CreateAgentRequest:
+      $ref: './agent-factory/agent-factory.schemas.yaml#/components/schemas/CreateAgentRequest'
+    CreateAgentResponse:
+      $ref: './agent-factory/agent-factory.schemas.yaml#/components/schemas/CreateAgentResponse'
+    AgentFactoryError:
+      $ref: './agent-factory/agent-factory.schemas.yaml#/components/schemas/AgentFactoryError'
+
+    # Ontology Manager Schemas
+    # Knowledge Network
+    ReqKnowledgeNetwork:
+      $ref: './ontology-manager/ontology-manager.schemas.yaml#/components/schemas/ReqKnowledgeNetwork'
+    UpdateKnowledgeNetwork:
+      $ref: './ontology-manager/ontology-manager.schemas.yaml#/components/schemas/UpdateKnowledgeNetwork'
+    KnowledgeNetworkDetail:
+      $ref: './ontology-manager/ontology-manager.schemas.yaml#/components/schemas/KnowledgeNetworkDetail'
+    ListKN:
+      $ref: './ontology-manager/ontology-manager.schemas.yaml#/components/schemas/ListKN'
+    # Object Type
+    ObjectTypeDetail:
+      $ref: './ontology-manager/ontology-manager.schemas.yaml#/components/schemas/ObjectTypeDetail'
+    ListObjectTypes:
+      $ref: './ontology-manager/ontology-manager.schemas.yaml#/components/schemas/ListObjectTypes'
+    ObjectTypeSearchResponse:
+      $ref: './ontology-manager/ontology-manager.schemas.yaml#/components/schemas/ObjectTypeSearchResponse'
+    # Relation Type
+    RelationTypeDetail:
+      $ref: './ontology-manager/ontology-manager.schemas.yaml#/components/schemas/RelationTypeDetail'
+    ListRelationTypes:
+      $ref: './ontology-manager/ontology-manager.schemas.yaml#/components/schemas/ListRelationTypes'
+    RelationTypeSearchResponse:
+      $ref: './ontology-manager/ontology-manager.schemas.yaml#/components/schemas/RelationTypeSearchResponse'
+    # Action Type
+    ActionTypeDetail:
+      $ref: './ontology-manager/ontology-manager.schemas.yaml#/components/schemas/ActionTypeDetail'
+    ListActionTypes:
+      $ref: './ontology-manager/ontology-manager.schemas.yaml#/components/schemas/ListActionTypes'
+    ActionTypeSearchResponse:
+      $ref: './ontology-manager/ontology-manager.schemas.yaml#/components/schemas/ActionTypeSearchResponse'
+
+    # Hydra Schemas
+    HydraErr:
+      $ref: './hydra/hydra.schemas.yaml#/components/schemas/Err'
+    IntrospectToken:
+      $ref: './hydra/hydra.schemas.yaml#/components/schemas/IntrospectToken'
+    OKTokenIntrospection:
+      $ref: './hydra/hydra.schemas.yaml#/components/schemas/OKTokenIntrospection'
+
+    # Authorization Schemas
+    AuthError:
+      $ref: './auth/auth.schemas.yaml#/components/schemas/Error'
+    Role:
+      $ref: './auth/auth.schemas.yaml#/components/schemas/Role'
+    Roles:
+      $ref: './auth/auth.schemas.yaml#/components/schemas/Roles'
+    CreateRoleInfo:
+      $ref: './auth/auth.schemas.yaml#/components/schemas/CreateRoleInfo'
+    PolicyInfo:
+      $ref: './auth/auth.schemas.yaml#/components/schemas/PolicyInfo'
+    CheckReq:
+      $ref: './auth/auth.schemas.yaml#/components/schemas/CheckReq'
+    CheckResult:
+      $ref: './auth/auth.schemas.yaml#/components/schemas/CheckResult'

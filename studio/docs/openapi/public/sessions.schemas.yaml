@@ -1,0 +1,216 @@
+components:
+  schemas:
+    SessionsListResponse:
+      summary: 会话列表响应
+      type: object
+      properties:
+        ts:
+          type: integer
+          description: 服务端时间戳（毫秒）
+        path:
+          type: string
+          description: 会话来源路径
+        count:
+          type: integer
+          minimum: 0
+          description: 会话总数
+        defaults:
+          $ref: '#/components/schemas/SessionDefaults'
+        sessions:
+          type: array
+          items:
+            $ref: '#/components/schemas/SessionSummary'
+      required:
+        - ts
+        - path
+        - count
+        - sessions
+      additionalProperties: true
+
+    SessionDefaults:
+      summary: 会话默认模型配置
+      type: object
+      properties:
+        modelProvider:
+          type: string
+        model:
+          type: string
+        contextTokens:
+          type: integer
+          minimum: 0
+      additionalProperties: true
+
+    SessionSummary:
+      type: object
+      additionalProperties: false
+      required:
+        - key
+        - kind
+        - updatedAt
+        - sessionId
+        - abortedLastRun
+        - totalTokensFresh
+        - modelProvider
+        - model
+        - contextTokens
+      properties:
+        key:
+          type: string
+          description: 规范化后的 session key。
+        kind:
+          type: string
+          enum:
+            - direct
+            - group
+            - global
+            - unknown
+        updatedAt:
+          type: integer
+          format: int64
+          description: 最近活动时间戳，单位为毫秒。
+        sessionId:
+          type: string
+          description: 底层 transcript/session 的标识符。
+        abortedLastRun:
+          type: boolean
+        totalTokensFresh:
+          type: boolean
+        modelProvider:
+          type: string
+          description: 为当前 session 解析得到的模型提供方。
+        model:
+          type: string
+          description: 为当前 session 解析得到的模型。
+        contextTokens:
+          type: integer
+        derivedTitle:
+          type: string
+          description: 从 transcript 内容推导出的标题；仅在 includeDerivedTitles=true 时返回。
+
+    SessionGetResponse:
+      summary: 单个会话消息响应
+      type: object
+      properties:
+        key:
+          type: string
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/SessionMessage'
+      required:
+        - key
+      additionalProperties: true
+
+    ChatMessagesResponse:
+      summary: Chat 历史消息响应
+      type: object
+      properties:
+        sessionKey:
+          type: string
+        sessionId:
+          type: string
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/SessionMessage'
+        thinkingLevel:
+          type: string
+        fastMode:
+          type: boolean
+        verboseLevel:
+          type: string
+      required:
+        - sessionKey
+      additionalProperties: true
+
+    SessionMessage:
+      summary: 会话消息
+      type: object
+      properties:
+        id:
+          type: string
+        role:
+          type: string
+        content:
+          description: 消息内容，结构随上游返回
+        ts:
+          type: integer
+      additionalProperties: true
+
+    SessionsPreviewRequest:
+      summary: 会话预览请求
+      type: object
+      properties:
+        keys:
+          type: array
+          minItems: 1
+          items:
+            type: string
+          description: 要预览的会话 key 列表
+        limit:
+          type: integer
+          minimum: 0
+          description: 每个会话返回的消息上限
+      required:
+        - keys
+      additionalProperties: false
+
+    SessionsPreviewResponse:
+      summary: 会话预览响应
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/SessionPreviewItem'
+      additionalProperties: true
+
+    SessionPreviewItem:
+      summary: 会话预览项
+      type: object
+      properties:
+        key:
+          type: string
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/SessionMessage'
+      required:
+        - key
+      additionalProperties: true
+
+    SessionArchivesResponse:
+      summary: 会话归档物列表响应
+      type: object
+      properties:
+        path:
+          type: string
+          description: 归档查询路径
+        contents:
+          type: array
+          description: 路径下的归档项
+          items:
+            $ref: '#/components/schemas/SessionArchiveEntry'
+      required:
+        - path
+        - contents
+      additionalProperties: true
+
+    SessionArchiveEntry:
+      summary: 归档项
+      type: object
+      properties:
+        name:
+          type: string
+          description: 文件或目录名称
+        type:
+          type: string
+          description: 归档项类型
+          enum:
+            - file
+            - directory
+            - other
+      required:
+        - name
+        - type
+      additionalProperties: true

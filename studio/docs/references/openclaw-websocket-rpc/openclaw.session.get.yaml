@@ -1,0 +1,69 @@
+components:
+  schemas:
+    SessionsGetResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - messages
+      properties:
+        messages:
+          type: array
+          description: >
+            Transcript messages loaded from the session transcript file.
+            If the session does not exist or has no transcript, this is an empty array.
+          items:
+            $ref: "#/components/schemas/SessionTranscriptMessage"
+
+    SessionTranscriptMessage:
+      type: object
+      description: >
+        A transcript message returned by `sessions.get`.
+        Most entries are returned directly from `parsed.message` in the transcript JSONL,
+        so the shape is intentionally permissive. A synthetic compaction marker may also
+        appear as a system message.
+      additionalProperties: true
+      properties:
+        role:
+          type: string
+          description: >
+            Common values are `user`, `assistant`, `tool`, or `system`.
+        content:
+          oneOf:
+            - type: string
+            - type: array
+              items:
+                $ref: "#/components/schemas/SessionContentPart"
+          description: >
+            Message content. May be a plain string or an array of structured content parts.
+        timestamp:
+          type: integer
+          description: Epoch milliseconds. Present on some transcript entries.
+        provenance:
+          description: Optional provenance metadata carried through from the transcript.
+        __openclaw:
+          $ref: "#/components/schemas/OpenClawSessionMessageMeta"
+
+    SessionContentPart:
+      type: object
+      additionalProperties: true
+      properties:
+        type:
+          type: string
+          description: >
+            Part kind. Common values seen by the Gateway include `text`,
+            `input_text`, `output_text`, and tool-related part types.
+        text:
+          type: string
+          description: Text payload for text-like content parts.
+
+    OpenClawSessionMessageMeta:
+      type: object
+      additionalProperties: true
+      properties:
+        kind:
+          type: string
+          description: >
+            Internal synthetic marker kind. Currently used for compaction entries.
+        id:
+          type: string
+          description: Optional internal marker id.

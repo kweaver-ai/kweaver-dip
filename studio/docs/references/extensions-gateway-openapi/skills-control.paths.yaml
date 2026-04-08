@@ -1,0 +1,237 @@
+openapi: 3.1.0
+
+info:
+  title: OpenClaw Extensions Gateway Reference - Skills Control
+  version: 0.1.0
+  description: |
+    `dip` 插件注册的 Gateway HTTP 接口（原 `skills-control` 能力）。
+    所有请求均要求 Gateway 鉴权。
+
+servers:
+  - url: /
+
+security:
+  - bearerAuth: []
+
+paths:
+  /v1/config/agents/skills:
+    get:
+      operationId: getAgentSkillsConfig
+      summary: 查询指定 agent 的技能配置
+      description: |
+        仅支持传入 `agentId` 查询该 agent 在配置文件中的 `skills` 数组。
+        插件不再提供可用技能发现或 `skills.status` 归一化能力；这些逻辑统一由 Studio 侧处理。
+      parameters:
+        - name: agentId
+          in: query
+          required: true
+          description: 目标 agent ID
+          schema:
+            type: string
+      responses:
+        "200":
+          description: 查询成功
+          content:
+            application/json:
+              schema:
+                $ref: './skills-control.schemas.yaml#/components/schemas/AgentSkillsResponse'
+        "400":
+          description: 缺少 `agentId`
+          content:
+            application/json:
+              schema:
+                $ref: './skills-control.schemas.yaml#/components/schemas/PluginErrorResponse'
+        "404":
+          description: 指定 agent 不存在
+          content:
+            application/json:
+              schema:
+                $ref: './skills-control.schemas.yaml#/components/schemas/PluginErrorResponse'
+        "405":
+          description: 方法不允许
+          content:
+            application/json:
+              schema:
+                $ref: './skills-control.schemas.yaml#/components/schemas/PluginErrorResponse'
+        "500":
+          description: 插件内部错误
+          content:
+            application/json:
+              schema:
+                $ref: './skills-control.schemas.yaml#/components/schemas/PluginErrorResponse'
+
+    post:
+      operationId: updateAgentSkillsConfigPost
+      summary: 更新指定 agent 的技能配置
+      description: |
+        用请求体中的 `skills` 数组整组替换目标 agent 的技能列表。
+        `POST` 与 `PUT` 行为相同。
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './skills-control.schemas.yaml#/components/schemas/UpdateAgentSkillsRequest'
+      responses:
+        "200":
+          description: 更新成功
+          content:
+            application/json:
+              schema:
+                $ref: './skills-control.schemas.yaml#/components/schemas/UpdateAgentSkillsResponse'
+        "400":
+          description: 请求体缺少 `agentId` 或 `skills`
+          content:
+            application/json:
+              schema:
+                $ref: './skills-control.schemas.yaml#/components/schemas/PluginErrorResponse'
+        "404":
+          description: 指定 agent 不存在
+          content:
+            application/json:
+              schema:
+                $ref: './skills-control.schemas.yaml#/components/schemas/PluginErrorResponse'
+        "500":
+          description: 插件内部错误
+          content:
+            application/json:
+              schema:
+                $ref: './skills-control.schemas.yaml#/components/schemas/PluginErrorResponse'
+
+    put:
+      operationId: updateAgentSkillsConfigPut
+      summary: 更新指定 agent 的技能配置
+      description: |
+        用请求体中的 `skills` 数组整组替换目标 agent 的技能列表。
+        `PUT` 与 `POST` 行为相同。
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './skills-control.schemas.yaml#/components/schemas/UpdateAgentSkillsRequest'
+      responses:
+        "200":
+          description: 更新成功
+          content:
+            application/json:
+              schema:
+                $ref: './skills-control.schemas.yaml#/components/schemas/UpdateAgentSkillsResponse'
+        "400":
+          description: 请求体缺少 `agentId` 或 `skills`
+          content:
+            application/json:
+              schema:
+                $ref: './skills-control.schemas.yaml#/components/schemas/PluginErrorResponse'
+        "404":
+          description: 指定 agent 不存在
+          content:
+            application/json:
+              schema:
+                $ref: './skills-control.schemas.yaml#/components/schemas/PluginErrorResponse'
+        "500":
+          description: 插件内部错误
+          content:
+            application/json:
+              schema:
+                $ref: './skills-control.schemas.yaml#/components/schemas/PluginErrorResponse'
+
+  /v1/config/agents/skills/{name}/tree:
+    get:
+      operationId: getSkillTree
+      summary: 读取技能目录树
+      description: |
+        由 Studio 传入 `resolvedSkillPath` 后，插件直接按该绝对目录读取文件树。
+        插件不负责通过 `skills.status` 解析技能目录；`name` 仅用于路由与响应字段。
+      parameters:
+        - name: name
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: resolvedSkillPath
+          in: query
+          required: false
+          description: Studio 预先解析出的技能绝对目录；未传时插件才回退到本地目录查找
+          schema:
+            type: string
+      responses:
+        "200":
+          description: 目录树读取成功
+        "400":
+          description: 路径参数非法
+        "404":
+          description: 技能目录不存在
+        "500":
+          description: 插件内部错误
+
+  /v1/config/agents/skills/{name}/content:
+    get:
+      operationId: getSkillContent
+      summary: 预览技能文件
+      description: |
+        由 Studio 传入 `resolvedSkillPath` 后，插件只负责校验相对 `path` 并读取文本预览。
+      parameters:
+        - name: name
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: path
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: resolvedSkillPath
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: 文件预览成功
+        "400":
+          description: 路径非法或目标不是普通文件
+        "404":
+          description: 技能目录或文件不存在
+        "500":
+          description: 插件内部错误
+
+  /v1/config/agents/skills/{name}/download:
+    get:
+      operationId: downloadSkillFile
+      summary: 下载技能文件
+      description: |
+        由 Studio 传入 `resolvedSkillPath` 后，插件只负责校验相对 `path` 并输出文件字节流。
+      parameters:
+        - name: name
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: path
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: resolvedSkillPath
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: 文件下载成功
+        "400":
+          description: 路径非法或目标不是普通文件
+        "404":
+          description: 技能目录或文件不存在
+        "500":
+          description: 插件内部错误
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: Bearer

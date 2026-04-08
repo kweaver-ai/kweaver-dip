@@ -1,0 +1,275 @@
+openapi: 3.1.0
+
+info:
+  title: DIP Studio 公开接口
+  version: 0.1.0
+
+security: []
+
+servers:
+  - url: /api/dip-studio/v1
+
+paths:
+  /sessions:
+    get:
+      operationId: getSessionsList
+      summary: 获取会话列表
+      parameters:
+        - name: limit
+          in: query
+          required: false
+          description: 返回会话数量上限
+          schema:
+            type: integer
+            minimum: 0
+        - name: search
+          in: query
+          required: false
+          description: 关键词搜索，用于过滤会话
+          schema:
+            type: string
+        - name: agentId
+          in: query
+          required: false
+          description: 过滤特定 Agent 的会话
+          schema:
+            type: string
+      responses:
+        "200":
+          description: 会话列表
+          content:
+            application/json:
+              schema:
+                $ref: './sessions.schemas.yaml#/components/schemas/SessionsListResponse'
+        "400":
+          $ref: '../common.schemas.yaml#/errors/InvalidParameter'
+        "401":
+          $ref: '../common.schemas.yaml#/errors/Unauthorized'
+        "403":
+          $ref: '../common.schemas.yaml#/errors/Forbidden'
+        "404":
+          $ref: '../common.schemas.yaml#/errors/NotFound'
+        "409":
+          $ref: '../common.schemas.yaml#/errors/Conflict'
+        "500":
+          $ref: '../common.schemas.yaml#/errors/InternalServerError'
+
+  /sessions/{key}:
+    get:
+      operationId: getSessionDetail
+      summary: 通过会话 key 获取会话摘要详情
+      parameters:
+        - name: key
+          in: path
+          required: true
+          description: 会话 key
+          schema:
+            type: string
+        - name: limit
+          in: query
+          required: false
+          description: 返回消息数量上限
+          schema:
+            type: integer
+            minimum: 0
+      responses:
+        "200":
+          description: 指定会话摘要详情
+          content:
+            application/json:
+              schema:
+                $ref: './sessions.schemas.yaml#/components/schemas/SessionSummary'
+        "400":
+          $ref: '../common.schemas.yaml#/errors/InvalidParameter'
+        "401":
+          $ref: '../common.schemas.yaml#/errors/Unauthorized'
+        "403":
+          $ref: '../common.schemas.yaml#/errors/Forbidden'
+        "404":
+          $ref: '../common.schemas.yaml#/errors/NotFound'
+        "409":
+          $ref: '../common.schemas.yaml#/errors/Conflict'
+        "500":
+          $ref: '../common.schemas.yaml#/errors/InternalServerError'
+    delete:
+      operationId: deleteSession
+      summary: 删除指定会话
+      parameters:
+        - name: key
+          in: path
+          required: true
+          description: 会话 key
+          schema:
+            type: string
+      responses:
+        "204":
+          description: 删除成功
+        "400":
+          $ref: '../common.schemas.yaml#/errors/InvalidParameter'
+        "401":
+          $ref: '../common.schemas.yaml#/errors/Unauthorized'
+        "403":
+          $ref: '../common.schemas.yaml#/errors/Forbidden'
+        "404":
+          $ref: '../common.schemas.yaml#/errors/NotFound'
+        "409":
+          $ref: '../common.schemas.yaml#/errors/Conflict'
+        "500":
+          $ref: '../common.schemas.yaml#/errors/InternalServerError'
+
+  /digital-human/{id}/sessions:
+    get:
+      operationId: getDigitalHumanSessionsList
+      summary: 获取指定数字员工的会话列表
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: 数字员工 ID
+          schema:
+            type: string
+        - name: limit
+          in: query
+          required: false
+          description: 返回会话数量上限
+          schema:
+            type: integer
+            minimum: 0
+        - name: search
+          in: query
+          required: false
+          description: 关键词搜索，用于过滤会话
+          schema:
+            type: string
+      responses:
+        "200":
+          description: 指定数字员工会话列表
+          content:
+            application/json:
+              schema:
+                $ref: './sessions.schemas.yaml#/components/schemas/SessionsListResponse'
+        "400":
+          $ref: '../common.schemas.yaml#/errors/InvalidParameter'
+        "401":
+          $ref: '../common.schemas.yaml#/errors/Unauthorized'
+        "403":
+          $ref: '../common.schemas.yaml#/errors/Forbidden'
+        "404":
+          $ref: '../common.schemas.yaml#/errors/NotFound'
+        "409":
+          $ref: '../common.schemas.yaml#/errors/Conflict'
+        "500":
+          $ref: '../common.schemas.yaml#/errors/InternalServerError'
+
+  /sessions/{key}/messages:
+    get:
+      operationId: getSessionMessages
+      summary: 通过会话 key 获取会话消息详情
+      parameters:
+        - name: key
+          in: path
+          required: true
+          description: 会话 key
+          schema:
+            type: string
+        - name: limit
+          in: query
+          required: false
+          description: 返回消息数量上限
+          schema:
+            type: integer
+            minimum: 0
+      responses:
+        "200":
+          description: 指定会话消息详情
+          content:
+            application/json:
+              schema:
+                $ref: './sessions.schemas.yaml#/components/schemas/SessionGetResponse'
+        "400":
+          $ref: '../common.schemas.yaml#/errors/InvalidParameter'
+        "401":
+          $ref: '../common.schemas.yaml#/errors/Unauthorized'
+        "403":
+          $ref: '../common.schemas.yaml#/errors/Forbidden'
+        "404":
+          $ref: '../common.schemas.yaml#/errors/NotFound'
+        "409":
+          $ref: '../common.schemas.yaml#/errors/Conflict'
+        "500":
+          $ref: '../common.schemas.yaml#/errors/InternalServerError'
+
+  /sessions/{key}/archives:
+    get:
+      operationId: getSessionArchives
+      summary: 通过会话 key 获取会话归档物
+      parameters:
+        - name: key
+          in: path
+          required: true
+          description: 会话 key
+          schema:
+            type: string
+      responses:
+        "200":
+          description: 指定会话归档物列表
+          content:
+            application/json:
+              schema:
+                $ref: './sessions.schemas.yaml#/components/schemas/SessionArchivesResponse'
+        "400":
+          $ref: '../common.schemas.yaml#/errors/InvalidParameter'
+        "401":
+          $ref: '../common.schemas.yaml#/errors/Unauthorized'
+        "403":
+          $ref: '../common.schemas.yaml#/errors/Forbidden'
+        "404":
+          $ref: '../common.schemas.yaml#/errors/NotFound'
+        "409":
+          $ref: '../common.schemas.yaml#/errors/Conflict'
+        "500":
+          $ref: '../common.schemas.yaml#/errors/InternalServerError'
+
+  /sessions/{key}/archives/{subpath}:
+    get:
+      operationId: getSessionArchiveSubpath
+      summary: 通过会话 key 获取归档子路径内容
+      parameters:
+        - name: key
+          in: path
+          required: true
+          description: 会话 key
+          schema:
+            type: string
+        - name: subpath
+          in: path
+          required: true
+          description: 归档子路径（可包含多级目录，需 URL 编码）
+          schema:
+            type: string
+      responses:
+        "200":
+          description: 子路径内容（目录返回 JSON，文件返回原始内容）
+          content:
+            application/json:
+              schema:
+                $ref: './sessions.schemas.yaml#/components/schemas/SessionArchivesResponse'
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+            text/plain:
+              schema:
+                type: string
+        "400":
+          $ref: '../common.schemas.yaml#/errors/InvalidParameter'
+        "401":
+          $ref: '../common.schemas.yaml#/errors/Unauthorized'
+        "403":
+          $ref: '../common.schemas.yaml#/errors/Forbidden'
+        "404":
+          $ref: '../common.schemas.yaml#/errors/NotFound'
+        "409":
+          $ref: '../common.schemas.yaml#/errors/Conflict'
+        "500":
+          $ref: '../common.schemas.yaml#/errors/InternalServerError'

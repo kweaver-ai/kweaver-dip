@@ -1,0 +1,214 @@
+components:
+  schemas:
+    CronJobListResponse:
+      summary: 计划任务列表响应
+      type: object
+      properties:
+        jobs:
+          type: array
+          items:
+            $ref: '#/components/schemas/CronJob'
+        total:
+          type: integer
+          minimum: 0
+        offset:
+          type: integer
+          minimum: 0
+        limit:
+          type: integer
+          minimum: 0
+        hasMore:
+          type: boolean
+        nextOffset:
+          oneOf:
+            - type: integer
+              minimum: 0
+            - type: 'null'
+      required:
+        - jobs
+        - total
+        - offset
+        - limit
+        - hasMore
+        - nextOffset
+
+    CronJob:
+      summary: 计划任务
+      type: object
+      properties:
+        id:
+          type: string
+        agentId:
+          type: string
+        sessionKey:
+          type: string
+        name:
+          type: string
+        enabled:
+          type: boolean
+        createdAtMs:
+          type: integer
+        updatedAtMs:
+          type: integer
+        schedule:
+          $ref: '#/components/schemas/CronSchedule'
+        sessionTarget:
+          type: string
+        wakeMode:
+          type: string
+        payload:
+          type: object
+          additionalProperties: true
+        delivery:
+          type: object
+          additionalProperties: true
+        state:
+          $ref: '#/components/schemas/CronJobState'
+        deleteAfterRun:
+          type: boolean
+      required:
+        - id
+        - agentId
+        - sessionKey
+        - name
+        - enabled
+        - createdAtMs
+        - updatedAtMs
+        - schedule
+
+    CronSchedule:
+      summary: 计划任务调度定义
+      type: object
+      properties:
+        kind:
+          type: string
+        at:
+          type: string
+        everyMs:
+          type: integer
+        anchorMs:
+          type: integer
+        expr:
+          type: string
+        tz:
+          type: string
+
+    UpdatePlanRequest:
+      summary: 编辑计划任务请求
+      type: object
+      description: 仅支持更新 `name` 和 `enabled`，且至少提供一个字段。
+      properties:
+        name:
+          type: string
+        enabled:
+          type: boolean
+
+    CronJobState:
+      summary: 计划任务运行状态
+      type: object
+      properties:
+        nextRunAtMs:
+          type: integer
+        lastRunAtMs:
+          type: integer
+        lastRunStatus:
+          type: string
+        lastStatus:
+          type: string
+        lastDurationMs:
+          type: integer
+        lastError:
+          type: string
+        consecutiveErrors:
+          type: integer
+          minimum: 0
+        lastDelivered:
+          type: boolean
+        lastDeliveryStatus:
+          type: string
+        runningAtMs:
+          type: integer
+
+    CronRunListResponse:
+      summary: 计划任务运行记录列表响应
+      type: object
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/CronRunEntry'
+        total:
+          type: integer
+          minimum: 0
+        offset:
+          type: integer
+          minimum: 0
+        limit:
+          type: integer
+          minimum: 0
+        hasMore:
+          type: boolean
+        nextOffset:
+          oneOf:
+            - type: integer
+              minimum: 0
+            - type: 'null'
+      required:
+        - entries
+        - total
+        - offset
+        - limit
+        - hasMore
+        - nextOffset
+
+    CronRunEntry:
+      summary: 计划任务运行记录
+      type: object
+      properties:
+        ts:
+          type: integer
+        jobId:
+          type: string
+        action:
+          type: string
+        status:
+          type: string
+        error:
+          type: string
+        summary:
+          type: string
+        runAtMs:
+          type: integer
+        durationMs:
+          type: integer
+        nextRunAtMs:
+          type: integer
+        model:
+          type: string
+        provider:
+          type: string
+        delivered:
+          type: boolean
+        deliveryStatus:
+          type: string
+        sessionId:
+          type: string
+        sessionKey:
+          type: string
+        jobName:
+          type: string
+      required:
+        - ts
+        - jobId
+        - action
+        - status
+
+    PlanContentResponse:
+      summary: 计划文件内容响应
+      type: object
+      properties:
+        content:
+          type: string
+          description: PLAN.md 原始文本内容
+      required:
+        - content

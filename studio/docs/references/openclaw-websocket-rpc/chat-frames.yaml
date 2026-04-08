@@ -1,0 +1,247 @@
+$schema: "https://json-schema.org/draft/2020-12/schema"
+$id: "openclaw.gateway.websocket.chat-flow.yaml"
+title: "OpenClaw Gateway WebSocket Chat Flow"
+description: "WebSocket responses involved in the chat.send/chat.abort/chat.inject conversation stream."
+oneOf:
+  - $ref: "#/$defs/ChatSendAckResponseFrame"
+  - $ref: "#/$defs/ChatAbortResponseFrame"
+  - $ref: "#/$defs/ChatInjectResponseFrame"
+  - $ref: "#/$defs/ChatEventFrame"
+
+$defs:
+  NonEmptyString:
+    type: string
+    minLength: 1
+
+  TextContentBlock:
+    type: object
+    additionalProperties: true
+    required: [type, text]
+    properties:
+      type:
+        const: text
+      text:
+        type: string
+
+  AssistantMessage:
+    type: object
+    additionalProperties: true
+    required: [role, content]
+    properties:
+      role:
+        const: assistant
+      content:
+        type: array
+        minItems: 1
+        items:
+          $ref: "#/$defs/TextContentBlock"
+      timestamp:
+        type: integer
+        minimum: 0
+      stopReason:
+        type: string
+      usage: {}
+      api:
+        type: string
+      provider:
+        type: string
+      model:
+        type: string
+      idempotencyKey:
+        type: string
+      openclawAbort:
+        type: object
+        additionalProperties: false
+        required: [aborted, origin, runId]
+        properties:
+          aborted:
+            const: true
+          origin:
+            type: string
+            enum: [rpc, stop-command]
+          runId:
+            $ref: "#/$defs/NonEmptyString"
+
+  ChatSendAckPayload:
+    type: object
+    additionalProperties: false
+    required: [runId, status]
+    properties:
+      runId:
+        $ref: "#/$defs/NonEmptyString"
+      status:
+        type: string
+        enum: [started, in_flight, ok, error]
+      summary:
+        type: string
+
+  ChatAbortAckPayload:
+    type: object
+    additionalProperties: false
+    required: [ok, aborted, runIds]
+    properties:
+      ok:
+        const: true
+      aborted:
+        type: boolean
+      runIds:
+        type: array
+        items:
+          $ref: "#/$defs/NonEmptyString"
+
+  ChatInjectAckPayload:
+    type: object
+    additionalProperties: false
+    required: [ok, messageId]
+    properties:
+      ok:
+        const: true
+      messageId:
+        $ref: "#/$defs/NonEmptyString"
+
+  ResponseFrameBase:
+    type: object
+    additionalProperties: false
+    required: [type, id, ok]
+    properties:
+      type:
+        const: res
+      id:
+        $ref: "#/$defs/NonEmptyString"
+      ok:
+        type: boolean
+      payload: {}
+      error:
+        type: object
+        additionalProperties: false
+        required: [code, message]
+        properties:
+          code:
+            $ref: "#/$defs/NonEmptyString"
+          message:
+            $ref: "#/$defs/NonEmptyString"
+          details: {}
+          retryable:
+            type: boolean
+          retryAfterMs:
+            type: integer
+            minimum: 0
+
+  ChatSendAckResponseFrame:
+    allOf:
+      - $ref: "#/$defs/ResponseFrameBase"
+      - type: object
+        properties:
+          payload:
+            $ref: "#/$defs/ChatSendAckPayload"
+
+  ChatAbortResponseFrame:
+    allOf:
+      - $ref: "#/$defs/ResponseFrameBase"
+      - type: object
+        properties:
+          payload:
+            $ref: "#/$defs/ChatAbortAckPayload"
+
+  ChatInjectResponseFrame:
+    allOf:
+      - $ref: "#/$defs/ResponseFrameBase"
+      - type: object
+        properties:
+          payload:
+            $ref: "#/$defs/ChatInjectAckPayload"
+
+  ChatDeltaEventPayload:
+    type: object
+    additionalProperties: false
+    required: [runId, sessionKey, seq, state, message]
+    properties:
+      runId:
+        $ref: "#/$defs/NonEmptyString"
+      sessionKey:
+        $ref: "#/$defs/NonEmptyString"
+      seq:
+        type: integer
+        minimum: 0
+      state:
+        const: delta
+      message:
+        $ref: "#/$defs/AssistantMessage"
+
+  ChatFinalEventPayload:
+    type: object
+    additionalProperties: false
+    required: [runId, sessionKey, seq, state]
+    properties:
+      runId:
+        $ref: "#/$defs/NonEmptyString"
+      sessionKey:
+        $ref: "#/$defs/NonEmptyString"
+      seq:
+        type: integer
+        minimum: 0
+      state:
+        const: final
+      stopReason:
+        type: string
+      message:
+        $ref: "#/$defs/AssistantMessage"
+
+  ChatAbortedEventPayload:
+    type: object
+    additionalProperties: false
+    required: [runId, sessionKey, seq, state]
+    properties:
+      runId:
+        $ref: "#/$defs/NonEmptyString"
+      sessionKey:
+        $ref: "#/$defs/NonEmptyString"
+      seq:
+        type: integer
+        minimum: 0
+      state:
+        const: aborted
+      stopReason:
+        type: string
+      message:
+        $ref: "#/$defs/AssistantMessage"
+
+  ChatErrorEventPayload:
+    type: object
+    additionalProperties: false
+    required: [runId, sessionKey, seq, state]
+    properties:
+      runId:
+        $ref: "#/$defs/NonEmptyString"
+      sessionKey:
+        $ref: "#/$defs/NonEmptyString"
+      seq:
+        type: integer
+        minimum: 0
+      state:
+        const: error
+      errorMessage:
+        type: string
+
+  ChatEventPayload:
+    oneOf:
+      - $ref: "#/$defs/ChatDeltaEventPayload"
+      - $ref: "#/$defs/ChatFinalEventPayload"
+      - $ref: "#/$defs/ChatAbortedEventPayload"
+      - $ref: "#/$defs/ChatErrorEventPayload"
+
+  ChatEventFrame:
+    type: object
+    additionalProperties: false
+    required: [type, event, payload]
+    properties:
+      type:
+        const: event
+      event:
+        const: chat
+      payload:
+        $ref: "#/$defs/ChatEventPayload"
+      seq:
+        type: integer
+        minimum: 0
+      stateVersion: {}

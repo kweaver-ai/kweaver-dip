@@ -1,0 +1,45 @@
+paths:
+  agent:
+    post:
+      summary: 创建agent
+      description: 创建agent
+      tags:
+        - agent
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './agent-factory.schemas.yaml#/components/schemas/CreateAgentRequest'
+      responses:
+        '201':
+          description: 请求成功
+          content:
+            application/json:
+              schema:
+                $ref: './agent-factory.schemas.yaml#/components/schemas/CreateAgentResponse'
+        '400':
+          description: 错误的请求
+          content:
+            application/json:
+              schema:
+                $ref: './agent-factory.schemas.yaml#/components/schemas/AgentFactoryError'
+        '401':
+          description: 认证失败
+          content:
+            application/json:
+              schema:
+                $ref: './agent-factory.schemas.yaml#/components/schemas/AgentFactoryError'
+        '403':
+          description: 请求被拒绝
+          content:
+            application/json:
+              schema:
+                $ref: './agent-factory.schemas.yaml#/components/schemas/AgentFactoryError'
+        '500':
+          description: 内部错误
+          content:
+            application/json:
+              schema:
+                $ref: './agent-factory.schemas.yaml#/components/schemas/AgentFactoryError'
+

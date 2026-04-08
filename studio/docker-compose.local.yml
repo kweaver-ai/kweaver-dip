@@ -1,0 +1,52 @@
+services:
+  openclaw-gateway:
+    build:
+      context: .
+      dockerfile: Dockerfile.openclaw-gateway
+      args:
+        OPENCLAW_VERSION: ${OPENCLAW_VERSION:-2026.3.11}
+    image: dip/openclaw-gateway-local:${OPENCLAW_VERSION:-2026.3.11}
+    container_name: dip-openclaw-gateway-local
+    environment:
+      OPENCLAW_GATEWAY_AUTH_MODE: token
+      OPENCLAW_GATEWAY_BIND: lan
+      OPENCLAW_GATEWAY_TOKEN: local-dev-token
+      OPENCLAW_STATE_DIR: /data/openclaw/state
+      OPENCLAW_CONFIG_PATH: /data/openclaw/state/openclaw.json
+      OPENCLAW_WORKSPACE_DIR: /data/openclaw/workspace
+    volumes:
+      - openclaw-state:/data/openclaw/state
+      - openclaw-workspace:/data/openclaw/workspace
+    ports:
+      - "19001:19001"
+      - "3001:3100"
+    restart: unless-stopped
+
+  dip-studio:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: dip/studio-local:latest
+    container_name: dip-studio-local
+    depends_on:
+      - openclaw-gateway
+    network_mode: service:openclaw-gateway
+    environment:
+      NODE_ENV: development
+      PORT: 3100
+      OAUTH_MOCK_USER_ID: local-user
+      OPENCLAW_GATEWAY_PROTOCOL: ws
+      OPENCLAW_GATEWAY_HOST: 127.0.0.1
+      OPENCLAW_GATEWAY_PORT: 19001
+      OPENCLAW_GATEWAY_TOKEN: local-dev-token
+      OPENCLAW_GATEWAY_TIMEOUT_MS: 5000
+      OPENCLAW_WORKSPACE_DIR: /data/openclaw/workspace
+      BKN_BACKEND_URL: http://127.0.0.1:13014
+      HYDRA_ADMIN_URL: http://127.0.0.1:4445
+    volumes:
+      - openclaw-workspace:/data/openclaw/workspace
+    restart: unless-stopped
+
+volumes:
+  openclaw-state:
+  openclaw-workspace:

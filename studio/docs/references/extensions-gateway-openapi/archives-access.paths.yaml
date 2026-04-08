@@ -1,0 +1,182 @@
+openapi: 3.1.0
+
+info:
+  title: OpenClaw Extensions Gateway Reference - Archives Access
+  version: 0.1.0
+  description: |
+    `dip` 插件注册的 Gateway HTTP 接口（原 `archives-access` 能力）。
+    所有请求均要求 Gateway 鉴权。
+
+servers:
+  - url: /
+
+security:
+  - bearerAuth: []
+
+paths:
+  /v1/archives:
+    get:
+      operationId: listArchivesRoot
+      summary: 列出归档根目录或指定 agent/session 的归档目录
+      description: |
+        当目标路径为目录时返回 JSON 列表。
+        `agent` 用于切换到指定 agent 的 workspace 下的 `archives/` 目录。
+        `session` 仅在列根目录时生效，用于按会话前缀过滤目录项。
+      parameters:
+        - name: agent
+          in: query
+          required: false
+          description: Agent ID，用于定位该 agent 的 workspace 归档目录
+          schema:
+            type: string
+        - name: session
+          in: query
+          required: false
+          description: 会话 ID，仅在查询归档根目录时按目录名前缀过滤
+          schema:
+            type: string
+      responses:
+        "200":
+          description: 归档目录列表
+          content:
+            application/json:
+              schema:
+                $ref: './archives-access.schemas.yaml#/components/schemas/ArchivesDirectoryResponse'
+        "403":
+          description: 路径越权或目录穿越被拒绝
+          content:
+            text/plain:
+              schema:
+                type: string
+                examples:
+                  - Forbidden
+        "404":
+          description: agent workspace 不存在或目标路径不存在
+          content:
+            text/plain:
+              schema:
+                type: string
+                examples:
+                  - Agent workspace not found
+                  - Not Found
+        "500":
+          description: 插件内部错误
+          content:
+            text/plain:
+              schema:
+                type: string
+                examples:
+                  - Internal Server Error
+
+  /v1/archives/{subpath}:
+    get:
+      operationId: getArchiveSubpath
+      summary: 读取归档子路径
+      description: |
+        当 `subpath` 指向目录时返回目录列表 JSON；
+        当 `subpath` 指向文件时直接返回文件流，`content-type` 由扩展名推断。
+      parameters:
+        - name: subpath
+          in: path
+          required: true
+          description: 归档目录下的相对子路径
+          schema:
+            type: string
+        - name: agent
+          in: query
+          required: false
+          description: Agent ID，用于定位该 agent 的 workspace 归档目录
+          schema:
+            type: string
+        - name: session
+          in: query
+          required: false
+          description: 会话 ID，仅在目录查询且位于根目录时按前缀过滤
+          schema:
+            type: string
+      responses:
+        "200":
+          description: 目录列表或文件内容
+          content:
+            application/json:
+              schema:
+                $ref: './archives-access.schemas.yaml#/components/schemas/ArchivesDirectoryResponse'
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+            text/plain:
+              schema:
+                type: string
+            text/html:
+              schema:
+                type: string
+            text/css:
+              schema:
+                type: string
+            application/javascript:
+              schema:
+                type: string
+            image/png:
+              schema:
+                type: string
+                format: binary
+            image/jpeg:
+              schema:
+                type: string
+                format: binary
+            image/gif:
+              schema:
+                type: string
+                format: binary
+            image/svg+xml:
+              schema:
+                type: string
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+            application/zip:
+              schema:
+                type: string
+                format: binary
+            audio/mpeg:
+              schema:
+                type: string
+                format: binary
+            video/mp4:
+              schema:
+                type: string
+                format: binary
+        "403":
+          description: 路径越权或目录穿越被拒绝
+          content:
+            text/plain:
+              schema:
+                type: string
+                examples:
+                  - Forbidden
+        "404":
+          description: agent workspace 不存在或目标路径不存在
+          content:
+            text/plain:
+              schema:
+                type: string
+                examples:
+                  - Agent workspace not found
+                  - Not Found
+        "500":
+          description: 插件内部错误
+          content:
+            text/plain:
+              schema:
+                type: string
+                examples:
+                  - Internal Server Error
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: Bearer

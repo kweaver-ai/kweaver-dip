@@ -1,0 +1,68 @@
+components:
+  schemas:
+    ChartInfo:
+      title: Chart信息
+      type: object
+      properties:
+        apiVersion:
+          type: string
+          title: API版本
+          example: v1
+        appVersion:
+          type: string
+          title: 应用版本
+          example: 0.1.0
+        description:
+          type: string
+          title: Chart描述
+          example: A Helm chart for Indicator-Management
+        name:
+          type: string
+          title: Chart名称
+          example: indicator-management
+        version:
+          type: string
+          title: Chart版本
+          example: 1.0.0-develop
+      required:
+        - apiVersion
+        - name
+        - version
+    InternalError:
+      title: ''
+      type: object
+      properties:
+        status:
+          type: integer
+          enum:
+            - 500
+        code:
+          type: integer
+          enum:
+            - 500
+        message:
+          type: string
+          title: 错误信息
+      required:
+        - status
+        - code
+        - message
+    ParameterError:
+      title: ''
+      type: object
+      properties:
+        status:
+          type: integer
+          enum:
+            - 400
+        code:
+          type: integer
+          enum:
+            - 400
+        message:
+          type: string
+          title: 错误信息
+      required:
+        - status
+        - code
+        - message

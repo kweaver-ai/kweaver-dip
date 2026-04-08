@@ -1,0 +1,461 @@
+paths:
+  # ============ Knowledge Networks ============
+  knowledge-networks:
+    get:
+      summary: 获取业务知识网络列表
+      parameters:
+        - name: name_pattern
+          description: 根据业务知识网络名称模糊查询，默认为空
+          schema:
+            type: string
+          in: query
+        - name: sort
+          description: 排序类型，默认是update_time
+          schema:
+            enum:
+              - update_time
+              - name
+            type: string
+          in: query
+        - name: direction
+          description: 排序结果方向，可选asc、desc。默认desc
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+          in: query
+        - name: offset
+          description: 开始响应的项目的偏移量，范围需大于等于0，默认值0
+          schema:
+            format: int64
+            type: integer
+          in: query
+        - name: limit
+          description: 每页最多可返回的项目数；分页可选1-1000，-1表示不分页；默认值10
+          schema:
+            format: int64
+            type: integer
+          in: query
+        - name: tag
+          description: 根据标签精准查询，默认为空
+          schema:
+            type: string
+          in: query
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: './ontology-manager.schemas.yaml#/components/schemas/ListKN'
+    post:
+      summary: 创建业务知识网络
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './ontology-manager.schemas.yaml#/components/schemas/ReqKnowledgeNetwork'
+      responses:
+        '201':
+          description: 创建成功
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: './ontology-manager.schemas.yaml#/components/schemas/ID'
+
+  knowledge-networks-id:
+    get:
+      summary: 获取业务知识网络详情
+      description: 获取本体模型详情，按需包含说明书内容
+      parameters:
+        - name: kn_id
+          description: 业务知识网络ID
+          schema:
+            type: string
+          in: path
+          required: true
+        - name: mode
+          description: 查询模式，当前支持export。默认是只查知识网络的详情，不返回包含的子类
+          schema:
+            enum:
+              - ""
+              - export
+            type: string
+          in: query
+        - name: include_statistics
+          description: 是否包含业务知识网络下的概念的统计信息。默认false
+          schema:
+            type: boolean
+          in: query
+          required: false
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: './ontology-manager.schemas.yaml#/components/schemas/KnowledgeNetworkDetail'
+    put:
+      summary: 修改业务知识网络
+      parameters:
+        - name: kn_id
+          description: 业务知识网络ID
+          schema:
+            type: string
+          in: path
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './ontology-manager.schemas.yaml#/components/schemas/UpdateKnowledgeNetwork'
+      responses:
+        '204':
+          description: 修改成功
+    delete:
+      summary: 删除业务知识网络
+      description: 删除业务知识网络，会把其下的对象类、关系类、行动类和概念分组都删除
+      parameters:
+        - name: kn_id
+          description: 业务知识网络ID
+          schema:
+            type: string
+          in: path
+          required: true
+      responses:
+        '204':
+          description: 删除成功
+
+  # ============ Object Types ============
+  object-types:
+    get:
+      summary: 获取对象类列表
+      parameters:
+        - name: kn_id
+          description: 业务知识网络ID
+          schema:
+            type: string
+          in: path
+          required: true
+        - name: name_pattern
+          description: 根据名称模糊查询，默认为空
+          schema:
+            type: string
+          in: query
+        - name: sort
+          description: 排序类型，默认是update_time
+          schema:
+            enum:
+              - update_time
+              - name
+            type: string
+          in: query
+        - name: direction
+          description: 排序结果方向，可选asc、desc。默认desc
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+          in: query
+        - name: offset
+          description: 开始响应的项目的偏移量，范围需大于等于0，默认值0
+          schema:
+            format: int64
+            type: integer
+          in: query
+        - name: limit
+          description: 每页最多可返回的项目数；分页可选1-1000，-1表示不分页；默认值10
+          schema:
+            format: int64
+            type: integer
+          in: query
+        - name: tag
+          description: 根据标签精准查询，默认为空
+          schema:
+            type: string
+          in: query
+        - name: group_id
+          description: 按概念分组过滤
+          schema:
+            type: string
+          in: query
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: './ontology-manager.schemas.yaml#/components/schemas/ListObjectTypes'
+    post:
+      summary: 创建或检索对象类
+      parameters:
+        - name: kn_id
+          description: 业务知识网络ID
+          schema:
+            type: string
+          in: path
+          required: true
+        - name: x-http-method-override
+          description: 重载请求头
+          schema:
+            enum:
+              - POST
+              - GET
+            type: string
+          in: header
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './ontology-manager.schemas.yaml#/components/schemas/ObjectTypeOverride'
+      responses:
+        '200':
+          description: 重载GET, 检索对象类
+          content:
+            application/json:
+              schema:
+                $ref: './ontology-manager.schemas.yaml#/components/schemas/ObjectTypeSearchResponse'
+        '201':
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: './ontology-manager.schemas.yaml#/components/schemas/ID'
+
+  # ============ Relation Types ============
+  relation-types:
+    get:
+      summary: 获取关系类列表
+      parameters:
+        - name: kn_id
+          description: 业务知识网络ID
+          schema:
+            type: string
+          in: path
+          required: true
+        - name: name_pattern
+          description: 根据名称模糊查询，默认为空
+          schema:
+            type: string
+          in: query
+        - name: sort
+          description: 排序类型，默认是update_time
+          schema:
+            enum:
+              - update_time
+              - name
+            type: string
+          in: query
+        - name: direction
+          description: 排序结果方向，可选asc、desc。默认desc
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+          in: query
+        - name: offset
+          description: 开始响应的项目的偏移量，范围需大于等于0，默认值0
+          schema:
+            format: int64
+            type: integer
+          in: query
+        - name: limit
+          description: 每页最多可返回的项目数；分页可选1-1000，-1表示不分页；默认值10
+          schema:
+            format: int64
+            type: integer
+          in: query
+        - name: tag
+          description: 根据标签精准查询，默认为空
+          schema:
+            type: string
+          in: query
+        - name: group_id
+          description: 按概念分组过滤
+          schema:
+            type: string
+          in: query
+        - name: source_object_type_id
+          description: 起点对象类ID
+          schema:
+            type: string
+          in: query
+        - name: target_object_type_id
+          description: 终点对象类ID
+          schema:
+            type: string
+          in: query
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: './ontology-manager.schemas.yaml#/components/schemas/ListRelationTypes'
+    post:
+      summary: 创建或检索关系类
+      parameters:
+        - name: kn_id
+          description: 业务知识网络ID
+          schema:
+            type: string
+          in: path
+          required: true
+        - name: x-http-method-override
+          description: 重载请求头
+          schema:
+            enum:
+              - POST
+              - GET
+            type: string
+          in: header
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './ontology-manager.schemas.yaml#/components/schemas/RelationTypeOverride'
+      responses:
+        '200':
+          description: 重载GET, 检索关系类
+          content:
+            application/json:
+              schema:
+                $ref: './ontology-manager.schemas.yaml#/components/schemas/RelationTypeSearchResponse'
+        '201':
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: './ontology-manager.schemas.yaml#/components/schemas/ID'
+
+  # ============ Action Types ============
+  action-types:
+    get:
+      summary: 获取行动类列表
+      parameters:
+        - name: kn_id
+          description: 业务知识网络ID
+          schema:
+            type: string
+          in: path
+          required: true
+        - name: name_pattern
+          description: 根据名称模糊查询，默认为空
+          schema:
+            type: string
+          in: query
+        - name: sort
+          description: 排序类型，默认是update_time
+          schema:
+            enum:
+              - update_time
+              - name
+            type: string
+          in: query
+        - name: direction
+          description: 排序结果方向，可选asc、desc。默认desc
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+          in: query
+        - name: offset
+          description: 开始响应的项目的偏移量，范围需大于等于0，默认值0
+          schema:
+            format: int64
+            type: integer
+          in: query
+        - name: limit
+          description: 每页最多可返回的项目数；分页可选1-1000，-1表示不分页；默认值10
+          schema:
+            format: int64
+            type: integer
+          in: query
+        - name: tag
+          description: 根据标签精准查询，默认为空
+          schema:
+            type: string
+          in: query
+        - name: group_id
+          description: 按概念分组过滤
+          schema:
+            type: string
+          in: query
+        - name: action_type
+          description: 行动类型
+          schema:
+            enum:
+              - add
+              - modify
+              - delete
+            type: string
+          in: query
+          required: false
+        - name: object_type_id
+          description: 绑定对象类
+          schema:
+            type: string
+          in: query
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: './ontology-manager.schemas.yaml#/components/schemas/ListActionTypes'
+    post:
+      summary: 创建或检索行动类
+      parameters:
+        - name: kn_id
+          description: 业务知识网络ID
+          schema:
+            type: string
+          in: path
+          required: true
+        - name: x-http-method-override
+          description: 重载请求头
+          schema:
+            enum:
+              - POST
+              - GET
+            type: string
+          in: header
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './ontology-manager.schemas.yaml#/components/schemas/ActionTypeOverride'
+      responses:
+        '200':
+          description: 重载GET, 检索行动类
+          content:
+            application/json:
+              schema:
+                $ref: './ontology-manager.schemas.yaml#/components/schemas/ActionTypeSearchResponse'
+        '201':
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: './ontology-manager.schemas.yaml#/components/schemas/ID'
+

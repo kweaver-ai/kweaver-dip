@@ -1,0 +1,209 @@
+$schema: "https://json-schema.org/draft/2020-12/schema"
+$id: "openclaw.gateway.websocket.agent-flow.yaml"
+title: "OpenClaw Gateway WebSocket Agent Flow"
+summary: "OpenClaw Gateway WebSocket agent 事件流。"
+description: "Covers agent lifecycle events, tool call events, and agent-side error events emitted over the Gateway WebSocket."
+oneOf:
+  - $ref: "#/$defs/AgentEventFrame"
+
+$defs:
+  NonEmptyString:
+    type: string
+    minLength: 1
+    summary: "非空字符串。"
+
+  TimestampMs:
+    type: integer
+    minimum: 0
+    summary: "Unix 毫秒时间戳。"
+
+  AgentEventFrame:
+    type: object
+    additionalProperties: false
+    required: [type, event, payload]
+    summary: "Gateway WebSocket 的 agent 事件帧。"
+    properties:
+      type:
+        const: event
+        summary: "帧类型，固定为 event。"
+      event:
+        const: agent
+        summary: "事件名，固定为 agent。"
+      payload:
+        $ref: "#/$defs/AgentEventPayload"
+      seq:
+        type: integer
+        minimum: 0
+        summary: "WebSocket 帧级别顺序号。"
+      stateVersion:
+        summary: "可选状态版本信息。"
+
+  AgentEventPayload:
+    oneOf:
+      - $ref: "#/$defs/TextAgentEvent"
+      - $ref: "#/$defs/ToolAgentEvent"
+      - $ref: "#/$defs/LifecycleAgentEvent"
+      - $ref: "#/$defs/ErrorAgentEvent"
+      - $ref: "#/$defs/GenericAgentEvent"
+    summary: "agent 事件业务载荷，按 stream 区分。"
+
+  AgentEventBase:
+    type: object
+    additionalProperties: false
+    required: [runId, seq, stream, ts, data]
+    summary: "agent 事件基础结构。"
+    properties:
+      runId:
+        $ref: "#/$defs/NonEmptyString"
+      sessionKey:
+        type: string
+        summary: "会话键；运行时通常会附带，便于前端按会话过滤。"
+      seq:
+        type: integer
+        minimum: 0
+        summary: "该运行内事件顺序号。"
+      stream:
+        $ref: "#/$defs/NonEmptyString"
+      ts:
+        $ref: "#/$defs/TimestampMs"
+      data:
+        type: object
+        additionalProperties: true
+        summary: "事件数据。"
+  
+  TextAgentEvent:
+    allOf:
+      - $ref: "#/$defs/AgentEventBase"
+      - type: object
+        summary: "文本事件。"
+        properties:
+          stream:
+            const: assistant
+            summary: "流类型，固定为 assistant。"
+          data:
+            type: object
+            additionalProperties: true
+            required:
+              - text
+            summary: "agent assistant 文本数据。"
+            properties:
+              text:
+                type: string
+                summary: "当前这次 assistant 事件携带的文本。"
+              delta:
+                type: string
+                summary: "可选增量文本片段。"
+
+  ToolPhase:
+    type: string
+    enum:
+      - start
+      - result
+      - error
+      - progress
+    summary: "工具事件阶段。已确认常见值为 start/result，其他值保留兼容。"
+
+  ToolAgentEvent:
+    allOf:
+      - $ref: "#/$defs/AgentEventBase"
+      - type: object
+        summary: "工具调用或工具执行结果事件。"
+        properties:
+          stream:
+            const: tool
+            summary: "流类型，固定为 tool。"
+          data:
+            type: object
+            additionalProperties: true
+            required: [phase]
+            summary: "工具事件数据。"
+            properties:
+              phase:
+                $ref: "#/$defs/ToolPhase"
+              name:
+                type: string
+                summary: "工具名称。"
+              toolCallId:
+                type: string
+                summary: "工具调用 ID。"
+              result:
+                summary: "工具最终结果。verbose=full 时通常会保留。"
+              partialResult:
+                summary: "工具部分结果。verbose!=full 时可能被服务端剥离。"
+              error:
+                summary: "工具错误对象或错误内容。"
+
+  LifecyclePhase:
+    type: string
+    enum:
+      - start
+      - end
+      - error
+      - fallback
+    summary: "生命周期事件阶段。"
+
+  LifecycleAgentEvent:
+    allOf:
+      - $ref: "#/$defs/AgentEventBase"
+      - type: object
+        summary: "agent 生命周期事件。"
+        properties:
+          stream:
+            const: lifecycle
+            summary: "流类型，固定为 lifecycle。"
+          data:
+            type: object
+            additionalProperties: true
+            required: [phase]
+            summary: "生命周期事件数据。"
+            properties:
+              phase:
+                $ref: "#/$defs/LifecyclePhase"
+              startedAt:
+                type: integer
+                minimum: 0
+                summary: "开始时间戳。"
+              endedAt:
+                type: integer
+                minimum: 0
+                summary: "结束时间戳。"
+              stopReason:
+                type: string
+                summary: "停止原因。"
+              error:
+                summary: "生命周期错误对象或错误内容。"
+              activeProvider:
+                type: string
+                summary: "fallback 场景下的活动 provider。"
+
+  ErrorAgentEvent:
+    allOf:
+      - $ref: "#/$defs/AgentEventBase"
+      - type: object
+        summary: "agent 错误事件。常见于顺序号断裂等运行时异常。"
+        properties:
+          stream:
+            const: error
+            summary: "流类型，固定为 error。"
+          data:
+            type: object
+            additionalProperties: true
+            summary: "错误事件数据。"
+            properties:
+              reason:
+                type: string
+                summary: "错误原因。"
+              expected:
+                type: integer
+                minimum: 0
+                summary: "期望序号。"
+              received:
+                type: integer
+                minimum: 0
+                summary: "实际收到序号。"
+
+  GenericAgentEvent:
+    allOf:
+      - $ref: "#/$defs/AgentEventBase"
+      - type: object
+        summary: "兜底 agent 事件，兼容未单独建模的 stream 类型。"

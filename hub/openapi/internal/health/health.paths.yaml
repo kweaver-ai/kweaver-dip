@@ -1,0 +1,18 @@
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      summary: 通用健康检查
+      tags: [Health]
+      responses:
+        "200":
+          description: 服务健康
+
+  /readyz:
+    get:
+      operationId: readinessCheck
+      summary: 就绪检查 (Readiness)
+      tags: [Health]
+      responses:
+        "200":
+          description: 就绪正常

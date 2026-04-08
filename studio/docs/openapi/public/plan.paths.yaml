@@ -1,0 +1,360 @@
+openapi: 3.1.0
+
+info:
+  title: DIP Studio 公开接口
+  version: 0.1.0
+
+security: []
+
+servers:
+  - url: /api/dip-studio/v1
+
+paths:
+  /plans:
+    get:
+      operationId: getCronJobList
+      summary: 获取计划任务列表
+      parameters:
+        - name: includeDisabled
+          in: query
+          required: false
+          description: 是否包含已禁用任务，默认 true
+          schema:
+            type: boolean
+            default: true
+        - name: limit
+          in: query
+          required: false
+          description: 分页大小，默认 50
+          schema:
+            type: integer
+            minimum: 0
+            default: 50
+        - name: offset
+          in: query
+          required: false
+          description: 分页偏移量，默认 0
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
+        - name: enabled
+          in: query
+          required: false
+          description: 启用状态筛选，默认 all
+          schema:
+            type: string
+            enum:
+              - all
+              - enabled
+              - disabled
+            default: all
+        - name: sortBy
+          in: query
+          required: false
+          description: 排序字段，默认 nextRunAtMs
+          schema:
+            type: string
+            enum:
+              - nextRunAtMs
+              - createdAtMs
+              - updatedAtMs
+              - name
+            default: nextRunAtMs
+        - name: sortDir
+          in: query
+          required: false
+          description: 排序方向，默认 asc
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+            default: asc
+      responses:
+        "200":
+          description: 计划任务列表
+          content:
+            application/json:
+              schema:
+                $ref: './plan.schemas.yaml#/components/schemas/CronJobListResponse'
+        "400":
+          $ref: '../common.schemas.yaml#/errors/InvalidParameter'
+        "401":
+          $ref: '../common.schemas.yaml#/errors/Unauthorized'
+        "403":
+          $ref: '../common.schemas.yaml#/errors/Forbidden'
+        "404":
+          $ref: '../common.schemas.yaml#/errors/NotFound'
+        "409":
+          $ref: '../common.schemas.yaml#/errors/Conflict'
+        "500":
+          $ref: '../common.schemas.yaml#/errors/InternalServerError'
+
+  /digital-human/{id}/plans:
+    get:
+      operationId: getDigitalHumanPlanList
+      summary: 获取当前用户对指定数字员工发起的计划任务列表
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: 数字员工 ID
+          schema:
+            type: string
+        - name: includeDisabled
+          in: query
+          required: false
+          description: 是否包含已禁用任务，默认 true
+          schema:
+            type: boolean
+            default: true
+        - name: limit
+          in: query
+          required: false
+          description: 分页大小，默认 50
+          schema:
+            type: integer
+            minimum: 0
+            default: 50
+        - name: offset
+          in: query
+          required: false
+          description: 分页偏移量，默认 0
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
+        - name: enabled
+          in: query
+          required: false
+          description: 启用状态筛选，默认 all
+          schema:
+            type: string
+            enum:
+              - all
+              - enabled
+              - disabled
+            default: all
+        - name: sortBy
+          in: query
+          required: false
+          description: 排序字段，默认 nextRunAtMs
+          schema:
+            type: string
+            enum:
+              - nextRunAtMs
+              - createdAtMs
+              - updatedAtMs
+              - name
+            default: nextRunAtMs
+        - name: sortDir
+          in: query
+          required: false
+          description: 排序方向，默认 asc
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+            default: asc
+      responses:
+        "200":
+          description: 当前用户对指定数字员工发起的计划任务列表
+          content:
+            application/json:
+              schema:
+                $ref: './plan.schemas.yaml#/components/schemas/CronJobListResponse'
+        "400":
+          $ref: '../common.schemas.yaml#/errors/InvalidParameter'
+        "401":
+          $ref: '../common.schemas.yaml#/errors/Unauthorized'
+        "403":
+          $ref: '../common.schemas.yaml#/errors/Forbidden'
+        "404":
+          $ref: '../common.schemas.yaml#/errors/NotFound'
+        "409":
+          $ref: '../common.schemas.yaml#/errors/Conflict'
+        "500":
+          $ref: '../common.schemas.yaml#/errors/InternalServerError'
+
+  /plans/{id}/runs:
+    get:
+      operationId: getPlanRuns
+      summary: 获取指定计划任务的运行记录
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: 计划任务 ID
+          schema:
+            type: string
+        - name: limit
+          in: query
+          required: false
+          description: 分页大小，默认 50，最大 200
+          schema:
+            type: integer
+            minimum: 0
+            maximum: 200
+            default: 50
+        - name: offset
+          in: query
+          required: false
+          description: 分页偏移量，默认 0
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
+        - name: sortDir
+          in: query
+          required: false
+          description: 排序方向，默认 desc
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+            default: desc
+      responses:
+        "200":
+          description: 指定计划任务运行记录列表
+          content:
+            application/json:
+              schema:
+                $ref: './plan.schemas.yaml#/components/schemas/CronRunListResponse'
+        "400":
+          $ref: '../common.schemas.yaml#/errors/InvalidParameter'
+        "401":
+          $ref: '../common.schemas.yaml#/errors/Unauthorized'
+        "403":
+          $ref: '../common.schemas.yaml#/errors/Forbidden'
+        "404":
+          $ref: '../common.schemas.yaml#/errors/NotFound'
+        "409":
+          $ref: '../common.schemas.yaml#/errors/Conflict'
+        "500":
+          $ref: '../common.schemas.yaml#/errors/InternalServerError'
+
+  /plans/{id}/content:
+    get:
+      operationId: getPlanContent
+      summary: 获取指定计划任务的 PLAN.md 内容
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: 计划任务 ID
+          schema:
+            type: string
+      responses:
+        "200":
+          description: 指定计划任务的 PLAN.md 内容
+          content:
+            application/json:
+              schema:
+                $ref: './plan.schemas.yaml#/components/schemas/PlanContentResponse'
+        "400":
+          $ref: '../common.schemas.yaml#/errors/InvalidParameter'
+        "401":
+          $ref: '../common.schemas.yaml#/errors/Unauthorized'
+        "403":
+          $ref: '../common.schemas.yaml#/errors/Forbidden'
+        "404":
+          $ref: '../common.schemas.yaml#/errors/NotFound'
+        "409":
+          $ref: '../common.schemas.yaml#/errors/Conflict'
+        "500":
+          $ref: '../common.schemas.yaml#/errors/InternalServerError'
+
+  /plans/{id}:
+    get:
+      operationId: getPlan
+      summary: 获取单条计划任务
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: 计划任务 ID
+          schema:
+            type: string
+      responses:
+        "200":
+          description: 单条计划任务
+          content:
+            application/json:
+              schema:
+                $ref: './plan.schemas.yaml#/components/schemas/CronJob'
+        "400":
+          $ref: '../common.schemas.yaml#/errors/InvalidParameter'
+        "401":
+          $ref: '../common.schemas.yaml#/errors/Unauthorized'
+        "403":
+          $ref: '../common.schemas.yaml#/errors/Forbidden'
+        "404":
+          $ref: '../common.schemas.yaml#/errors/NotFound'
+        "409":
+          $ref: '../common.schemas.yaml#/errors/Conflict'
+        "500":
+          $ref: '../common.schemas.yaml#/errors/InternalServerError'
+
+    put:
+      operationId: updateCronJob
+      summary: 编辑计划任务
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: 计划任务 ID
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './plan.schemas.yaml#/components/schemas/UpdatePlanRequest'
+      responses:
+        "200":
+          description: 更新后的计划任务
+          content:
+            application/json:
+              schema:
+                $ref: './plan.schemas.yaml#/components/schemas/CronJob'
+        "400":
+          $ref: '../common.schemas.yaml#/errors/InvalidParameter'
+        "401":
+          $ref: '../common.schemas.yaml#/errors/Unauthorized'
+        "403":
+          $ref: '../common.schemas.yaml#/errors/Forbidden'
+        "404":
+          $ref: '../common.schemas.yaml#/errors/NotFound'
+        "409":
+          $ref: '../common.schemas.yaml#/errors/Conflict'
+        "500":
+          $ref: '../common.schemas.yaml#/errors/InternalServerError'
+    delete:
+      operationId: deleteCronJob
+      summary: 删除计划任务
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: 计划任务 ID
+          schema:
+            type: string
+      responses:
+        "204":
+          description: 删除成功，无响应体
+        "400":
+          $ref: '../common.schemas.yaml#/errors/InvalidParameter'
+        "401":
+          $ref: '../common.schemas.yaml#/errors/Unauthorized'
+        "403":
+          $ref: '../common.schemas.yaml#/errors/Forbidden'
+        "404":
+          $ref: '../common.schemas.yaml#/errors/NotFound'
+        "409":
+          $ref: '../common.schemas.yaml#/errors/Conflict'
+        "500":
+          $ref: '../common.schemas.yaml#/errors/InternalServerError'

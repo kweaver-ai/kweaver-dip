@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Chart.Name }}-config
+  namespace: {{ .Values.namespace }}
+data:
+  NODE_ENV: {{ .Values.studio.nodeEnv | quote }}
+  PORT: {{ .Values.studio.port | quote }}
+  OAUTH_MOCK_USER_ID: {{ .Values.studio.oauthMockUserId | quote }}
+  OPENCLAW_GATEWAY_PROTOCOL: {{ .Values.studio.openclaw.gatewayProtocol | quote }}
+  OPENCLAW_GATEWAY_HOST: {{ .Values.studio.openclaw.gatewayHost | quote }}
+  OPENCLAW_GATEWAY_PORT: {{ .Values.studio.openclaw.gatewayPort | quote }}
+  OPENCLAW_GATEWAY_TIMEOUT_MS: {{ .Values.studio.openclaw.gatewayTimeoutMs | quote }}
+  OPENCLAW_CONFIG_PATH: {{ .Values.studio.configPath | quote }}
+  OPENCLAW_WORKSPACE_DIR: {{ .Values.studio.workspaceDir | quote }}
+  OPENCLAW_ROOT_DIR: {{ .Values.studio.rootDir | quote }}
+  KWEAVER_BASE_URL: {{ .Values.studio.bknBackendUrl | quote }}
+  KWEAVER_HYDRA_ADMIN_URL: {{ .Values.studio.hydraAdminUrl | quote }}

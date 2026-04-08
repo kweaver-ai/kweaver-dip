@@ -1,0 +1,67 @@
+components:
+  schemas:
+    AgentSkillsResponse:
+      summary: 指定 agent 的技能配置
+      type: object
+      properties:
+        agentId:
+          type: string
+          description: 目标 agent ID
+        skills:
+          type: array
+          description: 该 agent 在配置文件中的技能 ID 列表；未配置时返回空数组
+          items:
+            type: string
+      required:
+        - agentId
+        - skills
+      additionalProperties: false
+
+    UpdateAgentSkillsRequest:
+      summary: 更新指定 agent 技能配置的请求体
+      type: object
+      properties:
+        agentId:
+          type: string
+          description: 目标 agent ID
+        skills:
+          type: array
+          description: 要整组替换的技能 ID 列表，可为空数组
+          items:
+            type: string
+      required:
+        - agentId
+        - skills
+      additionalProperties: false
+
+    UpdateAgentSkillsResponse:
+      summary: 更新指定 agent 技能配置后的响应
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: 是否更新成功
+        agentId:
+          type: string
+          description: 目标 agent ID
+        skills:
+          type: array
+          description: 更新后的技能 ID 列表
+          items:
+            type: string
+      required:
+        - success
+        - agentId
+        - skills
+      additionalProperties: false
+
+    PluginErrorResponse:
+      summary: 插件 HTTP 错误响应
+      type: object
+      properties:
+        error:
+          type: string
+          description: 错误描述
+      required:
+        - error
+      additionalProperties: true

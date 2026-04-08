@@ -1,0 +1,3047 @@
+{
+  "id": "auto_test_041",
+  "name": "auto_test_041",
+  "tags": [
+    "示例",
+    "自动化"
+  ],
+  "comment": "通过自动化测试创建",
+  "icon": "icon-dip-bentiyinqing",
+  "color": "#EB2F96",
+  "detail": "",
+  "branch": "main",
+  "business_domain": "bd_public",
+  "object_types": [
+    {
+      "id": "d4tt73l2rdvo68qgrhdg",
+      "name": "ttesttt",
+      "data_source": {
+        "type": "data_view",
+        "id": "",
+        "name": ""
+      },
+      "data_properties": [
+        {
+          "name": "ttttt",
+          "display_name": "ttttt",
+          "type": "string",
+          "comment": "",
+          "mapped_field": {
+            "name": ""
+          }
+        }
+      ],
+      "logic_properties": [
+        {
+          "name": "test",
+          "display_name": "test",
+          "type": "operator",
+          "comment": "",
+          "index": false,
+          "data_source": {
+            "type": "metric",
+            "id": "composited_has_date_field",
+            "name": "composited_has_date_field"
+          },
+          "parameters": [
+            {
+              "name": "p_firstname",
+              "type": "string",
+              "source": "",
+              "operation": "==",
+              "value_from": "property",
+              "value": "ttttt"
+            }
+          ]
+        }
+      ],
+      "primary_keys": [
+        "ttttt",
+        "test"
+      ],
+      "display_key": "ttttt",
+      "tags": [],
+      "comment": "",
+      "icon": "icon-dip-suanziguanli",
+      "color": "#0e5fc5",
+      "detail": "",
+      "kn_id": "auto_test_041",
+      "branch": "main",
+      "index": "",
+      "index_available": false,
+      "creator": {
+        "id": "f6c6e398-ce82-11f0-888f-3ac1298ec09f",
+        "type": "user",
+        "name": ""
+      },
+      "create_time": 1765528462520,
+      "updater": {
+        "id": "f6c6e398-ce82-11f0-888f-3ac1298ec09f",
+        "type": "user",
+        "name": ""
+      },
+      "update_time": 1765528462520,
+      "module_type": "object_type"
+    },
+    {
+      "id": "place",
+      "name": "地点",
+      "data_source": {
+        "type": "data_view",
+        "id": "1998592949654671361",
+        "name": ""
+      },
+      "data_properties": [
+        {
+          "name": "p_name",
+          "display_name": "p_name",
+          "type": "string",
+          "comment": "",
+          "mapped_field": {
+            "name": "p_name",
+            "type": "string",
+            "display_name": "p_name"
+          },
+          "index_config": {
+            "keyword_config": {
+              "enabled": true,
+              "ignore_above_len": 1024
+            },
+            "fulltext_config": {
+              "enabled": true,
+              "analyzer": "standard"
+            },
+            "vector_config": {
+              "enabled": true,
+              "model_id": "1995758385982738432"
+            }
+          },
+          "condition_operations": [
+            "==",
+            "!=",
+            "like",
+            "not_like",
+            "in",
+            "not_in"
+          ]
+        },
+        {
+          "name": "p_placeid",
+          "display_name": "p_placeid",
+          "type": "integer",
+          "comment": "",
+          "mapped_field": {
+            "name": "p_placeid"
+          },
+          "index_config": {
+            "keyword_config": {
+              "enabled": true,
+              "ignore_above_len": 1024
+            },
+            "fulltext_config": {
+              "enabled": true,
+              "analyzer": "standard"
+            },
+            "vector_config": {
+              "enabled": false,
+              "model_id": ""
+            }
+          }
+        },
+        {
+          "name": "p_type",
+          "display_name": "p_type",
+          "type": "string",
+          "comment": "",
+          "mapped_field": {
+            "name": "p_type",
+            "type": "string",
+            "display_name": "p_type"
+          },
+          "index_config": {
+            "keyword_config": {
+              "enabled": true,
+              "ignore_above_len": 1024
+            },
+            "fulltext_config": {
+              "enabled": true,
+              "analyzer": "standard"
+            },
+            "vector_config": {
+              "enabled": true,
+              "model_id": "1995758385982738432"
+            }
+          },
+          "condition_operations": [
+            "==",
+            "!=",
+            "like",
+            "not_like",
+            "in",
+            "not_in"
+          ]
+        },
+        {
+          "name": "p_url",
+          "display_name": "p_url",
+          "type": "string",
+          "comment": "",
+          "mapped_field": {
+            "name": "p_url"
+          },
+          "index_config": {
+            "keyword_config": {
+              "enabled": true,
+              "ignore_above_len": 1024
+            },
+            "fulltext_config": {
+              "enabled": true,
+              "analyzer": "standard"
+            },
+            "vector_config": {
+              "enabled": false,
+              "model_id": ""
+            }
+          }
+        }
+      ],
+      "primary_keys": [
+        "p_placeid"
+      ],
+      "display_key": "p_name",
+      "tags": [
+        "自动化测试"
+      ],
+      "comment": "自动化测试",
+      "icon": "icon-dip-history",
+      "color": "#0E5FC5",
+      "detail": "",
+      "kn_id": "auto_test_041",
+      "branch": "main",
+      "index": "dip-kn_ot_index-auto_test_041-place-d4t8fd98ph2n5pvj7vd0",
+      "index_available": true,
+      "creator": {
+        "id": "f6c6e398-ce82-11f0-888f-3ac1298ec09f",
+        "type": "user",
+        "name": ""
+      },
+      "create_time": 1765442381182,
+      "updater": {
+        "id": "f6c6e398-ce82-11f0-888f-3ac1298ec09f",
+        "type": "user",
+        "name": ""
+      },
+      "update_time": 1765443471446,
+      "module_type": "object_type"
+    },
+    {
+      "id": "post",
+      "name": "帖子",
+      "data_source": {
+        "type": "data_view",
+        "id": "1998592949637894146",
+        "name": ""
+      },
+      "data_properties": [
+        {
+          "name": "ps_browserused",
+          "display_name": "ps_browserused",
+          "type": "string",
+          "comment": "",
+          "mapped_field": {
+            "name": "ps_browserused"
+          },
+          "index_config": {
+            "keyword_config": {
+              "enabled": true,
+              "ignore_above_len": 1024
+            },
+            "fulltext_config": {
+              "enabled": true,
+              "analyzer": "standard"
+            },
+            "vector_config": {
+              "enabled": false,
+              "model_id": ""
+            }
+          }
+        },
+        {
+          "name": "ps_content",
+          "display_name": "ps_content",
+          "type": "text",
+          "comment": "",
+          "mapped_field": {
+            "name": "ps_content",
+            "type": "text",
+            "display_name": "ps_content"
+          },
+          "index_config": {
+            "keyword_config": {
+              "enabled": true,
+              "ignore_above_len": 1024
+            },
+            "fulltext_config": {
+              "enabled": true,
+              "analyzer": "standard"
+            },
+            "vector_config": {
+              "enabled": true,
+              "model_id": "1995758385982738432"
+            }
+          },
+          "condition_operations": [
+            "==",
+            "!=",
+            "like",
+            "not_like",
+            "in",
+            "not_in"
+          ]
+        },
+        {
+          "name": "ps_creationdate",
+          "display_name": "ps_creationdate",
+          "type": "datetime",
+          "comment": "",
+          "mapped_field": {
+            "name": "ps_creationdate"
+          },
+          "index_config": {
+            "keyword_config": {
+              "enabled": true,
+              "ignore_above_len": 1024
+            },
+            "fulltext_config": {
+              "enabled": true,
+              "analyzer": "standard"
+            },
+            "vector_config": {
+              "enabled": false,
+              "model_id": ""
+            }
+          }
+        },
+        {
+          "name": "ps_imagefile",
+          "display_name": "ps_imagefile",
+          "type": "string",
+          "comment": "",
+          "mapped_field": {
+            "name": "ps_imagefile"
+          },
+          "index_config": {
+            "keyword_config": {
+              "enabled": true,
+              "ignore_above_len": 1024
+            },
+            "fulltext_config": {
+              "enabled": true,
+              "analyzer": "standard"
+            },
+            "vector_config": {
+              "enabled": false,
+              "model_id": ""
+            }
+          }
+        },
+        {
+          "name": "ps_language",
+          "display_name": "ps_language",
+          "type": "string",
+          "comment": "",
+          "mapped_field": {
+            "name": "ps_language"
+          },
+          "index_config": {
+            "keyword_config": {
+              "enabled": true,
+              "ignore_above_len": 1024
+            },
+            "fulltext_config": {
+              "enabled": true,
+              "analyzer": "standard"
+            },
+            "vector_config": {
+              "enabled": false,
+              "model_id": ""
+            }
+          }
+        },
+        {
+          "name": "ps_length",
+          "display_name": "ps_length",
+          "type": "integer",
+          "comment": "",
+          "mapped_field": {
+            "name": "ps_length"
+          },
+          "index_config": {
+            "keyword_config": {
+              "enabled": true,
+              "ignore_above_len": 1024
+            },
+            "fulltext_config": {
+              "enabled": true,
+              "analyzer": "standard"
+            },
+            "vector_config": {
+              "enabled": false,
+              "model_id": ""
+            }
+          }
+        },
+        {
+          "name": "ps_locationip",
+          "display_name": "ps_locationip",
+          "type": "string",
+          "comment": "",
+          "mapped_field": {
+            "name": "ps_locationip"
+          },
+          "index_config": {
+            "keyword_config": {
+              "enabled": true,
+              "ignore_above_len": 1024
+            },
+            "fulltext_config": {
+              "enabled": true,
+              "analyzer": "standard"
+            },
+            "vector_config": {
+              "enabled": false,
+              "model_id": ""
+            }
+          }
+        },
+        {
+          "name": "ps_postid",
+          "display_name": "ps_postid",
+          "type": "integer",
+          "comment": "",
+          "mapped_field": {
+            "name": "ps_postid"
+          },
+          "index_config": {
+            "keyword_config": {
+              "enabled": true,
+              "ignore_above_len": 1024
+            },
+            "fulltext_config": {
+              "enabled": true,
+              "analyzer": "standard"
+            },
+            "vector_config": {
+              "enabled": false,
+              "model_id": ""
+            }
+          }
+        }
+      ],
+      "primary_keys": [
+        "ps_postid"
+      ],
+      "display_key": "ps_content",
+      "tags": [
+        "自动化测试"
+      ],
+      "comment": "自动化测试",
+      "icon": "icon-dip-Department",
+      "color": "#FF4D4F",
+      "detail": "",
+      "kn_id": "auto_test_041",
+      "branch": "main",
+      "index": "dip-kn_ot_index-auto_test_041-post-d4t8fd98ph2n5pvj7vdg",
+      "index_available": true,
+      "creator": {
+        "id": "f6c6e398-ce82-11f0-888f-3ac1298ec09f",
+        "type": "user",
+        "name": ""
+      },
+      "create_time": 1765442394920,
+      "updater": {
+        "id": "f6c6e398-ce82-11f0-888f-3ac1298ec09f",
+        "type": "user",
+        "name": ""
+      },
+      "update_time": 1765443498629,
+      "module_type": "object_type"
+    },
+    {
+      "id": "tag",
+      "name": "标签",
+      "data_source": {
+        "type": "data_view",
+        "id": "1998592949654671362",
+        "name": ""
+      },
+      "data_properties": [
+        {
+          "name": "t_name",
+          "display_name": "t_name",
+          "type": "string",
+          "comment": "",
+          "mapped_field": {
+            "name": "t_name",
+            "type": "string",
+            "display_name": "t_name"
+          },
+          "index_config": {
+            "keyword_config": {
+              "enabled": true,
+              "ignore_above_len": 1024
+            },
+            "fulltext_config": {
+              "enabled": true,
+              "analyzer": "standard"
+            },
+            "vector_config": {
+              "enabled": true,
+              "model_id": "1995758385982738432"
+            }
+          },
+          "condition_operations": [
+            "==",
+            "!=",
+            "like",
+            "not_like",
+            "in",
+            "not_in"
+          ]
+        },
+        {
+          "name": "t_tagid",
+          "display_name": "t_tagid",
+          "type": "integer",
+          "comment": "",
+          "mapped_field": {
+            "name": "t_tagid"
+          },
+          "index_config": {
+            "keyword_config": {
+              "enabled": true,
+              "ignore_above_len": 1024
+            },
+            "fulltext_config": {
+              "enabled": true,
+              "analyzer": "standard"
+            },
+            "vector_config": {
+              "enabled": false,
+              "model_id": ""
+            }
+          }
+        },
+        {
+          "name": "t_url",
+          "display_name": "t_url",
+          "type": "string",
+          "comment": "",
+          "mapped_field": {
+            "name": "t_url"
+          },
+          "index_config": {
+            "keyword_config": {
+              "enabled": true,
+              "ignore_above_len": 1024
+            },
+            "fulltext_config": {
+              "enabled": true,
+              "analyzer": "standard"
+            },
+            "vector_config": {
+              "enabled": false,
+              "model_id": ""
+            }
+          }
+        }
+      ],
+      "primary_keys": [
+        "t_tagid"
+      ],
+      "display_key": "t_name",
+      "tags": [
+        "自动化测试"
+      ],
+      "comment": "自动化测试",
+      "icon": "icon-dip-chat2",
+      "color": "#0E5FC5",
+      "detail": "",
+      "kn_id": "auto_test_041",
+      "branch": "main",
+      "index": "dip-kn_ot_index-auto_test_041-tag-d4t8fd98ph2n5pvj7ve0",
+      "index_available": true,
+      "creator": {
+        "id": "f6c6e398-ce82-11f0-888f-3ac1298ec09f",
+        "type": "user",
+        "name": ""
+      },
+      "create_time": 1765442385035,
+      "updater": {
+        "id": "f6c6e398-ce82-11f0-888f-3ac1298ec09f",
+        "type": "user",
+        "name": ""
+      },
+      "update_time": 1765443479930,
+      "module_type": "object_type"
+    },
+    {
+      "id": "tagclass",
+      "name": "标签分类",
+      "data_source": {
+        "type": "data_view",
+        "id": "1998592949684031489",
+        "name": ""
+      },
+      "data_properties": [
+        {
+          "name": "tc_name",
+          "display_name": "tc_name",
+          "type": "string",
+          "comment": "",
+          "mapped_field": {
+            "name": "tc_name",
+            "type": "string",
+            "display_name": "tc_name"
+          },
+          "index_config": {
+            "keyword_config": {
+              "enabled": true,
+              "ignore_above_len": 1024
+            },
+            "fulltext_config": {
+              "enabled": true,
+              "analyzer": "standard"
+            },
+            "vector_config": {
+              "enabled": true,
+              "model_id": "1995758385982738432"
+            }
+          },
+          "condition_operations": [
+            "==",
+            "!=",
+            "like",
+            "not_like",
+            "in",
+            "not_in"
+          ]
+        },
+        {
+          "name": "tc_tagclassid",
+          "display_name": "tc_tagclassid",
+          "type": "integer",
+          "comment": "",
+          "mapped_field": {
+            "name": "tc_tagclassid"
+          },
+          "index_config": {
+            "keyword_config": {
+              "enabled": true,
+              "ignore_above_len": 1024
+            },
+            "fulltext_config": {
+              "enabled": true,
+              "analyzer": "standard"
+            },
+            "vector_config": {
+              "enabled": false,
+              "model_id": ""
+            }
+          }
+        },
+        {
+          "name": "tc_url",
+          "display_name": "tc_url",
+          "type": "string",
+          "comment": "",
+          "mapped_field": {
+            "name": "tc_url"
+          },
+          "index_config": {
+            "keyword_config": {
+              "enabled": true,
+              "ignore_above_len": 1024
+            },
+            "fulltext_config": {
+              "enabled": true,
+              "analyzer": "standard"
+            },
+            "vector_config": {
+              "enabled": false,
+              "model_id": ""
+            }
+          }
+        }
+      ],
+      "primary_keys": [
+        "tc_tagclassid"
+      ],
+      "display_key": "tc_name",
+      "tags": [
+        "自动化测试"
+      ],
+      "comment": "自动化测试",
+      "icon": "icon-dip-zhinengtigongchang",
+      "color": "#FF7A45",
+      "detail": "",
+      "kn_id": "auto_test_041",
+      "branch": "main",
+      "index": "dip-kn_ot_index-auto_test_041-tagclass-d4t8fd98ph2n5pvj7veg",
+      "index_available": true,
+      "creator": {
+        "id": "f6c6e398-ce82-11f0-888f-3ac1298ec09f",
+        "type": "user",
+        "name": ""
+      },
+      "create_time": 1765442373445,
+      "updater": {
+        "id": "f6c6e398-ce82-11f0-888f-3ac1298ec09f",
+        "type": "user",
+        "name": ""
+      },
+      "update_time": 1765443447041,
+      "module_type": "object_type"
+    },
+    {
+      "id": "person",
+      "name": "用户",
+      "data_source": {
+        "type": "data_view",
+        "id": "1998592949692420097",
+        "name": ""
+      },
+      "data_properties": [
+        {
+          "name": "p_birthday",
+          "display_name": "p_birthday",
+          "type": "date",
+          "comment": "",
+          "mapped_field": {
+            "name": "p_birthday"
+          },
+          "index_config": {
+            "keyword_config": {
+              "enabled": true,
+              "ignore_above_len": 1024
+            },
+            "fulltext_config": {
+              "enabled": true,
+              "analyzer": "standard"
+            },
+            "vector_config": {
+              "enabled": false,
+              "model_id": ""
+            }
+          }
+        },
+        {
+          "name": "p_browserused",
+          "display_name": "p_browserused",
+          "type": "string",
+          "comment": "",
+          "mapped_field": {
+            "name": "p_browserused"
+          },
+          "index_config": {
+            "keyword_config": {
+              "enabled": true,
+              "ignore_above_len": 1024
+            },
+            "fulltext_config": {
+              "enabled": true,
+              "analyzer": "standard"
+            },
+            "vector_config": {
+              "enabled": false,
+              "model_id": ""
+            }
+          }
+        },
+        {
+          "name": "p_creationdate",
+          "display_name": "p_creationdate",
+          "type": "datetime",
+          "comment": "",
+          "mapped_field": {
+            "name": "p_creationdate"
+          },
+          "index_config": {
+            "keyword_config": {
+              "enabled": true,
+              "ignore_above_len": 1024
+            },
+            "fulltext_config": {
+              "enabled": true,
+              "analyzer": "standard"
+            },
+            "vector_config": {
+              "enabled": false,
+              "model_id": ""
+            }
+          }
+        },
+        {
+          "name": "p_firstname",
+          "display_name": "p_firstname",
+          "type": "string",
+          "comment": "",
+          "mapped_field": {
+            "name": "p_firstname",
+            "type": "string",
+            "display_name": "p_firstname"
+          },
+          "index_config": {
+            "keyword_config": {
+              "enabled": true,
+              "ignore_above_len": 1024
+            },
+            "fulltext_config": {
+              "enabled": true,
+              "analyzer": "standard"
+            },
+            "vector_config": {
+              "enabled": true,
+              "model_id": "1995758385982738432"
+            }
+          },
+          "condition_operations": [
+            "==",
+            "!=",
+            "like",
+            "not_like",
+            "in",
+            "not_in"
+          ]
+        },
+        {
+          "name": "p_gender",
+          "display_name": "p_gender",
+          "type": "string",
+          "comment": "",
+          "mapped_field": {
+            "name": "p_gender"
+          },
+          "index_config": {
+            "keyword_config": {
+              "enabled": true,
+              "ignore_above_len": 1024
+            },
+            "fulltext_config": {
+              "enabled": true,
+              "analyzer": "standard"
+            },
+            "vector_config": {
+              "enabled": false,
+              "model_id": ""
+            }
+          }
+        },
+        {
+          "name": "p_lastname",
+          "display_name": "p_lastname",
+          "type": "string",
+          "comment": "",
+          "mapped_field": {
+            "name": "p_lastname",
+            "type": "string",
+            "display_name": "p_lastname"
+          },
+          "index_config": {
+            "keyword_config": {
+              "enabled": true,
+              "ignore_above_len": 1024
+            },
+            "fulltext_config": {
+              "enabled": true,
+              "analyzer": "standard"
+            },
+            "vector_config": {
+              "enabled": true,
+              "model_id": "1995758385982738432"
+            }
+          },
+          "condition_operations": [
+            "==",
+            "!=",
+            "like",
+            "not_like",
+            "in",
+            "not_in"
+          ]
+        },
+        {
+          "name": "p_locationip",
+          "display_name": "p_locationip",
+          "type": "string",
+          "comment": "",
+          "mapped_field": {
+            "name": "p_locationip"
+          },
+          "index_config": {
+            "keyword_config": {
+              "enabled": true,
+              "ignore_above_len": 1024
+            },
+            "fulltext_config": {
+              "enabled": true,
+              "analyzer": "standard"
+            },
+            "vector_config": {
+              "enabled": false,
+              "model_id": ""
+            }
+          }
+        },
+        {
+          "name": "p_personid",
+          "display_name": "p_personid",
+          "type": "integer",
+          "comment": "",
+          "mapped_field": {
+            "name": "p_personid"
+          },
+          "index_config": {
+            "keyword_config": {
+              "enabled": true,
+              "ignore_above_len": 1024
+            },
+            "fulltext_config": {
+              "enabled": true,
+              "analyzer": "standard"
+            },
+            "vector_config": {
+              "enabled": false,
+              "model_id": ""
+            }
+          }
+        }
+      ],
+      "primary_keys": [
+        "p_personid"
+      ],
+      "display_key": "p_firstname",
+      "tags": [
+        "自动化测试"
+      ],
+      "comment": "自动化测试",
+      "icon": "icon-dip-bentiyinqing",
+      "color": "#FF7A45",
+      "detail": "",
+      "kn_id": "auto_test_041",
+      "branch": "main",
+      "index": "dip-kn_ot_index-auto_test_041-person-d4t8fd98ph2n5pvj7vf0",
+      "index_available": true,
+      "creator": {
+        "id": "f6c6e398-ce82-11f0-888f-3ac1298ec09f",
+        "type": "user",
+        "name": ""
+      },
+      "create_time": 1765442363966,
+      "updater": {
+        "id": "f6c6e398-ce82-11f0-888f-3ac1298ec09f",
+        "type": "user",
+        "name": ""
+      },
+      "update_time": 1765443423749,
+      "module_type": "object_type"
+    },
+    {
+      "id": "organisation",
+      "name": "组织",
+      "data_source": {
+        "type": "data_view",
+        "id": "1998592949616922625",
+        "name": ""
+      },
+      "data_properties": [
+        {
+          "name": "o_name",
+          "display_name": "o_name",
+          "type": "string",
+          "comment": "",
+          "mapped_field": {
+            "name": "o_name",
+            "type": "string",
+            "display_name": "o_name"
+          },
+          "index_config": {
+            "keyword_config": {
+              "enabled": true,
+              "ignore_above_len": 1024
+            },
+            "fulltext_config": {
+              "enabled": true,
+              "analyzer": "standard"
+            },
+            "vector_config": {
+              "enabled": true,
+              "model_id": "1995758385982738432"
+            }
+          },
+          "condition_operations": [
+            "==",
+            "!=",
+            "like",
+            "not_like",
+            "in",
+            "not_in"
+          ]
+        },
+        {
+          "name": "o_organisationid",
+          "display_name": "o_organisationid",
+          "type": "integer",
+          "comment": "",
+          "mapped_field": {
+            "name": "o_organisationid"
+          },
+          "index_config": {
+            "keyword_config": {
+              "enabled": true,
+              "ignore_above_len": 1024
+            },
+            "fulltext_config": {
+              "enabled": true,
+              "analyzer": "standard"
+            },
+            "vector_config": {
+              "enabled": false,
+              "model_id": ""
+            }
+          }
+        },
+        {
+          "name": "o_type",
+          "display_name": "o_type",
+          "type": "string",
+          "comment": "",
+          "mapped_field": {
+            "name": "o_type",
+            "type": "string",
+            "display_name": "o_type"
+          },
+          "index_config": {
+            "keyword_config": {
+              "enabled": true,
+              "ignore_above_len": 1024
+            },
+            "fulltext_config": {
+              "enabled": true,
+              "analyzer": "standard"
+            },
+            "vector_config": {
+              "enabled": true,
+              "model_id": "1995758385982738432"
+            }
+          },
+          "condition_operations": [
+            "==",
+            "!=",
+            "like",
+            "not_like",
+            "in",
+            "not_in"
+          ]
+        },
+        {
+          "name": "o_url",
+          "display_name": "o_url",
+          "type": "string",
+          "comment": "",
+          "mapped_field": {
+            "name": "o_url"
+          },
+          "index_config": {
+            "keyword_config": {
+              "enabled": true,
+              "ignore_above_len": 1024
+            },
+            "fulltext_config": {
+              "enabled": true,
+              "analyzer": "standard"
+            },
+            "vector_config": {
+              "enabled": false,
+              "model_id": ""
+            }
+          }
+        }
+      ],
+      "primary_keys": [
+        "o_organisationid"
+      ],
+      "display_key": "o_name",
+      "tags": [
+        "自动化测试"
+      ],
+      "comment": "自动化测试",
+      "icon": "icon-dip-close",
+      "color": "#A0D911",
+      "detail": "",
+      "kn_id": "auto_test_041",
+      "branch": "main",
+      "index": "dip-kn_ot_index-auto_test_041-organisation-d4t8fd98ph2n5pvj7vfg",
+      "index_available": true,
+      "creator": {
+        "id": "f6c6e398-ce82-11f0-888f-3ac1298ec09f",
+        "type": "user",
+        "name": ""
+      },
+      "create_time": 1765442378343,
+      "updater": {
+        "id": "f6c6e398-ce82-11f0-888f-3ac1298ec09f",
+        "type": "user",
+        "name": ""
+      },
+      "update_time": 1765443459970,
+      "module_type": "object_type"
+    },
+    {
+      "id": "forum",
+      "name": "论坛",
+      "data_source": {
+        "type": "data_view",
+        "id": "1998592949675642883",
+        "name": ""
+      },
+      "data_properties": [
+        {
+          "name": "f_creationdate",
+          "display_name": "f_creationdate",
+          "type": "datetime",
+          "comment": "",
+          "mapped_field": {
+            "name": "f_creationdate"
+          },
+          "index_config": {
+            "keyword_config": {
+              "enabled": true,
+              "ignore_above_len": 1024
+            },
+            "fulltext_config": {
+              "enabled": true,
+              "analyzer": "standard"
+            },
+            "vector_config": {
+              "enabled": false,
+              "model_id": ""
+            }
+          }
+        },
+        {
+          "name": "f_forumid",
+          "display_name": "f_forumid",
+          "type": "integer",
+          "comment": "",
+          "mapped_field": {
+            "name": "f_forumid"
+          },
+          "index_config": {
+            "keyword_config": {
+              "enabled": true,
+              "ignore_above_len": 1024
+            },
+            "fulltext_config": {
+              "enabled": true,
+              "analyzer": "standard"
+            },
+            "vector_config": {
+              "enabled": false,
+              "model_id": ""
+            }
+          }
+        },
+        {
+          "name": "f_title",
+          "display_name": "f_title",
+          "type": "string",
+          "comment": "",
+          "mapped_field": {
+            "name": "f_title",
+            "type": "string",
+            "display_name": "f_title"
+          },
+          "index_config": {
+            "keyword_config": {
+              "enabled": true,
+              "ignore_above_len": 1024
+            },
+            "fulltext_config": {
+              "enabled": true,
+              "analyzer": "standard"
+            },
+            "vector_config": {
+              "enabled": true,
+              "model_id": "1995758385982738432"
+            }
+          },
+          "condition_operations": [
+            "==",
+            "!=",
+            "like",
+            "not_like",
+            "in",
+            "not_in"
+          ]
+        }
+      ],
+      "primary_keys": [
+        "f_forumid"
+      ],
+      "display_key": "f_title",
+      "tags": [
+        "自动化测试"
+      ],
+      "comment": "自动化测试",
+      "icon": "icon-dip-zhengshuxing",
+      "color": "#36CFC9",
+      "detail": "",
+      "kn_id": "auto_test_041",
+      "branch": "main",
+      "index": "dip-kn_ot_index-auto_test_041-forum-d4t8fd98ph2n5pvj7vg0",
+      "index_available": true,
+      "creator": {
+        "id": "f6c6e398-ce82-11f0-888f-3ac1298ec09f",
+        "type": "user",
+        "name": ""
+      },
+      "create_time": 1765442367517,
+      "updater": {
+        "id": "f6c6e398-ce82-11f0-888f-3ac1298ec09f",
+        "type": "user",
+        "name": ""
+      },
+      "update_time": 1765443434199,
+      "module_type": "object_type"
+    },
+    {
+      "id": "comment",
+      "name": "评论",
+      "data_source": {
+        "type": "data_view",
+        "id": "1998592949696614402",
+        "name": ""
+      },
+      "data_properties": [
+        {
+          "name": "c_browserused",
+          "display_name": "c_browserused",
+          "type": "string",
+          "comment": "",
+          "mapped_field": {
+            "name": "c_browserused"
+          },
+          "index_config": {
+            "keyword_config": {
+              "enabled": true,
+              "ignore_above_len": 1024
+            },
+            "fulltext_config": {
+              "enabled": true,
+              "analyzer": "standard"
+            },
+            "vector_config": {
+              "enabled": false,
+              "model_id": ""
+            }
+          }
+        },
+        {
+          "name": "c_commentid",
+          "display_name": "c_commentid",
+          "type": "integer",
+          "comment": "",
+          "mapped_field": {
+            "name": "c_commentid"
+          },
+          "index_config": {
+            "keyword_config": {
+              "enabled": true,
+              "ignore_above_len": 1024
+            },
+            "fulltext_config": {
+              "enabled": true,
+              "analyzer": "standard"
+            },
+            "vector_config": {
+              "enabled": false,
+              "model_id": ""
+            }
+          }
+        },
+        {
+          "name": "c_content",
+          "display_name": "c_content",
+          "type": "text",
+          "comment": "",
+          "mapped_field": {
+            "name": "c_content",
+            "type": "text",
+            "display_name": "c_content"
+          },
+          "index_config": {
+            "keyword_config": {
+              "enabled": true,
+              "ignore_above_len": 1024
+            },
+            "fulltext_config": {
+              "enabled": true,
+              "analyzer": "standard"
+            },
+            "vector_config": {
+              "enabled": true,
+              "model_id": "1995758385982738432"
+            }
+          },
+          "condition_operations": [
+            "==",
+            "!=",
+            "like",
+            "not_like",
+            "in",
+            "not_in"
+          ]
+        },
+        {
+          "name": "c_creationdate",
+          "display_name": "c_creationdate",
+          "type": "datetime",
+          "comment": "",
+          "mapped_field": {
+            "name": "c_creationdate"
+          },
+          "index_config": {
+            "keyword_config": {
+              "enabled": true,
+              "ignore_above_len": 1024
+            },
+            "fulltext_config": {
+              "enabled": true,
+              "analyzer": "standard"
+            },
+            "vector_config": {
+              "enabled": false,
+              "model_id": ""
+            }
+          }
+        },
+        {
+          "name": "c_length",
+          "display_name": "c_length",
+          "type": "integer",
+          "comment": "",
+          "mapped_field": {
+            "name": "c_length"
+          },
+          "index_config": {
+            "keyword_config": {
+              "enabled": true,
+              "ignore_above_len": 1024
+            },
+            "fulltext_config": {
+              "enabled": true,
+              "analyzer": "standard"
+            },
+            "vector_config": {
+              "enabled": false,
+              "model_id": ""
+            }
+          }
+        },
+        {
+          "name": "c_locationip",
+          "display_name": "c_locationip",
+          "type": "string",
+          "comment": "",
+          "mapped_field": {
+            "name": "c_locationip"
+          },
+          "index_config": {
+            "keyword_config": {
+              "enabled": true,
+              "ignore_above_len": 1024
+            },
+            "fulltext_config": {
+              "enabled": true,
+              "analyzer": "standard"
+            },
+            "vector_config": {
+              "enabled": false,
+              "model_id": ""
+            }
+          }
+        }
+      ],
+      "primary_keys": [
+        "c_commentid"
+      ],
+      "display_key": "c_content",
+      "tags": [
+        "自动化测试"
+      ],
+      "comment": "自动化测试",
+      "icon": "icon-dip-bentiyinqing",
+      "color": "#0E5FC5",
+      "detail": "",
+      "kn_id": "auto_test_041",
+      "branch": "main",
+      "index": "dip-kn_ot_index-auto_test_041-comment-d4t8fd98ph2n5pvj7vgg",
+      "index_available": true,
+      "creator": {
+        "id": "f6c6e398-ce82-11f0-888f-3ac1298ec09f",
+        "type": "user",
+        "name": ""
+      },
+      "create_time": 1765442388682,
+      "updater": {
+        "id": "f6c6e398-ce82-11f0-888f-3ac1298ec09f",
+        "type": "user",
+        "name": ""
+      },
+      "update_time": 1765443488690,
+      "module_type": "object_type"
+    }
+  ],
+  "relation_types": [
+    {
+      "id": "comment_hascreator_person",
+      "name": "评论创建者",
+      "source_object_type_id": "comment",
+      "target_object_type_id": "person",
+      "type": "data_view",
+      "mapping_rules": {
+        "backing_data_source": {
+          "id": "1998592949667254274",
+          "type": "data_view"
+        },
+        "source_mapping_rules": [
+          {
+            "source_property": {
+              "name": "c_commentid"
+            },
+            "target_property": {
+              "name": "c_commentid"
+            }
+          }
+        ],
+        "target_mapping_rules": [
+          {
+            "source_property": {
+              "name": "p_personid"
+            },
+            "target_property": {
+              "name": "p_personid"
+            }
+          }
+        ]
+      },
+      "tags": [
+        "ldbc",
+        "自动化"
+      ],
+      "comment": "",
+      "icon": "",
+      "color": "",
+      "detail": "",
+      "kn_id": "auto_test_041",
+      "branch": "main",
+      "source_object_type": {
+        "id": "comment",
+        "name": "评论",
+        "branch": "",
+        "icon": "icon-dip-bentiyinqing",
+        "color": "#0E5FC5"
+      },
+      "target_object_type": {
+        "id": "person",
+        "name": "用户",
+        "branch": "",
+        "icon": "icon-dip-bentiyinqing",
+        "color": "#FF7A45"
+      },
+      "creator": {
+        "id": "f6c6e398-ce82-11f0-888f-3ac1298ec09f",
+        "type": "user",
+        "name": ""
+      },
+      "create_time": 1765444579758,
+      "updater": {
+        "id": "f6c6e398-ce82-11f0-888f-3ac1298ec09f",
+        "type": "user",
+        "name": ""
+      },
+      "update_time": 1765444579758,
+      "module_type": "relation_type"
+    },
+    {
+      "id": "comment_hastag_tag",
+      "name": "评论关联标签",
+      "source_object_type_id": "comment",
+      "target_object_type_id": "tag",
+      "type": "data_view",
+      "mapping_rules": {
+        "backing_data_source": {
+          "id": "1998592949650477057",
+          "type": "data_view"
+        },
+        "source_mapping_rules": [
+          {
+            "source_property": {
+              "name": "c_commentid"
+            },
+            "target_property": {
+              "name": "c_commentid"
+            }
+          }
+        ],
+        "target_mapping_rules": [
+          {
+            "source_property": {
+              "name": "t_tagid"
+            },
+            "target_property": {
+              "name": "t_tagid"
+            }
+          }
+        ]
+      },
+      "tags": [
+        "ldbc",
+        "自动化"
+      ],
+      "comment": "",
+      "icon": "",
+      "color": "",
+      "detail": "",
+      "kn_id": "auto_test_041",
+      "branch": "main",
+      "source_object_type": {
+        "id": "comment",
+        "name": "评论",
+        "branch": "",
+        "icon": "icon-dip-bentiyinqing",
+        "color": "#0E5FC5"
+      },
+      "target_object_type": {
+        "id": "tag",
+        "name": "标签",
+        "branch": "",
+        "icon": "icon-dip-chat2",
+        "color": "#0E5FC5"
+      },
+      "creator": {
+        "id": "f6c6e398-ce82-11f0-888f-3ac1298ec09f",
+        "type": "user",
+        "name": ""
+      },
+      "create_time": 1765444579960,
+      "updater": {
+        "id": "f6c6e398-ce82-11f0-888f-3ac1298ec09f",
+        "type": "user",
+        "name": ""
+      },
+      "update_time": 1765444579960,
+      "module_type": "relation_type"
+    },
+    {
+      "id": "comment_islocatedin_place",
+      "name": "评论发布地点",
+      "source_object_type_id": "comment",
+      "target_object_type_id": "place",
+      "type": "data_view",
+      "mapping_rules": {
+        "target_mapping_rules": [
+          {
+            "source_property": {
+              "name": "p_placeid"
+            },
+            "target_property": {
+              "name": "p_placeid"
+            }
+          }
+        ],
+        "backing_data_source": {
+          "id": "1998592949633699841",
+          "type": "data_view"
+        },
+        "source_mapping_rules": [
+          {
+            "source_property": {
+              "name": "c_commentid"
+            },
+            "target_property": {
+              "name": "c_commentid"
+            }
+          }
+        ]
+      },
+      "tags": [
+        "ldbc",
+        "自动化"
+      ],
+      "comment": "",
+      "icon": "",
+      "color": "",
+      "detail": "",
+      "kn_id": "auto_test_041",
+      "branch": "main",
+      "source_object_type": {
+        "id": "comment",
+        "name": "评论",
+        "branch": "",
+        "icon": "icon-dip-bentiyinqing",
+        "color": "#0E5FC5"
+      },
+      "target_object_type": {
+        "id": "place",
+        "name": "地点",
+        "branch": "",
+        "icon": "icon-dip-history",
+        "color": "#0E5FC5"
+      },
+      "creator": {
+        "id": "f6c6e398-ce82-11f0-888f-3ac1298ec09f",
+        "type": "user",
+        "name": ""
+      },
+      "create_time": 1765444580135,
+      "updater": {
+        "id": "f6c6e398-ce82-11f0-888f-3ac1298ec09f",
+        "type": "user",
+        "name": ""
+      },
+      "update_time": 1765444580135,
+      "module_type": "relation_type"
+    },
+    {
+      "id": "comment_replyof_comment",
+      "name": "评论来源评论",
+      "source_object_type_id": "comment",
+      "target_object_type_id": "comment",
+      "type": "data_view",
+      "mapping_rules": {
+        "source_mapping_rules": [
+          {
+            "target_property": {
+              "name": "c_commentid1"
+            },
+            "source_property": {
+              "name": "c_commentid"
+            }
+          }
+        ],
+        "target_mapping_rules": [
+          {
+            "target_property": {
+              "name": "c_commentid"
+            },
+            "source_property": {
+              "name": "c_commentid2"
+            }
+          }
+        ],
+        "backing_data_source": {
+          "type": "data_view",
+          "id": "1998592949646282753"
+        }
+      },
+      "tags": [
+        "ldbc",
+        "自动化"
+      ],
+      "comment": "",
+      "icon": "",
+      "color": "",
+      "detail": "",
+      "kn_id": "auto_test_041",
+      "branch": "main",
+      "source_object_type": {
+        "id": "comment",
+        "name": "评论",
+        "branch": "",
+        "icon": "icon-dip-bentiyinqing",
+        "color": "#0E5FC5"
+      },
+      "target_object_type": {
+        "id": "comment",
+        "name": "评论",
+        "branch": "",
+        "icon": "icon-dip-bentiyinqing",
+        "color": "#0E5FC5"
+      },
+      "creator": {
+        "id": "f6c6e398-ce82-11f0-888f-3ac1298ec09f",
+        "type": "user",
+        "name": ""
+      },
+      "create_time": 1765444580328,
+      "updater": {
+        "id": "f6c6e398-ce82-11f0-888f-3ac1298ec09f",
+        "type": "user",
+        "name": ""
+      },
+      "update_time": 1765444580328,
+      "module_type": "relation_type"
+    },
+    {
+      "id": "comment_replyof_post",
+      "name": "评论来源帖子",
+      "source_object_type_id": "comment",
+      "target_object_type_id": "post",
+      "type": "data_view",
+      "mapping_rules": {
+        "backing_data_source": {
+          "type": "data_view",
+          "id": "1998592949629505538"
+        },
+        "source_mapping_rules": [
+          {
+            "source_property": {
+              "name": "c_commentid"
+            },
+            "target_property": {
+              "name": "c_commentid"
+            }
+          }
+        ],
+        "target_mapping_rules": [
+          {
+            "target_property": {
+              "name": "ps_postid"
+            },
+            "source_property": {
+              "name": "ps_postid"
+            }
+          }
+        ]
+      },
+      "tags": [
+        "ldbc",
+        "自动化"
+      ],
+      "comment": "",
+      "icon": "",
+      "color": "",
+      "detail": "",
+      "kn_id": "auto_test_041",
+      "branch": "main",
+      "source_object_type": {
+        "id": "comment",
+        "name": "评论",
+        "branch": "",
+        "icon": "icon-dip-bentiyinqing",
+        "color": "#0E5FC5"
+      },
+      "target_object_type": {
+        "id": "post",
+        "name": "帖子",
+        "branch": "",
+        "icon": "icon-dip-Department",
+        "color": "#FF4D4F"
+      },
+      "creator": {
+        "id": "f6c6e398-ce82-11f0-888f-3ac1298ec09f",
+        "type": "user",
+        "name": ""
+      },
+      "create_time": 1765444580556,
+      "updater": {
+        "id": "f6c6e398-ce82-11f0-888f-3ac1298ec09f",
+        "type": "user",
+        "name": ""
+      },
+      "update_time": 1765444580556,
+      "module_type": "relation_type"
+    },
+    {
+      "id": "forum_containerof_post",
+      "name": "论坛包含帖子",
+      "source_object_type_id": "forum",
+      "target_object_type_id": "post",
+      "type": "data_view",
+      "mapping_rules": {
+        "target_mapping_rules": [
+          {
+            "source_property": {
+              "name": "ps_postid"
+            },
+            "target_property": {
+              "name": "ps_postid"
+            }
+          }
+        ],
+        "backing_data_source": {
+          "type": "data_view",
+          "id": "1998592949675642882"
+        },
+        "source_mapping_rules": [
+          {
+            "source_property": {
+              "name": "f_forumid"
+            },
+            "target_property": {
+              "name": "f_forumid"
+            }
+          }
+        ]
+      },
+      "tags": [
+        "ldbc",
+        "自动化"
+      ],
+      "comment": "",
+      "icon": "",
+      "color": "",
+      "detail": "",
+      "kn_id": "auto_test_041",
+      "branch": "main",
+      "source_object_type": {
+        "id": "forum",
+        "name": "论坛",
+        "branch": "",
+        "icon": "icon-dip-zhengshuxing",
+        "color": "#36CFC9"
+      },
+      "target_object_type": {
+        "id": "post",
+        "name": "帖子",
+        "branch": "",
+        "icon": "icon-dip-Department",
+        "color": "#FF4D4F"
+      },
+      "creator": {
+        "id": "f6c6e398-ce82-11f0-888f-3ac1298ec09f",
+        "type": "user",
+        "name": ""
+      },
+      "create_time": 1765444580733,
+      "updater": {
+        "id": "f6c6e398-ce82-11f0-888f-3ac1298ec09f",
+        "type": "user",
+        "name": ""
+      },
+      "update_time": 1765444580733,
+      "module_type": "relation_type"
+    },
+    {
+      "id": "forum_hasmember_person",
+      "name": "论坛包含成员",
+      "source_object_type_id": "forum",
+      "target_object_type_id": "person",
+      "type": "data_view",
+      "mapping_rules": {
+        "backing_data_source": {
+          "type": "data_view",
+          "id": "1998592949679837186"
+        },
+        "source_mapping_rules": [
+          {
+            "source_property": {
+              "name": "f_forumid"
+            },
+            "target_property": {
+              "name": "f_forumid"
+            }
+          }
+        ],
+        "target_mapping_rules": [
+          {
+            "source_property": {
+              "name": "p_personid"
+            },
+            "target_property": {
+              "name": "p_personid"
+            }
+          }
+        ]
+      },
+      "tags": [
+        "ldbc",
+        "自动化"
+      ],
+      "comment": "",
+      "icon": "",
+      "color": "",
+      "detail": "",
+      "kn_id": "auto_test_041",
+      "branch": "main",
+      "source_object_type": {
+        "id": "forum",
+        "name": "论坛",
+        "branch": "",
+        "icon": "icon-dip-zhengshuxing",
+        "color": "#36CFC9"
+      },
+      "target_object_type": {
+        "id": "person",
+        "name": "用户",
+        "branch": "",
+        "icon": "icon-dip-bentiyinqing",
+        "color": "#FF7A45"
+      },
+      "creator": {
+        "id": "f6c6e398-ce82-11f0-888f-3ac1298ec09f",
+        "type": "user",
+        "name": ""
+      },
+      "create_time": 1765444580901,
+      "updater": {
+        "id": "f6c6e398-ce82-11f0-888f-3ac1298ec09f",
+        "type": "user",
+        "name": ""
+      },
+      "update_time": 1765444580901,
+      "module_type": "relation_type"
+    },
+    {
+      "id": "forum_hasmoderator_person",
+      "name": "论坛包含管理员",
+      "source_object_type_id": "forum",
+      "target_object_type_id": "person",
+      "type": "data_view",
+      "mapping_rules": {
+        "backing_data_source": {
+          "id": "1998592949688225793",
+          "type": "data_view"
+        },
+        "source_mapping_rules": [
+          {
+            "source_property": {
+              "name": "f_forumid"
+            },
+            "target_property": {
+              "name": "f_forumid"
+            }
+          }
+        ],
+        "target_mapping_rules": [
+          {
+            "source_property": {
+              "name": "p_personid"
+            },
+            "target_property": {
+              "name": "p_personid"
+            }
+          }
+        ]
+      },
+      "tags": [
+        "ldbc",
+        "自动化"
+      ],
+      "comment": "",
+      "icon": "",
+      "color": "",
+      "detail": "",
+      "kn_id": "auto_test_041",
+      "branch": "main",
+      "source_object_type": {
+        "id": "forum",
+        "name": "论坛",
+        "branch": "",
+        "icon": "icon-dip-zhengshuxing",
+        "color": "#36CFC9"
+      },
+      "target_object_type": {
+        "id": "person",
+        "name": "用户",
+        "branch": "",
+        "icon": "icon-dip-bentiyinqing",
+        "color": "#FF7A45"
+      },
+      "creator": {
+        "id": "f6c6e398-ce82-11f0-888f-3ac1298ec09f",
+        "type": "user",
+        "name": ""
+      },
+      "create_time": 1765444581113,
+      "updater": {
+        "id": "f6c6e398-ce82-11f0-888f-3ac1298ec09f",
+        "type": "user",
+        "name": ""
+      },
+      "update_time": 1765444581113,
+      "module_type": "relation_type"
+    },
+    {
+      "id": "forum_hastag_tag",
+      "name": "论坛关联标签",
+      "source_object_type_id": "forum",
+      "target_object_type_id": "tag",
+      "type": "data_view",
+      "mapping_rules": {
+        "backing_data_source": {
+          "type": "data_view",
+          "id": "1998592949700808705"
+        },
+        "source_mapping_rules": [
+          {
+            "source_property": {
+              "name": "f_forumid"
+            },
+            "target_property": {
+              "name": "f_forumid"
+            }
+          }
+        ],
+        "target_mapping_rules": [
+          {
+            "source_property": {
+              "name": "t_tagid"
+            },
+            "target_property": {
+              "name": "t_tagid"
+            }
+          }
+        ]
+      },
+      "tags": [
+        "ldbc",
+        "自动化"
+      ],
+      "comment": "",
+      "icon": "",
+      "color": "",
+      "detail": "",
+      "kn_id": "auto_test_041",
+      "branch": "main",
+      "source_object_type": {
+        "id": "forum",
+        "name": "论坛",
+        "branch": "",
+        "icon": "icon-dip-zhengshuxing",
+        "color": "#36CFC9"
+      },
+      "target_object_type": {
+        "id": "tag",
+        "name": "标签",
+        "branch": "",
+        "icon": "icon-dip-chat2",
+        "color": "#0E5FC5"
+      },
+      "creator": {
+        "id": "f6c6e398-ce82-11f0-888f-3ac1298ec09f",
+        "type": "user",
+        "name": ""
+      },
+      "create_time": 1765444581284,
+      "updater": {
+        "id": "f6c6e398-ce82-11f0-888f-3ac1298ec09f",
+        "type": "user",
+        "name": ""
+      },
+      "update_time": 1765444581284,
+      "module_type": "relation_type"
+    },
+    {
+      "id": "organisation_islocatedin_place",
+      "name": "组织地点",
+      "source_object_type_id": "organisation",
+      "target_object_type_id": "place",
+      "type": "data_view",
+      "mapping_rules": {
+        "source_mapping_rules": [
+          {
+            "target_property": {
+              "name": "o_organisationid"
+            },
+            "source_property": {
+              "name": "o_organisationid"
+            }
+          }
+        ],
+        "target_mapping_rules": [
+          {
+            "source_property": {
+              "name": "p_placeid"
+            },
+            "target_property": {
+              "name": "p_placeid"
+            }
+          }
+        ],
+        "backing_data_source": {
+          "type": "data_view",
+          "id": "1998592949705003010"
+        }
+      },
+      "tags": [
+        "ldbc",
+        "自动化"
+      ],
+      "comment": "",
+      "icon": "",
+      "color": "",
+      "detail": "",
+      "kn_id": "auto_test_041",
+      "branch": "main",
+      "source_object_type": {
+        "id": "organisation",
+        "name": "组织",
+        "branch": "",
+        "icon": "icon-dip-close",
+        "color": "#A0D911"
+      },
+      "target_object_type": {
+        "id": "place",
+        "name": "地点",
+        "branch": "",
+        "icon": "icon-dip-history",
+        "color": "#0E5FC5"
+      },
+      "creator": {
+        "id": "f6c6e398-ce82-11f0-888f-3ac1298ec09f",
+        "type": "user",
+        "name": ""
+      },
+      "create_time": 1765444581460,
+      "updater": {
+        "id": "f6c6e398-ce82-11f0-888f-3ac1298ec09f",
+        "type": "user",
+        "name": ""
+      },
+      "update_time": 1765444581460,
+      "module_type": "relation_type"
+    },
+    {
+      "id": "person_hasinterest_tag",
+      "name": "用户关联兴趣标签",
+      "source_object_type_id": "person",
+      "target_object_type_id": "tag",
+      "type": "data_view",
+      "mapping_rules": {
+        "target_mapping_rules": [
+          {
+            "source_property": {
+              "name": "t_tagid"
+            },
+            "target_property": {
+              "name": "t_tagid"
+            }
+          }
+        ],
+        "backing_data_source": {
+          "type": "data_view",
+          "id": "1998592949646282754"
+        },
+        "source_mapping_rules": [
+          {
+            "source_property": {
+              "name": "p_personid"
+            },
+            "target_property": {
+              "name": "p_personid"
+            }
+          }
+        ]
+      },
+      "tags": [
+        "ldbc",
+        "自动化"
+      ],
+      "comment": "",
+      "icon": "",
+      "color": "",
+      "detail": "",
+      "kn_id": "auto_test_041",
+      "branch": "main",
+      "source_object_type": {
+        "id": "person",
+        "name": "用户",
+        "branch": "",
+        "icon": "icon-dip-bentiyinqing",
+        "color": "#FF7A45"
+      },
+      "target_object_type": {
+        "id": "tag",
+        "name": "标签",
+        "branch": "",
+        "icon": "icon-dip-chat2",
+        "color": "#0E5FC5"
+      },
+      "creator": {
+        "id": "f6c6e398-ce82-11f0-888f-3ac1298ec09f",
+        "type": "user",
+        "name": ""
+      },
+      "create_time": 1765444581659,
+      "updater": {
+        "id": "f6c6e398-ce82-11f0-888f-3ac1298ec09f",
+        "type": "user",
+        "name": ""
+      },
+      "update_time": 1765444581659,
+      "module_type": "relation_type"
+    },
+    {
+      "id": "person_islocatedin_place",
+      "name": "用户地点",
+      "source_object_type_id": "person",
+      "target_object_type_id": "place",
+      "type": "data_view",
+      "mapping_rules": {
+        "backing_data_source": {
+          "id": "1998592949658865667",
+          "type": "data_view"
+        },
+        "source_mapping_rules": [
+          {
+            "source_property": {
+              "name": "p_personid"
+            },
+            "target_property": {
+              "name": "p_personid"
+            }
+          }
+        ],
+        "target_mapping_rules": [
+          {
+            "source_property": {
+              "name": "p_placeid"
+            },
+            "target_property": {
+              "name": "p_placeid"
+            }
+          }
+        ]
+      },
+      "tags": [
+        "ldbc",
+        "自动化"
+      ],
+      "comment": "",
+      "icon": "",
+      "color": "",
+      "detail": "",
+      "kn_id": "auto_test_041",
+      "branch": "main",
+      "source_object_type": {
+        "id": "person",
+        "name": "用户",
+        "branch": "",
+        "icon": "icon-dip-bentiyinqing",
+        "color": "#FF7A45"
+      },
+      "target_object_type": {
+        "id": "place",
+        "name": "地点",
+        "branch": "",
+        "icon": "icon-dip-history",
+        "color": "#0E5FC5"
+      },
+      "creator": {
+        "id": "f6c6e398-ce82-11f0-888f-3ac1298ec09f",
+        "type": "user",
+        "name": ""
+      },
+      "create_time": 1765444581833,
+      "updater": {
+        "id": "f6c6e398-ce82-11f0-888f-3ac1298ec09f",
+        "type": "user",
+        "name": ""
+      },
+      "update_time": 1765444581833,
+      "module_type": "relation_type"
+    },
+    {
+      "id": "person_knows_person",
+      "name": "好友关系",
+      "source_object_type_id": "person",
+      "target_object_type_id": "person",
+      "type": "data_view",
+      "mapping_rules": {
+        "backing_data_source": {
+          "type": "data_view",
+          "id": "1998592949671448579"
+        },
+        "source_mapping_rules": [
+          {
+            "source_property": {
+              "name": "p_personid"
+            },
+            "target_property": {
+              "name": "p_person1id"
+            }
+          }
+        ],
+        "target_mapping_rules": [
+          {
+            "source_property": {
+              "name": "p_person2id"
+            },
+            "target_property": {
+              "name": "p_personid"
+            }
+          }
+        ]
+      },
+      "tags": [
+        "ldbc",
+        "自动化"
+      ],
+      "comment": "",
+      "icon": "",
+      "color": "",
+      "detail": "",
+      "kn_id": "auto_test_041",
+      "branch": "main",
+      "source_object_type": {
+        "id": "person",
+        "name": "用户",
+        "branch": "",
+        "icon": "icon-dip-bentiyinqing",
+        "color": "#FF7A45"
+      },
+      "target_object_type": {
+        "id": "person",
+        "name": "用户",
+        "branch": "",
+        "icon": "icon-dip-bentiyinqing",
+        "color": "#FF7A45"
+      },
+      "creator": {
+        "id": "f6c6e398-ce82-11f0-888f-3ac1298ec09f",
+        "type": "user",
+        "name": ""
+      },
+      "create_time": 1765444582007,
+      "updater": {
+        "id": "f6c6e398-ce82-11f0-888f-3ac1298ec09f",
+        "type": "user",
+        "name": ""
+      },
+      "update_time": 1765444582007,
+      "module_type": "relation_type"
+    },
+    {
+      "id": "person_likes_comment",
+      "name": "用户点赞评论",
+      "source_object_type_id": "person",
+      "target_object_type_id": "comment",
+      "type": "data_view",
+      "mapping_rules": {
+        "backing_data_source": {
+          "type": "data_view",
+          "id": "1998592949688225794"
+        },
+        "source_mapping_rules": [
+          {
+            "source_property": {
+              "name": "p_personid"
+            },
+            "target_property": {
+              "name": "p_personid"
+            }
+          }
+        ],
+        "target_mapping_rules": [
+          {
+            "source_property": {
+              "name": "c_commentid"
+            },
+            "target_property": {
+              "name": "c_commentid"
+            }
+          }
+        ]
+      },
+      "tags": [
+        "ldbc",
+        "自动化"
+      ],
+      "comment": "",
+      "icon": "",
+      "color": "",
+      "detail": "",
+      "kn_id": "auto_test_041",
+      "branch": "main",
+      "source_object_type": {
+        "id": "person",
+        "name": "用户",
+        "branch": "",
+        "icon": "icon-dip-bentiyinqing",
+        "color": "#FF7A45"
+      },
+      "target_object_type": {
+        "id": "comment",
+        "name": "评论",
+        "branch": "",
+        "icon": "icon-dip-bentiyinqing",
+        "color": "#0E5FC5"
+      },
+      "creator": {
+        "id": "f6c6e398-ce82-11f0-888f-3ac1298ec09f",
+        "type": "user",
+        "name": ""
+      },
+      "create_time": 1765444582193,
+      "updater": {
+        "id": "f6c6e398-ce82-11f0-888f-3ac1298ec09f",
+        "type": "user",
+        "name": ""
+      },
+      "update_time": 1765444582193,
+      "module_type": "relation_type"
+    },
+    {
+      "id": "person_likes_post",
+      "name": "用户点赞帖子",
+      "source_object_type_id": "person",
+      "target_object_type_id": "post",
+      "type": "data_view",
+      "mapping_rules": {
+        "backing_data_source": {
+          "type": "data_view",
+          "id": "1998592949621116930"
+        },
+        "source_mapping_rules": [
+          {
+            "target_property": {
+              "name": "p_personid"
+            },
+            "source_property": {
+              "name": "p_personid"
+            }
+          }
+        ],
+        "target_mapping_rules": [
+          {
+            "source_property": {
+              "name": "ps_postid"
+            },
+            "target_property": {
+              "name": "ps_postid"
+            }
+          }
+        ]
+      },
+      "tags": [
+        "ldbc",
+        "自动化"
+      ],
+      "comment": "",
+      "icon": "",
+      "color": "",
+      "detail": "",
+      "kn_id": "auto_test_041",
+      "branch": "main",
+      "source_object_type": {
+        "id": "person",
+        "name": "用户",
+        "branch": "",
+        "icon": "icon-dip-bentiyinqing",
+        "color": "#FF7A45"
+      },
+      "target_object_type": {
+        "id": "post",
+        "name": "帖子",
+        "branch": "",
+        "icon": "icon-dip-Department",
+        "color": "#FF4D4F"
+      },
+      "creator": {
+        "id": "f6c6e398-ce82-11f0-888f-3ac1298ec09f",
+        "type": "user",
+        "name": ""
+      },
+      "create_time": 1765444582368,
+      "updater": {
+        "id": "f6c6e398-ce82-11f0-888f-3ac1298ec09f",
+        "type": "user",
+        "name": ""
+      },
+      "update_time": 1765444582368,
+      "module_type": "relation_type"
+    },
+    {
+      "id": "person_studyat_organisation",
+      "name": "用户就读于",
+      "source_object_type_id": "person",
+      "target_object_type_id": "organisation",
+      "type": "data_view",
+      "mapping_rules": {
+        "backing_data_source": {
+          "type": "data_view",
+          "id": "1998592949700808706"
+        },
+        "source_mapping_rules": [
+          {
+            "source_property": {
+              "name": "p_personid"
+            },
+            "target_property": {
+              "name": "p_personid"
+            }
+          }
+        ],
+        "target_mapping_rules": [
+          {
+            "target_property": {
+              "name": "o_organisationid"
+            },
+            "source_property": {
+              "name": "o_organisationid"
+            }
+          }
+        ]
+      },
+      "tags": [
+        "ldbc",
+        "自动化"
+      ],
+      "comment": "",
+      "icon": "",
+      "color": "",
+      "detail": "",
+      "kn_id": "auto_test_041",
+      "branch": "main",
+      "source_object_type": {
+        "id": "person",
+        "name": "用户",
+        "branch": "",
+        "icon": "icon-dip-bentiyinqing",
+        "color": "#FF7A45"
+      },
+      "target_object_type": {
+        "id": "organisation",
+        "name": "组织",
+        "branch": "",
+        "icon": "icon-dip-close",
+        "color": "#A0D911"
+      },
+      "creator": {
+        "id": "f6c6e398-ce82-11f0-888f-3ac1298ec09f",
+        "type": "user",
+        "name": ""
+      },
+      "create_time": 1765444582541,
+      "updater": {
+        "id": "f6c6e398-ce82-11f0-888f-3ac1298ec09f",
+        "type": "user",
+        "name": ""
+      },
+      "update_time": 1765444582541,
+      "module_type": "relation_type"
+    },
+    {
+      "id": "person_workat_organisation",
+      "name": "用户就职于",
+      "source_object_type_id": "person",
+      "target_object_type_id": "organisation",
+      "type": "data_view",
+      "mapping_rules": {
+        "target_mapping_rules": [
+          {
+            "source_property": {
+              "name": "o_organisationid"
+            },
+            "target_property": {
+              "name": "o_organisationid"
+            }
+          }
+        ],
+        "backing_data_source": {
+          "type": "data_view",
+          "id": "1998592949625311234"
+        },
+        "source_mapping_rules": [
+          {
+            "source_property": {
+              "name": "p_personid"
+            },
+            "target_property": {
+              "name": "p_personid"
+            }
+          }
+        ]
+      },
+      "tags": [
+        "ldbc",
+        "自动化"
+      ],
+      "comment": "",
+      "icon": "",
+      "color": "",
+      "detail": "",
+      "kn_id": "auto_test_041",
+      "branch": "main",
+      "source_object_type": {
+        "id": "person",
+        "name": "用户",
+        "branch": "",
+        "icon": "icon-dip-bentiyinqing",
+        "color": "#FF7A45"
+      },
+      "target_object_type": {
+        "id": "organisation",
+        "name": "组织",
+        "branch": "",
+        "icon": "icon-dip-close",
+        "color": "#A0D911"
+      },
+      "creator": {
+        "id": "f6c6e398-ce82-11f0-888f-3ac1298ec09f",
+        "type": "user",
+        "name": ""
+      },
+      "create_time": 1765444582778,
+      "updater": {
+        "id": "f6c6e398-ce82-11f0-888f-3ac1298ec09f",
+        "type": "user",
+        "name": ""
+      },
+      "update_time": 1765444582778,
+      "module_type": "relation_type"
+    },
+    {
+      "id": "place_ispartof_place",
+      "name": "地点从属关系",
+      "source_object_type_id": "place",
+      "target_object_type_id": "place",
+      "type": "data_view",
+      "mapping_rules": {
+        "backing_data_source": {
+          "type": "data_view",
+          "id": "1998592949642088449"
+        },
+        "source_mapping_rules": [
+          {
+            "source_property": {
+              "name": "p_placeid"
+            },
+            "target_property": {
+              "name": "p_placeid1"
+            }
+          }
+        ],
+        "target_mapping_rules": [
+          {
+            "target_property": {
+              "name": "p_placeid"
+            },
+            "source_property": {
+              "name": "p_placeid2"
+            }
+          }
+        ]
+      },
+      "tags": [
+        "ldbc",
+        "自动化"
+      ],
+      "comment": "",
+      "icon": "",
+      "color": "",
+      "detail": "",
+      "kn_id": "auto_test_041",
+      "branch": "main",
+      "source_object_type": {
+        "id": "place",
+        "name": "地点",
+        "branch": "",
+        "icon": "icon-dip-history",
+        "color": "#0E5FC5"
+      },
+      "target_object_type": {
+        "id": "place",
+        "name": "地点",
+        "branch": "",
+        "icon": "icon-dip-history",
+        "color": "#0E5FC5"
+      },
+      "creator": {
+        "id": "f6c6e398-ce82-11f0-888f-3ac1298ec09f",
+        "type": "user",
+        "name": ""
+      },
+      "create_time": 1765444582955,
+      "updater": {
+        "id": "f6c6e398-ce82-11f0-888f-3ac1298ec09f",
+        "type": "user",
+        "name": ""
+      },
+      "update_time": 1765444582955,
+      "module_type": "relation_type"
+    },
+    {
+      "id": "post_hascreator_person",
+      "name": "帖子创建者",
+      "source_object_type_id": "post",
+      "target_object_type_id": "person",
+      "type": "data_view",
+      "mapping_rules": {
+        "backing_data_source": {
+          "type": "data_view",
+          "id": "1998592949658865666"
+        },
+        "source_mapping_rules": [
+          {
+            "source_property": {
+              "name": "ps_postid"
+            },
+            "target_property": {
+              "name": "ps_postid"
+            }
+          }
+        ],
+        "target_mapping_rules": [
+          {
+            "source_property": {
+              "name": "p_personid"
+            },
+            "target_property": {
+              "name": "p_personid"
+            }
+          }
+        ]
+      },
+      "tags": [
+        "ldbc",
+        "自动化"
+      ],
+      "comment": "",
+      "icon": "",
+      "color": "",
+      "detail": "",
+      "kn_id": "auto_test_041",
+      "branch": "main",
+      "source_object_type": {
+        "id": "post",
+        "name": "帖子",
+        "branch": "",
+        "icon": "icon-dip-Department",
+        "color": "#FF4D4F"
+      },
+      "target_object_type": {
+        "id": "person",
+        "name": "用户",
+        "branch": "",
+        "icon": "icon-dip-bentiyinqing",
+        "color": "#FF7A45"
+      },
+      "creator": {
+        "id": "f6c6e398-ce82-11f0-888f-3ac1298ec09f",
+        "type": "user",
+        "name": ""
+      },
+      "create_time": 1765444583139,
+      "updater": {
+        "id": "f6c6e398-ce82-11f0-888f-3ac1298ec09f",
+        "type": "user",
+        "name": ""
+      },
+      "update_time": 1765444583139,
+      "module_type": "relation_type"
+    },
+    {
+      "id": "post_hastag_tag",
+      "name": "帖子关联标签",
+      "source_object_type_id": "post",
+      "target_object_type_id": "tag",
+      "type": "data_view",
+      "mapping_rules": {
+        "target_mapping_rules": [
+          {
+            "source_property": {
+              "name": "t_tagid"
+            },
+            "target_property": {
+              "name": "t_tagid"
+            }
+          }
+        ],
+        "backing_data_source": {
+          "type": "data_view",
+          "id": "1998592949663059969"
+        },
+        "source_mapping_rules": [
+          {
+            "target_property": {
+              "name": "ps_postid"
+            },
+            "source_property": {
+              "name": "ps_postid"
+            }
+          }
+        ]
+      },
+      "tags": [
+        "ldbc",
+        "自动化"
+      ],
+      "comment": "",
+      "icon": "",
+      "color": "",
+      "detail": "",
+      "kn_id": "auto_test_041",
+      "branch": "main",
+      "source_object_type": {
+        "id": "post",
+        "name": "帖子",
+        "branch": "",
+        "icon": "icon-dip-Department",
+        "color": "#FF4D4F"
+      },
+      "target_object_type": {
+        "id": "tag",
+        "name": "标签",
+        "branch": "",
+        "icon": "icon-dip-chat2",
+        "color": "#0E5FC5"
+      },
+      "creator": {
+        "id": "f6c6e398-ce82-11f0-888f-3ac1298ec09f",
+        "type": "user",
+        "name": ""
+      },
+      "create_time": 1765444583324,
+      "updater": {
+        "id": "f6c6e398-ce82-11f0-888f-3ac1298ec09f",
+        "type": "user",
+        "name": ""
+      },
+      "update_time": 1765444583324,
+      "module_type": "relation_type"
+    },
+    {
+      "id": "post_islocatedin_place",
+      "name": "帖子发布地点",
+      "source_object_type_id": "post",
+      "target_object_type_id": "place",
+      "type": "data_view",
+      "mapping_rules": {
+        "target_mapping_rules": [
+          {
+            "source_property": {
+              "name": "p_placeid"
+            },
+            "target_property": {
+              "name": "p_placeid"
+            }
+          }
+        ],
+        "backing_data_source": {
+          "id": "1998592949671448578",
+          "type": "data_view"
+        },
+        "source_mapping_rules": [
+          {
+            "source_property": {
+              "name": "ps_postid"
+            },
+            "target_property": {
+              "name": "ps_postid"
+            }
+          }
+        ]
+      },
+      "tags": [
+        "ldbc",
+        "自动化"
+      ],
+      "comment": "",
+      "icon": "",
+      "color": "",
+      "detail": "",
+      "kn_id": "auto_test_041",
+      "branch": "main",
+      "source_object_type": {
+        "id": "post",
+        "name": "帖子",
+        "branch": "",
+        "icon": "icon-dip-Department",
+        "color": "#FF4D4F"
+      },
+      "target_object_type": {
+        "id": "place",
+        "name": "地点",
+        "branch": "",
+        "icon": "icon-dip-history",
+        "color": "#0E5FC5"
+      },
+      "creator": {
+        "id": "f6c6e398-ce82-11f0-888f-3ac1298ec09f",
+        "type": "user",
+        "name": ""
+      },
+      "create_time": 1765444583500,
+      "updater": {
+        "id": "f6c6e398-ce82-11f0-888f-3ac1298ec09f",
+        "type": "user",
+        "name": ""
+      },
+      "update_time": 1765444583500,
+      "module_type": "relation_type"
+    },
+    {
+      "id": "tag_hastype_tagclass",
+      "name": "标签归属分类",
+      "source_object_type_id": "tag",
+      "target_object_type_id": "tagclass",
+      "type": "data_view",
+      "mapping_rules": {
+        "backing_data_source": {
+          "type": "data_view",
+          "id": "1998592949692420098"
+        },
+        "source_mapping_rules": [
+          {
+            "target_property": {
+              "name": "t_tagid"
+            },
+            "source_property": {
+              "name": "t_tagid"
+            }
+          }
+        ],
+        "target_mapping_rules": [
+          {
+            "source_property": {
+              "name": "tc_tagclassid"
+            },
+            "target_property": {
+              "name": "tc_tagclassid"
+            }
+          }
+        ]
+      },
+      "tags": [
+        "ldbc",
+        "自动化"
+      ],
+      "comment": "",
+      "icon": "",
+      "color": "",
+      "detail": "",
+      "kn_id": "auto_test_041",
+      "branch": "main",
+      "source_object_type": {
+        "id": "tag",
+        "name": "标签",
+        "branch": "",
+        "icon": "icon-dip-chat2",
+        "color": "#0E5FC5"
+      },
+      "target_object_type": {
+        "id": "tagclass",
+        "name": "标签分类",
+        "branch": "",
+        "icon": "icon-dip-zhinengtigongchang",
+        "color": "#FF7A45"
+      },
+      "creator": {
+        "id": "f6c6e398-ce82-11f0-888f-3ac1298ec09f",
+        "type": "user",
+        "name": ""
+      },
+      "create_time": 1765444583664,
+      "updater": {
+        "id": "f6c6e398-ce82-11f0-888f-3ac1298ec09f",
+        "type": "user",
+        "name": ""
+      },
+      "update_time": 1765444583664,
+      "module_type": "relation_type"
+    },
+    {
+      "id": "tagclass_issubclassof_tagclass",
+      "name": "分类从属关系",
+      "source_object_type_id": "tagclass",
+      "target_object_type_id": "tagclass",
+      "type": "data_view",
+      "mapping_rules": {
+        "source_mapping_rules": [
+          {
+            "target_property": {
+              "name": "tc_tagclassid1",
+              "display_name": "tc_tagclassid1"
+            },
+            "source_property": {
+              "name": "tc_tagclassid",
+              "display_name": "tc_tagclassid"
+            }
+          }
+        ],
+        "target_mapping_rules": [
+          {
+            "source_property": {
+              "name": "tc_tagclassid2",
+              "display_name": "tc_tagclassid2"
+            },
+            "target_property": {
+              "display_name": "tc_tagclassid",
+              "name": "tc_tagclassid"
+            }
+          }
+        ],
+        "backing_data_source": {
+          "name": "分类从属关系",
+          "type": "data_view",
+          "id": "1998592949663059970"
+        }
+      },
+      "tags": [
+        "ldbc",
+        "自动化"
+      ],
+      "comment": "",
+      "icon": "",
+      "color": "",
+      "detail": "",
+      "kn_id": "auto_test_041",
+      "branch": "main",
+      "source_object_type": {
+        "id": "tagclass",
+        "name": "标签分类",
+        "branch": "",
+        "icon": "icon-dip-zhinengtigongchang",
+        "color": "#FF7A45"
+      },
+      "target_object_type": {
+        "id": "tagclass",
+        "name": "标签分类",
+        "branch": "",
+        "icon": "icon-dip-zhinengtigongchang",
+        "color": "#FF7A45"
+      },
+      "creator": {
+        "id": "f6c6e398-ce82-11f0-888f-3ac1298ec09f",
+        "type": "user",
+        "name": ""
+      },
+      "create_time": 1765444583846,
+      "updater": {
+        "id": "80fb97b8-ce86-11f0-8a95-3ac1298ec09f",
+        "type": "user",
+        "name": ""
+      },
+      "update_time": 1765523066721,
+      "module_type": "relation_type"
+    }
+  ],
+  "creator": {
+    "id": "f6c6e398-ce82-11f0-888f-3ac1298ec09f",
+    "type": "user",
+    "name": "kww"
+  },
+  "create_time": 1765442360227,
+  "updater": {
+    "id": "f6c6e398-ce82-11f0-888f-3ac1298ec09f",
+    "type": "user",
+    "name": "kww"
+  },
+  "update_time": 1765442360227,
+  "module_type": "knowledge_network",
+  "operations": [
+    "create",
+    "delete",
+    "data_query",
+    "export",
+    "import",
+    "authorize",
+    "task_manage",
+    "view_detail",
+    "modify"
+  ]
+}

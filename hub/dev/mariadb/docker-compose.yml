@@ -1,0 +1,15 @@
+services:
+  mariadb:
+    image: 'mariadb:latest'
+    container_name: mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      TZ: Asia/Shanghai
+    ports:
+      - "3306:3306"
+    volumes:
+      - mariadb_data:/var/lib/mysql
+      - ./mariadb.cnf:/etc/mysql/conf.d/mariadb.cnf
+
+volumes:
+  mariadb_data:

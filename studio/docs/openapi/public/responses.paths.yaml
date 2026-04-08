@@ -1,0 +1,154 @@
+openapi: 3.1.0
+
+info:
+  title: DIP Studio 对话响应接口
+  version: 0.1.0
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+
+security:
+  - BearerAuth: []
+
+servers:
+  - url: /api/dip-studio/v1
+
+paths:
+  /chat/session:
+    post:
+      operationId: createSessionKey
+      summary: 创建新会话键
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './responses.schemas.yaml#/components/schemas/CreateSessionKeyRequest'
+      responses:
+        "200":
+          description: 新创建的会话键
+          content:
+            application/json:
+              schema:
+                $ref: './responses.schemas.yaml#/components/schemas/CreateSessionKeyResponse'
+        "401":
+          $ref: '../common.schemas.yaml#/errors/Unauthorized'
+        "403":
+          $ref: '../common.schemas.yaml#/errors/Forbidden'
+        "500":
+          $ref: '../common.schemas.yaml#/errors/InternalServerError'
+
+  /chat/messages:
+    get:
+      operationId: getChatMessages
+      summary: 获取 Chat 会话历史消息
+      parameters:
+        - name: x-openclaw-session-key
+          in: header
+          required: true
+          description: 调用前必须先通过 `POST /chat/session` 获取
+          schema:
+            type: string
+        - name: limit
+          in: query
+          required: false
+          description: 返回消息数量上限
+          schema:
+            type: integer
+            minimum: 0
+      responses:
+        "200":
+          description: 指定 Chat 会话的历史消息
+          content:
+            application/json:
+              schema:
+                $ref: './sessions.schemas.yaml#/components/schemas/ChatMessagesResponse'
+        "400":
+          $ref: '../common.schemas.yaml#/errors/InvalidParameter'
+        "401":
+          $ref: '../common.schemas.yaml#/errors/Unauthorized'
+        "403":
+          $ref: '../common.schemas.yaml#/errors/Forbidden'
+        "404":
+          $ref: '../common.schemas.yaml#/errors/NotFound'
+        "409":
+          $ref: '../common.schemas.yaml#/errors/Conflict'
+        "500":
+          $ref: '../common.schemas.yaml#/errors/InternalServerError'
+
+  /chat/agent:
+    post:
+      operationId: createAgentResponse
+      summary: 创建数字员工消息流（含工具调用）
+      parameters:
+        - name: x-openclaw-session-key
+          in: header
+          required: true
+          description: 调用前必须先通过 `POST /chat/session` 获取，且键中需包含 `agent:<agentId>` 前缀
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './responses.schemas.yaml#/components/schemas/ChatAgentRequest'
+      responses:
+        "200":
+          description: OpenResponse 风格的消息事件流
+          content:
+            text/event-stream:
+              schema:
+                $ref: './responses.schemas.yaml#/components/schemas/DigitalHumanResponseStream'
+        "400":
+          $ref: '../common.schemas.yaml#/errors/InvalidParameter'
+        "401":
+          $ref: '../common.schemas.yaml#/errors/Unauthorized'
+        "403":
+          $ref: '../common.schemas.yaml#/errors/Forbidden'
+        "404":
+          $ref: '../common.schemas.yaml#/errors/NotFound'
+        "409":
+          $ref: '../common.schemas.yaml#/errors/Conflict'
+        "502":
+          $ref: '../common.schemas.yaml#/errors/BadGateway'
+        "500":
+          $ref: '../common.schemas.yaml#/errors/InternalServerError'
+
+  /chat/upload:
+    post:
+      operationId: uploadChatAttachment
+      summary: 上传 Chat 附件到工作区临时目录
+      parameters:
+        - name: x-openclaw-session-key
+          in: header
+          required: true
+          description: 调用前必须先通过 `POST /chat/session` 获取，且键中需包含 `agent:<agentId>` 前缀
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: './responses.schemas.yaml#/components/schemas/ChatUploadRequest'
+      responses:
+        "200":
+          description: 上传成功并返回工作区相对路径
+          content:
+            application/json:
+              schema:
+                $ref: './responses.schemas.yaml#/components/schemas/ChatUploadResponse'
+        "400":
+          $ref: '../common.schemas.yaml#/errors/InvalidParameter'
+        "401":
+          $ref: '../common.schemas.yaml#/errors/Unauthorized'
+        "403":
+          $ref: '../common.schemas.yaml#/errors/Forbidden'
+        "502":
+          $ref: '../common.schemas.yaml#/errors/BadGateway'
+        "500":
+          $ref: '../common.schemas.yaml#/errors/InternalServerError'

@@ -1,0 +1,33 @@
+# Core dependencies
+fastapi>=0.115.0  # Support starlette>=0.40.0
+starlette>=0.40.0
+uvicorn[standard]>=0.24.0
+pydantic>=2.5.0
+pydantic-settings>=2.1.0
+python-dotenv>=1.0.0
+
+# Database dependencies (proton-rds-sdk-py)
+RDSDriver @ git+https://github.com/kweaver-ai/proton-rds-sdk-py.git@release/2.0.0
+
+# HTTP client
+aiohttp>=3.9.0
+httpx>=0.27.0
+
+# Redis
+redis>=5.0.0
+
+# YAML parsing
+pyyaml>=6.0.0
+
+# Version parsing
+packaging>=23.0
+
+# Development dependencies
+pytest>=7.4.0
+pytest-cov>=4.1.0
+pytest-asyncio>=0.21.0
+black>=23.0.0
+ruff>=0.1.0
+mypy>=1.5.0
+
+

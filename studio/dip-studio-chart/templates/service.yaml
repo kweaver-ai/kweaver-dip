@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: {{ .Values.namespace }}
+  name: {{ .Values.service.name }}
+  labels:
+    {{- toYaml .Values.labels.service | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  selector:
+    {{- toYaml .Values.labels.pod | nindent 4 }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.targetPort }}
+      protocol: TCP
+      name: http

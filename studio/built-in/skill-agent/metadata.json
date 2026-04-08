@@ -1,0 +1,7 @@
+{
+    "type": "agent",
+    "id": "__internal_skill_agent__",
+    "name": "SkillAgent",
+    "description": "SkillAgent 是一个专门用户设计和创建技能（Skill）的智能体。",
+    "is_builtin": true
+}

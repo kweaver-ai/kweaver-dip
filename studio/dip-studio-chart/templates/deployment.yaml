@@ -1,0 +1,115 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.name }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    {{- toYaml .Values.labels.deployment | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- toYaml .Values.labels.pod | nindent 6 }}
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+      labels:
+        {{- toYaml .Values.labels.pod | nindent 8 }}
+    spec:
+      volumes:
+        - name: openclaw-data
+          hostPath:
+            path: {{ .Values.studio.openclaw.hostPath }}
+            type: DirectoryOrCreate
+      containers:
+        - name: dip-studio
+          image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.studio.port }}
+              name: studio-http
+              protocol: TCP
+          env:
+            - name: NODE_ENV
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Chart.Name }}-config
+                  key: NODE_ENV
+            - name: PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Chart.Name }}-config
+                  key: PORT
+            - name: OAUTH_MOCK_USER_ID
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Chart.Name }}-config
+                  key: OAUTH_MOCK_USER_ID
+            - name: OPENCLAW_GATEWAY_PROTOCOL
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Chart.Name }}-config
+                  key: OPENCLAW_GATEWAY_PROTOCOL
+            - name: OPENCLAW_GATEWAY_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Chart.Name }}-config
+                  key: OPENCLAW_GATEWAY_HOST
+            - name: OPENCLAW_GATEWAY_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Chart.Name }}-config
+                  key: OPENCLAW_GATEWAY_PORT
+            - name: OPENCLAW_GATEWAY_TIMEOUT_MS
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Chart.Name }}-config
+                  key: OPENCLAW_GATEWAY_TIMEOUT_MS
+            - name: OPENCLAW_WORKSPACE_DIR
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Chart.Name }}-config
+                  key: OPENCLAW_WORKSPACE_DIR
+            - name: OPENCLAW_ROOT_DIR
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Chart.Name }}-config
+                  key: OPENCLAW_ROOT_DIR
+            - name: OPENCLAW_CONFIG_PATH
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Chart.Name }}-config
+                  key: OPENCLAW_CONFIG_PATH
+            - name: KWEAVER_BASE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Chart.Name }}-config
+                  key: KWEAVER_BASE_URL
+            - name: KWEAVER_HYDRA_ADMIN_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Chart.Name }}-config
+                  key: KWEAVER_HYDRA_ADMIN_URL
+            - name: OPENCLAW_GATEWAY_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Chart.Name }}-secret
+                  key: OPENCLAW_GATEWAY_TOKEN
+          resources:
+            {{- toYaml .Values.resources.studio | nindent 12 }}
+          volumeMounts:
+            - name: openclaw-data
+              mountPath: {{ .Values.studio.mountPath }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

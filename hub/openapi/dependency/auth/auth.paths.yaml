@@ -1,0 +1,701 @@
+paths:
+  resource-type:
+    parameters:
+      - name: id
+        description: 资源类型唯一标识
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: 获取资源类型信息
+      description: 此接口支持用户账户调用。
+      tags:
+        - 资源类型管理
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: './auth.schemas.yaml#/components/schemas/GetResourceTypeInfo'
+          description: 接口调用成功
+        '400':
+          $ref: './auth.schemas.yaml#/components/responses/RespStd400'
+        '500':
+          $ref: './auth.schemas.yaml#/components/responses/RespStd500'
+    put:
+      summary: 设置资源类型
+      description: 此接口支持用户账户调用。
+      tags:
+        - 资源类型管理
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './auth.schemas.yaml#/components/schemas/ResourceTypeInfo'
+      responses:
+        '204':
+          description: 接口调用成功
+        '400':
+          $ref: './auth.schemas.yaml#/components/responses/RespStd400'
+        '500':
+          $ref: './auth.schemas.yaml#/components/responses/RespStd500'
+    delete:
+      summary: 删除资源类型
+      description: 此接口支持用户账户调用。
+      tags:
+        - 资源类型管理
+      responses:
+        '204':
+          description: 删除成功且无返回
+        '400':
+          $ref: './auth.schemas.yaml#/components/responses/RespStd400'
+        '500':
+          $ref: './auth.schemas.yaml#/components/responses/RespStd500'
+
+  resource-types:
+    get:
+      summary: 列举资源类型
+      description: 此接口支持用户账户调用。
+      tags:
+        - 资源类型管理
+      parameters:
+        - name: offset
+          description: 获取数据起始下标
+          in: query
+          schema:
+            format: int64
+            default: 0
+            minimum: 0
+            type: integer
+        - name: limit
+          description: 获取数据量
+          in: query
+          schema:
+            format: int64
+            default: 20
+            maximum: 1000
+            minimum: 1
+            type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: './auth.schemas.yaml#/components/schemas/ListResourceTypeInfo'
+          description: 接口调用成功
+        '400':
+          $ref: './auth.schemas.yaml#/components/responses/RespStd400'
+        '500':
+          $ref: './auth.schemas.yaml#/components/responses/RespStd500'
+
+  resource-all-operation:
+    get:
+      summary: 获取资源所有操作
+      description: 此接口支持用户账户调用。
+      tags:
+        - 资源类型管理
+      parameters:
+        - name: resource_type
+          description: 资源类型
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: scope
+          description: 操作范围（type-资源类型，instance-资源实例）
+          in: query
+          required: true
+          schema:
+            type: string
+            enum:
+              - type
+              - instance
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: './auth.schemas.yaml#/components/schemas/ResourceTypeOperationArray'
+          description: 接口调用成功
+        '400':
+          $ref: './auth.schemas.yaml#/components/responses/RespStd400'
+        '500':
+          $ref: './auth.schemas.yaml#/components/responses/RespStd500'
+
+  roles:
+    get:
+      summary: 列举角色
+      description: 此接口支持用户账户调用。
+      tags:
+        - 角色管理
+      parameters:
+        - name: offset
+          description: 获取数据起始下标
+          in: query
+          schema:
+            format: int64
+            default: 0
+            minimum: 0
+            type: integer
+        - name: limit
+          description: 获取数据量
+          in: query
+          schema:
+            format: int64
+            default: 20
+            maximum: 1000
+            minimum: 1
+            type: integer
+        - name: keyword
+          description: 搜索内容，即角色名
+          in: query
+          schema:
+            type: string
+        - name: source
+          description: 角色来源（system-系统，business-业务内置，user-用户自定义）
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - system
+                - business
+                - user
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: './auth.schemas.yaml#/components/schemas/Roles'
+          description: 接口调用成功
+        '400':
+          $ref: './auth.schemas.yaml#/components/responses/RespStd400'
+        '500':
+          $ref: './auth.schemas.yaml#/components/responses/RespStd500'
+    post:
+      summary: 创建角色
+      description: 此接口支持用户账户调用。
+      tags:
+        - 角色管理
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './auth.schemas.yaml#/components/schemas/CreateRoleInfo'
+      responses:
+        '201':
+          headers:
+            Location:
+              schema:
+                format: uri
+                type: string
+              description: /api/authorization/v1/roles/{id}
+          content:
+            application/json:
+              schema:
+                $ref: './auth.schemas.yaml#/components/schemas/RoleIDInfo'
+          description: 创建成功
+        '400':
+          $ref: './auth.schemas.yaml#/components/responses/RespStd400'
+        '500':
+          $ref: './auth.schemas.yaml#/components/responses/RespStd500'
+
+  roles-id:
+    parameters:
+      - name: id
+        description: 角色唯一标识
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: 获取指定角色信息
+      description: 此接口支持用户账户调用。
+      tags:
+        - 角色管理
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: './auth.schemas.yaml#/components/schemas/RoleWithResourceInfo'
+          description: 接口调用成功
+        '400':
+          $ref: './auth.schemas.yaml#/components/responses/RespStd400'
+        '500':
+          $ref: './auth.schemas.yaml#/components/responses/RespStd500'
+    delete:
+      summary: 删除角色
+      description: 此接口支持用户账户调用。
+      tags:
+        - 角色管理
+      responses:
+        '204':
+          description: 删除成功且无返回
+        '400':
+          $ref: './auth.schemas.yaml#/components/responses/RespStd400'
+        '500':
+          $ref: './auth.schemas.yaml#/components/responses/RespStd500'
+
+  roles-id-fields:
+    parameters:
+      - name: id
+        description: 角色唯一标识
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: fields
+        description: 修改字段名（name,description,resource_type_scope）
+        in: path
+        required: true
+        schema:
+          type: array
+          items:
+            type: string
+    put:
+      summary: 修改角色
+      description: 此接口支持用户账户调用。
+      tags:
+        - 角色管理
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './auth.schemas.yaml#/components/schemas/RoleInfoNoRequired'
+      responses:
+        '204':
+          description: 修改成功且无返回
+        '400':
+          $ref: './auth.schemas.yaml#/components/responses/RespStd400'
+        '500':
+          $ref: './auth.schemas.yaml#/components/responses/RespStd500'
+
+  resource-type-roles:
+    get:
+      summary: 获取指定资源类型的角色列表
+      description: 此接口支持用户账户调用。该接口只返回用户自定义角色。
+      tags:
+        - 角色查询
+      parameters:
+        - name: offset
+          description: 获取数据起始下标
+          in: query
+          schema:
+            format: int64
+            default: 0
+            minimum: 0
+            type: integer
+        - name: limit
+          description: 获取数据量
+          in: query
+          schema:
+            format: int64
+            default: 20
+            maximum: 1000
+            minimum: 1
+            type: integer
+        - name: resource_type_id
+          description: 资源类型唯一标识
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: keyword
+          description: 搜索内容，即角色名
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: './auth.schemas.yaml#/components/schemas/ResourceTypeRoles'
+          description: 接口调用成功
+        '400':
+          $ref: './auth.schemas.yaml#/components/responses/RespStd400'
+        '500':
+          $ref: './auth.schemas.yaml#/components/responses/RespStd500'
+
+  role-members:
+    parameters:
+      - name: id
+        description: 角色唯一标识
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: 列举角色成员
+      description: 此接口支持用户账户调用。
+      tags:
+        - 角色成员管理
+      parameters:
+        - name: offset
+          description: 获取数据起始下标
+          in: query
+          schema:
+            format: int64
+            default: 0
+            minimum: 0
+            type: integer
+        - name: limit
+          description: 获取数据量
+          in: query
+          schema:
+            format: int64
+            default: 20
+            maximum: 1000
+            minimum: 1
+            type: integer
+        - name: keyword
+          description: 搜索内容，即成员名称
+          in: query
+          schema:
+            type: string
+        - name: type
+          description: 成员类型
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - user
+                - department
+                - group
+                - app
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: './auth.schemas.yaml#/components/schemas/MemberInfos'
+          description: 调用接口成功
+        '400':
+          $ref: './auth.schemas.yaml#/components/responses/RespStd400'
+        '500':
+          $ref: './auth.schemas.yaml#/components/responses/RespStd500'
+    post:
+      summary: 添加/删除角色成员
+      description: 此接口支持用户账户调用。
+      tags:
+        - 角色成员管理
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './auth.schemas.yaml#/components/schemas/MemberRelations'
+      responses:
+        '204':
+          description: 操作成功且无返回
+        '400':
+          $ref: './auth.schemas.yaml#/components/responses/RespStd400'
+        '500':
+          $ref: './auth.schemas.yaml#/components/responses/RespStd500'
+
+  policy:
+    get:
+      summary: 列举策略
+      description: 此接口支持用户账户调用。
+      tags:
+        - 策略配置
+      parameters:
+        - name: offset
+          description: 获取数据起始下标
+          in: query
+          schema:
+            format: int64
+            default: 0
+            minimum: 0
+            type: integer
+        - name: limit
+          description: 获取数据量
+          in: query
+          schema:
+            format: int64
+            default: 20
+            maximum: 1000
+            minimum: 1
+            type: integer
+        - name: resource_id
+          description: 资源唯一标识
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: resource_type
+          description: 资源类型
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: './auth.schemas.yaml#/components/schemas/ListPolicyInfo'
+          description: 接口调用成功
+        '400':
+          $ref: './auth.schemas.yaml#/components/responses/RespStd400'
+        '500':
+          $ref: './auth.schemas.yaml#/components/responses/RespStd500'
+    post:
+      summary: 新建策略
+      description: 此接口支持用户账户调用。
+      tags:
+        - 策略配置
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './auth.schemas.yaml#/components/schemas/CreatePolicyInfos'
+      responses:
+        '201':
+          headers:
+            Location:
+              schema:
+                format: uri
+                type: string
+              description: /api/authorization/v1/policy/{ids}
+          content:
+            application/json:
+              schema:
+                $ref: './auth.schemas.yaml#/components/schemas/PolicyIDInfos'
+          description: 创建成功
+        '400':
+          $ref: './auth.schemas.yaml#/components/responses/RespStd400'
+        '500':
+          $ref: './auth.schemas.yaml#/components/responses/RespStd500'
+
+  policy-ids:
+    parameters:
+      - name: ids
+        description: 策略id，多个用逗号分隔
+        in: path
+        required: true
+        schema:
+          type: string
+    put:
+      summary: 更新策略
+      description: 此接口支持用户账户调用。
+      tags:
+        - 策略配置
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './auth.schemas.yaml#/components/schemas/UpdatePolicyInfos'
+      responses:
+        '204':
+          description: 修改成功且无返回
+        '400':
+          $ref: './auth.schemas.yaml#/components/responses/RespStd400'
+        '500':
+          $ref: './auth.schemas.yaml#/components/responses/RespStd500'
+    delete:
+      summary: 删除策略
+      description: 此接口支持用户账户调用。
+      tags:
+        - 策略配置
+      responses:
+        '204':
+          description: 修改成功且无返回
+        '400':
+          $ref: './auth.schemas.yaml#/components/responses/RespStd400'
+        '500':
+          $ref: './auth.schemas.yaml#/components/responses/RespStd500'
+
+  resource-policy:
+    get:
+      summary: 获取资源实例策略配置
+      description: 此接口支持用户账户调用。
+      tags:
+        - 策略配置
+      parameters:
+        - name: offset
+          description: 获取数据起始下标
+          in: query
+          schema:
+            format: int64
+            default: 0
+            minimum: 0
+            type: integer
+        - name: limit
+          description: 获取数据量
+          in: query
+          schema:
+            format: int64
+            default: 20
+            maximum: 1000
+            minimum: 1
+            type: integer
+        - name: resource_id
+          description: 资源唯一标识
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: resource_type
+          description: 资源类型
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: './auth.schemas.yaml#/components/schemas/ListResourcePolicyInfo'
+          description: 接口调用成功
+        '400':
+          $ref: './auth.schemas.yaml#/components/responses/RespStd400'
+        '500':
+          $ref: './auth.schemas.yaml#/components/responses/RespStd500'
+
+  accessor-policy:
+    get:
+      summary: 获取访问者策略配置
+      description: 此接口支持用户账户调用。
+      tags:
+        - 策略配置
+      parameters:
+        - name: accessor_id
+          description: 访问者唯一标识
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: accessor_type
+          description: 访问者类型
+          in: query
+          required: true
+          schema:
+            type: string
+            enum:
+              - user
+              - department
+              - group
+              - role
+              - app
+        - name: resource_type
+          description: 资源类型
+          in: query
+          schema:
+            type: string
+        - name: resource_id
+          description: 资源实例唯一标识
+          in: query
+          schema:
+            type: string
+        - name: offset
+          description: 获取数据起始下标
+          in: query
+          schema:
+            format: int64
+            default: 0
+            minimum: 0
+            type: integer
+        - name: limit
+          description: 获取数据量
+          in: query
+          schema:
+            format: int64
+            default: 20
+            maximum: 1000
+            minimum: -1
+            type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: './auth.schemas.yaml#/components/schemas/ListAccessorPolicyInfo'
+          description: 接口调用成功
+        '400':
+          $ref: './auth.schemas.yaml#/components/responses/RespStd400'
+        '500':
+          $ref: './auth.schemas.yaml#/components/responses/RespStd500'
+
+  operation-check:
+    post:
+      summary: 单个决策
+      description: 此接口支持用户账户和应用账户调用。
+      tags:
+        - 策略决策
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './auth.schemas.yaml#/components/schemas/CheckReq'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: './auth.schemas.yaml#/components/schemas/CheckResult'
+          description: 接口调用成功
+        '400':
+          $ref: './auth.schemas.yaml#/components/responses/RespStd400'
+        '500':
+          $ref: './auth.schemas.yaml#/components/responses/RespStd500'
+
+  resource-operation:
+    post:
+      summary: 获取资源操作
+      description: 此接口支持用户账户和应用账户调用。
+      tags:
+        - 策略决策
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './auth.schemas.yaml#/components/schemas/ResourceOperationReq'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: './auth.schemas.yaml#/components/schemas/ResourceOperationResult'
+          description: 接口调用成功
+        '400':
+          $ref: './auth.schemas.yaml#/components/responses/RespStd400'
+        '500':
+          $ref: './auth.schemas.yaml#/components/responses/RespStd500'
+
+  resource-type-operation:
+    post:
+      summary: 获取资源类型操作
+      description: 此接口支持用户账户和应用账户调用。获取在多个资源类型上的可执行操作。
+      tags:
+        - 策略决策
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './auth.schemas.yaml#/components/schemas/ResourceTypeOperationReq'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: './auth.schemas.yaml#/components/schemas/ResourceTypeOperationResult'
+          description: 接口调用成功
+        '400':
+          $ref: './auth.schemas.yaml#/components/responses/RespStd400'
+        '500':
+          $ref: './auth.schemas.yaml#/components/responses/RespStd500'

@@ -1,0 +1,146 @@
+components:
+  schemas:
+    DigitalHumanSkill:
+      summary: 技能启用状态
+      type: object
+      properties:
+        name:
+          type: string
+          title: 技能 ID（同时作为展示名称，必须与 SKILL.md 中的 name 一致）
+        description:
+          type: string
+          title: 技能描述
+        built_in:
+          type: boolean
+          title: 是否为 DIP 数字员工内置技能
+          description: |
+            为 `true` 表示属于内置 trio：`archive-protocol`、`schedule-plan`、`kweaver-core`。
+        type:
+          type: string
+          title: 技能来源标识
+          description: |
+            原样透传 OpenClaw `skills.status` 响应中的 `source` 字段，例如 `openclaw-bundled`、
+            `openclaw-managed`、`openclaw-extra`、`agents-skills-personal` 等。未知值会按字符串返回。
+      required:
+        - name
+        - built_in
+        - type
+
+    DigitalHumanAgentSkill:
+      summary: 数字员工技能状态
+      type: object
+      properties:
+        name:
+          type: string
+          title: 技能 ID（与全局列表一致）
+        description:
+          type: string
+          title: 技能描述
+        built_in:
+          type: boolean
+          title: 是否为 DIP 数字员工内置技能
+          description: |
+            为 `true` 表示属于内置 trio：`archive-protocol`、`schedule-plan`、`kweaver-core`。
+        type:
+          type: string
+          title: 技能来源标识
+          description: |
+            同 `DigitalHumanSkill.type`，值来自 OpenClaw `skills.status` 的 `source` 字段。
+      required:
+        - name
+        - built_in
+        - type
+
+    DigitalHumanSkillList:
+      summary: 技能列表
+      type: array
+      items:
+        $ref: '#/components/schemas/DigitalHumanSkill'
+
+    DigitalHumanAgentSkillList:
+      summary: 数字员工技能列表
+      description: |
+        全局可用技能中该 agent 已启用的条目；`built_in` 标识是否为 DIP 内置技能。
+      type: array
+      items:
+        $ref: '#/components/schemas/DigitalHumanAgentSkill'
+
+    InstallSkillResult:
+      summary: 安装 .skill 包后的响应
+      type: object
+      properties:
+        name:
+          type: string
+          title: 技能 ID（来自 SKILL.md 或目录名）
+        skillPath:
+          type: string
+          title: 网关上落盘的绝对路径
+      required:
+        - name
+        - skillPath
+      additionalProperties: false
+
+    UninstallSkillResult:
+      summary: 卸载技能后的响应
+      type: object
+      properties:
+        name:
+          type: string
+          title: 已卸载的技能 ID
+      required:
+        - name
+      additionalProperties: false
+
+    SkillTreeEntry:
+      type: object
+      properties:
+        name:
+          type: string
+        path:
+          type: string
+        type:
+          type: string
+          enum: [file, directory]
+        children:
+          type: array
+          items:
+            $ref: '#/components/schemas/SkillTreeEntry'
+      required:
+        - name
+        - path
+        - type
+
+    SkillTreeResult:
+      type: object
+      properties:
+        name:
+          type: string
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/SkillTreeEntry'
+      required:
+        - name
+        - entries
+      additionalProperties: false
+
+    SkillContentResult:
+      type: object
+      properties:
+        name:
+          type: string
+        path:
+          type: string
+        content:
+          type: string
+        bytes:
+          type: integer
+        truncated:
+          type: boolean
+      required:
+        - name
+        - path
+        - content
+        - bytes
+        - truncated
+      additionalProperties: false

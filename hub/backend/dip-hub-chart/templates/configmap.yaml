@@ -1,0 +1,118 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.name }}-cm
+  namespace: {{ .Values.namespace }}
+data:
+  {{- with .Values }}
+  # 应用配置 - 根据 settings.py 生成
+  DIP_HUB_APP_NAME: "DIP Hub"
+  DIP_HUB_APP_VERSION: "{{ .service.version }}"
+  DIP_HUB_DEBUG: "false"
+  
+  # 服务器配置
+  DIP_HUB_HOST: "0.0.0.0"
+  DIP_HUB_PORT: "{{ .ports.containerPort }}"
+  DIP_HUB_WORKERS: "1"
+  
+  # API 配置
+  DIP_HUB_API_PREFIX: "/api/dip-hub/v1"
+
+  # 前端路由配置
+  DIP_HUB_FRONTEND_BASE_PATH: "/dip-hub"
+  
+  # 日志配置
+  DIP_HUB_LOG_LEVEL: "{{ .service.telemetry.log.level }}"
+  DIP_HUB_LOG_FORMAT: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  
+  # 健康检查配置
+  DIP_HUB_HEALTH_CHECK_TIMEOUT: "5"
+  
+  # 临时文件配置
+  DIP_HUB_TEMP_DIR: "/tmp/dip-hub"
+  
+  # 数据库配置
+  DIP_HUB_DB_HOST: "{{ .depServices.rds.host }}"
+  DIP_HUB_DB_PORT: "{{ .depServices.rds.port }}"
+  DIP_HUB_DB_NAME: {{ .depServices.rds.database | quote }}
+  DIP_HUB_DB_USER: {{ .depServices.rds.user | quote }}
+  DIP_HUB_DB_PASSWORD: {{ .depServices.rds.password | quote }}
+  
+  # Proton 部署服务配置
+  DIP_HUB_PROTON_URL: {{ .depServices.proton.url | quote }}
+  DIP_HUB_PROTON_TIMEOUT: "{{ .depServices.proton.timeout }}"
+  
+  # Ontology Manager 服务配置
+  DIP_HUB_ONTOLOGY_MANAGER_URL: {{ index .depServices "ontology-manager" "url" | quote }}
+  DIP_HUB_ONTOLOGY_MANAGER_TIMEOUT: "{{ index .depServices "ontology-manager" "timeout" }}"
+  
+  # Agent Factory 服务配置
+  DIP_HUB_AGENT_FACTORY_URL: {{ index .depServices "agent-factory" "url" | quote }}
+  DIP_HUB_AGENT_FACTORY_TIMEOUT: "{{ index .depServices "agent-factory" "timeout" }}"
+  
+  # Redis Sentinel 配置
+  DIP_HUB_REDIS_SENTINEL_HOST: {{ .depServices.redis.connectInfo.sentinelHost | quote }}
+  DIP_HUB_REDIS_SENTINEL_PORT: "{{ .depServices.redis.connectInfo.sentinelPort }}"
+  {{- if .depServices.redis.connectInfo.sentinelPassword }}
+  DIP_HUB_REDIS_SENTINEL_PASSWORD: {{ .depServices.redis.connectInfo.sentinelPassword | quote }}
+  {{- end }}
+  {{- if .depServices.redis.connectInfo.sentinelUsername }}
+  DIP_HUB_REDIS_SENTINEL_USERNAME: {{ .depServices.redis.connectInfo.sentinelUsername | quote }}
+  {{- end }}
+  DIP_HUB_REDIS_MASTER_GROUP_NAME: {{ .depServices.redis.connectInfo.masterGroupName | quote }}
+  {{- if .depServices.redis.connectInfo.password }}
+  DIP_HUB_REDIS_PASSWORD: {{ .depServices.redis.connectInfo.password | quote }}
+  {{- end }}
+  {{- if .depServices.redis.connectInfo.username }}
+  DIP_HUB_REDIS_USERNAME: {{ .depServices.redis.connectInfo.username | quote }}
+  {{- end }}
+  DIP_HUB_REDIS_DB: "{{ .depServices.redis.connectInfo.database }}"
+  DIP_HUB_REDIS_ENABLE_SSL: "{{ if eq (toString .depServices.redis.enableSSL) "true" }}true{{ else }}false{{ end }}"
+  
+  # OAuth2 自注册配置
+  DIP_HUB_OAUTH_CLIENT_NAME: {{ .service.oauthClientName | quote }}
+  
+  # Hydra 配置
+  DIP_HUB_HYDRA_HOST: "http://{{ .depServices.hydra.administrativeHost }}:{{ .depServices.hydra.administrativePort }}"
+  DIP_HUB_HYDRA_PUBLIC_URL: "http://{{ .depServices.hydra.publicHost }}:{{ .depServices.hydra.publicPort }}"
+  DIP_HUB_HYDRA_TIMEOUT: "30"
+  
+  # User Management 服务配置
+  DIP_HUB_USER_MANAGEMENT_URL: "http://{{ index .depServices "user-management" "privateHost" }}:{{ index .depServices "user-management" "privatePort" }}"
+  DIP_HUB_USER_MANAGEMENT_TIMEOUT: "60"
+  
+  # 外部访问地址配置（替代 deploy-management 服务）
+  DIP_HUB_ACCESS_ADDRESS_HOST: {{ .accessAddress.host | quote }}
+  DIP_HUB_ACCESS_ADDRESS_PORT: "{{ .accessAddress.port }}"
+  DIP_HUB_ACCESS_ADDRESS_SCHEME: {{ .accessAddress.scheme | quote }}
+  
+  # Session Cookie 配置（使用 session-chart 的默认值）
+  DIP_HUB_COOKIE_DOMAIN: {{ .depServices.cookie.domain | quote }}
+  DIP_HUB_COOKIE_TIMEOUT: "{{ .depServices.cookie.timeout }}"
+  
+  # Mock 模式配置
+  DIP_HUB_USE_MOCK_SERVICES: "false"
+  
+  # 其他依赖服务配置（如果需要）
+  LOG_PATH: {{ .depServices.logPath | quote }}
+  HYDRA_HOST: "http://{{ .depServices.hydra.administrativeHost}}:{{ .depServices.hydra.administrativePort}}"
+  HYDRA_PUBLIC_HOST: "http://{{ .depServices.hydra.publicHost}}:{{ .depServices.hydra.publicPort}}"
+  USER_MANAGE_HOST: "http://{{index .depServices "user-management" "privateHost"}}:{{index .depServices "user-management" "privatePort"}}"
+  AUTH_SERVICE_HOST: "http://{{index .depServices "auth-service" "host"}}:{{index .depServices "auth-service" "port"}}"
+  KAFKA_MQ_HOST: "{{index .depServices "mq" "kafka" "host"}}:{{index .depServices "mq" "kafka" "port"}}"
+  KAFKA_USERNAME: "{{ .depServices.mq.kafka.username }}"
+  KAFKA_PASSWORD: "{{ .depServices.mq.kafka.password }}"
+  KAFKA_MECHANISM: "{{ .depServices.mq.kafka.mechanism }}"
+  
+  # 遥测配置
+  AUDIT_URL: {{ .service.telemetry.audit.endpoint | quote }}
+  AUDIT_ENABLED: {{ .service.telemetry.audit.enabled | quote }}
+  TRACE_URL: "{{ .service.telemetry.trace.endpoint}}"
+  TRACE_ENABLED: "{{ .service.telemetry.trace.enabled}}"
+  LOG_LEVEL: "{{ .service.telemetry.log.level}}"
+  LOG_URL: "{{ .service.telemetry.log.endpoint}}"
+  LOG_ENABLED: "{{ .service.telemetry.log.enabled}}"
+  SERVER_NAME: "{{ .service.name}}"
+  SERVER_VERSION: "{{ .service.version}}"
+  {{- end }}
+

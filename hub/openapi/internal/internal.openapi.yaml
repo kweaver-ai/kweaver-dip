@@ -1,0 +1,17 @@
+openapi: 3.1.0
+
+info:
+  title: DIP HUB 内部接口
+  version: 1.0.0
+
+security: []
+
+servers:
+  - url: /api/internal/dip-hub/v1
+
+paths:
+  # 引用健康检查的 path 定义
+  /healthz:
+    $ref: "./health/health.paths.yaml#~1paths~1healthz"
+  /readyz:
+    $ref: "./health/health.paths.yaml#~1paths~1readyz"

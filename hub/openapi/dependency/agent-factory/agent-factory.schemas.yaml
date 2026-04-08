@@ -1,0 +1,364 @@
+components:
+  schemas:
+    CreateAgentRequest:
+      type: object
+      properties:
+        key:
+          type: string
+          description: agent标识
+          maxLength: 50
+        is_built_in:
+          type: integer
+          description: |
+            - 是否内置（内部接口有效）
+              - 0: 否
+              - 1: 是
+          example: 0
+        is_system_agent:
+          type: integer
+          description: 是否是系统智能体
+          enum: [0, 1]
+          example: 0
+        name:
+          type: string
+          description: 名字
+          example: agent1
+          maxLength: 50
+        profile:
+          type: string
+          description: 简介
+          maxLength: 100
+        avatar_type:
+          type: integer
+          description: |
+            - 头像类型
+              - 1: 内置头像
+              - 2: 用户上传头像
+              - 3: AI生成头像
+          example: 1
+        avatar:
+          type: string
+          description: |
+            - 头像信息
+              - 当头像类型为1时，为内置头像标识
+              - 当头像类型为2时，为头像存储信息
+              - 当头像类型为3时，为头像存储信息
+          example: "1"
+        product_key:
+          type: string
+          description: 所属产品标识
+          example: dip
+        config:
+          $ref: '#/components/schemas/AgentConfig'
+        created_by:
+          type: string
+          description: 创建人uid（内部接口有效）
+          example: xxx
+      required:
+        - name
+        - avatar_type
+        - avatar
+        - product_key
+        - config
+
+    AgentConfig:
+      type: object
+      description: data agent配置
+      properties:
+        input:
+          $ref: '#/components/schemas/AgentInput'
+        system_prompt:
+          type: string
+          description: 系统提示词
+        dolphin:
+          type: string
+          description: dolphin语句
+        is_dolphin_mode:
+          type: integer
+          description: 是否是dolphin模式
+          enum: [0, 1]
+          default: 0
+        data_source:
+          $ref: '#/components/schemas/DataSource'
+        skills:
+          $ref: '#/components/schemas/Skills'
+        llms:
+          type: array
+          items:
+            $ref: '#/components/schemas/LLMItem'
+        is_data_flow_set_enabled:
+          type: integer
+          description: 是否启用数据流设置
+          enum: [0, 1]
+          example: 0
+        opening_remark_config:
+          $ref: '#/components/schemas/OpeningRemarkConfig'
+        preset_questions:
+          type: array
+          description: 预设问题列表
+          items:
+            type: object
+            required:
+              - question
+            properties:
+              question:
+                type: string
+                description: 问题内容
+        output:
+          $ref: '#/components/schemas/AgentOutput'
+        built_in_can_edit_fields:
+          type: object
+          description: 内置可编辑字段配置
+          additionalProperties:
+            type: boolean
+        memory:
+          type: object
+          properties:
+            is_enabled:
+              type: boolean
+              description: 是否启用记忆
+        related_question:
+          type: object
+          properties:
+            is_enabled:
+              type: boolean
+              description: 是否启用相关问题
+        plan_mode:
+          type: object
+          properties:
+            is_enabled:
+              type: boolean
+              description: 是否启用规划模式
+      required:
+        - input
+        - llms
+        - output
+
+    AgentInput:
+      type: object
+      description: agent输入配置
+      properties:
+        fields:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                description: 字段名
+              type:
+                type: string
+                description: 字段类型
+        is_temp_zone_enabled:
+          type: integer
+          description: 是否启用临时区
+          enum: [0, 1]
+        temp_zone_config:
+          type: object
+          description: 临时区配置
+          properties:
+            name:
+              type: string
+            tmp_file_use_type:
+              type: string
+            max_file_count:
+              type: integer
+            single_file_size_limit:
+              type: integer
+            single_file_size_limit_unit:
+              type: string
+            support_data_type:
+              type: array
+              items:
+                type: string
+            allowed_file_categories:
+              type: array
+              items:
+                type: string
+
+    DataSource:
+      type: object
+      description: 数据源配置
+      properties:
+        doc:
+          type: array
+          items:
+            type: object
+        kg:
+          type: array
+          items:
+            type: object
+        metric:
+          type: array
+          items:
+            type: object
+        kn_entry:
+          type: array
+          items:
+            type: object
+        knowledge_network:
+          type: array
+          items:
+            type: object
+        advanced_config:
+          type: object
+          properties:
+            doc:
+              type: object
+            kg:
+              type: object
+
+    Skills:
+      type: object
+      description: 技能配置
+      properties:
+        tools:
+          type: array
+          items:
+            type: object
+            properties:
+              tool_id:
+                type: string
+              tool_box_id:
+                type: string
+              tool_input:
+                type: object
+                nullable: true
+              intervention:
+                type: boolean
+        agents:
+          type: array
+          items:
+            type: object
+            properties:
+              agent_key:
+                type: string
+              agent_version:
+                type: string
+              agent_input:
+                type: object
+                nullable: true
+              intervention:
+                type: boolean
+        mcps:
+          type: array
+          items:
+            type: object
+            properties:
+              mcp_server_id:
+                type: string
+
+    LLMItem:
+      type: object
+      properties:
+        is_default:
+          type: boolean
+          description: 是否默认
+        llm_config:
+          $ref: '#/components/schemas/LLMConfig'
+
+    LLMConfig:
+      type: object
+      description: LLM配置
+      properties:
+        id:
+          type: string
+          description: 模型ID
+        name:
+          type: string
+          description: 模型名称
+        model_type:
+          type: string
+          description: 模型类型
+        temperature:
+          type: number
+          description: 温度参数
+        top_p:
+          type: number
+        top_k:
+          type: integer
+        frequency_penalty:
+          type: number
+        presence_penalty:
+          type: number
+        max_tokens:
+          type: integer
+          description: 最大token数
+
+    OpeningRemarkConfig:
+      type: object
+      description: 开场白配置
+      required:
+        - type
+      properties:
+        type:
+          type: string
+          description: 开场白类型（固定/动态）
+          enum: ["fixed", "dynamic"]
+        fixed_opening_remark:
+          type: string
+          description: 固定开场白
+        dynamic_opening_remark_prompt:
+          type: string
+          description: 动态开场白提示语
+
+    AgentOutput:
+      type: object
+      description: 输出配置
+      properties:
+        variables:
+          type: object
+          properties:
+            answer_var:
+              type: string
+            doc_retrieval_var:
+              type: string
+            graph_retrieval_var:
+              type: string
+        default_format:
+          type: string
+          description: 默认输出格式
+
+    CreateAgentResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: agent id
+        version:
+          type: string
+          description: |
+            - agent版本
+              - 未发布data agent的版本为：v0
+      required:
+        - id
+        - version
+
+    AgentFactoryError:
+      type: object
+      description: 错误信息（统一格式）
+      required:
+        - error_code
+        - description
+        - solution
+        - error_link
+        - error_details
+      properties:
+        error_code:
+          type: string
+          description: 业务错误码
+        description:
+          type: string
+          description: 错误描述
+        solution:
+          type: string
+          description: 解决方法
+        error_link:
+          type: string
+          description: 错误链接
+        error_details:
+          description: |
+            - 错误详情（比如当某些数据不存在时，这里可以包含不存在的id）
+            - 任意类型
+          nullable: true
+

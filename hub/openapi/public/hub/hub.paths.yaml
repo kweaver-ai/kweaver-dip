@@ -1,0 +1,583 @@
+paths:
+  # ============ 1、安装应用 ============
+  /applications:
+    post:
+      operationId: installApplication
+      summary: 安装应用
+      description: |
+        安装应用包，使用流式上传。
+        
+        **流程说明：**
+        1. 上传 zip 格式安装包（流式上传）
+        2. Server 端边接收边写盘
+        3. 校验应用安装包结构和 manifest.yaml
+        4. 解析 application.key，校验 version
+        5. 如果应用已存在，版本号必须大于已上传版本
+        6. 解压安装包，上传镜像和 Chart
+        7. 导入业务知识网络和 DataAgent 智能体
+        8. 更新应用信息
+      tags:
+        - Application
+      requestBody:
+        required: true
+        content:
+          application/octet-stream:
+            schema:
+              type: string
+              format: binary
+              description: zip 格式应用安装包（流式上传）
+      responses:
+        "200":
+          description: 安装成功
+          content:
+            application/json:
+              schema:
+                $ref: './hub.schemas.yaml#/components/schemas/Application'
+        "400":
+          $ref: './hub.schemas.yaml#/components/errors/ParameterError'
+        "409":
+          $ref: './hub.schemas.yaml#/components/errors/ConflictError'
+        "500":
+          $ref: './hub.schemas.yaml#/components/errors/InternalServerError'
+
+    # ============ 2、获取应用列表 ============
+    get:
+      operationId: listApplications
+      summary: 获取应用列表
+      description: 获取当前已安装的所有应用列表。可通过 pinned 参数按被钉状态过滤。
+      tags:
+        - Application
+      parameters:
+        - name: pinned
+          in: query
+          description: 按被钉状态过滤（true=仅被钉，false=仅未被钉，不传=不过滤）
+          required: false
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: 获取已安装的应用列表
+          content:
+            application/json:
+              schema:
+                $ref: './hub.schemas.yaml#/components/schemas/ApplicationList'
+        "400":
+          $ref: './hub.schemas.yaml#/components/errors/ParameterError'
+        "500":
+          $ref: './hub.schemas.yaml#/components/errors/InternalServerError'
+
+  # ============ 3、应用配置 ============
+  /applications/config:
+    put:
+      operationId: configureApplication
+      summary: 配置应用
+      description: |
+        配置应用的业务知识网络和智能体。
+
+        根据应用在系统中已有的业务知识网络配置和 Data Agent 智能体配置，
+        将配置项的 `is_config` 标记为 `true`，不再从请求体中传入配置列表。
+      tags:
+        - Application
+      parameters:
+        - name: key
+          in: query
+          description: 应用包唯一标识
+          required: true
+          schema:
+            type: string
+            maxLength: 32
+            minLength: 1
+      responses:
+        '200':
+          description: 配置成功
+          content:
+            application/json:
+              schema:
+                $ref: './hub.schemas.yaml#/components/schemas/Application'
+        "400":
+          $ref: './hub.schemas.yaml#/components/errors/ParameterError'
+        "404":
+          $ref: './hub.schemas.yaml#/components/errors/NotFoundError'
+        "500":
+          $ref: './hub.schemas.yaml#/components/errors/InternalServerError'
+
+  # ============ 设置应用被钉状态 ============
+  /applications/{key}/pinned:
+    put:
+      operationId: setApplicationPinned
+      summary: 设置应用被钉状态
+      description: 设置指定应用是否被钉（置顶）。
+      tags:
+        - Application
+      parameters:
+        - in: path
+          name: key
+          description: 应用包唯一标识
+          required: true
+          schema:
+            type: string
+            maxLength: 32
+            minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './hub.schemas.yaml#/components/schemas/SetPinnedRequest'
+      responses:
+        '200':
+          description: 设置成功
+          content:
+            application/json:
+              schema:
+                $ref: './hub.schemas.yaml#/components/schemas/Application'
+        "400":
+          $ref: './hub.schemas.yaml#/components/errors/ParameterError'
+        "404":
+          $ref: './hub.schemas.yaml#/components/errors/NotFoundError'
+        "500":
+          $ref: './hub.schemas.yaml#/components/errors/InternalServerError'
+
+  # ============ 4.1、查看基础信息 ============
+  /applications/basic-info:
+    get:
+      operationId: getApplicationBasicInfo
+      summary: 查看应用基础信息
+      description: |
+        查看应用的基本信息，包括：
+        - 名称
+        - 描述
+        - 版本
+        - 是否配置视图
+      tags:
+        - Application
+      parameters:
+        - name: key
+          in: query
+          description: 应用包唯一标识
+          required: true
+          schema:
+            type: string
+            maxLength: 32
+            minLength: 1
+      responses:
+        '200':
+          description: 获取基础信息成功
+          content:
+            application/json:
+              schema:
+                $ref: './hub.schemas.yaml#/components/schemas/ApplicationBasicInfo'
+        "400":
+          $ref: './hub.schemas.yaml#/components/errors/ParameterError'
+        "404":
+          $ref: './hub.schemas.yaml#/components/errors/NotFoundError'
+        "500":
+          $ref: './hub.schemas.yaml#/components/errors/InternalServerError'
+
+  # ============ 4.2、查看业务知识网络配置情况 ============
+  /applications/ontologies:
+    get:
+      operationId: getApplicationOntologies
+      summary: 查看业务知识网络配置
+      description: |
+        查看应用的业务知识网络配置情况。
+        
+        流程：
+        1. 通过 key 获取应用的业务知识网络配置项（ontology_config）
+        2. 遍历配置项，通过 id 调用外部接口查询业务知识网络详情
+        3. 返回业务知识网络详情列表（原始数据）
+      tags:
+        - Application
+      parameters:
+        - name: key
+          in: query
+          description: 应用包唯一标识
+          required: true
+          schema:
+            type: string
+            maxLength: 32
+            minLength: 1
+      responses:
+        '200':
+          description: 获取业务知识网络配置成功
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '../../dependency/ontology-manager/ontology-manager.schemas.yaml#/components/schemas/KnowledgeNetworkDetail'
+        "400":
+          $ref: './hub.schemas.yaml#/components/errors/ParameterError'
+        "404":
+          $ref: './hub.schemas.yaml#/components/errors/NotFoundError'
+        "500":
+          $ref: './hub.schemas.yaml#/components/errors/InternalServerError'
+
+  # ============ 4.3、查看智能体 ============
+  /applications/agents:
+    get:
+      operationId: getApplicationAgents
+      summary: 查看智能体配置
+      description: |
+        查看应用的 Data Agent 智能体配置情况。
+        
+        流程：
+        1. 通过 key 获取应用的智能体配置项（agent_config）
+        2. 遍历配置项，通过 id 调用外部接口查询智能体详情
+        3. 返回智能体详情列表（原始数据）
+      tags:
+        - Application
+      parameters:
+        - name: key
+          in: query
+          description: 应用包唯一标识
+          required: true
+          schema:
+            type: string
+            maxLength: 32
+            minLength: 1
+      responses:
+        '200':
+          description: 获取智能体配置成功
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '../../dependency/api-docs/openapi/public/data-agent/agent-factory/v3/agent/schema/detail.yaml#/detail'
+        "400":
+          $ref: './hub.schemas.yaml#/components/errors/ParameterError'
+        "404":
+          $ref: './hub.schemas.yaml#/components/errors/NotFoundError'
+        "500":
+          $ref: './hub.schemas.yaml#/components/errors/InternalServerError'
+
+  # ============ 5、卸载应用 ============
+  /applications/{key}:
+    delete:
+      operationId: uninstallApplication
+      summary: 卸载应用
+      description: |
+        卸载指定的应用。
+        
+        **流程：**
+        1. 调用卸载应用接口
+        2. 删除数据库中应用记录
+      tags:
+        - Application
+      parameters:
+        - in: path
+          name: key
+          description: 应用包唯一标识
+          required: true
+          schema:
+            type: string
+            maxLength: 32
+            minLength: 1
+      responses:
+        '204':
+          description: 卸载应用成功
+        "400":
+          $ref: './hub.schemas.yaml#/components/errors/ParameterError'
+        "404":
+          $ref: './hub.schemas.yaml#/components/errors/NotFoundError'
+        "500":
+          $ref: './hub.schemas.yaml#/components/errors/InternalServerError'
+
+  # ============ 登录接口 ============
+  /login:
+    get:
+      operationId: login
+      summary: 登录接口
+      description: |
+        登录接口，重定向到 OAuth2 授权端点。
+        
+        **流程：**
+        1. 检查是否有有效的 token cookie
+        2. 生成 state 和 nonce
+        3. 创建或获取 session
+        4. 保存 session 信息
+        5. 重定向到 OAuth2 授权端点
+      tags:
+        - Login
+      parameters:
+        - name: asredirect
+          in: query
+          description: 重定向地址，登录成功后跳转的 URL
+          required: false
+          schema:
+            type: string
+      responses:
+        '302':
+          description: 重定向到 OAuth2 授权端点
+          headers:
+            Location:
+              description: OAuth2 授权 URL
+              schema:
+                type: string
+            Set-Cookie:
+              description: 设置 session_id Cookie
+              schema:
+                type: string
+        '200':
+          description: Token 有效，返回成功页面或重定向
+          content:
+            text/html:
+              schema:
+                type: string
+                description: HTML 页面，包含 JavaScript 重定向
+        '400':
+          description: 请求参数错误
+          content:
+            application/json:
+              schema:
+                $ref: './hub.schemas.yaml#/components/schemas/ErrorResponse'
+              example:
+                code: "PUBLIC_INVALID_PARAMETER"
+                description: "参数值校验不通过"
+
+  # ============ 登录回调接口 ============
+  /login/callback:
+    get:
+      operationId: loginCallback
+      summary: 登录回调接口
+      description: |
+        登录回调接口，接收 OAuth2 回调。
+        
+        **流程：**
+        1. 从 cookie 获取 session_id
+        2. 验证参数
+        3. 调用登录服务处理登录
+        4. 设置 token 和 userid cookie
+        5. 重定向或返回成功页面
+      tags:
+        - Login
+      parameters:
+        - name: code
+          in: query
+          description: OAuth2 授权码
+          required: false
+          schema:
+            type: string
+        - name: state
+          in: query
+          description: 状态字符串，必须与登录时保存的 state 一致
+          required: false
+          schema:
+            type: string
+        - name: error
+          in: query
+          description: 错误码（OAuth2 提供商返回）
+          required: false
+          schema:
+            type: string
+        - name: error_description
+          in: query
+          description: 错误描述
+          required: false
+          schema:
+            type: string
+        - name: error_hint
+          in: query
+          description: 错误提示
+          required: false
+          schema:
+            type: string
+      responses:
+        '302':
+          description: 重定向到指定地址（如果 as_redirect 存在）
+          headers:
+            Location:
+              description: 重定向地址
+              schema:
+                type: string
+            Set-Cookie:
+              description: 设置 oauth2_token 和 userid Cookie
+              schema:
+                type: string
+        '200':
+          description: 返回成功页面
+          content:
+            text/html:
+              schema:
+                type: string
+                description: HTML 页面，包含 JavaScript 重定向
+        '400':
+          description: 请求参数错误
+          content:
+            application/json:
+              schema:
+                $ref: './hub.schemas.yaml#/components/schemas/ErrorResponse'
+              example:
+                code: "GET_CODE_FAILED"
+                description: "授权码或状态参数错误"
+
+  # ============ 登出接口 ============
+  /logout:
+    get:
+      operationId: logout
+      summary: 登出接口
+      description: |
+        登出接口，重定向到 OAuth2 登出端点。
+        
+        **流程：**
+        1. 从 Cookie 获取 session_id
+        2. 获取 Session 信息
+        3. SSO 登录特殊处理
+        4. 获取主机信息
+        5. 构建 OAuth2 登出 URL 并重定向
+      tags:
+        - Logout
+      responses:
+        '302':
+          description: 重定向到 OAuth2 登出端点
+          headers:
+            Location:
+              description: OAuth2 登出 URL
+              schema:
+                type: string
+        '200':
+          description: 返回登出页面
+          content:
+            text/html:
+              schema:
+                type: string
+                description: HTML 页面，包含 JavaScript 重定向
+        '400':
+          description: 请求参数错误
+          content:
+            application/json:
+              schema:
+                $ref: './hub.schemas.yaml#/components/schemas/ErrorResponse'
+              example:
+                code: "GET_COOKIE_VALUE_NOT_EXIST"
+                description: "Session ID 不存在"
+
+  # ============ 登出回调接口 ============
+  /logout/callback:
+    get:
+      operationId: logoutCallback
+      summary: 登出回调接口
+      description: |
+        登出回调接口，接收 OAuth2 登出回调。
+        
+        **流程：**
+        1. 从 Cookie 获取 session_id
+        2. 验证参数
+        3. 执行登出回调
+        4. 清除 Cookie
+        5. 返回登出页面
+      tags:
+        - Logout
+      parameters:
+        - name: state
+          in: query
+          description: 状态字符串，必须与登出时保存的 state 一致
+          required: true
+          schema:
+            type: string
+        - name: error
+          in: query
+          description: 错误码（OAuth2 提供商返回）
+          required: false
+          schema:
+            type: string
+        - name: error_description
+          in: query
+          description: 错误描述
+          required: false
+          schema:
+            type: string
+        - name: error_hint
+          in: query
+          description: 错误提示
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 返回登出页面
+          content:
+            text/html:
+              schema:
+                type: string
+                description: HTML 页面，包含 JavaScript 重定向
+        '400':
+          description: 请求参数错误或登出回调失败
+          content:
+            application/json:
+              schema:
+                $ref: './hub.schemas.yaml#/components/schemas/ErrorResponse'
+              example:
+                code: "DO_LOGOUT_CALLBACK_FAILED"
+                description: "登出回调失败: error_code"
+
+  # ============ 刷新令牌接口 ============
+  /refresh-token:
+    get:
+      operationId: refreshToken
+      summary: 刷新令牌接口
+      description: |
+        刷新令牌接口，使用 Refresh Token 获取新的 Access Token。
+        
+        **流程：**
+        1. 从 Cookie 获取 session_id 和 token
+        2. 执行刷新
+        3. 更新 Cookie
+        4. 返回响应
+      tags:
+        - RefreshToken
+      responses:
+        '200':
+          description: 刷新成功
+          content:
+            application/json:
+              schema:
+                $ref: './hub.schemas.yaml#/components/schemas/RefreshTokenResponse'
+          headers:
+            Set-Cookie:
+              description: 更新 oauth2_token Cookie
+              schema:
+                type: string
+        '400':
+          description: 请求参数错误或刷新失败
+          content:
+            application/json:
+              schema:
+                $ref: './hub.schemas.yaml#/components/schemas/ErrorResponse'
+              example:
+                code: "REFRESH_TOKEN_ERROR"
+                description: "刷新 Token 失败: Session ID 或 Token 不存在"
+
+  # ============ 用户信息接口 ============
+  /userinfo:
+    get:
+      operationId: getUserInfo
+      summary: 用户信息接口
+      description: |
+        用户信息接口，根据 Token 获取用户信息。
+        
+        **流程：**
+        1. 从 Authorization Header 获取 Token
+        2. 获取用户信息
+        3. 返回响应
+      tags:
+        - UserInfo
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: 获取用户信息成功
+          content:
+            application/json:
+              schema:
+                $ref: './hub.schemas.yaml#/components/schemas/UserInfo'
+        '400':
+          description: 请求参数错误或获取用户信息失败
+          content:
+            application/json:
+              schema:
+                $ref: './hub.schemas.yaml#/components/schemas/ErrorResponse'
+              example:
+                code: "GET_USER_INFO_ERROR"
+                description: "获取用户信息失败: Authorization Header 格式错误"

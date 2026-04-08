@@ -1,0 +1,61 @@
+openapi: 3.1.0
+
+info:
+  title: DIP Studio 初始化引导接口
+  version: 0.1.0
+
+security: []
+
+servers:
+  - url: /api/dip-studio/v1
+
+paths:
+  /guide/status:
+    get:
+      operationId: getGuideStatus
+      summary: 获取 DIP Studio 初始化状态
+      responses:
+        "200":
+          description: 初始化状态
+          content:
+            application/json:
+              schema:
+                $ref: './guide.schemas.yaml#/components/schemas/GuideStatusResponse'
+        "500":
+          $ref: '../common.schemas.yaml#/errors/InternalServerError'
+
+  /guide/openclaw-config:
+    get:
+      operationId: getOpenClawDetectedConfig
+      summary: 获取环境注入的 OpenClaw 配置
+      responses:
+        "200":
+          description: OpenClaw 配置
+          content:
+            application/json:
+              schema:
+                $ref: './guide.schemas.yaml#/components/schemas/OpenClawDetectedConfig'
+        "500":
+          $ref: '../common.schemas.yaml#/errors/InternalServerError'
+        "502":
+          $ref: '../common.schemas.yaml#/errors/BadGateway'
+
+  /guide/initialize:
+    post:
+      operationId: initializeGuide
+      summary: 完成 DIP Studio 初始化
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './guide.schemas.yaml#/components/schemas/GuideInitializeRequest'
+      responses:
+        "200":
+          description: 初始化成功
+        "400":
+          $ref: '../common.schemas.yaml#/errors/InvalidParameter'
+        "500":
+          $ref: '../common.schemas.yaml#/errors/InternalServerError'
+        "502":
+          $ref: '../common.schemas.yaml#/errors/BadGateway'
