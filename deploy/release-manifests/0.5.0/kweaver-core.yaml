@@ -95,13 +95,13 @@ releases:
     version: 0.5.0
   sandbox:
     chart: sandbox
-    version: 0.3.0
+    version: 0.3.2-feature-sandbox-20260410.git-58dc782-opensource
   oss-gateway-backend:
     chart: oss-gateway-backend
     version: 0.5.0
   otelcol-contrib:
     chart: otelcol-contrib
-    version: 0.1.1
+    version: 0.2.1-refactor-monorepo.sha2962656
   agent-observability:
     chart: agent-observability
-    version: 0.1.1
+    version: 0.2.1-refactor-monorepo.sha2962656
