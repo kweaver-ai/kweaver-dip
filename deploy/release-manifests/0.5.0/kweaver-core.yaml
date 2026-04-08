@@ -95,7 +95,7 @@ releases:
     version: 0.5.0
   sandbox:
     chart: sandbox
-    version: 0.3.2-refactor-monorepo.git-2962656-opensource
+    version: 0.3.2-feature-sandbox-20260410.git-58dc782-opensource
   oss-gateway-backend:
     chart: oss-gateway-backend
     version: 0.5.0
