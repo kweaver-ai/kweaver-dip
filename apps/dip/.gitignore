@@ -48,6 +48,7 @@ Thumbs.db
 *.pid
 *.seed
 *.pid.lock
+.claude/*
 
 # Package manager lock files (keep yarn.lock)
 package-lock.json

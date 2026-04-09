@@ -7,6 +7,24 @@ export type { EnabledModule } from '@/routes/types'
 
 const ALLOWED_MODULES: EnabledModule[] = ['studio', 'store']
 
+const skipAuth = import.meta.env.PUBLIC_SKIP_AUTH === 'true'
+const isAdminEnv = import.meta.env.PUBLIC_IS_ADMIN === 'true'
+
+function getInitialUserInfoWhenSkipAuth(): UserInfo {
+  if (isAdminEnv) {
+    return {
+      vision_name: 'admin',
+      id: '1',
+      account: 'admin',
+    }
+  }
+  return {
+    vision_name: 'user',
+    id: '1',
+    account: 'user',
+  }
+}
+
 const parseModulesFromEnv = (): EnabledModule[] => {
   const raw = import.meta.env.PUBLIC_ENABLED_MODULES as string | undefined
   if (!raw) {
@@ -50,17 +68,10 @@ let currentToken: string | null = null
 let requestId = 0 // 用于跟踪当前请求 ID
 
 export const useUserInfoStore = create<UserInfoState>((set) => ({
-  // 开发模式下，用户信息为固定值
-  // 生产模式下，用户信息从后端获取
-  userInfo: import.meta.env.DEV
-    ? {
-        vision_name: 'user',
-        id: '1',
-        account: 'user',
-      }
-    : null,
+  // 跳过认证：用环境变量决定普通用户或管理员假数据；否则从接口拉取
+  userInfo: skipAuth ? getInitialUserInfoWhenSkipAuth() : null,
   isLoading: false,
-  isAdmin: process.env.PUBLIC_IS_ADMIN === 'true',
+  isAdmin: skipAuth ? isAdminEnv : false,
   modules: parseModulesFromEnv(),
 
   setUserInfo: (userInfo: UserInfo | null) =>
@@ -96,7 +107,16 @@ export const useUserInfoStore = create<UserInfoState>((set) => ({
       // 清除正在进行的请求
       fetchPromise = null
       currentToken = null
-      set({ userInfo: null, isLoading: false, modules: parseModulesFromEnv() })
+      set(
+        skipAuth
+          ? {
+              userInfo: getInitialUserInfoWhenSkipAuth(),
+              isLoading: false,
+              isAdmin: isAdminEnv,
+              modules: parseModulesFromEnv(),
+            }
+          : { userInfo: null, isLoading: false, modules: parseModulesFromEnv() },
+      )
       return
     }
 
@@ -141,9 +161,9 @@ export const useUserInfoStore = create<UserInfoState>((set) => ({
         const isCurrentRequest = requestId === thisRequestId
         if (latestToken === requestToken && isCurrentRequest) {
           set({
-            userInfo: null,
+            userInfo: skipAuth ? getInitialUserInfoWhenSkipAuth() : null,
             isLoading: false,
-            isAdmin: false,
+            isAdmin: skipAuth ? isAdminEnv : false,
           })
         }
         // 重新抛出错误，让调用者能够捕获到失败的情况
