@@ -1,37 +1,33 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 
-const {
-  navigateMock,
-  locationState,
-  userInfoState,
-  workPlanState,
-  historyState,
-} = vi.hoisted(() => ({
-  navigateMock: vi.fn(),
-  locationState: { pathname: '/' },
-  userInfoState: { modules: ['studio', 'store'] as string[] },
-  workPlanState: {
-    plans: [] as any[],
-    total: 0,
-    fetchPlans: vi.fn(async () => {}),
-    refreshPlansOnFocus: vi.fn(async () => {}),
-    pausePlan: vi.fn(async () => true),
-    resumePlan: vi.fn(async () => true),
-    deletePlan: vi.fn(async () => true),
-    selectedPlanId: undefined as string | undefined,
-    setSelectedPlanId: vi.fn(),
-  },
-  historyState: {
-    sessions: [] as any[],
-    total: 0,
-    fetchSessions: vi.fn(async () => {}),
-    refreshSessionsOnFocus: vi.fn(async () => {}),
-    selectedSessionKey: undefined as string | undefined,
-    setSelectedSessionKey: vi.fn(),
-    deleteHistorySession: vi.fn(async () => true),
-  },
-}))
+const { navigateMock, locationState, userInfoState, workPlanState, historyState } = vi.hoisted(
+  () => ({
+    navigateMock: vi.fn(),
+    locationState: { pathname: '/' },
+    userInfoState: { modules: ['studio', 'store'] as string[] },
+    workPlanState: {
+      plans: [] as any[],
+      total: 0,
+      fetchPlans: vi.fn(async () => {}),
+      refreshPlansOnFocus: vi.fn(async () => {}),
+      pausePlan: vi.fn(async () => true),
+      resumePlan: vi.fn(async () => true),
+      deletePlan: vi.fn(async () => true),
+      selectedPlanId: undefined as string | undefined,
+      setSelectedPlanId: vi.fn(),
+    },
+    historyState: {
+      sessions: [] as any[],
+      total: 0,
+      fetchSessions: vi.fn(async () => {}),
+      refreshSessionsOnFocus: vi.fn(async () => {}),
+      selectedSessionKey: undefined as string | undefined,
+      setSelectedSessionKey: vi.fn(),
+      deleteHistorySession: vi.fn(async () => true),
+    },
+  }),
+)
 
 vi.mock('react-router-dom', () => ({
   useNavigate: () => navigateMock,

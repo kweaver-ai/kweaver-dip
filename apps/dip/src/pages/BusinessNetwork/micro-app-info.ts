@@ -1,8 +1,9 @@
-import type { CurrentMicroAppInfo } from '@/stores/microAppStore';
-import { getFullPath } from '@/utils/config';
+import type { CurrentMicroAppInfo } from '@/stores/microAppStore'
+import { getFullPath } from '@/utils/config'
 
 /** 菜单里 //ip:port/... → 当前 host */
-export const normalizeMicroAppEntry = (entry: string): string => entry.replace('ip:port', window.location.host);
+export const normalizeMicroAppEntry = (entry: string): string =>
+  entry.replace('ip:port', window.location.host)
 
 /**
  * 由业务菜单构造 CurrentMicroAppInfo
@@ -12,7 +13,7 @@ export const buildMicroAppInfo = (
   label: string,
   routePath: string,
   appName: string,
-  appEntry: string
+  appEntry: string,
 ): CurrentMicroAppInfo => ({
   id: 0,
   key: menuKey,
@@ -32,4 +33,4 @@ export const buildMicroAppInfo = (
   pinned: false,
   isBuiltIn: true,
   routeBasename: getFullPath(routePath),
-});
+})

@@ -2,9 +2,9 @@
 import type React from 'react'
 import { memo } from 'react'
 import AiAnswerBubble from './AiAnswerBubble'
-import UserQuestionBubble from './UserQuestionBubble'
 import styles from './index.module.less'
 import type { ConversationTurnProps } from './types'
+import UserQuestionBubble from './UserQuestionBubble'
 
 const ConversationTurn: React.FC<ConversationTurnProps> = ({
   turn,

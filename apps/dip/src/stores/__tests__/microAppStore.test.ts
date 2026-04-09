@@ -21,7 +21,6 @@ describe('microAppStore', () => {
       micro_app: { name: 'm', entry: '/', headless: false },
       pinned: false,
       isBuiltIn: false,
-      release_config: [],
       routeBasename: '/app',
     } satisfies CurrentMicroAppInfo
 

@@ -14,10 +14,10 @@ import type {
 
 export type {
   BknEntry,
+  BuiltInDigitalHuman,
+  BuiltInDigitalHumanList,
   ChannelConfig,
   ChannelType,
-  BuiltInDigitalHumanList,
-  BuiltInDigitalHuman,
   CreateDigitalHumanRequest,
   CreateDigitalHumanResponse,
   DeleteDigitalHumanDeleteFiles,
@@ -43,9 +43,7 @@ export const getBuiltInDigitalHumanList = (): Promise<BuiltInDigitalHumanList> =
 }
 
 /** 根据模板 ID 创建或更新预置数字员工（createBuiltInDigitalHuman） */
-export const createBuiltInDigitalHuman = (
-  ids: string,
-): Promise<CreateDigitalHumanResponse[]> =>
+export const createBuiltInDigitalHuman = (ids: string): Promise<CreateDigitalHumanResponse[]> =>
   put(`${BASE}/digital-human/built-in/${ids}`)
 
 /** 获取数字员工列表（getDigitalHumanList） */

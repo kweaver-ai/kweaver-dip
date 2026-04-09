@@ -1,41 +1,47 @@
-import { Layout } from 'antd';
-import clsx from 'classnames';
-import { useEffect, useState } from 'react';
-import type { RouteModule, SiderType } from '@/routes/types';
-import { useUserInfoStore } from '@/stores/userInfoStore';
-import AdminSider from './AdminSider';
-import HomeSider from './HomeSider';
-import BusinessSider from './BusinessSider';
-import styles from './index.module.less';
+import { Layout } from 'antd'
+import clsx from 'classnames'
+import { useEffect, useState } from 'react'
+import type { RouteModule, SiderType } from '@/routes/types'
+import { useUserInfoStore } from '@/stores/userInfoStore'
+import AdminSider from './AdminSider'
+import BusinessSider from './BusinessSider'
+import HomeSider from './HomeSider'
+import styles from './index.module.less'
 
-const { Sider: AntdSider } = Layout;
+const { Sider: AntdSider } = Layout
 
 interface SiderProps {
   /** 是否折叠 */
-  collapsed: boolean;
+  collapsed: boolean
   /** 折叠状态改变回调 */
-  onCollapse: (collapsed: boolean) => void;
+  onCollapse: (collapsed: boolean) => void
   /** 顶部偏移量 */
-  topOffset?: number;
+  topOffset?: number
   /** 侧边栏布局形态 */
-  layout?: SiderType;
+  layout?: SiderType
   /** 当前路由归属模块（应用壳下用于区分 Studio 侧栏 / Store 侧栏） */
-  routeModule?: RouteModule;
+  routeModule?: RouteModule
 }
 
 /**
  * 侧边栏主组件
  * layout=entry：首页入口壳；layout=app + module：模块内应用壳
  */
-const Sider = ({ collapsed, onCollapse, topOffset = 0, layout = 'entry', routeModule }: SiderProps) => {
-  const isAdmin = useUserInfoStore(s => s.isAdmin);
-  const [transitionEnabled, setTransitionEnabled] = useState(false);
+const Sider = ({
+  collapsed,
+  onCollapse,
+  topOffset = 0,
+  layout = 'entry',
+  routeModule,
+}: SiderProps) => {
+  const isAdmin = useUserInfoStore((s) => s.isAdmin)
+  const [transitionEnabled, setTransitionEnabled] = useState(false)
   useEffect(() => {
     const t = requestAnimationFrame(() => {
-      requestAnimationFrame(() => setTransitionEnabled(true));
-    });
-    return () => cancelAnimationFrame(t);
-  }, []);
+      requestAnimationFrame(() => setTransitionEnabled(true))
+    })
+    return () => cancelAnimationFrame(t)
+  }, [])
 
   return (
     <AntdSider
@@ -48,7 +54,7 @@ const Sider = ({ collapsed, onCollapse, topOffset = 0, layout = 'entry', routeMo
         'bg-white backdrop-blur-[6px] shadow-[inset_-1px_0_0_rgba(0,0,0,0.1)]',
         styles.siderContainer,
         collapsed && styles.collapsed,
-        !transitionEnabled && styles.siderNoTransition
+        !transitionEnabled && styles.siderNoTransition,
       )}
       style={{
         left: 0,
@@ -65,7 +71,7 @@ const Sider = ({ collapsed, onCollapse, topOffset = 0, layout = 'entry', routeMo
         <HomeSider collapsed={collapsed} onCollapse={onCollapse} layout={layout} />
       )}
     </AntdSider>
-  );
-};
+  )
+}
 
-export default Sider;
+export default Sider

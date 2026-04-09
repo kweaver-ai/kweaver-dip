@@ -283,7 +283,9 @@ const extractThinkingTextFromJson = (jsonText: string): string => {
   return rawThinking.trim()
 }
 
-const extractThinkingFromJsonObjects = (source: string): { thinkingParts: string[]; text: string } => {
+const extractThinkingFromJsonObjects = (
+  source: string,
+): { thinkingParts: string[]; text: string } => {
   const thinkingParts: string[] = []
   let text = source
 
@@ -326,7 +328,10 @@ const extractThinkingFromJsonObjects = (source: string): { thinkingParts: string
 }
 
 const normalizeAnswerText = (text: string): string => {
-  return text.replace(/\r\n/g, '\n').replace(/\n{3,}/g, '\n\n').trim()
+  return text
+    .replace(/\r\n/g, '\n')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim()
 }
 
 export const extractThinkingContent = (source: string): DipChatKitThinkingExtractResult => {

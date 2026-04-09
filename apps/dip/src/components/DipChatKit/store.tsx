@@ -1,14 +1,14 @@
 import React, { createContext, type PropsWithChildren, useContext } from 'react'
 import useLatestState from '@/hooks/useLatestState'
+import type { AiPromptSubmitPayload } from './components/AiPromptInput/types'
 import type {
-  DipChatKitAttachment,
   DipChatKitAnswerEvent,
   DipChatKitAnswerTimelineItem,
+  DipChatKitAttachment,
   DipChatKitMessageTurn,
   DipChatKitPreviewPayload,
   DipChatKitState,
 } from './types'
-import type { AiPromptSubmitPayload } from './components/AiPromptInput/types'
 
 export interface DipChatKitStoreContextType {
   dipChatKitStore: DipChatKitState
@@ -148,7 +148,10 @@ const DipChatKitStoreProvider: React.FC<PropsWithChildren<DipChatKitStoreProvide
     }))
   }
 
-  const setTurnSessionKey: DipChatKitStoreContextType['setTurnSessionKey'] = (turnId, sessionKey) => {
+  const setTurnSessionKey: DipChatKitStoreContextType['setTurnSessionKey'] = (
+    turnId,
+    sessionKey,
+  ) => {
     const normalizedSessionKey = sessionKey.trim()
     if (!normalizedSessionKey) return
 
@@ -210,7 +213,9 @@ const DipChatKitStoreProvider: React.FC<PropsWithChildren<DipChatKitStoreProvide
               id: `stream_event_${Date.now()}_${turn.answerEvents.length + 1}`,
             }
 
-        const existedEventIndex = turn.answerEvents.findIndex((item) => item.id === normalizedEvent.id)
+        const existedEventIndex = turn.answerEvents.findIndex(
+          (item) => item.id === normalizedEvent.id,
+        )
         const nextAnswerEvents =
           existedEventIndex >= 0
             ? turn.answerEvents.map((item, index) =>
@@ -262,7 +267,10 @@ const DipChatKitStoreProvider: React.FC<PropsWithChildren<DipChatKitStoreProvide
     }))
   }
 
-  const failAnswerStream: DipChatKitStoreContextType['failAnswerStream'] = (turnId, errorMessage) => {
+  const failAnswerStream: DipChatKitStoreContextType['failAnswerStream'] = (
+    turnId,
+    errorMessage,
+  ) => {
     setStore((prevState) => ({
       ...prevState,
       messageTurns: updateTurnById(prevState.messageTurns, turnId, (turn) => ({

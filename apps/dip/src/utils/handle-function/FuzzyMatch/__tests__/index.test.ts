@@ -12,7 +12,9 @@ describe('fuzzyMatch', () => {
   })
 
   it('两侧皆非字符串时返回 undefined', () => {
-    expect(fuzzyMatch(undefined as unknown as string, undefined as unknown as string)).toBeUndefined()
+    expect(
+      fuzzyMatch(undefined as unknown as string, undefined as unknown as string),
+    ).toBeUndefined()
   })
 
   it('仅一侧为字符串时当前实现会抛错（toLowerCase）', () => {

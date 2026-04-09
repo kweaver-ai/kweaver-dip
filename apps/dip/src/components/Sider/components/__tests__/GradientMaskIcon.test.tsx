@@ -5,9 +5,7 @@ import { GradientMaskIcon, MaskIcon } from '../GradientMaskIcon'
 
 describe('Sider/GradientMaskIcon', () => {
   it('MaskIcon 设置 mask 与 background', () => {
-    const { container } = render(
-      <MaskIcon url="https://example.com/i.png" background="#fff" />,
-    )
+    const { container } = render(<MaskIcon url="https://example.com/i.png" background="#fff" />)
     const span = container.querySelector('span')
     expect(span).not.toBeNull()
     expect(span?.style.maskImage).toContain('https://example.com/i.png')

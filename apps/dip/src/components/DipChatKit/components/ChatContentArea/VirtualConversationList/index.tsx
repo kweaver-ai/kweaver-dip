@@ -58,15 +58,16 @@ const VirtuosoScroller = forwardRef<
 
 VirtuosoScroller.displayName = 'VirtuosoScroller'
 
-const VirtuosoList = forwardRef<HTMLDivElement, ListProps & { context: VirtualConversationListContext }>(
-  ({ children, style, ...restProps }, ref) => {
-    return (
-      <div {...restProps} ref={ref} className={styles.list} style={style}>
-        {children}
-      </div>
-    )
-  },
-)
+const VirtuosoList = forwardRef<
+  HTMLDivElement,
+  ListProps & { context: VirtualConversationListContext }
+>(({ children, style, ...restProps }, ref) => {
+  return (
+    <div {...restProps} ref={ref} className={styles.list} style={style}>
+      {children}
+    </div>
+  )
+})
 
 VirtuosoList.displayName = 'VirtuosoList'
 
@@ -74,7 +75,11 @@ const VirtuosoEmptyPlaceholder = ({ context }: { context: VirtualConversationLis
   if (context.loading) {
     return (
       <div className={styles.sessionLoadingSkeleton}>
-        <Skeleton active title={false} paragraph={{ rows: 4, width: ['46%', '92%', '82%', '70%'] }} />
+        <Skeleton
+          active
+          title={false}
+          paragraph={{ rows: 4, width: ['46%', '92%', '82%', '70%'] }}
+        />
         <Skeleton
           active
           title={false}
@@ -100,7 +105,10 @@ const normalizeBehavior = (behavior: ScrollBehavior): 'auto' | 'smooth' => {
   return behavior === 'smooth' ? 'smooth' : 'auto'
 }
 
-const VirtualConversationList = forwardRef<VirtualConversationListRef, VirtualConversationListProps>(
+const VirtualConversationList = forwardRef<
+  VirtualConversationListRef,
+  VirtualConversationListProps
+>(
   (
     {
       className,

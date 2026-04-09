@@ -1,9 +1,4 @@
-import {
-  CheckOutlined,
-  CopyOutlined,
-  DownOutlined,
-  UpOutlined,
-} from '@ant-design/icons'
+import { CheckOutlined, CopyOutlined, DownOutlined, UpOutlined } from '@ant-design/icons'
 import { Bubble, CodeHighlighter, Mermaid, Think, ThoughtChain } from '@ant-design/x'
 import type { ComponentProps as MarkdownComponentProps } from '@ant-design/x-markdown'
 import { Button, Collapse, Tag, Tooltip } from 'antd'
@@ -25,8 +20,8 @@ import {
   buildCardPreviewPayload,
   buildMarkdownFilePreviewPayload,
   buildToolCardItems,
-  extractThinkingContent,
   extractMarkdownFileNameFromHref,
+  extractThinkingContent,
   getDomDataAttributes,
   isMermaidLanguage,
   normalizeLanguage,
@@ -80,7 +75,8 @@ const buildAnswerSegments = (
   answerMarkdown: string,
   answerEvents: DipChatKitAnswerEvent[],
 ): AiAnswerBubbleSegment[] => {
-  const sourceTimeline = timeline.length > 0 ? timeline : buildFallbackTimeline(answerMarkdown, answerEvents)
+  const sourceTimeline =
+    timeline.length > 0 ? timeline : buildFallbackTimeline(answerMarkdown, answerEvents)
   const segments: AiAnswerBubbleSegment[] = []
 
   let toolEventsBuffer: DipChatKitAnswerEvent[] = []
@@ -157,8 +153,10 @@ const parseRecordFromText = (text: string): Record<string, unknown> | null => {
   const trimmed = text.trim()
   if (!trimmed) return null
   if (
-    (!trimmed.startsWith('{') || !trimmed.endsWith('}')) &&
-    (!trimmed.startsWith('[') || !trimmed.endsWith(']'))
+    !(
+      (trimmed.startsWith('{') && trimmed.endsWith('}')) ||
+      (trimmed.startsWith('[') && trimmed.endsWith(']'))
+    )
   ) {
     return null
   }
@@ -175,7 +173,10 @@ const parseRecordFromText = (text: string): Record<string, unknown> | null => {
 }
 
 const extractStreamingToolSummary = (event: DipChatKitAnswerEvent): string => {
-  const summaryFromDetails = getFirstNonEmptyStringByKeys(event.details, STREAMING_TOOL_SUMMARY_KEYS)
+  const summaryFromDetails = getFirstNonEmptyStringByKeys(
+    event.details,
+    STREAMING_TOOL_SUMMARY_KEYS,
+  )
   if (summaryFromDetails) return summaryFromDetails
 
   const parsedText = parseRecordFromText(event.text || '')
@@ -326,7 +327,11 @@ const AiAnswerBubble: React.FC<AiAnswerBubbleProps> = ({
   }, [turn.answerEvents])
 
   const answerSegments = useMemo(() => {
-    const rawSegments = buildAnswerSegments(turn.answerTimeline || [], turn.answerMarkdown, turn.answerEvents)
+    const rawSegments = buildAnswerSegments(
+      turn.answerTimeline || [],
+      turn.answerMarkdown,
+      turn.answerEvents,
+    )
     return normalizeAnswerSegments(rawSegments)
   }, [turn.answerEvents, turn.answerMarkdown, turn.answerTimeline])
 
@@ -575,12 +580,7 @@ const AiAnswerBubble: React.FC<AiAnswerBubbleProps> = ({
     }
 
     return actions
-  }, [
-    onCopy,
-    turn.answerLoading,
-    turn.answerMarkdown,
-    turn.answerStreaming,
-  ])
+  }, [onCopy, turn.answerLoading, turn.answerMarkdown, turn.answerStreaming])
 
   const resolveToolIconType = (toolName: string): string => {
     const normalizedToolName = toolName.trim().toLowerCase()
@@ -758,7 +758,9 @@ const AiAnswerBubble: React.FC<AiAnswerBubbleProps> = ({
   }
 
   const isToolSegmentInProgress = (events: DipChatKitAnswerEvent[]): boolean => {
-    return events.some((event) => event.type === 'toolCall' && event.details?.status === 'in_progress')
+    return events.some(
+      (event) => event.type === 'toolCall' && event.details?.status === 'in_progress',
+    )
   }
 
   const renderToolProcessSegment = (segment: AiAnswerBubbleToolSegment, index: number) => {
@@ -798,7 +800,7 @@ const AiAnswerBubble: React.FC<AiAnswerBubbleProps> = ({
   const renderTextSegment = (text: string, index: number) => {
     const { thinkingText, answerText } = extractThinkingContent(text)
 
-    if (!thinkingText && !answerText) {
+    if (!(thinkingText || answerText)) {
       return null
     }
 
@@ -858,9 +860,7 @@ const AiAnswerBubble: React.FC<AiAnswerBubbleProps> = ({
                   ? answerSegments.map((segment, index) => {
                       if (segment.kind === 'tools') {
                         return (
-                          <div key={segment.id}>
-                            {renderToolProcessSegment(segment, index)}
-                          </div>
+                          <div key={segment.id}>{renderToolProcessSegment(segment, index)}</div>
                         )
                       }
                       return renderTextSegment(segment.text, index)

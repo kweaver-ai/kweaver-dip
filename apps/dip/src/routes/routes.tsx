@@ -1,35 +1,38 @@
-import { lazy } from 'react';
-import applicationsUrl from '@/assets/images/sider/applications.svg';
-import appStoreUrl from '@/assets/images/sider/appStore.svg';
-import chatUrl from '@/assets/images/sider/chat.svg';
-import digitalHumanUrl from '@/assets/images/sider/digitalHuman.svg';
-import dipStudioUrl from '@/assets/images/sider/dipStudio.svg';
-import skillUrl from '@/assets/images/sider/skill.svg';
-import { BUSINESS_NETWORK_BASE_PATH, businessLeafMenuItems } from '@/components/Sider/BusinessSider/menus';
-import type { RouteConfig } from './types';
+import { lazy } from 'react'
+import applicationsUrl from '@/assets/images/sider/applications.svg'
+import appStoreUrl from '@/assets/images/sider/appStore.svg'
+import chatUrl from '@/assets/images/sider/chat.svg'
+import digitalHumanUrl from '@/assets/images/sider/digitalHuman.svg'
+import dipStudioUrl from '@/assets/images/sider/dipStudio.svg'
+import skillUrl from '@/assets/images/sider/skill.svg'
+import {
+  BUSINESS_NETWORK_BASE_PATH,
+  businessLeafMenuItems,
+} from '@/components/Sider/BusinessSider/menus'
+import type { RouteConfig } from './types'
 
-const MyApp = lazy(() => import('../pages/MyApp'));
-const AppStore = lazy(() => import('../pages/AppStore'));
-const Home = lazy(() => import('../pages/Home'));
-const WorkPlan = lazy(() => import('../pages/WorkPlan'));
-const WorkPlanDetail = lazy(() => import('../pages/WorkPlan/Details'));
-const History = lazy(() => import('../pages/History'));
-const HistoryConversation = lazy(() => import('../pages/History/HistoryConversation'));
-const DigitalHumanManagement = lazy(() => import('../pages/DigitalHuman/Management'));
-const SkillsManagement = lazy(() => import('../pages/Skills'));
-const SkillsDetailPage = lazy(() => import('../pages/Skills/Details'));
-const DigitalHumanDetail = lazy(() => import('../pages/DigitalHuman/Details'));
-const DHSetting = lazy(() => import('../pages/DigitalHuman/DHSetting'));
-const Conversation = lazy(() => import('../pages/Conversation'));
-const InitialConfiguration = lazy(() => import('../pages/InitialConfiguration'));
-const BusinessNetwork = lazy(() => import('../pages/BusinessNetwork'));
+const MyApp = lazy(() => import('../pages/MyApp'))
+const AppStore = lazy(() => import('../pages/AppStore'))
+const Home = lazy(() => import('../pages/Home'))
+const WorkPlan = lazy(() => import('../pages/WorkPlan'))
+const WorkPlanDetail = lazy(() => import('../pages/WorkPlan/Details'))
+const History = lazy(() => import('../pages/History'))
+const HistoryConversation = lazy(() => import('../pages/History/HistoryConversation'))
+const DigitalHumanManagement = lazy(() => import('../pages/DigitalHuman/Management'))
+const SkillsManagement = lazy(() => import('../pages/Skills'))
+const SkillsDetailPage = lazy(() => import('../pages/Skills/Details'))
+const DigitalHumanDetail = lazy(() => import('../pages/DigitalHuman/Details'))
+const DHSetting = lazy(() => import('../pages/DigitalHuman/DHSetting'))
+const Conversation = lazy(() => import('../pages/Conversation'))
+const InitialConfiguration = lazy(() => import('../pages/InitialConfiguration'))
+const BusinessNetwork = lazy(() => import('../pages/BusinessNetwork'))
 
 const businessLayoutConfig = {
   hasHeader: true,
   siderMode: 'app',
   module: 'business',
   headerType: 'business',
-} as const;
+} as const
 
 /**
  * 路由配置数组
@@ -289,7 +292,7 @@ export const routeConfigs: RouteConfig[] = [
     },
   },
   ...businessLeafMenuItems.flatMap((item): RouteConfig[] => {
-    const normalizedPath = item.path.replace(/^\//, '');
+    const normalizedPath = item.path.replace(/^\//, '')
     return [
       {
         path: normalizedPath,
@@ -311,6 +314,6 @@ export const routeConfigs: RouteConfig[] = [
           layout: businessLayoutConfig,
         },
       },
-    ];
+    ]
   }),
-];
+]

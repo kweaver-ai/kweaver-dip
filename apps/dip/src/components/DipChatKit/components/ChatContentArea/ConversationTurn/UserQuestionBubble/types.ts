@@ -6,4 +6,3 @@ export interface UserQuestionBubbleProps {
   onEdit: (question: string) => void
   onCopy: () => void
 }
-

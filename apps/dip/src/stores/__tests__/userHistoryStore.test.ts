@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-import type { SessionSummary } from '../apis/dip-studio/sessions'
+import type { SessionSummary } from '@/apis/dip-studio/sessions'
 
 const messageSuccess = vi.fn()
 const messageError = vi.fn()

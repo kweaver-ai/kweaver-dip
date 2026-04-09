@@ -27,8 +27,7 @@ function getInitialUserInfoWhenSkipAuth(): UserInfo {
 
 const parseModulesFromEnv = (): EnabledModule[] => {
   const runtimeRaw = window.__APP_RUNTIME_CONFIG__?.PUBLIC_ENABLED_MODULES
-  const raw =
-    runtimeRaw ?? (import.meta.env.PUBLIC_ENABLED_MODULES as string | undefined)
+  const raw = runtimeRaw ?? (import.meta.env.PUBLIC_ENABLED_MODULES as string | undefined)
   if (!raw) {
     return ['studio', 'store']
   }

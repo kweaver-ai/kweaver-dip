@@ -33,4 +33,3 @@ describe('DigitalHumanSetting/BasicSetting/NameDescriptionFields', () => {
     })
   })
 })
-

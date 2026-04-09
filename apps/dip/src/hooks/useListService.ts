@@ -83,7 +83,9 @@ export const useListService = <T extends { name?: string }, P extends any[] = []
 
         // 使用当前搜索词进行本地过滤（不影响外部 API 的参数）
         const shouldLocalFilter = !!searchValue && !disableLocalFilterEffective
-        const filtered = shouldLocalFilter ? data.filter((item) => finalFilterFn(item, searchValue)) : data
+        const filtered = shouldLocalFilter
+          ? data.filter((item) => finalFilterFn(item, searchValue))
+          : data
         setItems(filtered)
       } catch (err: any) {
         // 请求被取消时，清除引用但不更新状态

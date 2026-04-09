@@ -26,8 +26,7 @@ vi.mock('../SelectSkillModal', () => ({
 }))
 
 vi.mock('../AddSkillDrawer', () => ({
-  default: ({ open }: { open: boolean }) =>
-    open ? <div data-testid="add-skill-drawer" /> : null,
+  default: ({ open }: { open: boolean }) => (open ? <div data-testid="add-skill-drawer" /> : null),
 }))
 
 vi.mock('@/components/IconFont', () => ({

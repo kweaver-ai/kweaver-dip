@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-import type { CronJob } from '../apis/dip-studio/plan'
+import type { CronJob } from '@/apis/dip-studio/plan'
 
 const messageSuccess = vi.fn()
 const messageError = vi.fn()

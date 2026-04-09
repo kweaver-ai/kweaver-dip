@@ -44,7 +44,10 @@ export interface DigitalHumanState {
   frozenDisplayNameForEdit: string | null
 
   /** 绑定当前数字员工，并根据详情初始化数据 */
-  bindDigitalHuman: (digitalHuman: DigitalHumanDetail | null, agentSkills?: DigitalHumanSkill[]) => void
+  bindDigitalHuman: (
+    digitalHuman: DigitalHumanDetail | null,
+    agentSkills?: DigitalHumanSkill[],
+  ) => void
 
   /** 重置 dirty 状态（不改变数据内容） */
   resetDirtyState: () => void

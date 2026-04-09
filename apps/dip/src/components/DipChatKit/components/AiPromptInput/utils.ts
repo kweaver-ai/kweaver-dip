@@ -59,7 +59,9 @@ const resolveAttachmentCategory = (file: File): AttachmentCategory | null => {
 const createUnsupportedTypeMessage = (fileName: string): string => {
   return intl
     .get('dipChatKit.unsupportedFileType', { fileName })
-    .d(`文件“${fileName}”类型不支持，仅支持图片（jpeg/png/gif/webp/heic/heif）和文件（txt/markdown/html/csv/json/pdf）`) as string
+    .d(
+      `文件“${fileName}”类型不支持，仅支持图片（jpeg/png/gif/webp/heic/heif）和文件（txt/markdown/html/csv/json/pdf）`,
+    ) as string
 }
 
 const createSizeExceededMessage = (fileName: string, category: AttachmentCategory): string => {
@@ -289,10 +291,7 @@ export const filterMentionOptionsByQuery = (
   })
 }
 
-export const canStartTriggerAtCursor = (
-  _value: string,
-  _cursorIndex: number,
-): boolean => true
+export const canStartTriggerAtCursor = (_value: string, _cursorIndex: number): boolean => true
 
 export const getAttachmentFileKey = (file: File): string => {
   return `${file.name}_${file.size}_${file.lastModified}`

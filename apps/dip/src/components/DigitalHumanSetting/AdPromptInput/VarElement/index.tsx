@@ -1,3 +1,5 @@
+/** biome-ignore-all lint/a11y/noStaticElementInteractions: 静态元素交互 */
+/** biome-ignore-all lint/a11y/useKeyWithClickEvents: 使用键与点击事件 */
 import { useEffect, useMemo, useRef, useState } from 'react'
 import './style.less'
 import classNames from 'classnames'
@@ -35,7 +37,7 @@ const VarElement = (props: VarElementProps) => {
       if (error) {
         setError(true)
       } else {
-        const inputValue = editableSpanRef.current!.innerText
+        const inputValue = editableSpanRef.current?.innerText
         let varName = ''
         if (inputValue.includes('.')) {
           varName = inputValue.split('.')[0]

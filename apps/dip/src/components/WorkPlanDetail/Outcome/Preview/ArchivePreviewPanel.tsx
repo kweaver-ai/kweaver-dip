@@ -189,7 +189,9 @@ const ArchivePreviewPanel = ({
           />
         ) : preview.viewer === 'markdown' && preview.body.trim() ? (
           <XMarkdown className={styles.markdownRoot}>{preview.body}</XMarkdown>
-        ) : preview.viewer === 'text' && preview.body.trim() && isCodeLikeTextFile(preview.title) ? (
+        ) : preview.viewer === 'text' &&
+          preview.body.trim() &&
+          isCodeLikeTextFile(preview.title) ? (
           <div className="overflow-hidden rounded-md border border-[--dip-border-color]">
             <CodeHighlighter lang={codeLang}>{preview.body}</CodeHighlighter>
           </div>

@@ -2,9 +2,9 @@ import type { MenuProps } from 'antd'
 import { Menu } from 'antd'
 import { useMemo } from 'react'
 import SidebarSystemIcon from '@/assets/images/sider/proton.svg?react'
-import { getAccessToken, getRefreshToken } from '@/utils/http/token-config'
-import { getFullPath } from '@/utils/config'
 import { BUSINESS_NETWORK_BASE_PATH } from '@/components/Sider/BusinessSider/menus'
+import { getFullPath } from '@/utils/config'
+import { getAccessToken, getRefreshToken } from '@/utils/http/token-config'
 import IconFont from '../../IconFont'
 
 export interface ExternalLinksMenuProps {
@@ -45,8 +45,7 @@ export const ExternalLinksSection = ({ collapsed, roleIds }: ExternalLinksMenuPr
         ssoSearchParams.set('refreshToken', refreshToken)
       }
     }
-    // const businessNetworkHref = getFullPath(BUSINESS_NETWORK_BASE_PATH);
-    const ssoUrl = `${baseOrigin}/studio`
+    const businessNetworkHref = getFullPath(BUSINESS_NETWORK_BASE_PATH)
 
     return [
       {
@@ -54,7 +53,7 @@ export const ExternalLinksSection = ({ collapsed, roleIds }: ExternalLinksMenuPr
         title: '全局业务知识网络',
         label: (
           <a
-            href={ssoUrl}
+            href={businessNetworkHref}
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-1 justify-between"

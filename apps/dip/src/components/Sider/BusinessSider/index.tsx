@@ -1,44 +1,47 @@
-import type { MenuProps } from 'antd';
-import { Menu, Tooltip } from 'antd';
-import { useEffect, useMemo, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import IconFont from '../../IconFont';
-import { UserMenuItem } from '../components/UserMenuItem';
+import type { MenuProps } from 'antd'
+import { Menu, Tooltip } from 'antd'
+import { useEffect, useMemo, useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
+import IconFont from '../../IconFont'
+import { UserMenuItem } from '../components/UserMenuItem'
+import styles from './index.module.less'
 import {
   type BusinessMenuItem,
   businessLeafMenuItems,
-  getBusinessAncestorKeysByPath,
   businessMenuItems,
   defaultBusinessMenuItem,
-} from './menus';
-import styles from './index.module.less';
+  getBusinessAncestorKeysByPath,
+} from './menus'
 
 interface BusinessSiderProps {
-  collapsed: boolean;
-  onCollapse: (collapsed: boolean) => void;
+  collapsed: boolean
+  onCollapse: (collapsed: boolean) => void
 }
 
 const BusinessSider = ({ collapsed, onCollapse }: BusinessSiderProps) => {
-  const navigate = useNavigate();
-  const location = useLocation();
+  const navigate = useNavigate()
+  const location = useLocation()
   const renderMenuIcon = (iconType?: string) =>
     iconType ? (
       <span className="inline-flex h-4 w-4 items-center justify-center">
         <IconFont type={iconType} />
       </span>
-    ) : undefined;
+    ) : undefined
 
   const selectedKey = useMemo(() => {
-    const matched = businessLeafMenuItems.find(item => location.pathname.startsWith(item.path));
-    return matched?.key ?? defaultBusinessMenuItem.key;
-  }, [location.pathname]);
-  const routeAncestorKeys = useMemo(() => getBusinessAncestorKeysByPath(location.pathname), [location.pathname]);
-  const [openKeys, setOpenKeys] = useState<string[]>(routeAncestorKeys);
+    const matched = businessLeafMenuItems.find((item) => location.pathname.startsWith(item.path))
+    return matched?.key ?? defaultBusinessMenuItem.key
+  }, [location.pathname])
+  const routeAncestorKeys = useMemo(
+    () => getBusinessAncestorKeysByPath(location.pathname),
+    [location.pathname],
+  )
+  const [openKeys, setOpenKeys] = useState<string[]>(routeAncestorKeys)
 
   useEffect(() => {
     // 首次进入或路由切换时，确保当前路由对应的父级菜单自动展开
-    setOpenKeys(prev => Array.from(new Set([...prev, ...routeAncestorKeys])));
-  }, [routeAncestorKeys]);
+    setOpenKeys((prev) => Array.from(new Set([...prev, ...routeAncestorKeys])))
+  }, [routeAncestorKeys])
 
   const menuItems = useMemo<MenuProps['items']>(() => {
     const toAntMenuItem = (item: BusinessMenuItem): NonNullable<MenuProps['items']>[number] => {
@@ -48,37 +51,39 @@ const BusinessSider = ({ collapsed, onCollapse }: BusinessSiderProps) => {
           label: item.label,
           icon: renderMenuIcon(item.icon),
           children: item.children.map(toAntMenuItem),
-        };
+        }
       }
       return {
         key: item.key,
         label: item.label,
         icon: renderMenuIcon(item.icon),
         onClick: () => navigate(item.path),
-      };
-    };
+      }
+    }
 
-    return businessMenuItems.map(toAntMenuItem);
-  }, [navigate]);
+    return businessMenuItems.map(toAntMenuItem)
+  }, [navigate])
 
   return (
     <div className="flex flex-col h-full px-0 pt-4 pb-1 overflow-hidden">
       <div className="flex-1 flex flex-col dip-hideScrollbar">
         <div className="flex-1">
           <Menu
-            className={styles['menu']}
+            className={styles.menu}
             mode="inline"
             selectedKeys={[selectedKey]}
             items={menuItems}
             openKeys={openKeys}
-            onOpenChange={keys => setOpenKeys(keys as string[])}
+            onOpenChange={(keys) => setOpenKeys(keys as string[])}
             inlineCollapsed={collapsed}
             selectable
           />
         </div>
       </div>
 
-      {collapsed ? null : <div className="mx-3 my-2 h-px shrink-0 bg-[var(--dip-border-color)]" aria-hidden />}
+      {collapsed ? null : (
+        <div className="mx-3 my-2 h-px shrink-0 bg-[var(--dip-border-color)]" aria-hidden />
+      )}
 
       {collapsed ? (
         <div className="dip-sider-footer-stack shrink-0">
@@ -116,7 +121,7 @@ const BusinessSider = ({ collapsed, onCollapse }: BusinessSiderProps) => {
         </div>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default BusinessSider;
+export default BusinessSider

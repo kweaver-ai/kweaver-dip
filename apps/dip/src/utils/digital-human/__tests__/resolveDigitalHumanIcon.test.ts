@@ -16,7 +16,9 @@ describe('resolveDigitalHumanIconSrc', () => {
 
   it('http(s) 原样返回', () => {
     expect(resolveDigitalHumanIconSrc('http://example.com/x.png')).toBe('http://example.com/x.png')
-    expect(resolveDigitalHumanIconSrc('https://example.com/x.png')).toBe('https://example.com/x.png')
+    expect(resolveDigitalHumanIconSrc('https://example.com/x.png')).toBe(
+      'https://example.com/x.png',
+    )
   })
 
   it('预置 dh_1 走本地 SVG 导入（Vitest 下多为内联 data URL）', () => {

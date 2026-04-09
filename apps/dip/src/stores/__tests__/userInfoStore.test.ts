@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import type { UserInfo } from '@/apis'
+import type { EnabledModule } from '@/routes/types'
 
 const { getUserInfoMock, getLogoutUrlMock, getAccessTokenMock } = vi.hoisted(() => ({
   getUserInfoMock: vi.fn(),
@@ -44,31 +45,29 @@ describe('userInfoStore', () => {
 
   it('setModules 过滤非法项并去重', async () => {
     const { useUserInfoStore } = await import('../userInfoStore')
-    useUserInfoStore.getState().setModules(['studio', 'unknown', 'store', 'studio'])
+    // 故意传入非法模块名，验证运行时过滤（类型上需断言为 EnabledModule[]）
+    useUserInfoStore.getState().setModules(['studio', 'unknown', 'store', 'studio'] as EnabledModule[])
     expect(useUserInfoStore.getState().modules).toEqual(['studio', 'store'])
   })
 
   it('logout 会调用 getLogoutUrl 并触发 location.replace', async () => {
     const replaceStub = vi.fn()
-    vi.stubGlobal(
-      'location',
-      {
-        ancestorOrigins: [] as unknown as DOMStringList,
-        assign: vi.fn(),
-        hash: '',
-        host: 'localhost',
-        hostname: 'localhost',
-        href: 'http://localhost/',
-        origin: 'http://localhost',
-        pathname: '/',
-        port: '',
-        protocol: 'http:',
-        reload: vi.fn(),
-        replace: replaceStub,
-        search: '',
-        toString: () => 'http://localhost/',
-      } as unknown as Location,
-    )
+    vi.stubGlobal('location', {
+      ancestorOrigins: [] as unknown as DOMStringList,
+      assign: vi.fn(),
+      hash: '',
+      host: 'localhost',
+      hostname: 'localhost',
+      href: 'http://localhost/',
+      origin: 'http://localhost',
+      pathname: '/',
+      port: '',
+      protocol: 'http:',
+      reload: vi.fn(),
+      replace: replaceStub,
+      search: '',
+      toString: () => 'http://localhost/',
+    } as unknown as Location)
     try {
       const { useUserInfoStore } = await import('../userInfoStore')
       useUserInfoStore.getState().logout()

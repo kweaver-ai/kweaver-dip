@@ -33,7 +33,14 @@ import DeleteModal from '../DeleteModal'
 
 describe('DigitalHumanSetting/DeleteModal', () => {
   it('展示删除确认文案和高亮名称', () => {
-    render(<DeleteModal open deleteData={{ id: '1', name: '员工A' }} onOk={vi.fn()} onCancel={vi.fn()} />)
+    render(
+      <DeleteModal
+        open
+        deleteData={{ id: '1', name: '员工A' }}
+        onOk={vi.fn()}
+        onCancel={vi.fn()}
+      />,
+    )
     expect(screen.getByText('删除数字员工')).toBeInTheDocument()
     expect(screen.getByText('员工A')).toBeInTheDocument()
     expect(screen.getByPlaceholderText('请输入待删除名称')).toBeInTheDocument()
@@ -42,7 +49,14 @@ describe('DigitalHumanSetting/DeleteModal', () => {
   it('输入正确名称后点击确定，调用删除 API 与回调', async () => {
     const onOk = vi.fn()
     const onCancel = vi.fn()
-    render(<DeleteModal open deleteData={{ id: 'dh-1', name: '员工B' }} onOk={onOk} onCancel={onCancel} />)
+    render(
+      <DeleteModal
+        open
+        deleteData={{ id: 'dh-1', name: '员工B' }}
+        onOk={onOk}
+        onCancel={onCancel}
+      />,
+    )
 
     fireEvent.change(screen.getByRole('textbox'), { target: { value: '员工B' } })
     fireEvent.click(screen.getByRole('button', { name: /确\s*定/ }))

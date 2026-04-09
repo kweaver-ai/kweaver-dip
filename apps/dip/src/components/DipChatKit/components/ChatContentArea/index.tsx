@@ -17,11 +17,11 @@ import type { DipChatKitAnswerEvent, DipChatKitPreviewPayload } from '../../type
 import { isAsyncIterable, normalizeStreamChunk } from '../../utils'
 import AiPromptInput from '../AiPromptInput'
 import type { AiPromptSubmitPayload } from '../AiPromptInput/types'
-import VirtualConversationList from './VirtualConversationList'
-import type { VirtualConversationListRef } from './VirtualConversationList/types'
 import styles from './index.module.less'
 import type { ChatContentAreaProps } from './types'
 import { buildRegeneratePayload, mapSessionMessagesToTurns } from './utils'
+import VirtualConversationList from './VirtualConversationList'
+import type { VirtualConversationListRef } from './VirtualConversationList/types'
 
 const execCopyText = (text: string): boolean => {
   let copySuccess = false

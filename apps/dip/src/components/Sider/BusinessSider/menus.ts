@@ -1,33 +1,34 @@
 export interface BusinessMenuLeafItem {
-  key: string;
-  icon?: string;
-  label: string;
-  path: string;
+  key: string
+  icon?: string
+  label: string
+  path: string
   page:
     | {
-        type: 'micro-app';
+        type: 'micro-app'
         app: {
-          name: string;
-          entry: string;
-        };
+          name: string
+          entry: string
+        }
       }
     | {
-        type: 'component';
-        componentKey: string;
-      };
+        type: 'component'
+        componentKey: string
+      }
 }
 
 export interface BusinessMenuGroupItem {
-  key: string;
-  icon?: string;
-  label: string;
-  children: BusinessMenuItem[];
+  key: string
+  icon?: string
+  label: string
+  children: BusinessMenuItem[]
 }
 
-export type BusinessMenuItem = BusinessMenuLeafItem | BusinessMenuGroupItem;
+export type BusinessMenuItem = BusinessMenuLeafItem | BusinessMenuGroupItem
 
-export const BUSINESS_NETWORK_BASE_PATH = '/business-network';
-export const buildBusinessNetworkPath = (suffix = ''): string => `${BUSINESS_NETWORK_BASE_PATH}${suffix}`;
+export const BUSINESS_NETWORK_BASE_PATH = '/business-network'
+export const buildBusinessNetworkPath = (suffix = ''): string =>
+  `${BUSINESS_NETWORK_BASE_PATH}${suffix}`
 
 /**
  * business 菜单单一数据源：
@@ -209,30 +210,34 @@ export const businessMenuItems: BusinessMenuItem[] = [
       },
     ],
   },
-];
+]
 
 const flattenLeafItems = (items: BusinessMenuItem[]): BusinessMenuLeafItem[] =>
-  items.flatMap(item => ('children' in item ? flattenLeafItems(item.children) : item));
+  items.flatMap((item) => ('children' in item ? flattenLeafItems(item.children) : item))
 
-export const businessLeafMenuItems: BusinessMenuLeafItem[] = flattenLeafItems(businessMenuItems);
+export const businessLeafMenuItems: BusinessMenuLeafItem[] = flattenLeafItems(businessMenuItems)
 
-const findAncestorKeysByPath = (items: BusinessMenuItem[], pathname: string, parentKeys: string[] = []): string[] => {
+const findAncestorKeysByPath = (
+  items: BusinessMenuItem[],
+  pathname: string,
+  parentKeys: string[] = [],
+): string[] => {
   for (const item of items) {
     if ('children' in item) {
-      const found = findAncestorKeysByPath(item.children, pathname, [...parentKeys, item.key]);
+      const found = findAncestorKeysByPath(item.children, pathname, [...parentKeys, item.key])
       if (found.length > 0) {
-        return found;
+        return found
       }
-      continue;
+      continue
     }
     if (pathname.startsWith(item.path)) {
-      return parentKeys;
+      return parentKeys
     }
   }
-  return [];
-};
+  return []
+}
 
 export const getBusinessAncestorKeysByPath = (pathname: string): string[] =>
-  findAncestorKeysByPath(businessMenuItems, pathname);
+  findAncestorKeysByPath(businessMenuItems, pathname)
 
-export const defaultBusinessMenuItem = businessLeafMenuItems[0];
+export const defaultBusinessMenuItem = businessLeafMenuItems[0]

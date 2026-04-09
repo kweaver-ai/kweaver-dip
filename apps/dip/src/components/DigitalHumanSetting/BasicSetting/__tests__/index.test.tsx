@@ -4,16 +4,11 @@ import { describe, expect, it, vi } from 'vitest'
 // Mock AdPromptInput to avoid issues with its dependencies
 vi.mock('../../AdPromptInput', () => ({
   default: (props: any) => (
-    <div data-testid="ad-prompt-input">
-      {props.value || props.placeholder}
-    </div>
+    <div data-testid="ad-prompt-input">{props.value || props.placeholder}</div>
   ),
 }))
 
 import BasicSetting from '../index'
-
-import { useLanguageStore } from '@/stores/languageStore'
-import { useDigitalHumanStore } from '../../digitalHumanStore'
 
 const mockUpdateBasic = vi.fn()
 const mockUseLanguageStore = vi.fn(() => ({
@@ -44,7 +39,11 @@ vi.mock('../NameDescriptionFields', () => ({
   default: () => (
     <>
       <input name="name" defaultValue="测试数字员工" placeholder="请输入数字员工名称" />
-      <textarea name="creature" defaultValue="这是一个测试数字员工的简介" placeholder="请输入数字员工简介" />
+      <textarea
+        name="creature"
+        defaultValue="这是一个测试数字员工的简介"
+        placeholder="请输入数字员工简介"
+      />
     </>
   ),
 }))
@@ -139,6 +138,8 @@ describe('DigitalHumanSetting/BasicSetting', () => {
 
     render(<BasicSetting />)
 
-    expect(screen.getByTestId('ad-prompt-input').textContent).toContain('To set AI response specifications')
+    expect(screen.getByTestId('ad-prompt-input').textContent).toContain(
+      'To set AI response specifications',
+    )
   })
 })

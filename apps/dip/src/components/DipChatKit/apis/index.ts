@@ -1,18 +1,18 @@
-import { get, getCommonHttpHeaders, post } from '@/utils/http'
 import intl from 'react-intl-universal'
+import { get, getCommonHttpHeaders, post } from '@/utils/http'
 import type {
   DipChatKitCreateSessionKeyRequest,
   DipChatKitCreateSessionKeyResponse,
-  DipChatKitDigitalHumanList,
   DipChatKitDigitalHumanDetail,
-  DipChatKitSessionArchiveSubpathOptions,
-  DipChatKitSessionArchiveSubpathResponse,
+  DipChatKitDigitalHumanList,
   DipChatKitGetSessionMessagesParams,
   DipChatKitResponseRequestBody,
-  DipChatKitResponseStreamChunk,
   DipChatKitResponseSSEOptions,
+  DipChatKitResponseStreamChunk,
   DipChatKitResponseStreamToolCallChunk,
   DipChatKitResponseStreamToolCallPayload,
+  DipChatKitSessionArchiveSubpathOptions,
+  DipChatKitSessionArchiveSubpathResponse,
   DipChatKitSessionGetResponse,
   DipChatKitUploadChatAttachmentResponse,
 } from './types'
@@ -28,12 +28,7 @@ function cleanParams<T extends Record<string, unknown>>(obj?: T): T | undefined 
 }
 
 function encodeArchiveSubpath(subpath: string): string {
-  return subpath
-    .replace(/^\/+/, '')
-    .split('/')
-    .filter(Boolean)
-    .map(encodeURIComponent)
-    .join('/')
+  return subpath.replace(/^\/+/, '').split('/').filter(Boolean).map(encodeURIComponent).join('/')
 }
 
 export const createChatSessionKey = (
@@ -163,8 +158,9 @@ const extractToolCallChunkFromPayload = (
   const isCompleted = eventType === 'response.output_item.done'
   const text = toTextFromUnknown(itemPayload.arguments)
   const isError = isCompleted && itemPayload.error !== undefined && itemPayload.error !== null
-  const status: DipChatKitResponseStreamToolCallPayload['status'] =
-    isCompleted ? 'completed' : 'in_progress'
+  const status: DipChatKitResponseStreamToolCallPayload['status'] = isCompleted
+    ? 'completed'
+    : 'in_progress'
 
   return {
     kind: 'toolCall',
@@ -255,7 +251,9 @@ const extractErrorMessage = (payload: Record<string, unknown>): string => {
   return ''
 }
 
-const parseSSEData = (rawData: string): { done: boolean; chunks: DipChatKitResponseStreamChunk[] } => {
+const parseSSEData = (
+  rawData: string,
+): { done: boolean; chunks: DipChatKitResponseStreamChunk[] } => {
   const normalizedData = rawData.trim()
   if (!normalizedData) {
     return { done: false, chunks: [] }
@@ -327,7 +325,9 @@ const parseSSEData = (rawData: string): { done: boolean; chunks: DipChatKitRespo
   }
 }
 
-const parseSSEFrame = (frame: string): { done: boolean; chunks: DipChatKitResponseStreamChunk[] } => {
+const parseSSEFrame = (
+  frame: string,
+): { done: boolean; chunks: DipChatKitResponseStreamChunk[] } => {
   const lines = frame.split('\n')
   const dataLines: string[] = []
 
@@ -392,7 +392,9 @@ export const uploadChatAttachment = async (
     throw new Error(await formatHttpErrorMessage(response))
   }
 
-  const data = (await response.json()) as DipChatKitUploadChatAttachmentResponse | Record<string, unknown>
+  const data = (await response.json()) as
+    | DipChatKitUploadChatAttachmentResponse
+    | Record<string, unknown>
   const path =
     typeof (data as DipChatKitUploadChatAttachmentResponse).path === 'string'
       ? (data as DipChatKitUploadChatAttachmentResponse).path.trim()
@@ -400,7 +402,9 @@ export const uploadChatAttachment = async (
 
   if (!path) {
     throw new Error(
-      intl.get('dipChatKit.uploadAttachmentMissingPath').d('上传附件失败，未返回有效路径') as string,
+      intl
+        .get('dipChatKit.uploadAttachmentMissingPath')
+        .d('上传附件失败，未返回有效路径') as string,
     )
   }
 

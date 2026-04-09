@@ -3,4 +3,3 @@ export interface ArtifactMessageCardProps {
   archiveRoot: string
   onClick: () => void
 }
-

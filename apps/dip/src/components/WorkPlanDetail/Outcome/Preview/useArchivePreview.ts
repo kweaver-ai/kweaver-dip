@@ -62,7 +62,9 @@ export function useArchivePreview(dhId: string, sessionId: string) {
           if (!(res instanceof ArrayBuffer)) {
             // message.error('文件数据格式异常')
             setPreview((p) =>
-              p ? { ...p, body: '', loading: false, viewer: 'text', error: '文件数据格式异常' } : null,
+              p
+                ? { ...p, body: '', loading: false, viewer: 'text', error: '文件数据格式异常' }
+                : null,
             )
             return
           }
@@ -71,7 +73,9 @@ export function useArchivePreview(dhId: string, sessionId: string) {
           const blobUrl = URL.createObjectURL(blob)
           previewBlobUrlRef.current = blobUrl
           const viewer = getArchivePreviewViewer(title)
-          setPreview((p) => (p ? { ...p, body: '', loading: false, viewer, blobUrl, error: null } : null))
+          setPreview((p) =>
+            p ? { ...p, body: '', loading: false, viewer, blobUrl, error: null } : null,
+          )
           return
         }
 
@@ -83,13 +87,21 @@ export function useArchivePreview(dhId: string, sessionId: string) {
         const body = formatPreviewContent(res, title)
         setPreview((p) =>
           p
-            ? { ...p, body, loading: false, viewer: getArchiveTextPreviewViewer(title), error: null }
+            ? {
+                ...p,
+                body,
+                loading: false,
+                viewer: getArchiveTextPreviewViewer(title),
+                error: null,
+              }
             : null,
         )
       } catch {
         // message.error('加载文件失败')
         revokePreviewBlobUrl()
-        setPreview((p) => (p ? { ...p, body: '', loading: false, viewer: 'text', error: '加载文件失败' } : null))
+        setPreview((p) =>
+          p ? { ...p, body: '', loading: false, viewer: 'text', error: '加载文件失败' } : null,
+        )
       }
     },
     [dhId, sessionId, revokePreviewBlobUrl],

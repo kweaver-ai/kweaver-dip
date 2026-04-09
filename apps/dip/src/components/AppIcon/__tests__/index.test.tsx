@@ -34,6 +34,8 @@ describe('AppIcon', () => {
     const tinyPng =
       'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg=='
     const { container } = render(<AppIcon icon={tinyPng} name="T" hasBorder isBuiltIn />)
-    expect(container.querySelector('.absolute.bottom-\\[-1px\\].right-\\[-1px\\]')).toBeInTheDocument()
+    expect(
+      container.querySelector('.absolute.bottom-\\[-1px\\].right-\\[-1px\\]'),
+    ).toBeInTheDocument()
   })
 })

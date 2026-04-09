@@ -36,7 +36,7 @@ const DipResizeObserver: React.FC<PropsWithChildren<ResizeObserverProps>> = ({
     resizeObserverRef.current = new ResizeObserver(() => {
       if (domRef.current) {
         const { width, height } = domRef.current.getBoundingClientRect()
-        onResize && onResize({ width, height, dom: domRef.current, visible: width !== 0 })
+        onResize?.({ width, height, dom: domRef.current, visible: width !== 0 })
       }
     })
     resizeObserverRef.current?.observe(domRef.current as Element)

@@ -45,13 +45,7 @@ const CheckEnvironmentStep = () => {
       <circle cx="46" cy="34" r="2" fill="#00e5cc" className="eye-glow" />
       <circle cx="76" cy="34" r="2" fill="#00e5cc" className="eye-glow" />
       <defs>
-        <linearGradient
-          id="lobster-gradient"
-          x1="0%"
-          y1="0%"
-          x2="100%"
-          y2="100%"
-        >
+        <linearGradient id="lobster-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
           <stop offset="0%" stopColor="var(--logo-gradient-start)" />
           <stop offset="100%" stopColor="var(--logo-gradient-end)" />
         </linearGradient>

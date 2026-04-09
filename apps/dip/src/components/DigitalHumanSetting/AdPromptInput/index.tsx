@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/a11y/noStaticElementInteractions: 静态元素交互 */
 import { type CSSProperties, forwardRef, useImperativeHandle, useRef, useState } from 'react'
 import ReactDOM from 'react-dom/client'
 import './style.less'
@@ -72,8 +73,10 @@ const AdPromptInput = forwardRef<AdPromptInputRef, AdPromptInputProps>((props, r
 
   const setValue = async (data?: string) => {
     const html = await textConvertHtml(data)
-    inputRef.current!.innerHTML = ''
-    inputRef.current!.appendChild(html)
+    if (inputRef.current) {
+      inputRef.current.innerHTML = ''
+      inputRef.current.appendChild(html)
+    }
   }
 
   /** 提示词文本转换为html */
@@ -151,7 +154,7 @@ const AdPromptInput = forwardRef<AdPromptInputRef, AdPromptInputProps>((props, r
 
     setTriggerOptions(options || [])
 
-    const lastCharacterIndex = cursorBeforeStr?.lastIndexOf(triggerCharacter!)
+    const lastCharacterIndex = cursorBeforeStr?.lastIndexOf(triggerCharacter) ?? -1
     currentTriggerCharacterIndex.current = lastCharacterIndex
 
     if (lastCharacterIndex !== -1) {
@@ -256,7 +259,7 @@ const AdPromptInput = forwardRef<AdPromptInputRef, AdPromptInputProps>((props, r
   }
 
   const handleInputText = () => {
-    let inputText = inputRef.current!.innerText
+    let inputText = inputRef.current?.innerText ?? ''
     if (inputText) {
       inputText = inputText.replace(/\n\n/g, '\n')
       inputText = inputText.replace(/\u00A0/g, ' ')
@@ -344,8 +347,10 @@ const AdPromptInput = forwardRef<AdPromptInputRef, AdPromptInputProps>((props, r
         }}
         onKeyUp={(e) => {
           if (e.keyCode === 8) {
-            if (!(inputRef.current!.innerText && value)) {
-              inputRef.current!.innerHTML = `<div class="${prefixCls}-editor-row"><br /></div>`
+            if (!(inputRef.current?.innerText && value)) {
+              if (inputRef.current) {
+                inputRef.current.innerHTML = `<div class="${prefixCls}-editor-row"><br /></div>`
+              }
             }
           }
         }}

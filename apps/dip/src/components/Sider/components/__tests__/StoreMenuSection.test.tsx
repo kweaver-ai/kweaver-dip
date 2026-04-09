@@ -26,8 +26,18 @@ vi.mock('antd', async () => {
 
 vi.mock('@/routes/routes', () => ({
   routeConfigs: [
-    { key: 'store-route', label: '商店路由', path: 'store/path', handle: { layout: { module: 'store' } } },
-    { key: 'studio-route', label: '工作室路由', path: 'studio/path', handle: { layout: { module: 'studio' } } },
+    {
+      key: 'store-route',
+      label: '商店路由',
+      path: 'store/path',
+      handle: { layout: { module: 'store' } },
+    },
+    {
+      key: 'studio-route',
+      label: '工作室路由',
+      path: 'studio/path',
+      handle: { layout: { module: 'studio' } },
+    },
   ],
 }))
 vi.mock('@/routes/utils', () => ({

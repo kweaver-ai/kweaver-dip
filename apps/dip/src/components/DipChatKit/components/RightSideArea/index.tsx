@@ -4,12 +4,12 @@ import clsx from 'clsx'
 import type React from 'react'
 import intl from 'react-intl-universal'
 import ScrollContainer from '../ScrollContainer'
+import styles from './index.module.less'
 import PreviewArtifact from './PreviewArtifact'
 import PreviewCode from './PreviewCode'
 import PreviewMarkdown from './PreviewMarkdown'
 import PreviewMermaid from './PreviewMermaid'
 import PreviewPlaceholder from './PreviewPlaceholder'
-import styles from './index.module.less'
 import type { RightSideAreaProps } from './types'
 
 const RightSideArea: React.FC<RightSideAreaProps> = ({
@@ -90,7 +90,9 @@ const RightSideArea: React.FC<RightSideAreaProps> = ({
           </div>
         </div>
         <div className={styles.panelBody}>
-          <ScrollContainer className={styles.panelBodyScroll}>{renderGenericPreviewBody()}</ScrollContainer>
+          <ScrollContainer className={styles.panelBodyScroll}>
+            {renderGenericPreviewBody()}
+          </ScrollContainer>
         </div>
       </div>
     )

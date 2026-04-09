@@ -163,7 +163,7 @@ const createSessionEvent = (
   const detailsText = details ? toTextFromUnknown(details) : ''
   const text = contentText || detailsText
 
-  if (!text && !toolName && !toolCallId && !details) {
+  if (!(text || toolName || toolCallId || details)) {
     return null
   }
 
@@ -243,7 +243,11 @@ const appendTurnAnswerText = (turn: DipChatKitMessageTurn, text: string, timelin
   })
 }
 
-const appendTurnAnswerEvent = (turn: DipChatKitMessageTurn, event: DipChatKitAnswerEvent, timelineId: string) => {
+const appendTurnAnswerEvent = (
+  turn: DipChatKitMessageTurn,
+  event: DipChatKitAnswerEvent,
+  timelineId: string,
+) => {
   turn.answerEvents.push(event)
   turn.answerTimeline.push({
     id: timelineId,
@@ -309,11 +313,7 @@ export const mapSessionMessagesToTurns = (
     }
 
     if (role !== 'assistant' && role !== SYSTEM_ROLE && content) {
-      appendTurnAnswerText(
-        resolvedTurn,
-        content,
-        `session_timeline_text_non_assistant_${index}`,
-      )
+      appendTurnAnswerText(resolvedTurn, content, `session_timeline_text_non_assistant_${index}`)
     }
   })
 

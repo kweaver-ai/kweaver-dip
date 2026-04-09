@@ -1,7 +1,9 @@
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 
-vi.mock('@/assets/images/gradient-container-bg.png', () => ({ default: 'https://mock/gradient-bg.png' }))
+vi.mock('@/assets/images/gradient-container-bg.png', () => ({
+  default: 'https://mock/gradient-bg.png',
+}))
 
 import GradientContainer from '../index'
 
