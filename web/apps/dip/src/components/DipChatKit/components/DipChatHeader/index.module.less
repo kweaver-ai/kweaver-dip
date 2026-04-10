@@ -1,0 +1,52 @@
+.root {
+  height: 56px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 14px;
+  border-bottom: 1px solid #ebedf2;
+  background: #ffffff;
+}
+
+.textWrap {
+  max-width: calc(100% - 20px);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+  min-width: 0;
+}
+
+.titleIcon {
+  flex-shrink: 0;
+  color: #126ee3;
+  font-size: 26px;
+}
+
+.titleText {
+  display: inline-block;
+  width: fit-content;
+  min-width: 0;
+  max-width: 360px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #101828;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+}
+
+.subtitleText {
+  display: inline-block;
+  width: fit-content;
+  min-width: 0;
+  max-width: 360px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #667085;
+  font-size: 12px;
+  line-height: 18px;
+}

@@ -1,0 +1,8 @@
+{
+  "extends": "../../tooling/tsconfig/library.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "outDir": "dist"
+  },
+  "include": ["src", "tsup.config.ts"]
+}

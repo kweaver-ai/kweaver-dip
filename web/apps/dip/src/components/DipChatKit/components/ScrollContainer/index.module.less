@@ -1,0 +1,37 @@
+﻿.root {
+  height: 100%;
+  min-height: 0;
+}
+
+.scrollArea {
+  height: 100%;
+  min-height: 0;
+  overflow: auto;
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+
+.scrollArea:hover {
+  scrollbar-color: rgba(120, 132, 147, 0.72) transparent;
+}
+
+.scrollArea::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.scrollArea::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollArea::-webkit-scrollbar-thumb {
+  border-radius: 8px;
+  background-color: rgba(120, 132, 147, 0);
+  transition: background-color 0.15s ease;
+}
+
+.scrollArea:hover::-webkit-scrollbar-thumb {
+  background-color: rgba(120, 132, 147, 0.72);
+  transition-duration: 0s;
+}

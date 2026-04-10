@@ -1,0 +1,69 @@
+.homePage {
+  min-height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f8fafc;
+}
+
+.homeContent {
+  width: min(100%, 760px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.hero {
+  gap: 10px;
+}
+
+.title {
+  margin: 0;
+  text-align: center;
+  font-size: 34px;
+  line-height: 1.2;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.subtitle {
+  text-align: center;
+  font-size: 14px;
+  line-height: 22px;
+  color: rgb(15 23 42 / 52%);
+}
+
+.promptSection {
+  width: 100%;
+}
+
+.quickEntries {
+  width: 100%;
+}
+
+.quickEntryButton {
+  height: 36px;
+  padding: 0 16px;
+  border-radius: 8px;
+  border-color: rgb(148 163 184 / 28%) !important;
+  background: #fff;
+  color: #1f2937;
+  box-shadow: 0 1px 2px rgb(15 23 42 / 4%);
+}
+
+.quickEntryIcon {
+  margin-right: 6px;
+  color: #4f83ff;
+  font-size: 16px;
+}
+
+@media (width <= 640px) {
+  .homePage {
+    padding: 24px 16px 32px;
+  }
+
+  .title {
+    font-size: 28px;
+  }
+}

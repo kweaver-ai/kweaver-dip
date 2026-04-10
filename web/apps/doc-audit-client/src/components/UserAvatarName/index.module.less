@@ -1,0 +1,40 @@
+.wrap {
+  display: inline-flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.avatar {
+  margin: 5px 5px 5px 0 !important;
+  flex-shrink: 0;
+  background: #4a5c9b !important;
+}
+
+.name {
+  max-width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: rgba(0, 0, 0, 0.88);
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  min-height: 32px;
+  padding: 0 8px;
+  border-radius: 16px;
+  background: rgb(245, 246, 247);
+}
+
+.tag-close {
+  margin-left: 4px;
+  color: rgba(0, 0, 0, 0.45);
+  font-size: 10px;
+  line-height: 1;
+  cursor: pointer;
+  user-select: none;
+}

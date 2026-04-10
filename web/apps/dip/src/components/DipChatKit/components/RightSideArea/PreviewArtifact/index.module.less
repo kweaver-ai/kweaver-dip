@@ -1,0 +1,124 @@
+.root {
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+}
+
+.header {
+  height: 48px;
+  flex-shrink: 0;
+  border-bottom: 1px solid #ebedf2;
+  padding: 0 12px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  column-gap: 12px;
+}
+
+.headerLeft {
+  min-width: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.fileAvatar {
+  background: #d97706;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.fileName {
+  display: inline-block;
+  max-width: 140px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #101828;
+  font-size: 13px;
+  line-height: 20px;
+  font-weight: 500;
+}
+
+.headerCenter {
+  flex-shrink: 0;
+}
+
+.headerRight {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  justify-self: end;
+}
+
+.body {
+  flex: 1;
+  min-height: 0;
+}
+
+.bodyScroll {
+  height: 100%;
+}
+
+.previewSkeletonWrap {
+  width: 100%;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+.previewSkeletonCard {
+  width: 100%;
+  min-height: 680px;
+  background: #ffffff;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+.errorText {
+  padding: 12px;
+  color: #d92d20;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.codeWrap {
+  padding: 12px;
+}
+
+.markdownWrap {
+  padding: 12px;
+}
+
+.markdownPreview {
+  color: #101828;
+}
+
+.htmlFrameWrap {
+  width: 100%;
+}
+
+.htmlFrame {
+  display: block;
+  width: 100%;
+  border: none;
+  background: #ffffff;
+}
+
+.imagePreview {
+  display: block;
+  max-width: 100%;
+  border-radius: 8px;
+  border: 1px solid #eaecf0;
+  background: #ffffff;
+  margin: 12px;
+}
+
+.pdfFrame {
+  width: 100%;
+  min-height: 680px;
+  border: none;
+  background: #ffffff;
+}

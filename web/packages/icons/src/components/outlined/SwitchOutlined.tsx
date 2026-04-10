@@ -1,0 +1,16 @@
+import React from 'react'
+import { IconBase } from '../../shared/IconBase'
+import type { OutlinedIconProps } from '../../shared/IconBase'
+
+const svgContent = "<path d=\"M193.504 424.512h636.8c13.664 0 25.952-8.032 31.136-20.768a33.28 33.28 0 0 0-7.072-36.32l-200.96-200.96a33.024 33.024 0 0 0-47.168 0 33.024 33.024 0 0 0 0 47.168l143.872 143.872h-556.16c-18.4 0-33.504 15.104-33.504 33.504a32.96 32.96 0 0 0 33.056 33.504m636.8 208h-636.8c-13.664 0-25.952 8.032-31.136 20.768A30.5 30.5 0 0 0 160 666.016c0 8.48 3.296 17.44 9.92 23.584l167.456 167.936a33.024 33.024 0 0 0 47.168 0 33.024 33.024 0 0 0 0-47.168L274.176 700h556.128c18.4 0 33.504-15.104 33.504-33.504-.032-18.4-15.104-33.984-33.504-33.984\"/>"
+
+export default function SwitchOutlined(props: OutlinedIconProps) {
+  return (
+    <IconBase
+      {...props}
+      kind="outlined"
+      viewBox="0 0 1024 1024"
+      content={svgContent}
+    />
+  )
+}

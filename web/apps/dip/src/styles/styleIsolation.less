@@ -1,0 +1,134 @@
+/**
+ * 样式隔离防护文件
+ * 
+ * 目的：防止微应用引入全局 reset.css（如 antd/dist/reset.css）影响主应用样式
+ * 
+ * 策略：
+ * 1. 使用高优先级选择器（html.dip-kweaver, body.dip-kweaver）确保主应用样式不被覆盖
+ * 2. 只防护根元素和关键布局样式，不覆盖 Tailwind Preflight 的基础样式重置
+ * 3. 使用 !important 仅用于防护微应用的全局样式，确保优先级高于微应用的 reset.css
+ * 
+ * 注意：
+ * - Tailwind Preflight 已启用，提供基础样式重置（@tailwind base）
+ * - 此文件只做样式隔离防护，防护微应用的全局样式重置影响主应用
+ * - 不覆盖 Tailwind Preflight 和主应用内部的正常样式
+ */
+
+/* ============================================
+   1. HTML 和 Body 元素防护
+   只防护根元素，避免微应用的全局样式重置影响主应用布局
+   ============================================ */
+
+/* HTML 根元素防护 - 明确设置 rem 基准值 */
+html.dip-kweaver {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  overflow: hidden !important;
+  box-sizing: border-box !important;
+
+  /*
+   * 明确设置 rem 基准值，防止被其他样式覆盖
+   * 1rem = 16px，与 Tailwind CSS 默认基准一致
+   */
+  font-size: 16px !important;
+}
+
+/* Body 元素防护和样式设置 */
+body.dip-kweaver {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  overflow: hidden !important;
+  box-sizing: border-box !important;
+  line-height: 1 !important;
+  color: rgb(0 0 0 / 85%) !important;
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Helvetica Neue', 'PingFang SC',
+    'Microsoft YaHei', sans-serif !important;
+  font-size: 14px !important;
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+}
+
+/* ============================================
+   2. 主应用容器防护
+   ============================================ */
+
+/* 确保主应用根容器样式不被覆盖 */
+body.dip-kweaver > #dip-kweaver-root {
+  width: 100vw !important;
+  height: 100vh !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+}
+
+/* ============================================
+   3. 全局 box-sizing 设置
+   这是唯一需要全局设置的属性，确保布局一致性
+   ============================================ */
+
+html.dip-kweaver *,
+body.dip-kweaver *,
+#dip-kweaver-root * {
+  box-sizing: border-box !important;
+}
+
+/* ============================================
+   4. 滚动条样式防护（保持主应用自定义滚动条）
+   ============================================ */
+
+html.dip-kweaver ::-webkit-scrollbar,
+body.dip-kweaver ::-webkit-scrollbar {
+  width: 6px !important;
+  height: 6px !important;
+}
+
+html.dip-kweaver ::-webkit-scrollbar-thumb,
+body.dip-kweaver ::-webkit-scrollbar-thumb {
+  background: rgb(0 0 0 / 25%) !important;
+  border-radius: 3px !important;
+}
+
+html.dip-kweaver ::-webkit-scrollbar-corner,
+body.dip-kweaver ::-webkit-scrollbar-corner {
+  overflow: hidden !important;
+}
+
+html.dip-kweaver ::-webkit-scrollbar-thumb:hover,
+html.dip-kweaver ::-webkit-scrollbar-thumb:active,
+body.dip-kweaver ::-webkit-scrollbar-thumb:hover,
+body.dip-kweaver ::-webkit-scrollbar-thumb:active {
+  background: rgb(0 0 0 / 25%) !important;
+}
+
+/* ============================================
+   5. 微应用容器隔离
+   ============================================ */
+
+/* 确保微应用容器不影响主应用布局 */
+body.dip-kweaver [data-qiankun] {
+  /* qiankun 会自动添加 data-qiankun 属性 */
+  isolation: isolate !important;
+}
+
+/* 隐藏滚动条但保持可滚动 */
+.dip-hideScrollbar {
+  overflow: auto;
+
+  /* Firefox */
+  scrollbar-width: none;
+
+  /* IE and Edge */
+  -ms-overflow-style: none;
+
+  /* Webkit浏览器 */
+  &::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    display: none;
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "aiPromptInput": {
+    "mentionPanelTitle": "选择数字员工",
+    "mentionButton": "选择数字员工",
+    "attach": "上传文件",
+    "send": "发送",
+    "removeFile": "移除文件"
+  }
+}

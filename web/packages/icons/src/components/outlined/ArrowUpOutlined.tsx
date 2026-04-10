@@ -1,0 +1,16 @@
+import React from 'react'
+import { IconBase } from '../../shared/IconBase'
+import type { OutlinedIconProps } from '../../shared/IconBase'
+
+const svgContent = "<path d=\"M948.221 530.651 543.741 15.872A40.67 40.67 0 0 0 511.924 0a40.67 40.67 0 0 0-31.817 15.872L75.7 530.652a12.29 12.29 0 0 0-1.61 12.214 10.46 10.46 0 0 0 9.51 6.73h74.166c6.144 0 11.923-2.926 15.945-7.9l299.082-374.784v845.531c0 6.364 4.68 11.557 10.532 11.557h57.344c5.852 0 10.533-5.12 10.533-11.483V166.912l299.08 374.784c3.95 5.12 9.802 7.973 15.946 7.9h74.094c8.996 0 13.897-11.484 7.9-19.018z\"/>"
+
+export default function ArrowupOutlined(props: OutlinedIconProps) {
+  return (
+    <IconBase
+      {...props}
+      kind="outlined"
+      viewBox="0 0 1024 1024"
+      content={svgContent}
+    />
+  )
+}

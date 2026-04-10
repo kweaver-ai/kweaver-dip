@@ -1,0 +1,9 @@
+{
+  "aiPromptInput": {
+    "mentionPanelTitle": "選擇數字員工",
+    "mentionButton": "選擇數字員工",
+    "attach": "上傳檔案",
+    "send": "發送",
+    "removeFile": "移除檔案"
+  }
+}

@@ -1,0 +1,12 @@
+{{- if .Values.runtimeEnv.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-runtime-env
+  namespace: {{ .Values.namespace }}
+data:
+  env.js: |
+    window.__APP_RUNTIME_CONFIG__ = {
+      PUBLIC_ENABLED_MODULES: '{{ .Values.runtimeEnv.publicEnabledModules }}',
+    }
+{{- end }}

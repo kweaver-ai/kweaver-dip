@@ -1,0 +1,32 @@
+/**
+ * 主应用基础样式
+ *
+ * 注意：详细的样式隔离防护已移至 styles/styleIsolation.less
+ * 此文件保留主应用特定的样式定义
+ */
+
+/* 只作用于主应用的根元素，避免与微应用的 #root 冲突 */
+body > #dip-kweaver-root {
+  width: 100vw;
+  height: 100vh;
+}
+
+/* 滚动条样式（全局，但会被 styleIsolation.less 中的更高优先级规则保护） */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgb(0 0 0 / 25%);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-corner {
+  overflow: hidden;
+}
+
+::-webkit-scrollbar-thumb:hover,
+::-webkit-scrollbar-thumb:active {
+  background: rgb(0 0 0 / 25%);
+}

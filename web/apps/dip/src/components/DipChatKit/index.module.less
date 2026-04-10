@@ -1,0 +1,80 @@
+.root {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  overflow: hidden;
+}
+
+.body {
+  flex: 1;
+  min-height: 0;
+}
+
+.bodySplitter {
+  height: 100%;
+}
+
+.bodySplitterPreviewHidden {
+  :global(.dip-splitter-bar) {
+    display: none;
+  }
+
+  :global(.dip-splitter-panel) {
+    padding-right: 0;
+  }
+}
+
+.splitterPanel {
+  min-width: 0;
+  transition: width 0.15s ease;
+}
+
+.chatPanel {
+  height: 100%;
+  min-width: 0;
+}
+
+.rightPanel {
+  height: 100%;
+  min-width: 0;
+  border-left: 1px solid #ebedf2;
+  background: #ffffff;
+  transition: opacity 0.15s ease;
+}
+
+.rightPanelVisible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.rightPanelHidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.previewFullscreen {
+  .body {
+    position: relative;
+  }
+
+  .bodySplitter {
+    position: relative;
+  }
+
+  .rightPanel {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    min-width: 0;
+    z-index: 20;
+    border-left: none;
+    background: #ffffff;
+  }
+
+  :global(.dip-splitter-bar) {
+    display: none;
+  }
+}

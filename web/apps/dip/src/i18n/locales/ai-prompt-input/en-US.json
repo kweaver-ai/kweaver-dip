@@ -1,0 +1,9 @@
+{
+  "aiPromptInput": {
+    "mentionPanelTitle": "Select a digital employee",
+    "mentionButton": "Select a digital employee",
+    "attach": "Upload file",
+    "send": "Send",
+    "removeFile": "Remove file"
+  }
+}

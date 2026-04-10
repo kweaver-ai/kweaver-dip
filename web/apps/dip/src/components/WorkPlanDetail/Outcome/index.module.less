@@ -1,0 +1,30 @@
+/** Ant Design Collapse（prefixCls=dip）深度样式 */
+.collapse {
+  :global {
+    .dip-collapse-borderless {
+      background: transparent;
+    }
+
+    .dip-collapse-item {
+      margin-bottom: 0;
+      border-radius: 0;
+      border-bottom: none;
+    }
+
+    .dip-collapse-item:last-child {
+      border-radius: 0 0 8px 8px;
+      overflow: hidden;
+    }
+
+    .dip-collapse-header {
+      padding: 9px 24px !important;
+      align-items: center;
+      background: var(--dip-white);
+      border-bottom: none;
+    }
+
+    .dip-collapse-body {
+      padding: 0 !important;
+    }
+  }
+}

@@ -1,0 +1,82 @@
+.root {
+  height: 100%;
+  min-height: 0;
+}
+
+.virtuoso {
+  height: 100%;
+  min-height: 0;
+}
+
+.scrollArea {
+  height: 100%;
+  min-height: 0;
+  overflow: auto;
+  padding: 0 16px;
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+
+.scrollArea:hover {
+  scrollbar-color: rgba(120, 132, 147, 0.72) transparent;
+}
+
+.scrollArea::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.scrollArea::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollArea::-webkit-scrollbar-thumb {
+  border-radius: 8px;
+  background-color: rgba(120, 132, 147, 0);
+  transition: background-color 0.15s ease;
+}
+
+.scrollArea:hover::-webkit-scrollbar-thumb {
+  background-color: rgba(120, 132, 147, 0.72);
+  transition-duration: 0s;
+}
+
+.list {
+  width: 100%;
+  max-width: 728px;
+  --chat-turn-max-width: 80%;
+  margin: 0 auto;
+}
+
+.turnItem {
+  padding-bottom: 8px;
+}
+
+.topSpacer {
+  height: 16px;
+}
+
+.bottomSpacer {
+  height: 248px;
+}
+
+.emptyState {
+  width: 100%;
+  max-width: 728px;
+  margin: 0 auto;
+  color: #667085;
+  font-size: 13px;
+  line-height: 20px;
+  padding: 8px 0;
+}
+
+.sessionLoadingSkeleton {
+  width: 100%;
+  max-width: 728px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 4px 0;
+}

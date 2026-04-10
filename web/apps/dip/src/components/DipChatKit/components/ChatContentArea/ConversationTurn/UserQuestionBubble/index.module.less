@@ -1,0 +1,61 @@
+.root {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.fileListWrap {
+  width: min(100%, 560px);
+}
+
+.fileList {
+  width: 100%;
+}
+
+.fileCard {
+  width: 100%;
+}
+
+.fileCardName {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fileCardTooltipTarget {
+  display: block;
+}
+
+.bubble {
+  max-width: var(--chat-turn-max-width);
+}
+
+.questionText {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.actionsWrap {
+  margin-top: 0;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+}
+
+.root:hover .actionsWrap,
+.root:focus-within .actionsWrap {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+@media (hover: none) {
+  .actionsWrap {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+}

@@ -1,0 +1,10 @@
+{
+	"plugins": {
+		"modelName": "model name",
+		"RemainingBalance": "Remaining balance",
+		"unlimited": "unlimited",
+		"used": "used",
+		"total": "total",
+		"modelUsage": "Model usage"
+	}
+}

@@ -1,0 +1,18 @@
+.microAppScope {
+  height: 100%;
+  width: 100%;
+  --custom-theme-color: #126ee3;
+
+  :global {
+    img,
+    svg {
+      display: inline;
+      vertical-align: unset;
+    }
+
+    /* 兜底：vega-root 下只有一个裸 div 时隐藏 */
+    #vega-root > div:only-child:not([class]) {
+      display: none !important;
+    }
+  }
+}

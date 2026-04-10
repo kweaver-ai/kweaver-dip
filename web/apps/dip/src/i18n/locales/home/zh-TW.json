@@ -1,0 +1,22 @@
+{
+  "home": {
+    "title": "Hi {name}，您的數字員工團隊已準備就緒",
+    "subtitle": "描述您的業務需求，我們將為您自動分析並完成任務。",
+    "inputPlaceholder": "輸入任何指令，透過 @ 指定數字員工立即為你執行",
+    "defaultName": "Iris",
+    "quickEntry": {
+      "plan": "計劃協同助手",
+      "logistics": "物流調度助手",
+      "vendorRisk": "供應商風險監控助手",
+      "inventory": "庫存優化助手"
+    },
+    "mention": {
+      "planCollaborationAssistant": "計劃協同助手",
+      "financeAuditAssistant": "財務審計助手",
+      "customerServiceAudit": "客服質檢",
+      "dataComplianceAuditor": "資料合規審計員",
+      "logisticsDispatchAssistant": "物流調度助手",
+      "vendorRiskMonitor": "供應商風險監控助手"
+    }
+  }
+}

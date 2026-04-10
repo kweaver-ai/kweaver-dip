@@ -1,0 +1,15 @@
+{
+  "extends": "../../tooling/tsconfig/library.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "jsx": "react-jsx"
+  },
+  "include": [
+    "src",
+    "scripts",
+    "preview",
+    "tsup.config.ts",
+    "vite.config.ts",
+    "vitest.config.ts"
+  ]
+}

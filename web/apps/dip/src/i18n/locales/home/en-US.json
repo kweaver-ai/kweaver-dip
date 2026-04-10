@@ -1,0 +1,22 @@
+{
+  "home": {
+    "title": "Hi {name}, your digital employee team is ready.",
+    "subtitle": "Describe your business need and we will analyze it automatically and complete the task.",
+    "inputPlaceholder": "Enter any instruction and use @ to pick a digital employee.",
+    "defaultName": "Iris",
+    "quickEntry": {
+      "plan": "Planning Assistant",
+      "logistics": "Logistics Dispatch Assistant",
+      "vendorRisk": "Vendor Risk Monitor",
+      "inventory": "Inventory Optimization Assistant"
+    },
+    "mention": {
+      "planCollaborationAssistant": "Planning Collaboration Assistant",
+      "financeAuditAssistant": "Finance Audit Assistant",
+      "customerServiceAudit": "Customer Service QA",
+      "dataComplianceAuditor": "Data Compliance Auditor",
+      "logisticsDispatchAssistant": "Logistics Dispatch Assistant",
+      "vendorRiskMonitor": "Vendor Risk Monitor"
+    }
+  }
+}

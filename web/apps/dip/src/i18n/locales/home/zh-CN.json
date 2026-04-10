@@ -1,0 +1,22 @@
+{
+  "home": {
+    "title": "Hi {name}，您的数字员工团队已准备就绪",
+    "subtitle": "描述您的业务需求，我们将为您自动分析并完成任务。",
+    "inputPlaceholder": "输入任何指令，通过 @ 指定数字员工即刻为你执行",
+    "defaultName": "Iris",
+    "quickEntry": {
+      "plan": "计划协同助手",
+      "logistics": "物流调度助手",
+      "vendorRisk": "供应商风险监控助手",
+      "inventory": "库存优化助手"
+    },
+    "mention": {
+      "planCollaborationAssistant": "计划协同助手",
+      "financeAuditAssistant": "财务审计助手",
+      "customerServiceAudit": "客服质检",
+      "dataComplianceAuditor": "数据合规审计员",
+      "logisticsDispatchAssistant": "物流调度助手",
+      "vendorRiskMonitor": "供应商风险监控助手"
+    }
+  }
+}

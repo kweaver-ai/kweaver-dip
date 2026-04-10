@@ -1,0 +1,40 @@
+.dependency-item {
+  height: 38px;
+  width: calc(100% - 8px);
+  padding: 8px 12px 8px 12px;
+  border-radius: 8px;
+
+  &:hover {
+    background: rgba(46, 46, 56, 0.08);
+  }
+
+  .pkg-icon {
+    color: #c6c6cd;
+  }
+
+  .pkg-name {
+    color: #1d1c23cc;
+  }
+
+  .pkg-version {
+    color: #1d1c2359;
+  }
+
+  .del-icon {
+    display: none;
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    color: #565561;
+  }
+}
+
+.hover-disable-version:hover {
+  .pkg-version {
+    display: none;
+  }
+
+  .del-icon {
+    display: unset;
+  }
+}

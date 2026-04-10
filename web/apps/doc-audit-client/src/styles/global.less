@@ -1,0 +1,144 @@
+@import './variables.less';
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  font-size: @font-size-base;
+  line-height: @line-height-base;
+  color: @text-color;
+  background-color: @background-color-light;
+}
+
+#doc-audit-client-root {
+  width: 100%;
+  height: 100%;
+}
+
+.@{ant-prefix}-btn:not(.@{ant-prefix}-btn-icon-only) {
+  min-width: 74px;
+}
+
+// 文本截断
+.text-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// 多行文本截断
+.text-ellipsis-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// 高亮文本
+.highlight {
+  color: @primary-color;
+  background-color: #e6f7ff;
+}
+
+// 滚动条样式
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.3);
+  }
+}
+
+// 审核状态徽章
+.audit-status {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: @border-radius-sm;
+  font-size: @font-size-sm;
+
+  &.pending {
+    color: @audit-status-pending;
+    background-color: #e6f7ff;
+  }
+
+  &.pass {
+    color: @audit-status-pass;
+    background-color: #f6ffed;
+  }
+
+  &.reject {
+    color: @audit-status-reject;
+    background-color: #fff2f0;
+  }
+
+  &.undone {
+    color: @text-color-secondary;
+    background-color: @background-color-base;
+  }
+
+  &.avoid {
+    color: @audit-status-avoid;
+    background-color: #f6ffed;
+  }
+}
+
+// 文件图标容器
+.file-icon-wrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+}
+
+// 用户头像
+.user-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: #4a5c9b;
+  color: #fff;
+  font-size: 12px;
+  margin-right: @spacing-sm;
+}
+
+// 空状态
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: @spacing-xl;
+  color: @text-color-secondary;
+
+  .empty-icon {
+    font-size: 48px;
+    margin-bottom: @spacing-md;
+    color: @border-color-base;
+  }
+
+  .empty-text {
+    font-size: @font-size-base;
+  }
+}

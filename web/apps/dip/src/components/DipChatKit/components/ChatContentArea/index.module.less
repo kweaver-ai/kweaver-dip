@@ -1,0 +1,82 @@
+﻿.root {
+  height: 100%;
+  position: relative;
+}
+
+.scrollArea {
+  height: 100%;
+}
+
+.messageList {
+  padding: 16px 16px 248px;
+}
+
+.messageListContent {
+  width: 100%;
+  max-width: 728px;
+  --chat-turn-max-width: 80%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.emptyState {
+  color: #667085;
+  font-size: 13px;
+  line-height: 20px;
+  padding: 8px 0;
+}
+
+.sessionLoadingSkeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 4px 0;
+}
+
+.inputArea {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: 0 16px;
+  padding-bottom: 16px;
+  background-color: #fff;
+}
+
+.inputContent {
+  width: 100%;
+  max-width: 728px;
+  margin: 0 auto;
+}
+
+.inputInner {
+  box-shadow: 0 8px 24px -16px rgba(16, 24, 40, 0.38);
+  border-radius: 12px;
+}
+
+.inputDisclaimer {
+  margin-top: 8px;
+  text-align: center;
+  color: #98a2b3;
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.backToBottomWrap {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 32px);
+  max-width: 728px;
+  bottom: calc(100% + 12px);
+  z-index: 3;
+  display: flex;
+  justify-content: flex-end;
+  pointer-events: none;
+}
+
+.backToBottomBtn {
+  pointer-events: auto;
+}

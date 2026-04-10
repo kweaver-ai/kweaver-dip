@@ -1,0 +1,170 @@
+.root {
+  width: 100%;
+}
+
+.card {
+  position: relative;
+  width: 100%;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 4px 12px rgb(15 23 42 / 4%);
+}
+
+.footer {
+  width: 100%;
+}
+
+.leftActions {
+  min-width: 0;
+}
+
+.fileHeaderContainer {
+  width: 100%;
+  padding-top: 8px;
+}
+
+.fileHeaderList {
+  width: 100%;
+}
+
+.fileCardItem {
+  position: relative;
+  width: 100%;
+  overflow: visible;
+}
+
+.fileCardTooltipTarget {
+  display: block;
+}
+
+.fileCard {
+  width: 100%;
+}
+
+.fileCardName {
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fileCardRemoveAction {
+  position: absolute;
+  top: 0;
+  right: 0;
+  transform: translate(50%, -50%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+  z-index: 1;
+}
+
+.fileCardItem:hover .fileCardRemoveAction,
+.fileCardItem:focus-within .fileCardRemoveAction {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.employeeSlotTag {
+  margin-inline-end: 0;
+  user-select: none;
+}
+
+.employeeSlotTagContent {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.employeeSlotTagAvatar {
+  display: inline-flex;
+  flex-shrink: 0;
+}
+
+.employeeSlotTagLabel {
+  line-height: 1;
+}
+
+.actionIcon {
+  font-size: 16px;
+}
+
+.cursorAnchor {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+}
+
+.mentionDropdown {
+  width: 208px;
+  overflow: hidden;
+  border: 1px solid rgb(226 232 240 / 95%);
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 18px 40px rgb(15 23 42 / 12%);
+
+  :global {
+    .dip-dropdown-menu {
+      padding: 0 0 8px;
+      background: #fff;
+      box-shadow: none!important;
+      max-height: 320px;
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+
+    .dip-dropdown-menu-item {
+      padding: 10px 16px;
+      overflow: hidden;
+    }
+
+    .dip-dropdown-menu-item-selected {
+      background: #eff6ff;
+      border-radius: 8px;
+    }
+
+    .dip-dropdown-menu-item-active {
+      background: #eff6ff;
+      border-radius: 8px;
+    }
+
+    .dip-dropdown-menu-title-content {
+      display: block;
+      min-width: 0;
+      overflow: hidden;
+    }
+  }
+}
+
+.mentionTitle {
+  padding: 12px 16px 8px;
+  background: #fff;
+  font-size: 12px;
+  font-weight: 500;
+  color: rgb(15 23 42 / 45%);
+}
+
+.mentionMenuItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-width: 0;
+}
+
+.mentionIcon {
+  display: inline-flex;
+  flex-shrink: 0;
+}
+
+.mentionMenuLabel {
+  flex: 1;
+  min-width: 0;
+  font-size: 14px;
+  color: #1f2937;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

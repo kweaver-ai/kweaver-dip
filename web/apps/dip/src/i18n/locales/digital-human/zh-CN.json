@@ -1,0 +1,37 @@
+{
+  "digitalHuman": {
+    "management": {
+      "pageTitle": "数字员工",
+      "pageSubtitle": "管理数字员工市场，创建或删除数字员工",
+      "searchPlaceholder": "搜索数字员工",
+      "refresh": "刷新",
+      "createShort": "新建",
+      "emptySearchDesc": "抱歉，没有找到相关内容",
+      "emptyTitle": "暂无数字员工",
+      "emptySubDesc": "当前数字员工空空如也，您可以点击下方按钮新建第一个数字员工。",
+      "createDigitalHuman": "新建数字员工",
+      "loadFailedTitle": "数字员工加载失败",
+      "retry": "重试",
+      "menuEdit": "编辑",
+      "menuDelete": "删除",
+      "deleteModalTitle": "确认删除数字员工",
+      "deleteConfirmBody": "您确认要删除数字员工 __DH_NAME__ 吗？删除后，该数字员工下的所有数据将被永久删除，此操作无法撤销。",
+      "deleteOk": "删除",
+      "deleteCancel": "取消",
+      "deleteNameLabel": "请输入数字员工名称以确认删除：",
+      "deleteNamePlaceholder": "请输入数字员工名称",
+      "validateNameRequired": "请输入数字员工名称",
+      "validateNameMismatch": "输入的数字员工名称不匹配",
+      "deleteSuccess": "删除成功",
+      "deleteFailed": "删除失败，请稍后重试"
+    },
+    "detail": {
+      "tabPlan": "执行计划",
+      "tabSession": "会话",
+      "tabConfig": "配置详情",
+      "tabPlanPlaceholder": "执行计划内容将在此展示（可按员工维度接入工作计划能力）。",
+      "tabSessionPlaceholder": "会话内容将在此展示（可按员工维度接入历史会话等）。",
+      "fallbackTitle": "数字员工详情"
+    }
+  }
+}

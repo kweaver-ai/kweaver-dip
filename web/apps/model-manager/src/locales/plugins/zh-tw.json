@@ -1,0 +1,10 @@
+{
+	"plugins": {
+		"modelName": "模型名稱",
+		"RemainingBalance": "剩餘額度",
+		"unlimited": "不限額",
+		"used": "已使用額度",
+		"total": "總額度",
+		"modelUsage": "模型用量"
+	}
+}

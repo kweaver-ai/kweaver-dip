@@ -1,0 +1,62 @@
+.dependency-panel {
+  background-color: white;
+  overflow-y: hidden;
+
+  .header {
+    height: 56px;
+    flex-shrink: 0;
+    border-bottom: 1px solid rgb(229, 230, 235);
+  }
+
+  .collapse {
+    overflow-y: auto;
+    background: transparent;
+
+    :global {
+      .@{ant-prefix}-collapse-item {
+        border-bottom: none !important;
+      }
+
+      .@{ant-prefix}-collapse-content-box {
+        padding-right: 0 !important;
+      }
+
+      .@{ant-prefix}-collapse-header {
+        padding-top: 8px !important;
+        padding-bottom: 8px !important;
+      }
+
+      .@{ant-prefix}-collapse-content-box {
+        padding-bottom: 8px !important;
+      }
+    }
+  }
+
+  .count {
+    padding-left: 6px;
+    padding-right: 6px;
+    min-width: 24px;
+    background: #e6f4ff;
+    color: #1677ff;
+    border-radius: 6px;
+    font-weight: 500;
+    text-align: center;
+    font-size: 12px;
+  }
+
+  .count-empty {
+    background: rgba(0, 0, 0, 0.1) !important;
+    color: inherit !important;
+  }
+
+  .add-external-btn {
+    margin-left: 6px;
+    width: 24px;
+    height: 24px;
+  }
+
+  .external-registry-btn {
+    width: 24px;
+    height: 24px;
+  }
+}

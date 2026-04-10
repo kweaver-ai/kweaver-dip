@@ -1,0 +1,65 @@
+# Dependencies
+node_modules
+.pnp
+.pnp.js
+
+# Build outputs
+dist/
+build/
+*.tsbuildinfo
+
+# Rsbuild cache
+.rsbuild/
+.rspack-profile-*/
+.cache/
+.temp/
+.tmp/
+
+# Testing
+coverage/
+.nyc_output/
+*.lcov
+
+# Environment variables
+.env.development
+.env.local
+
+# Logs
+*.log*
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.cursor/*
+.cursorignore
+*.swp
+*.swo
+*~
+*.pid
+*.seed
+*.pid.lock
+.claude/*
+
+# Package manager lock files (keep yarn.lock)
+package-lock.json
+pnpm-lock.yaml
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.backup
+
+# Documentation
+docs/
+AGENTS.md

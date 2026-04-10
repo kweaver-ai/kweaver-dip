@@ -1,0 +1,3 @@
+runtimeEnv:
+  enabled: true
+  publicEnabledModules: "store"

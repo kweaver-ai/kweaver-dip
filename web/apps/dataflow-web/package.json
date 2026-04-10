@@ -1,0 +1,20 @@
+{
+  "name": "@kweaver-web/dataflow-web",
+  "private": "true",
+  "scripts": {
+    "new": "node scripts/new.js",
+    "install:deps": "pnpm install --no-frozen-lockfile --registry https://registry.npmmirror.com --fetch-timeout 100000 --fetch-retries 5 && pnpm run build:deps",
+    "build:deps": "pnpm --filter @applet/icons run g && pnpm --filter icons --filter api --filter common build",
+    "lint-report": "pnpm --filter flow-web lint-report",
+    "test": "pnpm --filter flow-web test",
+    "start": "pnpm --filter flow-web start",
+    "build": "pnpm --filter flow-web build"
+  },
+  "devDependencies": {
+    "create-react-app": "5.0.1"
+  },
+  "engines": {
+    "pnpm": ">=7",
+    "node": ">=14.6"
+  }
+}

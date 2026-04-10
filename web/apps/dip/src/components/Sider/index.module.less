@@ -1,0 +1,297 @@
+/* 首帧禁用 transition，避免 Sider 宽度从 0 过渡导致主内容区 CLS */
+.siderNoTransition {
+  transition: none !important;
+}
+
+.sider-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  :global {
+    .dip-menu {
+      border-inline-end: none;
+      background: transparent;
+    }
+
+    .dip-menu-item {
+      height: 40px;
+      line-height: 40px;
+      margin-inline: 6px !important;
+      width: calc(100% - 12px);
+      padding-inline: 10px !important;
+      border-radius: 4px;
+      position: relative;
+      overflow: visible;
+
+      &.dip-menu-item-selected {
+        background-color: #f1f7fe;
+        color: var(--dip-primary-color);
+
+        &::before {
+          content: "";
+          position: absolute;
+          left: -4px;
+          top: 10px;
+          bottom: 10px;
+          width: 2px;
+          background: linear-gradient(180deg, #3fa9f5 0%, #126ee3 100%);
+          border-radius: 2px;
+        }
+      }
+
+      &:hover:not(.dip-menu-item-selected) {
+        background-color: var(--dip-hover-bg-color) !important;
+      }
+
+      /* 按下：组件默认 itemActiveBg 与 hover 不同，与侧栏 hover/选中统一 */
+      &:active:not(.dip-menu-item-selected) {
+        background-color: var(--dip-hover-bg-color) !important;
+      }
+
+      &.dip-menu-item-selected:active {
+        background-color: #f1f7fe !important;
+      }
+
+      &:hover {
+        .pin-icon {
+          display: inline-flex;
+        }
+      }
+    }
+
+    .dip-menu-item-icon {
+      font-size: 16px;
+      transition: none;
+    }
+
+    .dip-menu-title-content {
+      font-size: 14px var(--dip-text-color);
+    }
+
+    .dip-menu-item-divider {
+      margin: 8px 6px;
+      border-color: var(--dip-border-color);
+    }
+
+    .dip-menu-item-group-title {
+      font-size: 12px;
+      color: var(--dip-text-color-65);
+    }
+
+    /* SubMenu：与顶层 .dip-menu-item 同一套尺寸与边距，避免分组「缩进一块」观感 */
+    .dip-menu-submenu {
+      padding: 0;
+
+      .dip-menu-sub.dip-menu-inline {
+        background-color: transparent;
+
+        .dip-menu-submenu-active {
+          background-color: var(--dip-hover-bg-color);
+        }
+      }
+
+      .dip-menu-submenu-inner {
+        padding: 0;
+      }
+    }
+
+    .dip-menu-submenu-title {
+      font-weight: inherit;
+      height: 40px;
+      line-height: 40px;
+      margin-inline: 6px !important;
+      width: calc(100% - 12px);
+      padding-inline: 10px !important;
+      border-radius: 4px;
+
+      &:hover {
+        background-color: var(--dip-hover-bg-color);
+      }
+
+      &:active {
+        background-color: var(--dip-hover-bg-color) !important;
+      }
+    }
+
+    /* 一级 SubMenu 收起时，若二级有选中项，父级与 .dip-menu-item-selected 同套高亮 */
+    .dip-menu-submenu.dip-menu-submenu-selected:not(.dip-menu-submenu-open)
+      > .dip-menu-submenu-title {
+      position: relative;
+      background-color: #f1f7fe;
+      color: var(--dip-primary-color);
+
+      &::before {
+        content: "";
+        position: absolute;
+        left: -4px;
+        top: 10px;
+        bottom: 10px;
+        width: 2px;
+        background: linear-gradient(180deg, #3fa9f5 0%, #126ee3 100%);
+        border-radius: 2px;
+      }
+
+      &:hover {
+        background-color: #f1f7fe;
+      }
+
+      &:active {
+        background-color: #f1f7fe !important;
+      }
+    }
+
+    /* 内层 SubMenu 标题（如多级折叠），与一级 submenu-title 按下态一致 */
+    .dip-menu-sub .dip-menu-submenu-title {
+      &:hover {
+        background-color: var(--dip-hover-bg-color);
+      }
+
+      &:active {
+        background-color: var(--dip-hover-bg-color) !important;
+      }
+    }
+
+    .dip-menu-submenu-arrow {
+      right: 10px;
+
+      &::before,
+      &::after {
+        width: 5px !important;
+        height: 1px !important;
+        border-radius: 0.5px !important;
+      }
+    }
+
+    /* 底部用户区：与上方 .dip-menu-item 同一套尺寸与 hover */
+    .dip-sider-footer-row {
+      display: flex;
+      align-items: center;
+      height: 40px;
+      line-height: 40px;
+      margin-inline: 6px !important;
+      width: calc(100% - 12px);
+      padding-inline: 10px !important;
+      border-radius: 4px;
+      position: relative;
+      overflow: visible;
+      box-sizing: border-box;
+      flex-shrink: 0;
+
+      &:hover {
+        background-color: var(--dip-hover-bg-color);
+      }
+    }
+
+    .dip-sider-footer-row-horizontal {
+      flex-direction: row;
+      gap: 8px;
+    }
+
+    .dip-sider-footer-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      width: 100%;
+    }
+  }
+
+  .collapsed {
+    :global {
+      .dip-menu-item {
+        height: 36px;
+        line-height: 36px;
+        padding-inline: calc(50% - 14px) !important;
+        margin-inline: 6px !important;
+      }
+
+      .dip-menu-submenu-title {
+        height: 36px;
+        line-height: 36px;
+        padding-inline: calc(50% - 14px) !important;
+        margin-inline: 6px !important;
+      }
+
+      .dip-menu-submenu.dip-menu-submenu-selected:not(.dip-menu-submenu-open)
+        > .dip-menu-submenu-title::before {
+        top: 8px;
+        bottom: 8px;
+      }
+
+      .dip-menu-item-group {
+        display: none;
+      }
+
+      .dip-sider-footer-row {
+        padding-inline: calc(50% - 14px) !important;
+        margin-inline: 6px !important;
+      }
+
+      /*
+     * 收起时底部两行不要左右 padding：calc 会压窄可点区；与菜单不同，这里是自定义整行交互，
+     * 用 0 + 子元素铺满 + flex 居中即可。外边距仍靠 margin-inline + width 与菜单项对齐。
+     */
+      .dip-sider-footer-stack .dip-sider-footer-row {
+        padding-inline: 0 !important;
+      }
+    }
+  }
+}
+
+/*
+ * 收起时 SubMenu 浮层通过 Portal 挂到 getPopupContainer，不在 .sider-container 内，
+ * 需单独对齐 hover / :active / 选中背景（与侧栏内联菜单一致）。
+ */
+:global {
+  .dip-sider-submenu-popup {
+    width: 230px;
+
+    .dip-menu-item {
+      display: inline-flex !important;
+      align-items: center;
+      height: 40px;
+      line-height: 40px;
+      padding-inline: 10px !important;
+      position: relative;
+      overflow: visible;
+
+      &:hover {
+        .pin-icon {
+          display: inline-flex;
+        }
+      }
+    }
+
+    .dip-menu-title-content {
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .dip-menu-item:not(.dip-menu-item-selected):hover {
+      background-color: var(--dip-hover-bg-color) !important;
+    }
+
+    .dip-menu-item:not(.dip-menu-item-selected):active {
+      background-color: var(--dip-hover-bg-color) !important;
+    }
+
+    .dip-menu-item.dip-menu-item-selected {
+      background-color: #f1f7fe !important;
+      color: var(--dip-primary-color) !important;
+    }
+
+    .dip-menu-item.dip-menu-item-selected:active {
+      background-color: #f1f7fe !important;
+    }
+
+    .dip-menu-submenu-title:hover {
+      background-color: var(--dip-hover-bg-color) !important;
+    }
+
+    .dip-menu-submenu-title:active {
+      background-color: var(--dip-hover-bg-color) !important;
+    }
+  }
+}

@@ -1,0 +1,67 @@
+.root {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+}
+
+.content {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.panel {
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+}
+
+.panelHeader {
+  height: 48px;
+  flex-shrink: 0;
+  border-bottom: 1px solid #ebedf2;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.panelHeaderLeft {
+  min-width: 0;
+  flex: 1;
+}
+
+.panelTitle {
+  display: block;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #101828;
+  font-size: 13px;
+  line-height: 20px;
+  font-weight: 500;
+}
+
+.panelHeaderRight {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.panelBody {
+  flex: 1;
+  min-height: 0;
+}
+
+.panelBodyScroll {
+  height: 100%;
+}
+

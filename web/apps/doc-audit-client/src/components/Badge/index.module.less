@@ -1,0 +1,56 @@
+@import '@/styles/variables.less';
+
+.badge-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 6px;
+  font-size: 12px;
+  line-height: 18px;
+  text-align: center;
+  border-radius: 9px;
+  color: #fff;
+  background-color: @error-color;
+
+  &-dot {
+    min-width: 8px;
+    width: 8px;
+    height: 8px;
+    padding: 0;
+    border-radius: 50%;
+  }
+
+  &-default {
+    background-color: @text-color-secondary;
+  }
+
+  &-success {
+    background-color: @success-color;
+  }
+
+  &-processing {
+    background-color: @primary-color;
+  }
+
+  &-error {
+    background-color: @error-color;
+  }
+
+  &-warning {
+    background-color: @warning-color;
+  }
+}
+
+.badge-text {
+  margin-left: @spacing-xs;
+  color: @text-color-secondary;
+  font-size: @font-size-sm;
+}

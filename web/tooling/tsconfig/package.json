@@ -1,0 +1,10 @@
+{
+  "name": "@kweaver-web/tsconfig",
+  "private": true,
+  "version": "0.0.0",
+  "exports": {
+    "./base.json": "./base.json",
+    "./library.json": "./library.json",
+    "./react-app.json": "./react-app.json"
+  }
+}

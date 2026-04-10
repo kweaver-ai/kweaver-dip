@@ -1,0 +1,36 @@
+/* Primary 按钮禁用状态颜色设置为主题色的 25% 透明度 */
+.dip-btn-primary[disabled],
+.dip-btn-color-primary[disabled] {
+  background: rgb(var(--dip-primary-color-rgb-space) / 25%) !important;
+  background-color: rgb(var(--dip-primary-color-rgb-space) / 25%) !important;
+  border-color: transparent !important;
+  color: white !important;
+  opacity: 1 !important;
+}
+
+.dip-btn-primary[disabled]:hover,
+.dip-btn-primary[disabled]:focus,
+.dip-btn-primary[disabled]:active,
+.dip-btn-color-primary[disabled]:hover,
+.dip-btn-color-primary[disabled]:focus,
+.dip-btn-color-primary[disabled]:active {
+  background: rgb(var(--dip-primary-color-rgb-space) / 25%) !important;
+  background-color: rgb(var(--dip-primary-color-rgb-space) / 25%) !important;
+  border-color: transparent !important;
+  color: white !important;
+}
+
+/* 设置表格滚动条样式 */
+.dip-table {
+  .dip-table-container {
+    .dip-table-body {
+      scrollbar-width: thin;
+      scrollbar-color: rgb(178 181 189 / 50%) transparent;
+    }
+  }
+}
+
+/* 根节点为同一元素同时带 .dip-tabs、.dip-tabs-top，嵌套会编成 .dip-tabs .dip-tabs-top（后代）无法匹配 */
+.dip-tabs.dip-tabs-top > .dip-tabs-nav::before {
+  border-bottom: none !important;
+}

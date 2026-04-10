@@ -1,0 +1,99 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}
+  namespace: {{ .Values.namespace }}
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "dip-frontend.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  replicas: {{.Values.replicaCount}}
+  strategy:
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "dip-frontend.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        app: {{ .Release.Name }}
+      annotations:
+        {{- if .Values.runtimeEnv.enabled }}
+        checksum/runtime-env: {{ printf "%s" .Values.runtimeEnv.publicEnabledModules | sha256sum }}
+        {{- end }}
+    spec:
+      {{- with .Values.securityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if or (and .Values.nginx.enabled (eq .Values.nginx.mountType "hostPath")) (and .Values.nginx.enabled (eq .Values.nginx.mountType "configMap")) .Values.runtimeEnv.enabled }}
+      volumes:
+      {{- if and .Values.nginx.enabled (eq .Values.nginx.mountType "hostPath") }}
+      - name: nginx-config
+        hostPath:
+          path: {{ .Values.nginx.hostPath }}
+          type: File
+      {{- else if and .Values.nginx.enabled (eq .Values.nginx.mountType "configMap") }}
+      - name: nginx-config
+        configMap:
+          name: {{ .Values.nginx.configMapName }}
+      {{- end }}
+      {{- if .Values.runtimeEnv.enabled }}
+      - name: runtime-env
+        configMap:
+          name: {{ .Release.Name }}-runtime-env
+      {{- end }}
+      {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: {{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          resources:
+              requests:
+                  cpu: {{ .Values.resources.requests.cpu }}
+                  memory: {{ .Values.resources.requests.memory }}
+              limits:
+                  cpu: {{ .Values.resources.limits.cpu }}
+                  memory: {{ .Values.resources.limits.memory }}
+          {{- if or (and .Values.nginx.enabled (eq .Values.nginx.mountType "hostPath")) (and .Values.nginx.enabled (eq .Values.nginx.mountType "configMap")) .Values.runtimeEnv.enabled }}
+          volumeMounts:
+          {{- if and .Values.nginx.enabled (eq .Values.nginx.mountType "hostPath") }}
+          - name: nginx-config
+            mountPath: /etc/nginx/conf.d/default.conf
+            readOnly: true
+          {{- else if and .Values.nginx.enabled (eq .Values.nginx.mountType "configMap") }}
+          - name: nginx-config
+            mountPath: /etc/nginx/conf.d/default.conf
+            readOnly: true
+          {{- end }}
+          {{- if .Values.runtimeEnv.enabled }}
+          - name: runtime-env
+            mountPath: /app/dist/dip-hub/env.js
+            subPath: env.js
+            readOnly: true
+          {{- end }}
+          {{- end }}
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+      {{- range .}}
+        {{ .labelKey | quote }}: {{ .labelVal | quote }}
+      {{- end }}
+    {{- end }} 
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                      - {{ .Release.Name }}
+              topologyKey: "kubernetes.io/hostname"
+

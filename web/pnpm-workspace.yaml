@@ -1,0 +1,6 @@
+packages:
+  - apps/*
+  - packages/*
+  - tooling/*
+  # 排除嵌套项目内部的所有子目录（dataflow-web自身是一个monorepo，避免顶层解析其内部workspace）
+  - "!apps/dataflow-web/**"
