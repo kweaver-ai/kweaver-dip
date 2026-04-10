@@ -42,18 +42,34 @@ setup_mariadb_databases() {
     local ns="${MARIADB_NAMESPACE}"
     local mariadb_host="mariadb.${ns}.svc.cluster.local"
     local mariadb_port="3306"
-    
+
+    # Check if ISF or Core manifest has pre-stage data-migrator (0.6.0+)
+    # If so, skip manual database creation - the data-migrator chart will handle it
+    local isf_manifest core_manifest
+    isf_manifest="${ISF_VERSION_MANIFEST_FILE:-$(resolve_embedded_release_manifest "isf" "${HELM_CHART_VERSION:-}")}"
+    core_manifest="${CORE_VERSION_MANIFEST_FILE:-$(resolve_embedded_release_manifest "kweaver-core" "${HELM_CHART_VERSION:-}")}"
+
+    if [[ -f "${isf_manifest}" ]] && should_skip_db_init_for_manifest "${isf_manifest}"; then
+        log_info "ISF manifest ${isf_manifest} has pre-stage data-migrator (0.6.0+), skipping manual database creation"
+        return 0
+    fi
+
+    if [[ -f "${core_manifest}" ]] && should_skip_db_init_for_manifest "${core_manifest}"; then
+        log_info "Core manifest ${core_manifest} has pre-stage data-migrator (0.6.0+), skipping manual database creation"
+        return 0
+    fi
+
     log_info "Setting up additional databases and permissions..."
-    
+
     # Find the correct pod name (could be mariadb-0 or mariadb-proton-mariadb-0 depending on chart)
     local pod_name
     pod_name=$(kubectl -n "${ns}" get pods -l app=mariadb -o jsonpath='{.items[0].metadata.name}' 2>/dev/null)
-    
+
     if [[ -z "${pod_name}" ]]; then
         log_warn "MariaDB Pod not found, skipping database setup"
         return 1
     fi
-    
+
     # Wait for MariaDB to be fully ready
     log_info "Waiting for MariaDB to be ready (Pod: ${pod_name})..."
     local max_attempts=15
@@ -65,14 +81,14 @@ setup_mariadb_databases() {
         ((attempt++))
         sleep 2
     done
-    
+
     # List of databases to create
     local databases=(
         "user_management" "anyshare" "policy_mgnt" "privacy" "authentication"
         "eofs" "deploy" "sharemgnt_db" "ets" "ossmanager" "license"
         "nodemgnt" "sites" "anydata" "third_app_mgnt" "hydra_v2" "thirdparty_message"
     )
-    
+
     # Execute SQL commands
     log_info "Creating databases and granting permissions..."
     local sql_commands="CREATE DATABASE IF NOT EXISTS \`${MARIADB_DATABASE}\`;"
@@ -83,7 +99,7 @@ setup_mariadb_databases() {
     sql_commands+=" FLUSH PRIVILEGES;"
 
     echo "${sql_commands}" | kubectl -n "${ns}" exec -i "${pod_name}" -- mariadb -u root -p"${MARIADB_ROOT_PASSWORD}" >/dev/null 2>&1 || true
-    
+
     log_info "MariaDB database setup completed"
 }
 

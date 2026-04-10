@@ -795,9 +795,9 @@ MARIADB_PERSISTENCE_ENABLED="${MARIADB_PERSISTENCE_ENABLED:-true}"
 MARIADB_STORAGE_CLASS="${MARIADB_STORAGE_CLASS:-}"
 MARIADB_PURGE_PVC="${MARIADB_PURGE_PVC:-false}"
 MARIADB_ROOT_PASSWORD="${MARIADB_ROOT_PASSWORD:-}"
-MARIADB_DATABASE="${MARIADB_DATABASE:-adp}"
-MARIADB_USER="${MARIADB_USER:-adp}"
-MARIADB_PASSWORD="${MARIADB_PASSWORD:-}"
+MARIADB_DATABASE="${MARIADB_DATABASE:-kweaver}"
+MARIADB_USER="${MARIADB_USER:-kweaver}"
+MARIADB_PASSWORD="${MARIADB_PASSWORD:-kweaver}"
 MARIADB_STORAGE_SIZE="${MARIADB_STORAGE_SIZE:-10Gi}"
 MARIADB_MAX_CONNECTIONS="${MARIADB_MAX_CONNECTIONS:-5000}"
 
@@ -948,8 +948,8 @@ ZOOKEEPER_SASL_PASSWORD="${ZOOKEEPER_SASL_PASSWORD:-}"
 ZOOKEEPER_EXTRA_SET_VALUES="${ZOOKEEPER_EXTRA_SET_VALUES:-}"  # Additional --set values (space-separated, e.g., "image.registry=xxx key2=value2")
 
 # Ingress-Nginx Configuration
-INGRESS_NGINX_HTTP_PORT="${INGRESS_NGINX_HTTP_PORT:-30080}"
-INGRESS_NGINX_HTTPS_PORT="${INGRESS_NGINX_HTTPS_PORT:-30443}"
+INGRESS_NGINX_HTTP_PORT="${INGRESS_NGINX_HTTP_PORT:-80}"
+INGRESS_NGINX_HTTPS_PORT="${INGRESS_NGINX_HTTPS_PORT:-443}"
 INGRESS_NGINX_CLASS="${INGRESS_NGINX_CLASS:-class-443}"
 INGRESS_NGINX_CONTROLLER_IMAGE="${INGRESS_NGINX_CONTROLLER_IMAGE:-swr.cn-east-3.myhuaweicloud.com/kweaver-ai/ingress-nginx/controller:v1.14.1}"
 INGRESS_NGINX_CONTROLLER_IMAGE_REPOSITORY="${INGRESS_NGINX_CONTROLLER_IMAGE_REPOSITORY:-swr.cn-east-3.myhuaweicloud.com/kweaver-ai/ingress-nginx/controller}"
@@ -1273,10 +1273,10 @@ init_module_database() {
     # Get MariaDB credentials from config.yaml (under depServices.rds section)
     local mariadb_user=$(grep -A 20 "^  rds:" "${CONFIG_YAML_PATH}" | grep "user:" | head -1 | awk '{print $2}' | tr -d "'\"")
     local mariadb_password=$(grep -A 20 "^  rds:" "${CONFIG_YAML_PATH}" | grep "password:" | head -1 | awk '{print $2}' | tr -d "'\"")
-    
+
     # Set defaults if not found
-    mariadb_user="${mariadb_user:-adp}"
-    mariadb_password="${mariadb_password:-adp}"
+    mariadb_user="${mariadb_user:-kweaver}"
+    mariadb_password="${mariadb_password:-kweaver}"
     
     log_info "Using MariaDB user: ${mariadb_user}"
     
@@ -1364,4 +1364,117 @@ show_status() {
     kubectl get nodes -o wide
     echo ""
     kubectl get pods -A
+}
+
+# =============================================================================
+# Release Manifest Database Initialization Detection
+# =============================================================================
+
+# Check if a release manifest has a stage="pre" data-migrator release.
+# This indicates the manifest handles database initialization via Helm chart.
+# Args: <manifest_file>
+# Returns: 0 if pre-stage data-migrator found, 1 otherwise
+manifest_has_pre_stage_db_init() {
+    local manifest_file="$1"
+
+    if [[ -z "${manifest_file}" || ! -f "${manifest_file}" ]]; then
+        return 1
+    fi
+
+    # Look for any release with stage="pre" and chart name containing "data-migrator"
+    local release_name
+    for release_name in $(_manifest_list_release_names "${manifest_file}"); do
+        local stage
+        stage="$(_manifest_strip_quotes "$(_manifest_read_release_field "${manifest_file}" "${release_name}" "stage")")"
+        if [[ "${stage}" == "pre" && "${release_name}" == *"data-migrator"* ]]; then
+            return 0
+        fi
+    done
+
+    return 1
+}
+
+# Check if the manifest version is 0.6.0 or higher (semver comparison).
+# Args: <manifest_file>
+# Returns: 0 if version >= 0.6.0, 1 otherwise
+manifest_version_gte_060() {
+    local manifest_file="$1"
+
+    if [[ -z "${manifest_file}" || ! -f "${manifest_file}" ]]; then
+        return 1
+    fi
+
+    local version
+    version="$(_manifest_strip_quotes "$(_manifest_read_top_level_field "${manifest_file}" "version")")"
+
+    if [[ -z "${version}" ]]; then
+        return 1
+    fi
+
+    # Extract major.minor.patch
+    local major minor
+    major="$(echo "${version}" | cut -d. -f1)"
+    minor="$(echo "${version}" | cut -d. -f2)"
+
+    # Compare: >= 0.6.0
+    if [[ "${major}" -gt 0 ]] || [[ "${major}" -eq 0 && "${minor}" -ge 6 ]]; then
+        return 0
+    fi
+
+    return 1
+}
+
+# Check if database initialization should be skipped for this manifest.
+# Returns true (0) if:
+#   1. Manifest version is >= 0.6.0 AND
+#   2. Manifest has a stage="pre" data-migrator release
+# Args: <manifest_file>
+# Returns: 0 if DB init should be skipped, 1 otherwise
+should_skip_db_init_for_manifest() {
+    local manifest_file="$1"
+
+    if [[ -z "${manifest_file}" || ! -f "${manifest_file}" ]]; then
+        return 1
+    fi
+
+    # Check version >= 0.6.0 and has pre-stage data-migrator
+    if manifest_version_gte_060 "${manifest_file}" && manifest_has_pre_stage_db_init "${manifest_file}"; then
+        return 0
+    fi
+
+    return 1
+}
+
+# Read a top-level field from a YAML manifest file.
+# Args: <manifest_file> <field_name>
+_manifest_read_top_level_field() {
+    local manifest_file="$1"
+    local field_name="$2"
+
+    awk -v field="${field_name}" '
+        BEGIN { in_releases = 0 }
+        /^releases:/ || /^dependencies:/ { in_releases = 1; next }
+        in_releases && /^[A-Za-z0-9_-]+:/ { in_releases = 0 }
+        !in_releases && $1 == field ":" {
+            sub(/^[^:]+:[[:space:]]*/, "", $0)
+            print $0
+            exit
+        }
+    ' "${manifest_file}" | sed 's/[[:space:]]*$//'
+}
+
+# List all release names from a manifest file.
+# Args: <manifest_file>
+_manifest_list_release_names() {
+    local manifest_file="$1"
+
+    awk '
+        BEGIN { in_releases = 0 }
+        /^releases:/ { in_releases = 1; next }
+        in_releases && /^  [A-Za-z0-9_-]+:/ {
+            sub(/:.*$/, "", $0)
+            sub(/^  /, "", $0)
+            print $0
+        }
+    ' "${manifest_file}"
 }

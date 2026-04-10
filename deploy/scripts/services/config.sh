@@ -75,10 +75,10 @@ STORAGE_EOF
     local mariadb_ns="${MARIADB_NAMESPACE}"
     local mariadb_host="mariadb-proton-mariadb.${mariadb_ns}.svc.cluster.local"
     # Use values from environment or config.yaml if set
-    local mariadb_user="${MARIADB_USER:-adp}"
+    local mariadb_user="${MARIADB_USER:-kweaver}"
     local mariadb_password="${MARIADB_PASSWORD}"
     local mariadb_root_password="${MARIADB_ROOT_PASSWORD}"
-    local mariadb_database="${MARIADB_DATABASE:-adp}"
+    local mariadb_database="${MARIADB_DATABASE:-kweaver}"
     local mariadb_configured=false
 
     # Try to find MariaDB secret by label first (more reliable than hardcoded name)

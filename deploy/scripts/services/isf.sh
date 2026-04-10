@@ -94,14 +94,22 @@ parse_isf_args() {
 init_isf_database() {
     local sql_dir
     sql_dir="$(resolve_versioned_sql_dir "isf" "${HELM_CHART_VERSION:-}")"
-    
+
     # Only initialize database if RDS is internal (MariaDB installed in cluster)
     if ! is_rds_internal; then
         warn_external_rds_sql_required "ISF" "${sql_dir}"
         log_warn "Skipping automatic ISF database initialization (external RDS)"
         return 0
     fi
-    
+
+    # Check if ISF manifest has pre-stage data-migrator (0.6.0+)
+    # If so, skip SQL initialization - the data-migrator chart will handle it
+    _isf_require_version_manifest || return 1
+    if should_skip_db_init_for_manifest "${ISF_VERSION_MANIFEST_FILE}"; then
+        log_info "ISF manifest ${ISF_VERSION_MANIFEST_FILE} has pre-stage data-migrator (0.6.0+), skipping SQL initialization"
+        return 0
+    fi
+
     init_module_database_if_present "isf" "${sql_dir}" "ISF"
 }
 

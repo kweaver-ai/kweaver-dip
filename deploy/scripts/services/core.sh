@@ -188,6 +188,14 @@ init_core_databases() {
         return 0
     fi
 
+    # Check if Core manifest has pre-stage data-migrator (0.6.0+)
+    # If so, skip SQL initialization - the data-migrator chart will handle it
+    _core_require_version_manifest || return 1
+    if should_skip_db_init_for_manifest "${CORE_VERSION_MANIFEST_FILE}"; then
+        log_info "Core manifest ${CORE_VERSION_MANIFEST_FILE} has pre-stage data-migrator (0.6.0+), skipping SQL initialization"
+        return 0
+    fi
+
     local -a sql_modules=()
     mapfile -t sql_modules < <(list_versioned_sql_modules "kweaver-core" "${HELM_CHART_VERSION:-}")
     if [[ ${#sql_modules[@]} -eq 0 ]]; then
