@@ -232,7 +232,7 @@ confirm_access_address_before_install() {
 
     local host port path scheme
     host="${raw_host:-$(_detect_node_ip)}"
-    port="${raw_port:-443}"
+    port="${raw_port:-${INGRESS_NGINX_HTTPS_PORT:-443}}"
     path="${raw_path:-/}"
     scheme="${raw_scheme:-https}"
 

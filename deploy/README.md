@@ -43,10 +43,15 @@ dnf install containerd.io
 git clone https://github.com/kweaver-ai/kweaver-dip.git
 cd kweaver-dip/deploy
 
-# 2. Install KWeaver DIP
-sudo ./deploy.sh kweaver-dip install
+# 2. (Optional) Customize access ports
+# By default, ingress-nginx uses ports 80/443. To use custom ports (e.g., 8080/8443):
+export INGRESS_NGINX_HTTP_PORT=8080
+export INGRESS_NGINX_HTTPS_PORT=8443
 
-# 3. Install OpenClaw DIP extensions
+# 3. Install KWeaver DIP
+bash ./deploy.sh kweaver-dip install
+
+# 4. Install OpenClaw DIP extensions
 openclaw plugins install ./openclaw-extensions/dip
 ```
 
@@ -90,8 +95,8 @@ Initial password: `eisoo.com`
 
 | Item | Minimum | Recommended |
 | --- | --- | --- |
-| OS | CentOS 7/8+, RHEL 8 | CentOS 7 |
-| CPU | 16 cores | 24 cores |
+| OS | CentOS 8+, RHEL 8 | CentOS 7 |
+| CPU | 24 cores | 32 cores |
 | Memory | 48 GB | 64 GB |
 | Disk | 200 GB | 500 GB |
 

@@ -51,7 +51,7 @@ generate_config_yaml() {
     fi
     
     # Use existing values or defaults for other accessAddress fields
-    local access_port="${cfg_access_port:-443}"
+    local access_port="${cfg_access_port:-${INGRESS_NGINX_HTTPS_PORT:-443}}"
     local access_scheme="${cfg_access_scheme:-https}"
     local access_path="${cfg_access_path:-/}"
 

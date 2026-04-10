@@ -39,7 +39,7 @@ nginx:
   # ConfigMap 方式：ConfigMap 名称（如果 mountType=configMap）
   configMapName: dip-frontend-nginx-config
 
-# 运行时前端配置（写入 /app/dist/dip-hub/env.js）
+# 运行时前端配置（写入 /app/dist/env.js）
 runtimeEnv:
   enabled: true
   # 允许值：store, studio（多个用英文逗号分隔）

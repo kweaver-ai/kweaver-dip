@@ -75,7 +75,7 @@ spec:
           {{- end }}
           {{- if .Values.runtimeEnv.enabled }}
           - name: runtime-env
-            mountPath: /app/dist/dip-hub/env.js
+            mountPath: /app/dist/env.js
             subPath: env.js
             readOnly: true
           {{- end }}

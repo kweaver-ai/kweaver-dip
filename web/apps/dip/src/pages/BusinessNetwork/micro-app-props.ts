@@ -1,39 +1,39 @@
-import { message } from 'antd'
-import { loadMicroApp } from 'qiankun'
-import type { UserInfo } from '@/apis/dip-hub/user'
-import { businessLeafMenuItems } from '@/components/Sider/BusinessSider/menus'
-import { themeColors } from '@/styles/themeColors'
-import { BASE_PATH } from '@/utils/config'
-import { getAccessToken, getRefreshToken, httpConfig } from '@/utils/http/token-config'
+import { message } from 'antd';
+import { loadMicroApp } from 'qiankun';
+import type { UserInfo } from '@/apis/dip-hub/user';
+import { businessLeafMenuItems } from '@/components/Sider/BusinessSider/menus';
+import { themeColors } from '@/styles/themeColors';
+import { BASE_PATH } from '@/utils/config';
+import { getAccessToken, getRefreshToken, httpConfig } from '@/utils/http/token-config';
 
 export interface NavigateToMicroWidgetParams {
-  name: string
-  path: string
-  isNewTab: boolean
+  name: string;
+  path: string;
+  isNewTab: boolean;
 }
 
 interface BuildBusinessMicroAppPropsOptions {
-  basePath: string
-  language: string
-  userInfo?: UserInfo
-  navigateToMicroWidget: (params: NavigateToMicroWidgetParams) => void
-  toggleSideBarShow: (show: boolean) => void
-  navigate: (path: string) => void
-  changeCustomPathComponent: (param: { label: string } | null) => void
+  basePath: string;
+  language: string;
+  userInfo?: UserInfo;
+  navigateToMicroWidget: (params: NavigateToMicroWidgetParams) => void;
+  toggleSideBarShow: (show: boolean) => void;
+  navigate: (path: string) => void;
+  changeCustomPathComponent: (param: { label: string } | null) => void;
 }
 
 const mapLanguage = (language: string): 'zh-cn' | 'zh-tw' | 'en-us' => {
-  if (language === 'zh-TW') return 'zh-tw'
-  if (language === 'en-US') return 'en-us'
-  return 'zh-cn'
-}
+  if (language === 'zh-TW') return 'zh-tw';
+  if (language === 'en-US') return 'en-us';
+  return 'zh-cn';
+};
 
 /** 如 /dip-hub/business-network/vega/xxx → /dip-hub/business-network/vega */
 const normalizeVegaBasePath = (basePath: string): string => {
-  if (!basePath.includes('/vega/')) return basePath
-  const idx = basePath.indexOf('/vega/')
-  return basePath.slice(0, idx + '/vega'.length)
-}
+  if (!basePath.includes('/vega/')) return basePath;
+  const idx = basePath.indexOf('/vega/');
+  return basePath.slice(0, idx + '/vega'.length);
+};
 
 const plugins = {
   'operator-flow-detail': {
@@ -120,7 +120,7 @@ const plugins = {
       entry: '//ip:port/workflow-manage-client/index.html',
     },
   },
-}
+};
 
 /** 构建业务微应用 props */
 export const buildBusinessMicroAppProps = ({
@@ -132,11 +132,11 @@ export const buildBusinessMicroAppProps = ({
   navigate,
   changeCustomPathComponent,
 }: BuildBusinessMicroAppPropsOptions) => {
-  const resolvedBasePath = normalizeVegaBasePath(basePath)
+  const resolvedBasePath = normalizeVegaBasePath(basePath);
 
   // 兼容其他微应用里读取的 microWidgetProps.config.userInfo
-  const loginName = userInfo?.account ?? ''
-  const userid = userInfo?.id ?? ''
+  const loginName = userInfo?.account ?? '';
+  const userid = userInfo?.id ?? '';
   const userInfoPayload = {
     id: userid,
     user: {
@@ -146,9 +146,9 @@ export const buildBusinessMicroAppProps = ({
       // dip-hub 的 userinfo 类型当前不包含 roles，这里先透传空数组占位
       roles: [],
     },
-  }
-  const lang = mapLanguage(language)
-  const theme = themeColors.primary
+  };
+  const lang = mapLanguage(language);
+  const theme = themeColors.primary;
 
   return {
     lang,
@@ -163,13 +163,12 @@ export const buildBusinessMicroAppProps = ({
       loadMicroApp,
     },
     config: {
-      systemInfo: {
-        location: {
-          protocol: window.location.protocol,
-          hostname: window.location.hostname,
-          port: window.location.port,
-        },
-        as_access_prefix: '',
+      get systemInfo() {
+        const config = {
+          location: window.location,
+          as_access_prefix: '',
+        };
+        return config;
       },
       getTheme: {
         normal: theme,
@@ -182,8 +181,8 @@ export const buildBusinessMicroAppProps = ({
         normalRgba: '18,110,227',
       },
       getMicroWidgetByName: (name: string) => {
-        const plugin = plugins[name as keyof typeof plugins]
-        if (!plugin) return undefined
+        const plugin = plugins[name as keyof typeof plugins];
+        if (!plugin) return undefined;
 
         return {
           ...plugin,
@@ -191,10 +190,10 @@ export const buildBusinessMicroAppProps = ({
             ...plugin.subapp,
             entry: plugin.subapp.entry.replace('ip:port', window.location.host),
           },
-        }
+        };
       },
       getMicroWidgets() {
-        return plugins
+        return plugins;
       },
       userInfo: userInfoPayload,
     },
@@ -206,10 +205,10 @@ export const buildBusinessMicroAppProps = ({
       refreshOauth2Token: httpConfig.refreshToken || (async () => ({ accessToken: '' })),
       getToken: {
         get access_token() {
-          return getAccessToken()
+          return getAccessToken();
         },
         get refresh_token() {
-          return getRefreshToken()
+          return getRefreshToken();
         },
         id_token: '',
       },
@@ -220,34 +219,34 @@ export const buildBusinessMicroAppProps = ({
       getBasePath: resolvedBasePath,
       async getBasePathByName(microWidgetName: string) {
         // 从menus中找到page.app.name为microWidgetName的item，然后返回该item的path
-        let newName = microWidgetName
+        let newName = microWidgetName;
         if (newName === 'agent-web-dataagent') {
-          newName = 'agent-square'
+          newName = 'agent-square';
         }
 
         const item = businessLeafMenuItems.find(
-          (menuItem) => menuItem.page?.type === 'micro-app' && menuItem.page?.app?.name === newName,
-        )
-        if (!item) return ''
+          menuItem => menuItem.page?.type === 'micro-app' && menuItem.page?.app?.name === newName
+        );
+        if (!item) return '';
 
-        return `${BASE_PATH}${item.path}`
+        return `${BASE_PATH}${item.path}`;
       },
       navigateToMicroWidget,
     },
     component: {
       toast: () => {
         const config = () => {
-          console.error('toast未开放config配置')
-        }
+          console.error('toast未开放config配置');
+        };
         const destroy = () => {
-          console.error('toast未开放destroy方法')
-        }
-        return { ...message, config, destroy }
+          console.error('toast未开放destroy方法');
+        };
+        return { ...message, config, destroy };
       },
     },
     navigate,
     oemConfigs: {
       theme,
     },
-  }
-}
+  };
+};

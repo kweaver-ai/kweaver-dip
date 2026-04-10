@@ -38,15 +38,22 @@ setenforce 0
 dnf install containerd.io
 ```
 
+### 安装 KWeaver DIP
+
 ```bash
 # 1. 克隆仓库
 git clone https://github.com/kweaver-ai/kweaver-dip.git
 cd kweaver-dip/deploy
 
-# 2. 安装 KWeaver DIP
-sudo ./deploy.sh kweaver-dip install
+# 2. （可选）自定义访问端口
+# 默认情况下，ingress-nginx 使用 80/443 端口。如需使用其他端口（例如 8080/8443）：
+export INGRESS_NGINX_HTTP_PORT=8080
+export INGRESS_NGINX_HTTPS_PORT=8443
 
-# 3. 安装 OpenClaw DIP 插件
+# 3. 安装 KWeaver DIP
+bash ./deploy.sh kweaver-dip install
+
+# 4. 安装 OpenClaw DIP 插件
 openclaw plugins install ./openclaw-extensions/dip
 ```
 
@@ -91,7 +98,7 @@ Approved cc8d2143cf8fcd04161ade9e5161006c410a0bee65f835e2629792aa584bb119 (3ef17
 | 项目 | 最低配置 | 推荐配置 |
 | --- | --- | --- |
 | OS | CentOS 8+, OpenEuler 23+ | CentOS 8+ |
-| CPU | 16 核 | 24 核 |
+| CPU | 24 核 | 32 核 |
 | 内存 | 48 GB | 64 GB |
 | 磁盘 | 200 GB | 500 GB |
 
