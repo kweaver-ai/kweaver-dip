@@ -15,7 +15,7 @@ dependencies:
 releases:
   dip-data-migrator:
     chart: dip-data-migrator
-    version: 0.4.0-main.20260331.5.fac488b
+    version: 0.4.0-main.20260410.4.9fd9eb7
     stage: pre
   deploy-web:
     chart: deploy-web
@@ -29,6 +29,9 @@ releases:
   business-system-service:
     chart: business-system-service
     version: 0.3.0-1d43acc
+  mf-model-manager-nginx:
+    chart: mf-model-manager-nginx
+    version: 0.3.0
   vega-web:
     chart: vega-web
     version: 0.5.0

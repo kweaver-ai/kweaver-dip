@@ -8,11 +8,8 @@ source:
 releases:
   kweaver-core-data-migrator:
     chart: kweaver-core-data-migrator
-    version: 0.6.0-main.20260409.6.69e08c2
+    version: 0.6.0-main.20260410.4.9fd9eb7
     stage: pre
-  mf-model-manager-nginx:
-    chart: mf-model-manager-nginx
-    version: 0.3.0
   mf-model-manager:
     chart: mf-model-manager
     version: 0.3.0
